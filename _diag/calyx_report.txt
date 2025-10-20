@@ -1,0 +1,78 @@
+=== Calyx Doctor Report ===
+time: 2025-10-19T12:08:27
+python: 3.11.0
+sd lib version: (1246976, 'PortAudio V19.7.0-devel, revision unknown')  hostapis: 4
+
+Current config:
+{
+  "profile": "User1",
+  "paths": {
+    "root": "C:\\Calyx_Terminal",
+    "projects": "C:\\Calyx_Terminal\\Projects",
+    "codex": "C:\\Calyx_Terminal\\Codex",
+    "journal": "C:\\Calyx_Terminal\\Codex\\Journal",
+    "frameworks": "C:\\Calyx_Terminal\\Codex\\Frameworks",
+    "voice_notes": "C:\\Calyx_Terminal\\Voice_Notes",
+    "scripts": "C:\\Calyx_Terminal\\Scripts",
+    "memory": "C:\\Calyx_Terminal\\Memory"
+  },
+  "settings": {
+    "faster_whisper_device": "cpu",
+    "faster_whisper_compute_type": "float32",
+    "model_size": "tiny",
+    "mic_device_index": 1
+  }
+}
+
+Detected audio devices (inputs shown with in>0):
+[ 0] IN   rate=44100   Microsoft Sound Mapper - Input
+[ 1] IN   rate=44100   Microphone (Razer Seiren X)
+[ 2] IN   rate=44100   Headset Microphone (CORSAIR VOI
+[ 3] IN   rate=44100   VoiceMeeter Output (VB-Audio Vo
+[ 4] out  rate=44100   Microsoft Sound Mapper - Output
+[ 5] out  rate=44100   Headset Earphone (CORSAIR VOID 
+[ 6] IN   rate=44100   Primary Sound Capture Driver
+[ 7] IN   rate=44100   Microphone (Razer Seiren X)
+[ 8] IN   rate=44100   Headset Microphone (CORSAIR VOID PRO Wireless Gaming Headset)
+[ 9] IN   rate=44100   VoiceMeeter Output (VB-Audio VoiceMeeter VAIO)
+[10] out  rate=44100   Primary Sound Driver
+[11] out  rate=44100   Headset Earphone (CORSAIR VOID PRO Wireless Gaming Headset)
+[12] out  rate=48000   Headset Earphone (CORSAIR VOID PRO Wireless Gaming Headset)
+[13] IN   rate=48000   Headset Microphone (CORSAIR VOID PRO Wireless Gaming Headset)
+[14] IN   rate=44100   VoiceMeeter Output (VB-Audio VoiceMeeter VAIO)
+[15] IN   rate=48000   Microphone (Razer Seiren X)
+[16] IN   rate=44100   Stereo Mix (Realtek HD Audio Stereo input)
+[17] IN   rate=44100   Line In (Realtek HD Audio Line input)
+[18] out  rate=44100   Speakers (Realtek HD Audio output)
+[19] IN   rate=44100   Microphone (Realtek HD Audio Mic input)
+[20] out  rate=44100   SPDIF Out (Realtek HDA SPDIF Out)
+[21] IN   rate=44100   CABLE-B Output (VB-Audio CABLE-B)
+[22] out  rate=44100   Speakers (VB-Audio CABLE-B)
+[23] IN   rate=48000   Headset Microphone (Corsair Audio Device)
+[24] out  rate=44100   Headset Earphone (Corsair Audio Device)
+[25] IN   rate=48000   Krisp Microphone ()
+[26] out  rate=48000   Speakers ()
+[27] out  rate=44100   Speakers (Razer Seiren X)
+[28] IN   rate=44100   Microphone (Razer Seiren X)
+[29] out  rate=48000   Output (NVIDIA High Definition Audio)
+[30] out  rate=44100   Output ()
+[31] IN   rate=44100   VoiceMeeter Output (VoiceMeeter vaio)
+[32] out  rate=44100   Speakers (VoiceMeeter vaio)
+[33] IN   rate=44100   Microphone (Steam Streaming Microphone Wave)
+[34] out  rate=44100   Speakers (Steam Streaming Microphone Wave)
+[35] IN   rate=32000   Microphone (HD Pro Webcam C920)
+[36] IN   rate=44100   Input (Steam Streaming Speakers Wave)
+[37] out  rate=44100   Speakers (Steam Streaming Speakers Wave)
+[38] IN   rate=48000   Input (Game Capture HD60 Pro Audio)
+[39] IN   rate=44100   CABLE-A Output (VB-Audio CABLE-A)
+[40] out  rate=44100   Speakers (VB-Audio CABLE-A)
+
+Decision:
+  preferred_index: 1
+  picked_index   : 1
+  picked_rate    : 44100
+  method         : preferred_ok
+  VU(min/med/max) ~ 0.0038 / 0.0046 / 0.0076 @ 44100 Hz
+
+Recommendation:
+  - Use input idx 1 → Microphone (Razer Seiren X) @ 44100 Hz

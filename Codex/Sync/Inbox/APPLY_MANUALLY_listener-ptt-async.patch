@@ -1,0 +1,94 @@
+*** a/Scripts/listener_ptt.py
+--- b/Scripts/listener_ptt.py
+@@
+-import time, sys, numpy as np
+-from faster_whisper import WhisperModel
+-import sounddevice as sd, yaml
+-import msvcrt  # Windows console hotkeys
++import time, sys, numpy as np
++from faster_whisper import WhisperModel
++import sounddevice as sd, yaml
++from ctypes import windll
+@@
+-# PTT settings
+-USE_PTT_HOLD   = True   # Hold Space to arm capture
+-PTT_TOGGLE_KEY = 't'    # Press T to toggle arm if you prefer toggle mode
+-armed_toggle   = False
++# PTT settings
++USE_PTT_HOLD   = True   # Hold Space to arm capture
++armed_toggle   = False   # press T to toggle arm
++# virtual-key codes
++VK_SPACE = 0x20
++VK_T     = 0x54
++user32 = windll.user32
+@@
+-def ptt_armed():
+-    global armed_toggle
+-    armed_hold = False
+-    while msvcrt.kbhit():
+-        ch = msvcrt.getwch()
+-        if ch.lower() == ' ':
+-            armed_hold = True  # we saw a space event; treat as held this tick
+-        elif ch.lower() == PTT_TOGGLE_KEY:
+-            armed_toggle = not armed_toggle
+-            log(f"[PTT] toggle -> {'ARMED' if armed_toggle else 'idle'}")
+-    # In practice: space events come as bursts; to truly require hold, also allow >0 activity
+-    return (armed_hold if USE_PTT_HOLD else armed_toggle)
++_prev_t_down = False
++def _key_down(vk):
++    # high bit set means key is physically down now
++    return (user32.GetAsyncKeyState(vk) & 0x8000) != 0
++
++def ptt_state(now_activity_ok: bool):
++    """
++    Returns tuple: (armed_now: bool, mode_str: str)
++    - HOLD: armed when Space is physically down and some activity exists
++    - TOGGLE: press T to flip armed_toggle
++    """
++    global armed_toggle, _prev_t_down
++    # toggle edge on 'T'
++    t_down = _key_down(VK_T)
++    if t_down and not _prev_t_down:
++        armed_toggle = not armed_toggle
++        log(f"[PTT] toggle -> {'ARMED' if armed_toggle else 'idle'}")
++    _prev_t_down = t_down
++
++    if USE_PTT_HOLD:
++        hold = _key_down(VK_SPACE)
++        return (hold and now_activity_ok, "PTT")
++    else:
++        return (armed_toggle and now_activity_ok, f"TOGGLE-{'ARMED' if armed_toggle else 'IDLE'}")
+@@
+-log("[DBG] starting… Hold SPACE to talk (or press T to toggle). Ctrl+C to stop.")
++log("[DBG] starting… Hold SPACE to talk (press T to toggle if you set USE_PTT_HOLD=False). Ctrl+C to stop.")
+@@
+-read_size = chunk  # larger blocks reduce CPU/underruns
++read_size = max(1024, int(SR_IN * 0.20))  # ~200ms blocks = more responsive PTT
+@@
+-            x16, rms, nz, ratio, dyn_gate = preprocess(backlog)
++            x16, rms, nz, ratio, dyn_gate = preprocess(backlog)
+             now = time.time()
+-            if now - last_log > 0.5:
+-                log(f"[VU] rms={rms:.4f} nz_ratio={ratio:.2%} dyn_gate={dyn_gate:.4f} mode={'PTT' if USE_PTT_HOLD else ('TOGGLE-ARMED' if armed_toggle else 'TOGGLE-IDLE')}")
++            # compute PTT state for this tick
++            armed_now, mode_str = ptt_state(now_activity_ok=(ratio >= 0.05))
++            if now - last_log > 0.5:
++                log(f"[VU] rms={rms:.4f} nz_ratio={ratio:.2%} dyn_gate={dyn_gate:.4f} mode={mode_str}")
+                 last_log = now
+ 
+             if (now - last_emit) < COOLDOWN_S:
+                 log("[DBG] cooldown (skip)")
+                 continue
+ 
+             if ratio < MIN_NZ_RATIO:
+                 log("[DBG] gated silence/room noise (skip)")
+                 continue
+ 
+-            if USE_PTT_HOLD or armed_toggle:
+-                if not ptt_armed():
+-                    log("[PTT] not armed (skip)")
+-                    continue
++            if USE_PTT_HOLD or armed_toggle:
++                if not armed_now:
++                    log("[PTT] not armed (skip)")
++                    continue

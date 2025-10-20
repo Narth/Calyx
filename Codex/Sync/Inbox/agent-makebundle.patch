@@ -1,0 +1,46 @@
+*** a/Scripts/Calyx-Agent.ps1
+--- b/Scripts/Calyx-Agent.ps1
+@@
+ function Make-ChatBundle {
+   [CmdletBinding()]
+   param(
+     [string]$Root = "C:\Calyx_Terminal",
+     [string]$Label = ""
+   )
+   $p = Get-CAPath -Root $Root
+   Ensure-Dir $p.Outbox
+   $ts = Get-Date -Format "yyyyMMdd_HHmmss"
+   $label = if($Label){ "_"+($Label -replace '[^\w\-]+','-') } else { "" }
++  $suffix = "_" + ([guid]::NewGuid().ToString("N").Substring(0,6))  # avoid name collisions/locks
+ 
+   $snapshot = Join-Path $p.Outbox ("chat_current_" + $ts + $label + ".txt")
+@@
+-  $zip = Join-Path $p.Outbox ("chat_bundle_" + $ts + $label + ".zip")
+-  if (Test-Path $zip) { Remove-Item -LiteralPath $zip -Force }
+-  Compress-Archive -Path (Join-Path $p.Sync "*") -DestinationPath $zip -CompressionLevel Optimal
++  $zip = Join-Path $p.Outbox ("chat_bundle_" + $ts + $label + $suffix + ".zip")
++  $tmpZip = Join-Path $env:TEMP ("chat_bundle_" + $ts + $label + $suffix + ".zip")
++  if (Test-Path $tmpZip) { Remove-Item -LiteralPath $tmpZip -Force }
++  # write to %TEMP% first (indexers/AV ignore temp more often), then move with retries
++  function _MakeZip([string]$src,[string]$dst){
++    if (Test-Path $dst) { Remove-Item -LiteralPath $dst -Force }
++    Compress-Archive -Path (Join-Path $src "*") -DestinationPath $dst -CompressionLevel Optimal
++  }
++  function _MoveWithRetry([string]$src,[string]$dst){
++    for($i=1;$i -le 6;$i++){
++      try { if (Test-Path $dst) { Remove-Item -LiteralPath $dst -Force }
++            Move-Item -LiteralPath $src -Destination $dst -Force
++            return
++      } catch {
++        Start-Sleep -Milliseconds (150 * $i)  # backoff
++      }
++    }
++    throw "Could not move archive into Outbox after multiple retries: $dst"
++  }
++  _MakeZip $p.Sync $tmpZip
++  _MoveWithRetry $tmpZip $zip
+ 
+   Write-Host "Bundle ready:"
+   Write-Host "  TXT: $snapshot"
+   Write-Host "  ZIP: $zip"
+ }

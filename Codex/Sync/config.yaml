@@ -1,0 +1,26 @@
+profile: User1
+paths:
+  root: C:\Calyx_Terminal
+  projects: C:\Calyx_Terminal\Projects
+  codex: C:\Calyx_Terminal\Codex
+  journal: C:\Calyx_Terminal\Codex\Journal
+  frameworks: C:\Calyx_Terminal\Codex\Frameworks
+  voice_notes: C:\Calyx_Terminal\Voice_Notes
+  scripts: C:\Calyx_Terminal\Scripts
+  memory: C:\Calyx_Terminal\Memory
+settings:
+  faster_whisper_device: "cpu"
+  faster_whisper_compute_type: "float32"
+  model_size: "small"
+  mic_device_index: 1
+  samplerate: 44100
+  silence_gate: 0.099191
+  gain_cap: 3.0
+  chunk_ms: 1000
+  overlap_ms: 500
+  # optional decoding defaults (used by the plus listener below)
+  beam_size: 5
+  best_of: 5
+  temperature: 0.0
+
+

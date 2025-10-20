@@ -1,0 +1,76 @@
+*** a/Scripts/listener_ptt.py
+--- b/Scripts/listener_ptt.py
+@@
+-from ctypes import windll
++from ctypes import windll
+@@
+-USE_PTT_HOLD   = True   # Hold Space to arm capture
+-armed_toggle   = False   # press T to toggle arm
++USE_PTT_HOLD   = True   # Hold Space to arm capture (toggle also works)
++armed_toggle   = False  # press T to toggle arm on/off
+@@
+-def ptt_state(now_activity_ok: bool):
++def ptt_state():
+     """
+-    Returns tuple: (armed_now: bool, mode_str: str)
+-    - HOLD: armed when Space is physically down and some activity exists
+-    - TOGGLE: press T to flip armed_toggle
++    Returns tuple: (armed_now: bool, mode_str: str)
++    - HOLD: armed when Space is physically down
++    - TOGGLE: press T to flip armed_toggle
+     """
+     global armed_toggle, _prev_t_down
+     # toggle edge on 'T'
+     t_down = _key_down(VK_T)
+     if t_down and not _prev_t_down:
+         armed_toggle = not armed_toggle
+         log(f"[PTT] toggle -> {'ARMED' if armed_toggle else 'idle'}")
+     _prev_t_down = t_down
+ 
+-    if USE_PTT_HOLD:
+-        hold = _key_down(VK_SPACE)
+-        return (hold and now_activity_ok, "PTT")
+-    else:
+-        return (armed_toggle and now_activity_ok, f"TOGGLE-{'ARMED' if armed_toggle else 'IDLE'}")
++    hold = _key_down(VK_SPACE)
++    armed_now = (hold if USE_PTT_HOLD else False) or armed_toggle
++    mode = "PTT" if USE_PTT_HOLD else f"TOGGLE-{'ARMED' if armed_toggle else 'IDLE'}"
++    return (armed_now, mode)
+@@
+-log("[DBG] starting… Hold SPACE to talk (press T to toggle if you set USE_PTT_HOLD=False). Ctrl+C to stop.")
++log("[DBG] starting… Hold SPACE to talk. T toggles armed ON/OFF. Ctrl+C to stop.")
+@@
+-read_size = max(1024, int(SR_IN * 0.20))  # ~200ms blocks = more responsive PTT
++read_size = max(1024, int(SR_IN * 0.15))  # ~150ms blocks = snappier PTT
+@@
+-            # compute PTT state for this tick
+-            armed_now, mode_str = ptt_state(now_activity_ok=(ratio >= 0.05))
++            # compute PTT state for this tick (toggle or hold can arm)
++            armed_now, mode_str = ptt_state()
+             if now - last_log > 0.5:
+                 log(f"[VU] rms={rms:.4f} nz_ratio={ratio:.2%} dyn_gate={dyn_gate:.4f} mode={mode_str}")
+                 last_log = now
+@@
+-            if ratio < MIN_NZ_RATIO:
++            if ratio < MIN_NZ_RATIO:
+                 log("[DBG] gated silence/room noise (skip)")
+                 continue
+ 
+-            if USE_PTT_HOLD or armed_toggle:
+-                if not armed_now:
+-                    log("[PTT] not armed (skip)")
+-                    continue
++            if not armed_now:
++                log("[PTT] not armed (skip)")
++                continue
+@@
+-        vad_filter=True,
+-        vad_parameters=dict(
+-            silero_threshold=0.70,
++        vad_filter=True,
++        vad_parameters=dict(
++            threshold=0.70,
+             min_speech_duration_ms=350,
+             max_speech_duration_s=10,
+             speech_pad_ms=100
+         ),

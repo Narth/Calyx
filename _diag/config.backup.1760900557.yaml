@@ -1,0 +1,18 @@
+# Calyx Terminal seed config
+profile: "User1"      # your profile label (ok to rename)
+paths:
+  root: "C:\\Calyx_Terminal"
+  projects: "C:\\Calyx_Terminal\\Projects"
+  codex: "C:\\Calyx_Terminal\\Codex"
+  journal: "C:\\Calyx_Terminal\\Codex\\Journal"
+  frameworks: "C:\\Calyx_Terminal\\Codex\\Frameworks"
+  voice_notes: "C:\\Calyx_Terminal\\Voice_Notes"
+  scripts: "C:\\Calyx_Terminal\\Scripts"
+  memory: "C:\\Calyx_Terminal\\Memory"
+
+settings:
+  faster_whisper_device: "cpu"
+  faster_whisper_compute_type: "float32"
+  model_size: "tiny"
+  mic_device_index: 4       # use the Razer Seiren X index you listed; change if needed
+

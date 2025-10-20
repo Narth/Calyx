@@ -1,0 +1,81 @@
+*** a/Scripts/listener_plus_filter.py
+--- b/Scripts/listener_plus_filter.py
+@@
+-# Tighten gates
+-SIL_GATE    = float(CFG.get("silence_gate", 0.025))
+-SIL_GATE    = max(0.04, min(0.08, SIL_GATE))  # raise floor a bit
+-GAIN_CAP    = min(3.0, float(CFG.get("gain_cap", 3.0)))  # less boost = fewer false hits
++# Tighten gates
++SIL_GATE    = float(CFG.get("silence_gate", 0.025))
++SIL_GATE    = max(0.05, min(0.08, SIL_GATE))  # slightly higher static floor
++GAIN_CAP    = min(2.5, float(CFG.get("gain_cap", 3.0)))  # less boost = fewer false hits
+@@
+-BEAM_SIZE   = 1
+-BEST_OF     = 1
++BEAM_SIZE   = 1
++BEST_OF     = 1
+ TEMP        = 0.0
+@@
+-    segs, info = model.transcribe(
++    segs, info = model.transcribe(
+         x16, language="en",
+         beam_size=BEAM_SIZE, best_of=BEST_OF, temperature=TEMP,
+-        vad_filter=True,  # use internal VAD
++        vad_filter=True,  # use internal VAD
+         vad_parameters=dict(
+-            # tighten these if you still see junk
+-            silero_threshold=0.6,            # default ~0.5
+-            min_speech_duration_ms=300,      # ignore tiny blips
+-            max_speech_duration_s=12,
+-            speech_pad_ms=120
++            silero_threshold=0.70,           # be pickier about speech onset
++            min_speech_duration_ms=350,      # ignore tiny blips
++            max_speech_duration_s=10,
++            speech_pad_ms=100
+         ),
+         condition_on_previous_text=False,    # prevents run-on repetitions
+-        no_speech_threshold=0.6,             # be more willing to say "no speech"
+-        compression_ratio_threshold=2.0,
+-        log_prob_threshold=-0.2,             # filter low-confidence gibberish
++        no_speech_threshold=0.75,            # more willing to say "no speech"
++        compression_ratio_threshold=2.0,
++        log_prob_threshold=-0.12,            # still filter low-confidence
+     )
+     txt = "".join(s.text for s in segs).strip()
+@@
+-    if txt.lower().startswith(bad_starts) and len(txt.split()) < 15:
++    if txt and (len(txt) < 6 or txt.lower().startswith(bad_starts) and len(txt.split()) < 15):
+         return ""
+     return txt
+@@
+-log("[DBG] starting… speak 2–3s phrases; Ctrl+C to stop.")
++log("[DBG] starting… speak 2–3s phrases; Ctrl+C to stop.")
+ last_log = time.time()
+ backlog = np.zeros(0, dtype=np.float32)
+ read_size = hop
+@@
+-# Require a decent proportion of “active” samples before decode
+-MIN_NZ_RATIO = 0.12  # ~12% of samples must survive gating
++# Require a decent proportion of “active” samples before decode
++MIN_NZ_RATIO = 0.15  # ~15% of samples must survive gating
++COOLDOWN_S   = 1.0   # do not emit new text more often than this
++last_emit    = 0.0
+@@
+-                if ratio < MIN_NZ_RATIO:
++                if ratio < MIN_NZ_RATIO:
+                     log("[DBG] gated silence/room noise (skip)")
+                     continue
+ 
+-                txt = transcribe(x16)
+-                log(f"[Heard] {txt!r}" if txt else "[Heard] ''")
++                now2 = time.time()
++                if (now2 - last_emit) < COOLDOWN_S:
++                    log("[DBG] cooldown (skip)")
++                    continue
++
++                txt = transcribe(x16)
++                if txt:
++                    log(f"[Heard] {txt!r}")
++                    last_emit = now2
++                else:
++                    log("[Heard] ''")
