@@ -30,6 +30,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
+TRACE_LOG = Path(__file__).resolve().parents[1] / "logs" / "overseer_loop_trace.jsonl"
+DEFAULT_RESPECT_FRAME = "neutral_observer"
+DEFAULT_LAWS = [2, 4, 5, 9, 10]
+
 try:
     import psutil  # type: ignore
 except Exception:  # pragma: no cover
@@ -89,6 +93,43 @@ def _print(msg: str) -> None:
 def _ensure_dirs() -> None:
     for p in (OUT, OUT_GATES, OUT_POLICIES, LOGS, STATE):
         p.mkdir(parents=True, exist_ok=True)
+    TRACE_LOG.parent.mkdir(parents=True, exist_ok=True)
+
+
+def _log_trace(
+    loop: str,
+    mode: str,
+    decision: str,
+    reason: str,
+    *,
+    effects: Optional[list[str]] = None,
+    test_mode: bool = False,
+    laws: Optional[list[int]] = None,
+    respect_frame: str = DEFAULT_RESPECT_FRAME,
+    duration_ms: Optional[float] = None,
+    err: Optional[str] = None,
+) -> None:
+    entry = {
+        "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "loop": loop,
+        "mode": mode,
+        "decision": decision,
+        "reason": reason,
+        "effects": effects or [],
+        "test_mode": bool(test_mode),
+        "respect_frame": respect_frame,
+        "laws": laws or DEFAULT_LAWS,
+    }
+    if duration_ms is not None:
+        entry["duration_ms"] = duration_ms
+    if err:
+        entry["err"] = err
+    try:
+        with TRACE_LOG.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception:
+        # Trace logging must never break overseer operation
+        pass
 
 
 def _set_gate_defaults(cfg: CBOConfig) -> None:
@@ -194,7 +235,7 @@ def _is_wsl_ready(timeout: float = 3.0) -> bool:
         return False
 
 
-def _ensure_adaptive_supervisor(cfg: CBOConfig) -> None:
+def _ensure_adaptive_supervisor(cfg: CBOConfig) -> tuple[str, str, list[str]]:
     # Use a soft heartbeat heuristic: if the adaptive supervisor is missing, (re)start it.
     grace = max(20.0, cfg.supervisor_interval * 2)
     # We consider the suite healthy if core locks are fresh.
@@ -205,7 +246,7 @@ def _ensure_adaptive_supervisor(cfg: CBOConfig) -> None:
         _hb_fresh(LOCK_NAV, grace),
     ])
     if healthy:
-        return
+        return "skip", "supervisor locks fresh", []
     args = [
         '--interval', str(cfg.supervisor_interval),
         '--navigator-interval', '3',
@@ -220,23 +261,27 @@ def _ensure_adaptive_supervisor(cfg: CBOConfig) -> None:
         args += ['--include-scheduler', '--scheduler-interval', '180']
     if _is_wsl_ready():
         _start_detached_wsl('tools/svc_supervisor_adaptive.py', args)
+        return "run", "supervisor stale; started svc_supervisor_adaptive (wsl)", ["started:svc_supervisor_adaptive"]
     else:
         _start_detached_win('tools/svc_supervisor_adaptive.py', args)
+        return "run", "supervisor stale; started svc_supervisor_adaptive (win)", ["started:svc_supervisor_adaptive"]
 
 
-def _ensure_metrics_cron(interval_sec: int) -> None:
+def _ensure_metrics_cron(interval_sec: int) -> tuple[str, str, list[str]]:
     grace = max(60.0, interval_sec * 2)
     # metrics_cron writes logs/metrics_cron_state.json
     state_path = ROOT / 'logs' / 'metrics_cron_state.json'
     if _hb_fresh(state_path, grace):
-        return
+        return "skip", "metrics_cron fresh", []
     if _is_wsl_ready():
         _start_detached_wsl('tools/metrics_cron.py', ['--interval', str(interval_sec)])
+        return "run", "metrics_cron stale; started (wsl)", ["started:metrics_cron"]
     else:
         _start_detached_win('tools/metrics_cron.py', ['--interval', str(interval_sec)])
+        return "run", "metrics_cron stale; started (win)", ["started:metrics_cron"]
 
 
-def _ensure_optimizer(cfg: CBOConfig) -> None:
+def _ensure_optimizer(cfg: CBOConfig) -> tuple[str, str, list[str]]:
     """Ensure the cbo_optimizer loop is running when enabled.
 
     The optimizer writes dynamic overrides for the adaptive supervisor and may
@@ -244,28 +289,30 @@ def _ensure_optimizer(cfg: CBOConfig) -> None:
     We detect presence by the overrides file freshness; if stale, (re)start.
     """
     if not cfg.enable_optimizer:
-        return
+        return "skip", "optimizer disabled", []
     # Consider optimizer healthy if overrides file was updated within 2x its interval
     tuning_dir = OUT / 'tuning'
     overrides = tuning_dir / 'supervisor_overrides.json'
     grace = max(60.0, cfg.optimizer_interval * 2)
     healthy = _hb_fresh(overrides, grace)
     if healthy:
-        return
+        return "skip", "optimizer overrides fresh", []
     args = ['--interval', str(cfg.optimizer_interval)]
     if cfg.optimizer_enable_teaching:
         args += ['--enable-teaching', '--teach-interval-mins', str(int(cfg.optimizer_teach_interval_mins))]
     if _is_wsl_ready():
         _start_detached_wsl('tools/cbo_optimizer.py', args)
+        return "run", "optimizer stale; started (wsl)", ["started:cbo_optimizer"]
     else:
         _start_detached_win('tools/cbo_optimizer.py', args)
+        return "run", "optimizer stale; started (win)", ["started:cbo_optimizer"]
 
 
-def _ensure_production_monitor() -> None:
+def _ensure_production_monitor() -> tuple[str, str, list[str]]:
     """Keep the AI4All production monitor running for alert coverage."""
     grace = 180.0  # monitor interval defaults to 60s; allow 3 cycles
     if _hb_fresh(AI4ALL_MONITOR_STATE, grace):
-        return
+        return "skip", "production monitor fresh", []
 
     args = [
         '--interval', '60',
@@ -275,24 +322,67 @@ def _ensure_production_monitor() -> None:
     ]
     if _is_wsl_ready():
         _start_detached_wsl('Projects/AI_for_All/monitoring/production_monitor.py', args)
+        return "run", "production monitor stale; started (wsl)", ["started:production_monitor"]
     else:
         _start_detached_win('Projects/AI_for_All/monitoring/production_monitor.py', args, prefer_gpu=True)
+        return "run", "production monitor stale; started (win)", ["started:production_monitor"]
 
 
-def _ensure_housekeeping(keep_days: int) -> None:
+def _ensure_housekeeping(keep_days: int) -> tuple[str, str, list[str]]:
     # Run a lightweight one-shot if last archive run was > 24h ago
     marker = LOGS / 'last_housekeeping.txt'
     now = time.time()
     if marker.exists() and (now - marker.stat().st_mtime) < 24 * 3600:
-        return
+        return "skip", "housekeeping recent", []
     args = ['run', '--keep-days', str(int(keep_days))]
     try:
         # Fire and forget, no spam
         subprocess.Popen([sys.executable, '-u', str(ROOT / 'tools' / 'log_housekeeper.py'), *args],
                          cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         marker.write_text(time.strftime('%F %T'), encoding='utf-8')
-    except Exception:
-        pass
+        return "run", "housekeeping fired", ["started:log_housekeeper"]
+    except Exception as exc:
+        return "error", f"housekeeping error: {exc}", []
+
+
+LOOP_FUNCS = {
+    "supervisor": lambda cfg: _ensure_adaptive_supervisor(cfg),
+    "metrics": lambda cfg: _ensure_metrics_cron(cfg.metrics_cron_interval),
+    "optimizer": lambda cfg: _ensure_optimizer(cfg),
+    "production_monitor": lambda cfg: _ensure_production_monitor(),
+    "housekeeping": lambda cfg: _ensure_housekeeping(cfg.housekeeping_keep_days),
+}
+
+
+def _run_named_loop(loop: str, cfg: CBOConfig, mode: str, *, test_mode: bool, allow_daemons: bool) -> str:
+    start = time.time()
+    err: Optional[str] = None
+    effects: list[str] = []
+    try:
+        if loop == "heartbeat":
+            ok = _write_heartbeat(cfg)
+            decision = "run" if ok else "error"
+            reason = "heartbeat write ok" if ok else "heartbeat write failed"
+            if ok:
+                effects = ["wrote_cbo_lock", "recomputed_capacity"]
+        else:
+            if not allow_daemons:
+                decision = "skip"
+                reason = "allow_daemons=false"
+            else:
+                fn = LOOP_FUNCS.get(loop)
+                if fn is None:
+                    decision = "skip"
+                    reason = "unknown_loop"
+                else:
+                    decision, reason, effects = fn(cfg)
+    except Exception as exc:
+        decision = "error"
+        reason = f"{loop} exception"
+        err = str(exc)
+    duration_ms = round((time.time() - start) * 1000.0, 2)
+    _log_trace(loop, mode, decision, reason, effects=effects, test_mode=test_mode, duration_ms=duration_ms, err=err)
+    return decision
 
 
 def _sys_metrics() -> dict:
@@ -428,7 +518,7 @@ def _capacity_from_metrics(metrics: dict) -> dict:
     }
 
 
-def _write_heartbeat(cfg: CBOConfig) -> None:
+def _write_heartbeat(cfg: CBOConfig) -> bool:
     hb = {
         'ts': time.time(),
         'iso': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
@@ -471,25 +561,60 @@ def _write_heartbeat(cfg: CBOConfig) -> None:
         pass
     try:
         LOCK_CBO.write_text(json.dumps(hb, ensure_ascii=False), encoding='utf-8')
+        return True
     except Exception:
-        pass
+        return False
 
 
 def run_loop(cfg: CBOConfig) -> None:
     _ensure_dirs()
     _ensure_permissions(cfg)
     _set_gate_defaults(cfg)
+    mode = "daemon" if cfg.allow_daemons else "safe"
+    daemon_loops = ["supervisor", "metrics", "optimizer", "production_monitor", "housekeeping"]
     # Main loop
     while True:
-        if cfg.allow_daemons:
-            # Long-running loops only when explicitly allowed by the Architect
-            _ensure_adaptive_supervisor(cfg)
-            _ensure_metrics_cron(cfg.metrics_cron_interval)
-            _ensure_optimizer(cfg)
-            _ensure_production_monitor()
-            _ensure_housekeeping(cfg.housekeeping_keep_days)
-        _write_heartbeat(cfg)
+        for loop_name in daemon_loops:
+            _run_named_loop(loop_name, cfg, mode, test_mode=False, allow_daemons=cfg.allow_daemons)
+        _run_named_loop("heartbeat", cfg, mode, test_mode=False, allow_daemons=True)
         time.sleep(max(5.0, float(cfg.interval)))
+
+
+def run_test_mode(cfg: CBOConfig, loop_names: list[str], iterations: int, max_seconds: float, sleep_seconds: Optional[float]) -> Path:
+    """Bounded test mode for daemon loops; always runs with allow_daemons=True and exits after bounds."""
+    mode = "daemon"
+    counts: dict[str, dict[str, int]] = {}
+    start_ts = time.time()
+    sleep_val = sleep_seconds if sleep_seconds is not None else cfg.interval
+    for i in range(max(1, iterations)):
+        for loop_name in loop_names:
+            counts.setdefault(loop_name, {"run": 0, "skip": 0, "error": 0})
+            decision = _run_named_loop(loop_name, cfg, mode, test_mode=True, allow_daemons=True)
+            counts[loop_name][decision] = counts[loop_name].get(decision, 0) + 1
+        if (time.time() - start_ts) >= max_seconds:
+            break
+        time.sleep(max(0.1, float(sleep_val)))
+    end_ts = time.time()
+    report_path = ROOT / "reports" / "cbo_overseer_daemon_test_summary_v0.1.md"
+    report_lines = [
+        "# CBO Overseer Daemon Test Summary v0.1",
+        f"Start (UTC): {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(start_ts))}",
+        f"End (UTC):   {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(end_ts))}",
+        f"Iterations requested: {iterations}",
+        f"Loops: {', '.join(loop_names)}",
+        "",
+        "## Outcomes per loop",
+    ]
+    for loop_name in loop_names:
+        c = counts.get(loop_name, {})
+        report_lines.append(f"- {loop_name}: run={c.get('run',0)} skip={c.get('skip',0)} error={c.get('error',0)}")
+    report_lines += [
+        "",
+        "Notes: test_mode=true traces written to logs/overseer_loop_trace.jsonl (Law 2/4/5/9/10 compliance).",
+    ]
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text("\n".join(report_lines), encoding="utf-8")
+    return report_path
 
 
 def cmd_status() -> int:
@@ -546,6 +671,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument('--optimizer-interval', type=float, default=120.0, help='cbo_optimizer cadence (seconds)')
     ap.add_argument('--enable-teaching', action='store_true', help='Allow optimizer to schedule CP6/CP7 cycles')
     ap.add_argument('--teach-interval-mins', type=int, default=30, help='Minimum minutes between teaching cycles')
+    ap.add_argument('--test-loops', type=str, help='Comma-separated list of loops to exercise in bounded test mode (daemon)')
+    ap.add_argument('--test-iterations', type=int, default=1, help='Iterations per loop in test mode (default: 1)')
+    ap.add_argument('--test-max-seconds', type=float, default=300.0, help='Wall-clock cap for test mode (seconds)')
+    ap.add_argument('--test-sleep', type=float, default=None, help='Sleep between test iterations (seconds); defaults to --interval')
     args = ap.parse_args(argv)
 
     if args.status:
@@ -591,6 +720,25 @@ def main(argv: Optional[list[str]] = None) -> int:
                     pass
     except Exception:
         pass
+
+    # Bounded test mode (daemon, forced allow)
+    if args.test_loops:
+        loop_names = [ln.strip() for ln in (args.test_loops or "").split(",") if ln.strip()]
+        if not loop_names:
+            loop_names = ["heartbeat"]
+        cfg.allow_daemons = True
+        _ensure_dirs()
+        _ensure_permissions(cfg)
+        _set_gate_defaults(cfg)
+        report_path = run_test_mode(
+            cfg,
+            loop_names=loop_names,
+            iterations=max(1, int(args.test_iterations)),
+            max_seconds=float(args.test_max_seconds),
+            sleep_seconds=args.test_sleep,
+        )
+        print(f"[OK] Test mode complete: {report_path}")
+        return 0
 
     if args.dry_run:
         plan = {
