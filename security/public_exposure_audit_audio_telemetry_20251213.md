@@ -1,6 +1,9 @@
 # Public Exposure Audit (Audio/Telemetry) — 2025-12-13
 
-Scope: Manual, cloud-side audit of the Station Calyx repository workspace. Focus: audio samples and telemetry/log artifacts that pose public-exposure risk (privacy and operational leakage). Criteria: human voice recordings and host telemetry/log traces stored in-repo.
+Scope:
+- Manual, cloud-side audit of the Station Calyx repository workspace.
+- Focus: audio samples and telemetry/log artifacts that pose public-exposure risk (privacy and operational leakage).
+- Criteria: human voice recordings and host telemetry/log traces stored in-repo.
 
 ## Flagged for deletion
 
@@ -12,4 +15,6 @@ Scope: Manual, cloud-side audit of the Station Calyx repository workspace. Focus
 | `logs/canon_ingestion_log.jsonl` | Ingestion history with timestamps and classification notes. | Reveals internal document handling and timing metadata. | Delete from repo; regenerate privately if needed. | Medium |
 | `logs/overseer_loop_trace.jsonl` | Daemon trace with timestamps and run/skip decisions. | Exposes internal loop behavior and timing signals. | Delete from repo; capture traces privately when debugging. | Medium |
 
-Architect approval recommended before purging. Verification: repository search shows references are limited to evaluation tooling/docs, not production runtime code paths.
+Decisions:
+- Architect approval recommended before purging.
+- Verification: repository search shows references are limited to evaluation tooling/docs, not production runtime code paths.
