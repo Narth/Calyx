@@ -19,8 +19,19 @@ $defaults = @{
     backupEnabled     = $true
     backupDir         = "local_backups/sync"
     auditLog          = "local_backups/audit/governance_audit.log"
-    allowedPaths      = @()  # empty = allow all
-    criticalPatterns  = @("Automation/*", "config.yaml", "docs/OPERATIONS.md", "docs/AGENT_ONBOARDING.md", "MCP/*")
+    # Allowed paths act as an allowlist for automation; omit sensitive dirs (logs, samples, backups).
+    allowedPaths      = @("docs/*", "reports/*", "config/*", "Automation/*", "tools/*", "asr/*", "Scripts/*", "outgoing/*", "Codex/Sync/*")
+    # Critical patterns halt automation unless explicitly forced and approved.
+    criticalPatterns  = @(
+        "Automation/*",
+        "config.yaml",
+        "docs/OPERATIONS.md",
+        "docs/AGENT_ONBOARDING.md",
+        "MCP/*",
+        "logs/*",
+        "samples/wake_word/*",
+        "local_backups/*"
+    )
     requireApproval   = $true
 }
 

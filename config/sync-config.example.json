@@ -7,9 +7,13 @@
   "backupDir": "local_backups/sync",
   "auditLog": "local_backups/audit/governance_audit.log",
   "allowedPaths": [
-    "reports/*",
     "docs/*",
-    "logs/*",
+    "reports/*",
+    "config/*",
+    "Automation/*",
+    "tools/*",
+    "asr/*",
+    "Scripts/*",
     "outgoing/*",
     "Codex/Sync/*"
   ],
@@ -18,7 +22,10 @@
     "config.yaml",
     "docs/OPERATIONS.md",
     "docs/AGENT_ONBOARDING.md",
-    "MCP/*"
+    "MCP/*",
+    "logs/*",
+    "samples/wake_word/*",
+    "local_backups/*"
   ],
   "requireApproval": true
 }
