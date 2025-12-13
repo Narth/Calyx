@@ -1,0 +1,37 @@
+{
+  "session_id": "7a1857d7",
+  "timestamp": "2026-01-06T22:22:34.027638+00:00",
+  "intent": {
+    "intent_id": "adf6001d",
+    "description": "My development machine for coding projects",
+    "advisory_profile": "developer_workstation",
+    "created_at": "2026-01-06T22:22:29.599754+00:00",
+    "metadata": {}
+  },
+  "events_analyzed": 10,
+  "reflection_session": "33444e4d",
+  "advisory_notes": [
+    {
+      "message": "ADVISORY: Development tools detected: node.exe, devenv.exe, python.exe. System resources appear allocated to development workload.",
+      "confidence_level": "high",
+      "rationale": "Identifying active development tools helps contextualize resource usage.",
+      "uncertainties": [
+        "Tool activity level unknown",
+        "Build status unclear"
+      ],
+      "evidence_refs": [
+        "snapshot:process:devenv.exe",
+        "snapshot:process:python.exe",
+        "snapshot:process:node.exe"
+      ],
+      "profile_context": "Developer workstation profile tracks IDE and build tool activity."
+    }
+  ],
+  "guardrail_check": {
+    "passed": true,
+    "violations": []
+  },
+  "advisor_role": "advisor_agent",
+  "advisory_only": true,
+  "execution_capability": false
+}

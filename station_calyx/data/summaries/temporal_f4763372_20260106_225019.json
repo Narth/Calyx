@@ -1,0 +1,77 @@
+{
+  "session_id": "f4763372",
+  "timestamp": "2026-01-06T22:50:19.350226+00:00",
+  "events_analyzed": 19,
+  "snapshots_analyzed": 4,
+  "time_span_hours": 0.7,
+  "trends_detected": [
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "memory_percent",
+      "description": "memory_percent is increasing (45.6 -> 47.2, +3.5% over 0.7h)",
+      "direction": "increasing",
+      "confidence": "low",
+      "rationale": "Based on 4 data points over 0.7 hours, memory_percent shows a increasing trend with slope 2.0921/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 4 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-06T22:49:19"
+      ],
+      "data_points": 4,
+      "time_span_hours": 0.7,
+      "values_summary": {
+        "first": 45.6,
+        "last": 47.2,
+        "min": 45.6,
+        "max": 47.2,
+        "mean": 46.15,
+        "slope_per_hour": 2.0921
+      }
+    },
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "cpu_percent",
+      "description": "cpu_percent is volatile (7.4 -> 7.0, -5.4% over 0.7h)",
+      "direction": "volatile",
+      "confidence": "low",
+      "rationale": "Based on 4 data points over 0.7 hours, cpu_percent shows a volatile trend with slope 2.9008/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 4 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-06T22:49:19"
+      ],
+      "data_points": 4,
+      "time_span_hours": 0.7,
+      "values_summary": {
+        "first": 7.4,
+        "last": 7.0,
+        "min": 2.0,
+        "max": 7.4,
+        "mean": 5.08,
+        "slope_per_hour": 2.9008
+      }
+    }
+  ],
+  "drift_warnings": [],
+  "recurring_patterns": [],
+  "total_findings": 2,
+  "analyzer_role": "temporal_analyzer",
+  "advisory_only": true,
+  "execution_capability": false,
+  "guardrails": {
+    "no_failure_predictions": true,
+    "no_execution_recommendations": true,
+    "uncertainty_stated": true,
+    "evidence_referenced": true
+  }
+}

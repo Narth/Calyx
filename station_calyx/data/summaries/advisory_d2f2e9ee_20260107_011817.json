@@ -1,0 +1,48 @@
+{
+  "session_id": "d2f2e9ee",
+  "timestamp": "2026-01-07T01:18:17.474888+00:00",
+  "intent": {
+    "intent_id": "165e5150",
+    "description": "High disk usage system",
+    "advisory_profile": "storage_pressure",
+    "created_at": "2026-01-07T01:18:12.684262+00:00",
+    "metadata": {}
+  },
+  "events_analyzed": 46,
+  "reflection_session": "bd81e4a7",
+  "advisory_notes": [
+    {
+      "message": "ADVISORY: Disk usage at 88.6% (109.0 GB free). Approaching storage constraints.",
+      "confidence_level": "medium",
+      "rationale": "Disk usage above 80% warrants awareness of storage trends.",
+      "uncertainties": [
+        "Growth rate uncertain",
+        "Cleanup potential unknown"
+      ],
+      "evidence_refs": [
+        "snapshot:disk:2026-01-07T01:18:01"
+      ],
+      "profile_context": "Storage pressure profile tracks disk capacity."
+    },
+    {
+      "message": "ADVISORY: Disk usage trend detected: increasing. Monitor storage capacity.",
+      "confidence_level": "medium",
+      "rationale": "Disk trends inform capacity planning.",
+      "uncertainties": [
+        "Trend may not continue",
+        "External factors may apply"
+      ],
+      "evidence_refs": [
+        "trend:disk:2026-01-07T00:48:03"
+      ],
+      "profile_context": "Storage pressure profile emphasizes disk trends."
+    }
+  ],
+  "guardrail_check": {
+    "passed": true,
+    "violations": []
+  },
+  "advisor_role": "advisor_agent",
+  "advisory_only": true,
+  "execution_capability": false
+}

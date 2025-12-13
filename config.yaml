@@ -13,6 +13,29 @@ paths:
   voice_notes: C:\Calyx_Terminal\Voice_Notes
   scripts: C:\Calyx_Terminal\Scripts
   memory: C:\Calyx_Terminal\Memory
+
+# Telemetry contract and continuity story system.
+telemetry:
+  timeline:
+    enabled: true
+    path: logs/station_timeline.jsonl
+  contract:
+    streams:
+      system_snapshots:
+        path: logs/system_snapshots.jsonl
+        cadence_sec: 60
+        stale_after_sec: 300
+      enhanced_metrics:
+        path: logs/enhanced_metrics.jsonl
+        cadence_sec: 300
+        stale_after_sec: 1200
+      bridge_pulse_state:
+        path: state/bridge_pulse_state.json
+        cadence_sec: 1200
+        stale_after_sec: 3600
+  continuity_report:
+    enabled: true
+    output_path: reports/telemetry_continuity.md
 settings:
   faster_whisper_device: "cuda"
   faster_whisper_compute_type: "float16"
@@ -77,6 +100,7 @@ settings:
   svf:
     single_pass: true
     max_msgs_per_cycle: 1
+    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
   routing:
     uncertain_band: [0.35, 0.55]
     llm_allowed:
@@ -163,8 +187,6 @@ settings:
       - recent_excs
     # Cheetah memory optimization 2025-10-24: Balanced pulse rate for memory efficiency
     pulse_interval_sec: 3  # Triage pulse at 3s = 20/min (optimized for memory efficiency)
-  svf:
-    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
   # AI-for-All Teaching System Configuration
   ai4all_teaching:
     enabled: true
@@ -210,6 +232,23 @@ settings:
         tes: 0.3
         stability: 0.2
         error_rate: 0.8
+
+# BitNet Integration Configuration (Phase 2)
+bitnet:
+  enabled: false  # Default OFF - requires gate authorization
+  wsl_distribution: "Ubuntu"
+  model_path: "~/bitnet_build/BitNet/models/BitNet-2B-official/ggml-model-i2_s.gguf"
+  binary_path: "~/bitnet_build/BitNet/build/bin/llama-cli"
+  default_threads: 4
+  default_ctx_size: 4096
+  default_n_predict: 50
+  temperature: 0.8
+  heartbeat_interval: 30  # Emit heartbeat every 30s during inference
+  timeout_sec: 120  # Max inference duration
+  reasoning:
+    enabled: false  # Reasoning layer integration (future)
+    confidence_threshold: 0.7
+    svf_integration: true
 
 # Systems Resources Agent Configuration - Resource Optimization Framework
 resource_management:

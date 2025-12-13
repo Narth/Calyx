@@ -1,0 +1,129 @@
+{
+  "session_id": "f9ce11b7",
+  "timestamp": "2026-01-07T00:49:24.316442+00:00",
+  "events_analyzed": 39,
+  "snapshots_analyzed": 6,
+  "time_span_hours": 2.7,
+  "trends_detected": [
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "disk_percent_used",
+      "description": "disk_percent_used is increasing (88.5 -> 88.6, +0.1% over 2.7h)",
+      "direction": "increasing",
+      "confidence": "low",
+      "rationale": "Based on 6 data points over 2.7 hours, disk_percent_used shows a increasing trend with slope 0.0390/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 6 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-07T00:48:41"
+      ],
+      "data_points": 6,
+      "time_span_hours": 2.7,
+      "values_summary": {
+        "first": 88.5,
+        "last": 88.6,
+        "min": 88.5,
+        "max": 88.6,
+        "mean": 88.53,
+        "slope_per_hour": 0.039
+      }
+    },
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "memory_percent",
+      "description": "memory_percent is increasing (45.6 -> 46.4, +1.8% over 2.7h)",
+      "direction": "increasing",
+      "confidence": "low",
+      "rationale": "Based on 6 data points over 2.7 hours, memory_percent shows a increasing trend with slope 0.2075/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 6 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-07T00:48:41"
+      ],
+      "data_points": 6,
+      "time_span_hours": 2.7,
+      "values_summary": {
+        "first": 45.6,
+        "last": 46.4,
+        "min": 45.6,
+        "max": 47.2,
+        "mean": 46.25,
+        "slope_per_hour": 0.2075
+      }
+    },
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "cpu_percent",
+      "description": "cpu_percent is volatile (7.4 -> 0.4, -94.6% over 2.7h)",
+      "direction": "volatile",
+      "confidence": "low",
+      "rationale": "Based on 6 data points over 2.7 hours, cpu_percent shows a volatile trend with slope -0.9459/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 6 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-07T00:48:41"
+      ],
+      "data_points": 6,
+      "time_span_hours": 2.7,
+      "values_summary": {
+        "first": 7.4,
+        "last": 0.4,
+        "min": 0.4,
+        "max": 7.4,
+        "mean": 4.17,
+        "slope_per_hour": -0.9459
+      }
+    }
+  ],
+  "drift_warnings": [],
+  "recurring_patterns": [
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "advisory_pattern",
+      "description": "Advisory pattern recurring: resource_constrained profile generating 1 note(s) appeared 3 times",
+      "direction": null,
+      "confidence": "medium",
+      "rationale": "The same advisory pattern has appeared 3 times, suggesting a persistent condition worth investigating.",
+      "uncertainties": [
+        "Pattern may be expected behavior",
+        "Root cause requires manual investigation"
+      ],
+      "evidence_refs": [
+        "advisory:2026-01-06T22:23:04",
+        "advisory:2026-01-07T00:47:11",
+        "advisory:2026-01-07T00:49:02"
+      ],
+      "data_points": 3,
+      "time_span_hours": 0,
+      "values_summary": {
+        "occurrences": 3,
+        "pattern": "resource_constrained:1"
+      }
+    }
+  ],
+  "total_findings": 4,
+  "analyzer_role": "temporal_analyzer",
+  "advisory_only": true,
+  "execution_capability": false,
+  "guardrails": {
+    "no_failure_predictions": true,
+    "no_execution_recommendations": true,
+    "uncertainty_stated": true,
+    "evidence_referenced": true
+  }
+}
