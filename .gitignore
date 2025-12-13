@@ -16,6 +16,8 @@ venvs/
 env/
 ENV/
 venv/
+Scripts/.venv/
+local_backups/
 
 # IDE & Editors
 .vscode/
@@ -47,6 +49,8 @@ nohup.out
 *.csv
 decoder_probs_report.csv
 wake_word_results.csv
+reports/
+tools/bin/llama.cpp/*.exe
 
 # Runtime State & Output
 state/
@@ -77,6 +81,10 @@ models/
 _diag/
 benchmarks/results/
 *.test.json
+
+# Large local archives (avoid pushing to origin)
+Codex/Archives/*.zip
+Codex/CGPT History/*.zip
 
 # Folder tree snapshots
 folder_tree.txt
