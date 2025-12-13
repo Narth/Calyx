@@ -1,0 +1,24 @@
+{
+  "autoCommit": true,
+  "autoCommitMessage": "chore(sync): routine Station Calyx sync",
+  "remote": "origin",
+  "branch": "main",
+  "backupEnabled": true,
+  "backupDir": "local_backups/sync",
+  "auditLog": "local_backups/audit/governance_audit.log",
+  "allowedPaths": [
+    "reports/*",
+    "docs/*",
+    "logs/*",
+    "outgoing/*",
+    "Codex/Sync/*"
+  ],
+  "criticalPatterns": [
+    "Automation/*",
+    "config.yaml",
+    "docs/OPERATIONS.md",
+    "docs/AGENT_ONBOARDING.md",
+    "MCP/*"
+  ],
+  "requireApproval": true
+}
