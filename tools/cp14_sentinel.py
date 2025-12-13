@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Iterable, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
+PROPOSALS_DIR = ROOT / "outgoing" / "proposals"
 REVIEWS_DIR = ROOT / "outgoing" / "reviews"
 AGENT_ID = "cp14_validator"
 MANDATE_REF = "agents.cp14_validator"
@@ -292,6 +293,80 @@ def scan_added_line(filename: str, line: str):
     return findings
 
 
+def _resolve_artifact_path(artifacts: dict, keys: list[str], fallback: Path) -> Path:
+    for k in keys:
+        v = artifacts.get(k)
+        if not v:
+            continue
+        p = v if isinstance(v, Path) else Path(str(v))
+        if not p.is_absolute():
+            p = ROOT / p
+        return p
+    return fallback
+
+
+def _syscall_risk_from_findings(findings: list[dict]) -> str:
+    if not findings:
+        return "LOW"
+    for f in findings:
+        if f.get("type") in {"secret_leak", "forbidden_pattern"}:
+            return "HIGH"
+    return "MED"
+
+
+def review_proposal(intent_id: str, artifacts: dict) -> dict:
+    """
+    Review proposal using CP14 processor.
+
+    Constraints (per Request A): static/dry only; write only to outgoing/reviews.
+
+    Args:
+        intent_id: Intent ID
+        artifacts: Paths and metadata (supports keys like diff/patch/change_patch, metadata, proposals_dir, reviews_dir)
+
+    Returns:
+        Verdict dictionary per CGPT spec.
+    """
+    proposals_dir = _resolve_artifact_path(artifacts, ["proposals_dir"], PROPOSALS_DIR)
+    reviews_dir = _resolve_artifact_path(artifacts, ["reviews_dir"], REVIEWS_DIR)
+
+    base = proposals_dir / intent_id
+    patch_path = _resolve_artifact_path(
+        artifacts,
+        ["diff", "patch", "change_patch", "patch_path"],
+        base / "change.patch",
+    )
+    metadata_path = _resolve_artifact_path(
+        artifacts,
+        ["metadata", "metadata_path"],
+        base / "metadata.json",
+    )
+
+    lines_scanned = 0
+    all_findings: list[dict] = []
+    for filename, line in iter_added_lines_from_patch(patch_path):
+        lines_scanned += 1
+        all_findings.extend(scan_added_line(filename, line))
+
+    verdict = "FAIL" if all_findings else "PASS"
+    out = {
+        "intent_id": intent_id,
+        "verdict": verdict,
+        "findings": all_findings,
+        "network_egress": "DENIED",
+        "syscall_risk": _syscall_risk_from_findings(all_findings),
+        "lines_scanned": lines_scanned,
+        "inputs": {
+            "patch_path": str(patch_path),
+            "metadata_path": str(metadata_path),
+        },
+    }
+
+    reviews_dir.mkdir(parents=True, exist_ok=True)
+    (reviews_dir / f"{intent_id}.CP14.verdict.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
+    return out
+
+
 def run_cp14(patch_path: Path, metadata_path: Path, intent_id: str, *, test_mode: bool = False):
     metadata = load_metadata(metadata_path)
     constraints = [
@@ -336,7 +411,7 @@ def run_cp14(patch_path: Path, metadata_path: Path, intent_id: str, *, test_mode
             "verdict": verdict,
             "findings": all_findings,
             "network_egress": "DENIED",
-            "syscall_risk": "HIGH" if all_findings else "LOW",
+            "syscall_risk": _syscall_risk_from_findings(all_findings),
             "lines_scanned": added_lines,
         }
 

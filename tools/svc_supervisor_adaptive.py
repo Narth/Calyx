@@ -31,6 +31,53 @@ import time
 from pathlib import Path
 from typing import Dict, Iterable, Optional
 
+
+_SINGLE_INSTANCE_MUTEX_HANDLE = None
+
+
+def _acquire_single_instance_mutex(name: str) -> bool:
+    """Acquire a best-effort global single-instance guard on Windows.
+
+    Returns True if this process should proceed, False if another instance
+    appears to already be running.
+    """
+
+    global _SINGLE_INSTANCE_MUTEX_HANDLE
+
+    if os.name != "nt":
+        return True
+
+    try:
+        import ctypes
+
+        kernel32 = ctypes.windll.kernel32
+
+        CreateMutexW = kernel32.CreateMutexW
+        CreateMutexW.argtypes = [ctypes.c_void_p, ctypes.c_bool, ctypes.c_wchar_p]
+        CreateMutexW.restype = ctypes.c_void_p
+
+        GetLastError = kernel32.GetLastError
+        GetLastError.argtypes = []
+        GetLastError.restype = ctypes.c_uint32
+
+        ERROR_ALREADY_EXISTS = 183
+
+        handle = CreateMutexW(None, True, name)
+        if not handle:
+            # If we can't acquire a mutex, fail open (best-effort) so we don't
+            # accidentally prevent stewardship.
+            return True
+
+        last_error = int(GetLastError())
+        if last_error == ERROR_ALREADY_EXISTS:
+            return False
+
+        _SINGLE_INSTANCE_MUTEX_HANDLE = handle
+        return True
+    except Exception:
+        # Best-effort only.
+        return True
+
 ROOT = Path(__file__).resolve().parents[1]
 OUTGOING = ROOT / "outgoing"
 LOGS = ROOT / "logs"
@@ -41,6 +88,10 @@ LOCK_TRIAGE = OUTGOING / "triage.lock"
 LOCK_SYSINT = OUTGOING / "sysint.lock"
 LOCK_NAVIGATOR = OUTGOING / "navigator.lock"
 LOCK_SCHEDULER = OUTGOING / "scheduler.lock"
+LOCK_UPTIME = OUTGOING / "uptime_tracker.lock"
+LOCK_ENHANCED_METRICS = OUTGOING / "enhanced_metrics.lock"
+LOCK_BRIDGE_PULSE_SCHED = OUTGOING / "bridge_pulse_scheduler.lock"
+LOCK_TELEMETRY_SENTINEL = OUTGOING / "telemetry_sentinel.lock"
 STATE_PHM = ROOT / "state" / "proactive_health_state.json"
 HEARTBEATS_MD = LOGS / "HEARTBEATS.md"
 
@@ -175,6 +226,15 @@ class Supervisor:
         nav_cool_interval: int,
         include_scheduler: bool,
         scheduler_interval: int,
+        include_uptime_tracker: bool = False,
+        uptime_interval: int = 60,
+        include_enhanced_metrics: bool = False,
+        enhanced_metrics_interval: int = 300,
+        include_bridge_pulse_scheduler: bool = False,
+        bridge_pulse_interval_mins: int = 20,
+        bridge_pulse_heartbeat_only: bool = False,
+        include_telemetry_sentinel: bool = False,
+        telemetry_sentinel_interval: float = 60.0,
         include_phm: bool = True,
         phm_interval: float = 60.0,
     ) -> None:
@@ -191,6 +251,15 @@ class Supervisor:
         self.nav_cool_interval = int(nav_cool_interval)
         self.include_scheduler = bool(include_scheduler)
         self.scheduler_interval = int(scheduler_interval)
+        self.include_uptime_tracker = bool(include_uptime_tracker)
+        self.uptime_interval = int(uptime_interval)
+        self.include_enhanced_metrics = bool(include_enhanced_metrics)
+        self.enhanced_metrics_interval = int(enhanced_metrics_interval)
+        self.include_bridge_pulse_scheduler = bool(include_bridge_pulse_scheduler)
+        self.bridge_pulse_interval_mins = int(bridge_pulse_interval_mins)
+        self.bridge_pulse_heartbeat_only = bool(bridge_pulse_heartbeat_only)
+        self.include_telemetry_sentinel = bool(include_telemetry_sentinel)
+        self.telemetry_sentinel_interval = float(telemetry_sentinel_interval)
         self.include_phm = bool(include_phm)
         self.phm_interval = float(phm_interval)
         self.use_wsl = _is_wsl_available()
@@ -378,6 +447,77 @@ class Supervisor:
 
         self._ensure_process("phm", STATE_PHM, spawn)
 
+    def ensure_uptime_tracker(self) -> None:
+        if not self.include_uptime_tracker:
+            return
+
+        def spawn():
+            return _spawn_windows(
+                [
+                    sys.executable,
+                    "-u",
+                    str(ROOT / "tools" / "uptime_tracker.py"),
+                    "--interval",
+                    str(self.uptime_interval),
+                ]
+            )
+
+        self._ensure_process("uptime_tracker", LOCK_UPTIME, spawn)
+
+    def ensure_enhanced_metrics(self) -> None:
+        if not self.include_enhanced_metrics:
+            return
+
+        def spawn():
+            return _spawn_windows(
+                [
+                    sys.executable,
+                    "-u",
+                    str(ROOT / "tools" / "enhanced_metrics_collector.py"),
+                    "--interval",
+                    str(self.enhanced_metrics_interval),
+                ]
+            )
+
+        self._ensure_process("enhanced_metrics", LOCK_ENHANCED_METRICS, spawn)
+
+    def ensure_bridge_pulse_scheduler(self) -> None:
+        if not self.include_bridge_pulse_scheduler:
+            return
+
+        def spawn():
+            args = [
+                sys.executable,
+                "-u",
+                str(ROOT / "tools" / "bridge_pulse_scheduler.py"),
+                "--pulse-interval",
+                str(self.bridge_pulse_interval_mins),
+            ]
+            if self.bridge_pulse_heartbeat_only:
+                args.append("--heartbeat-only")
+            return _spawn_windows(
+                args
+            )
+
+        self._ensure_process("bridge_pulse_scheduler", LOCK_BRIDGE_PULSE_SCHED, spawn)
+
+    def ensure_telemetry_sentinel(self) -> None:
+        if not self.include_telemetry_sentinel:
+            return
+
+        def spawn():
+            return _spawn_windows(
+                [
+                    sys.executable,
+                    "-u",
+                    str(ROOT / "tools" / "telemetry_sentinel.py"),
+                    "--interval",
+                    str(self.telemetry_sentinel_interval),
+                ]
+            )
+
+        self._ensure_process("telemetry_sentinel", LOCK_TELEMETRY_SENTINEL, spawn)
+
     # ---- main loop -------------------------------------------------------
 
     def run(self) -> None:
@@ -390,6 +530,10 @@ class Supervisor:
                 self.ensure_heartbeat()
                 self.ensure_navigator(overrides)
                 self.ensure_scheduler(overrides)
+                self.ensure_uptime_tracker()
+                self.ensure_enhanced_metrics()
+                self.ensure_bridge_pulse_scheduler()
+                self.ensure_telemetry_sentinel()
                 self.ensure_phm()
                 time.sleep(self.check_interval)
         except KeyboardInterrupt:
@@ -422,6 +566,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--nav-cool-interval", type=int, default=20, help="Navigator cool interval (seconds)")
     parser.add_argument("--include-scheduler", action="store_true", help="Supervise agent scheduler")
     parser.add_argument("--scheduler-interval", type=int, default=180, help="Scheduler interval seconds")
+    parser.add_argument("--include-uptime-tracker", action="store_true", help="Supervise uptime_tracker (system snapshots)")
+    parser.add_argument("--uptime-interval", type=int, default=60, help="Uptime tracker snapshot interval seconds")
+    parser.add_argument("--include-enhanced-metrics", action="store_true", help="Supervise enhanced_metrics_collector")
+    parser.add_argument("--enhanced-metrics-interval", type=int, default=300, help="Enhanced metrics collection interval seconds")
+    parser.add_argument("--include-bridge-pulse-scheduler", action="store_true", help="Supervise bridge_pulse_scheduler")
+    parser.add_argument("--bridge-pulse-interval", type=int, default=20, help="Bridge pulse interval minutes")
+    parser.add_argument(
+        "--bridge-pulse-heartbeat-only",
+        action="store_true",
+        help="Run bridge pulse scheduler in heartbeat-only mode (no report generation)",
+    )
+    parser.add_argument("--include-telemetry-sentinel", action="store_true", help="Supervise telemetry_sentinel")
+    parser.add_argument("--telemetry-sentinel-interval", type=float, default=60.0, help="Telemetry sentinel check interval seconds")
     parser.add_argument("--include-phm", action="store_true", default=True, help="Supervise proactive health monitor (default: True)")
     parser.add_argument("--no-phm", dest="include_phm", action="store_false", help="Disable proactive health monitor")
     parser.add_argument("--phm-interval", type=float, default=60.0, help="Proactive health monitor interval seconds")
@@ -429,6 +586,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Optional[list[str]] = None) -> int:
+    if not _acquire_single_instance_mutex("Global\\Calyx_SvcSupervisorAdaptive"):
+        print("svc_supervisor_adaptive: already running; exiting.")
+        return 0
+
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -445,6 +606,15 @@ def main(argv: Optional[list[str]] = None) -> int:
         nav_cool_interval=args.nav_cool_interval,
         include_scheduler=args.include_scheduler,
         scheduler_interval=args.scheduler_interval,
+        include_uptime_tracker=args.include_uptime_tracker,
+        uptime_interval=args.uptime_interval,
+        include_enhanced_metrics=args.include_enhanced_metrics,
+        enhanced_metrics_interval=args.enhanced_metrics_interval,
+        include_bridge_pulse_scheduler=args.include_bridge_pulse_scheduler,
+        bridge_pulse_interval_mins=args.bridge_pulse_interval,
+        bridge_pulse_heartbeat_only=args.bridge_pulse_heartbeat_only,
+        include_telemetry_sentinel=args.include_telemetry_sentinel,
+        telemetry_sentinel_interval=args.telemetry_sentinel_interval,
         include_phm=args.include_phm,
         phm_interval=args.phm_interval,
     )
