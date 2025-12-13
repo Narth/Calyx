@@ -4,6 +4,7 @@ Scope:
 - Manual, cloud-side audit of the Station Calyx repository workspace.
 - Focus: audio samples and telemetry/log artifacts that pose public-exposure risk (privacy and operational leakage).
 - Criteria: human voice recordings and host telemetry/log traces stored in-repo.
+- Rerun: 2025-12-13T22:38Z on branch `copilot/assess-public-files-audit` (HEAD b1f6968) after repo cleanup; findings unchanged—flagged assets still present.
 
 ## Flagged for deletion
 
