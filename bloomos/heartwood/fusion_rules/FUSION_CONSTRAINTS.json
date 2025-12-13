@@ -1,0 +1,23 @@
+{
+  "title": "Fusion Constraints (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "action",
+          "action_*",
+          "enforce",
+          "enforce_*",
+          "schedule",
+          "schedule_*",
+          "autonomy",
+          "autonomy_*"
+        ]
+      }
+    }
+  },
+  "required": ["forbidden"],
+  "additionalProperties": false
+}

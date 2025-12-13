@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-11-30T19:47:11.800677+00:00",
+  "station_cas": 0.3719999999999999,
+  "cas_level": "LOW",
+  "window_days": 30,
+  "sample_size": 1,
+  "difficulty_weights": {},
+  "data_note": "CAS_DATA_SPARE; sample_size < 3",
+  "per_agent": {
+    "triage": 0.3719999999999999
+  }
+}

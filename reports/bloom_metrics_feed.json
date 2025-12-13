@@ -1,0 +1,37 @@
+{
+  "generated": "2025-11-08T05:56:00Z",
+  "agii": 97.0,
+  "tes_mean": 96.95,
+  "tes_latest": 97.2,
+  "arei": 98.7,
+  "warn_ratio": 0.036,
+  "agent_runs": [
+    {
+      "agent": "agent2",
+      "goal": "Perception drill",
+      "mode": "tests",
+      "status": "done",
+      "tes": 97.1,
+      "duration_s": 178,
+      "timestamp": "2025-11-08T05:48:57Z"
+    },
+    {
+      "agent": "agent3",
+      "goal": "Cross-modal reasoning",
+      "mode": "tests",
+      "status": "done",
+      "tes": 97.0,
+      "duration_s": 182,
+      "timestamp": "2025-11-08T05:52:08Z"
+    },
+    {
+      "agent": "agent4",
+      "goal": "Systems excellence",
+      "mode": "apply_tests",
+      "status": "done",
+      "tes": 97.2,
+      "duration_s": 177,
+      "timestamp": "2025-11-08T05:55:10Z"
+    }
+  ]
+}

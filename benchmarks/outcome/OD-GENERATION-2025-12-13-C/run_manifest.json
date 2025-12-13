@@ -1,0 +1,21 @@
+{
+  "run_id": "OD-GENERATION-2025-12-13-C",
+  "suite_file": "benchmarks/outcome/suites/od_v3_peer_suite_v1.json",
+  "suite_version": "v1",
+  "model_id": "<model_name_or_stack>",
+  "machine_profile": {
+    "gpu": "NVIDIA GeForce RTX 2070 Super (8GB)",
+    "cpu": "Intel Core i7-9700K (8c/8t)",
+    "ram_gb": 32,
+    "os": "Windows 10/11 64-bit"
+  },
+  "monitor": {
+    "interval_sec": 2,
+    "resource_log": "logs/system/resource_usage.jsonl",
+    "phase_log": "logs/system/prompt_phases.jsonl"
+  },
+  "git_commit": "a837fab08d6abb214ba9c36535d20439b3507ce3",
+  "run_start": "2025-12-13T18:05:25.594Z",
+  "run_end": "2025-12-13T18:08:11.154Z",
+  "notes": ""
+}

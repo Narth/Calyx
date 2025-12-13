@@ -1,0 +1,11 @@
+{
+  "title": "Lineage Pointer (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "lineage_pointer": { "type": "string" },
+    "orbit": { "type": "string" },
+    "branch": { "type": "string" }
+  },
+  "required": ["lineage_pointer"],
+  "additionalProperties": false
+}

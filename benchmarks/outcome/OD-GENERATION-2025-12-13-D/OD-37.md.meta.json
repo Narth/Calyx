@@ -1,0 +1,9 @@
+{
+  "run_id": "OD-GENERATION-2025-12-13-D",
+  "prompt_id": "OD-37",
+  "mode": "station_ingest",
+  "envelope_id": "env-OD-GENERATION-2025-12-13-D-OD-37-99542246",
+  "ingested_at_utc": "2025-12-13T18:35:36.543Z",
+  "reflection_id": "refl-OD-GENERATION-2025-12-13-D-OD-37-8f226708",
+  "reflection_timestamp_utc": "2025-12-13T18:35:36.543Z"
+}

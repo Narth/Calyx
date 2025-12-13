@@ -1,0 +1,240 @@
+---
+# AI-for-All Teaching Framework Configuration
+# This configuration defines parameters for baseline teaching methods
+
+# Adaptive Learning Configuration
+adaptive_learning:
+  # Learning rate for parameter adjustments
+  learning_rate: 0.1
+
+  # Momentum for learning parameter updates
+  momentum: 0.9
+
+  # Rate at which learning rate decays
+  decay_rate: 0.95
+
+  # Minimum improvement threshold to trigger adaptation
+  min_improvement_threshold: 0.05
+
+  # Maximum number of adaptation attempts per session
+  max_adaptation_attempts: 10
+
+  # Exploration factor for trying new approaches
+  exploration_factor: 0.1
+
+  # Weight given to stability vs efficiency in adaptations
+  stability_weight: 0.7
+  efficiency_weight: 0.3
+
+  # Sensitivity to performance changes for adaptation
+  adaptation_sensitivity: 0.05
+
+  # GPU Acceleration Configuration
+  gpu_acceleration:
+    # Enable GPU-accelerated training
+    enabled: true
+    
+    # Pattern recognition threshold for GPU computation
+    pattern_threshold: 0.7
+    
+    # Force CPU fallback (overrides GPU detection)
+    force_cpu: false
+
+# Performance Tracking Configuration
+performance_tracking:
+  # Number of days to retain performance data
+  retention_days: 30
+
+  # Interval in seconds for baseline updates
+  baseline_update_interval: 3600  # 1 hour
+
+  # Minimum improvement threshold to update baseline
+  improvement_threshold: 0.1
+
+  # Weights for different metrics in composite scores
+  metric_weights:
+    tes: 0.4
+    stability: 0.3
+    velocity: 0.2
+    error_rate: 0.1
+
+  # Number of days after which baseline becomes invalid
+  baseline_validity_days: 30
+
+# Knowledge Integration Configuration
+knowledge_integration:
+  # Threshold for considering patterns similar enough to transfer
+  similarity_threshold: 0.8
+
+  # Minimum strength required for a pattern to be considered for transfer
+  min_pattern_strength: 0.7
+
+  # Period in days after which knowledge is considered for review
+  knowledge_retention_period: 7
+
+  # Whether cross-agent knowledge sharing is enabled
+  cross_agent_sharing_enabled: true
+
+  # Whether patterns require validation before integration
+  validation_required: true
+
+# Pattern Recognition Configuration
+pattern_recognition:
+  # Minimum number of occurrences to recognize a pattern
+  min_occurrences: 3
+
+  # Minimum strength for a pattern to be considered valid
+  strength_threshold: 0.7
+
+  # Maximum number of patterns to track per agent
+  max_patterns_per_agent: 50
+
+  # Rate at which pattern strength decays over time
+  decay_rate: 0.9
+
+  # Threshold for pattern similarity matching
+  pattern_similarity_threshold: 0.8
+
+# System Integration Configuration
+system_integration:
+  # Interval in seconds for heartbeat emission
+  heartbeat_interval: 60
+
+  # Output path for metrics and logs
+  metrics_output_path: "outgoing/ai4all/"
+
+  # Logging level (DEBUG, INFO, WARNING, ERROR)
+  log_level: "INFO"
+
+  # Whether safety gates are enabled for teaching methods
+  enable_safety_gates: true
+
+  # Maximum resource usage allowed during teaching (as fraction of system resources)
+  max_resource_usage: 0.3
+
+# Teaching Method Specific Configurations
+teaching_methods:
+
+  # Task Efficiency Teaching
+  task_efficiency:
+    enabled: true
+    priority_weight: 0.8
+    target_metrics:
+      - tes
+      - velocity
+      - stability
+    adaptation_frequency: 300  # 5 minutes
+
+  # Stability Teaching
+  stability:
+    enabled: true
+    priority_weight: 0.7
+    target_metrics:
+      - stability
+      - error_rate
+    adaptation_frequency: 600  # 10 minutes
+
+  # Latency Optimization Teaching
+  latency_optimization:
+    enabled: true
+    priority_weight: 0.6
+    target_metrics:
+      - velocity
+      - tes
+    adaptation_frequency: 900  # 15 minutes
+
+  # Error Reduction Teaching
+  error_reduction:
+    enabled: true
+    priority_weight: 0.5
+    target_metrics:
+      - error_rate
+      - stability
+    adaptation_frequency: 1200  # 20 minutes
+
+# Integration Settings for Calyx Terminal Components
+integrations:
+
+  # Agent System Integration
+  agent_system:
+    enabled: true
+    heartbeat_sync: true
+    metrics_collection: true
+
+  # Scheduler Integration
+  scheduler:
+    enabled: true
+    learning_aware_scheduling: true
+    adaptation_cooldown: 1800  # 30 minutes
+
+  # Triage Integration
+  triage:
+    enabled: true
+    adaptive_thresholds: true
+    learning_feedback: true
+
+  # Navigator Integration
+  navigator:
+    enabled: true
+    pattern_based_routing: true
+    efficiency_optimization: true
+
+  # SVF Integration (Shared Voice Protocol)
+  svf:
+    enabled: true
+    knowledge_sharing: true
+    tone_learning: true
+
+# Safety and Validation Settings
+safety:
+  # Maximum allowed performance degradation during teaching
+  max_performance_degradation: 0.1
+
+  # Minimum stability threshold for teaching activities
+  min_stability_threshold: 0.5
+
+  # Whether to require human approval for major adaptations
+  require_approval_for_major_changes: false
+
+  # Maximum number of consecutive failed adaptations before pausing
+  max_consecutive_failures: 3
+
+  # Emergency stop conditions (performance thresholds)
+  emergency_thresholds:
+    tes: 0.3
+    stability: 0.2
+    error_rate: 0.8
+
+# Reporting and Monitoring
+reporting:
+  # Interval for generating progress reports (seconds)
+  report_interval: 3600  # 1 hour
+
+  # Whether to generate detailed performance reports
+  detailed_reports: true
+
+  # Metrics to include in standard reports
+  standard_metrics:
+    - tes
+    - stability
+    - velocity
+    - error_rate
+    - adaptation_count
+    - learning_progress
+
+  # Retention period for reports (days)
+  report_retention_days: 90
+
+# Experimental Features
+experimental:
+  # Cross-domain learning (transferring patterns between different types of tasks)
+  cross_domain_learning: false
+
+  # Predictive adaptation (adapting before performance degradation is observed)
+  predictive_adaptation: false
+
+  # Multi-agent collaborative learning
+  collaborative_learning: false
+
+  # Neural network-based pattern recognition (if available)
+  neural_pattern_recognition: false

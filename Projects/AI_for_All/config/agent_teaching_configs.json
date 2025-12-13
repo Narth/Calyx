@@ -1,0 +1,30 @@
+{
+  "agent1": {
+    "teaching_enabled": true,
+    "learning_objectives": ["task_efficiency", "stability"],
+    "baseline_metrics": {"tes": 85, "stability": 0.9, "velocity": 0.5},
+    "adaptation_frequency": 300,
+    "max_sessions": 3
+  },
+  "triage": {
+    "teaching_enabled": true,
+    "learning_objectives": ["latency_optimization", "stability"],
+    "baseline_metrics": {"tes": 90, "stability": 0.95, "velocity": 0.8},
+    "adaptation_frequency": 600,
+    "max_sessions": 2
+  },
+  "cp6": {
+    "teaching_enabled": true,
+    "learning_objectives": ["interaction_efficiency", "harmony"],
+    "baseline_metrics": {"harmony_score": 75, "interaction_quality": 0.8},
+    "adaptation_frequency": 900,
+    "max_sessions": 2
+  },
+  "cp7": {
+    "teaching_enabled": true,
+    "learning_objectives": ["diagnostic_accuracy", "reporting_efficiency"],
+    "baseline_metrics": {"accuracy": 0.9, "efficiency": 0.85},
+    "adaptation_frequency": 1200,
+    "max_sessions": 2
+  }
+}

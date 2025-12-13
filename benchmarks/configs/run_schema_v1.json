@@ -1,0 +1,38 @@
+{
+  "benchmark_run_id": "CB-2025-Q1-OD-001",
+  "benchmark_id": "CB-OUTCOME-DENSITY-V1",
+  "run_started_at": "ISO-8601",
+  "run_finished_at": "ISO-8601",
+  "node_hardware": {
+    "gpu": "string",
+    "cpu": "string",
+    "ram_gb": "number"
+  },
+  "model_stack": [
+    {
+      "name": "string",
+      "version": "string",
+      "quantization": "string"
+    }
+  ],
+  "dataset_id": "optional string",
+  "task_mix": "optional object",
+  "tasks": "array of per-task entries (internal or external, depending on benchmark)",
+  "aggregates": {
+    "outcome_density": "number or null",
+    "avg_insight_quality": "number or null",
+    "accuracy": "number or null",
+    "pass_rate": "number or null",
+    "mean_explanation_score": "number or null",
+    "mean_patch_quality": "number or null"
+  },
+  "governance": {
+    "full_trace_available": "boolean",
+    "hidden_channels_detected": "boolean",
+    "safe_mode_violations": "number",
+    "autonomy_violations": "number",
+    "reflection_depth": "integer 1-5",
+    "agii_score": "number 0-1"
+  },
+  "notes": "string"
+}

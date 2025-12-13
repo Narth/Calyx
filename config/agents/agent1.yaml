@@ -1,0 +1,74 @@
+version: 1
+agent:
+  name: agent1
+  role: surface_builder
+  owner: CBO
+  description: >
+    Baseline builder agent for micro-fix and Phase 1-S surface work.
+    Runs through CBO's scheduler with intercept + heartbeat guardrails.
+  autonomy_tier: safe|tests|apply_tests
+
+execution:
+  entrypoint: python tools/agent_runner.py
+  default_args: "--skip-patches"
+  working_dir: C:\Calyx_Terminal
+  heartbeat_file: outgoing/agent1.lock
+  scheduler_lock: outgoing/scheduler.lock
+  intercept:
+    required: true
+    mode: dry_run
+    log_dir: reports/intercepts
+  watchdogs:
+    - tools/heartbeat_writer.py
+    - tools/heartbeat_auto_refresh.py
+
+sandbox:
+  filesystem:
+    read_only:
+      - docs/**
+      - config/**
+      - reports/**
+      - state/**
+    read_write:
+      - outgoing/agent1/**
+      - outgoing/telemetry/**
+      - logs/agent_runs/**
+      - reports/intercepts/**
+    deny:
+      - keys/**
+      - memory/**
+      - outgoing/User1/**
+  commands_allowlist:
+    - python tools/agent_runner.py*
+    - python tools/agent_metrics.py*
+  env_allowlist:
+    - OPENAI_API_KEY
+    - HF_TOKEN
+    - CALYX_RUN_ID
+  network:
+    outbound: deny
+    exceptions: []
+
+limits:
+  cpu_percent:
+    soft: 70
+    hard: 80
+  ram_percent:
+    soft: 72
+    hard: 80
+  max_runtime_s: 540
+  max_llm_time_s: 75
+  max_file_writes: 40
+  disk_write_mb: 64
+
+auditing:
+  svf_channel: svf
+  mailbox: outgoing/User1/
+  log_paths:
+    - logs/agent_runner.log
+    - logs/agent_metrics.csv
+  intercept_summary: reports/intercepts/
+  escalation:
+    tes_below: 88.0
+    ram_percent_above: 77.0
+    notify: ["User1", "CGPT"]

@@ -1,0 +1,14 @@
+{
+  "title": "Seedbed Entry (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "structural_id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "soil_signature": { "type": "string" },
+    "heartwood_ref": { "type": "string" },
+    "advisory_only": { "const": true },
+    "safe_mode_ready": { "const": true }
+  },
+  "required": ["structural_id", "lineage_pointer", "advisory_only", "safe_mode_ready"],
+  "additionalProperties": false
+}

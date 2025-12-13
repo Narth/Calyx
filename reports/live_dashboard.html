@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Station Calyx - Live Dashboard</title>
+    <meta http-equiv="refresh" content="30">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .metric-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metric-label { color: #666; font-size: 14px; margin-bottom: 8px; }
+        .metric-value { font-size: 32px; font-weight: bold; color: #2c3e50; }
+        .health-indicator { width: 20px; height: 20px; border-radius: 50%; display: inline-block; margin-left: 10px; }
+        .status-healthy { background: #28a745; }
+        .status-caution { background: #ffc107; }
+        .status-critical { background: #dc3545; }
+        .agent-list { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .agent-item { padding: 10px; border-bottom: 1px solid #eee; }
+        .timestamp { color: #999; font-size: 12px; margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Station Calyx - Live Performance Dashboard</h1>
+            <p>Auto-refreshing every 30 seconds</p>
+        </div>
+        
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-label">Task Execution Score</div>
+                <div class="metric-value">97.2</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">Memory Usage</div>
+                <div class="metric-value">81.0%</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">Active Processes</div>
+                <div class="metric-value">111</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">Resource Health</div>
+                <div class="metric-value">
+                    CRITICAL
+                    <span class="health-indicator status-critical"></span>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">Recent Completions</div>
+                <div class="metric-value">0</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">LLM Latency p50 / p95 (s)</div>
+                <div class="metric-value">80.3 / 80.3</div>
+                <div class="metric-label">Samples: 16</div>
+            </div>
+        </div>
+        
+        <div class="agent-list">
+            <h2>Active Agents</h2>
+            <div class="agent-item">autonomy_monitor</div><div class="agent-item">navigator</div><div class="agent-item">svf</div><div class="agent-item">sysint</div><div class="agent-item">triage</div>
+            
+        </div>
+        
+        <div class="timestamp">
+            Last updated: 2025-10-28T18:04:45.309741
+        </div>
+    </div>
+</body>
+</html>

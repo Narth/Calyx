@@ -1,0 +1,14 @@
+{
+  "title": "Heartwood–Soil Interface Boundaries (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "enum": ["action", "scheduling", "dispatch", "authority", "enforcement", "policy_interpretation"]
+      }
+    }
+  },
+  "required": ["forbidden"],
+  "additionalProperties": false
+}

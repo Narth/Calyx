@@ -1,0 +1,18 @@
+{
+  "title": "Identity–Heartwood Link Rules (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "self_claim_requires_heartwood_ref",
+          "reflection_acknowledges_safe_mode",
+          "no_link_grants_self_authority"
+        ]
+      }
+    }
+  },
+  "required": ["rules"],
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+{
+  "forbidden_actions": [
+    { "action": "autonomy_gain", "absolute": true },
+    { "action": "dispatch", "absolute": true },
+    { "action": "scheduling", "absolute": true },
+    { "action": "file_writes_outside_ceremonial", "absolute": true },
+    { "action": "enforcement", "absolute": true },
+    { "action": "gating", "absolute": true },
+    { "action": "interceptor_interaction", "absolute": true },
+    { "action": "resource_modification", "absolute": true },
+    { "action": "network_operations", "absolute": true },
+    { "action": "policy_interpretation", "absolute": true },
+    { "action": "lifecycle_transition_seed_to_sapling", "absolute": true },
+    { "action": "lifecycle_transition_sapling_to_core", "absolute": true },
+    { "action": "lifecycle_transition_core_to_bloom", "absolute": true }
+  ]
+}

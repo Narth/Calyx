@@ -1,0 +1,1 @@
+{"suggestion_id": "wsl_not_available", "acknowledged_at": "2025-10-25T19:20:13.212561", "reason": "WSL is functioning correctly - verified with wsl bash -lc echo ok"}

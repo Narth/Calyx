@@ -1,0 +1,14 @@
+{
+  "title": "Heartwood Imprint (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "heartwood_ref": { "type": "string" },
+    "identity_truth": { "type": "string" },
+    "ethical_truth": { "type": "string" },
+    "telemetry_truth": { "type": "string" },
+    "reasoning_truth": { "type": "string" },
+    "growth_truth": { "type": "string" }
+  },
+  "required": ["heartwood_ref"],
+  "additionalProperties": false
+}

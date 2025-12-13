@@ -1,0 +1,75 @@
+# Station Calyx Truth and Quality Standard
+# Core configuration enforced system-wide
+
+standard:
+  name: "Truth and Quality Standard"
+  date_established: "2025-10-26"
+  authority: "Station Command"
+  status: "MANDATORY"
+
+principles:
+  quality_over_quantity: true
+  truth_over_speed: true
+  verification_required: true
+  uncertainty_must_be_stated: true
+
+agent_obligations:
+  - "Verify every claim before reporting"
+  - "Check actual data files"
+  - "Confirm implementations"
+  - "Test, don't assume"
+  - "Distinguish scaffolding from functionality"
+  - "Report only verified facts"
+  - "State uncertainties clearly"
+  - "Mark stubs as stubs"
+
+reporting_requirements:
+  verification:
+    - "Check actual implementation code"
+    - "Verify data files exist"
+    - "Test functionality"
+    - "Confirm behavior matches claim"
+    - "Check for TODO comments"
+    - "Distinguish stub from implementation"
+  
+  integrity:
+    - "All numbers verified from source"
+    - "All claims backed by evidence"
+    - "Uncertainties acknowledged"
+    - "Stubs clearly marked"
+    - "Assumptions stated"
+    - "Quality over quantity applied"
+
+forbidden_patterns:
+  - "Claiming ready without checking implementation"
+  - "Reporting without verifying data source"
+  - "Assuming functionality from help text"
+  - "Confusing scaffolding with completed features"
+  - "Reporting estimated numbers as exact"
+  - "Claiming completion without testing"
+
+enforcement:
+  violation_response:
+    - "Report must be corrected"
+    - "Root cause identified"
+    - "Process improved"
+    - "Standard reinforced"
+  
+  correction_purpose: "improve, not punish"
+
+scope:
+  applies_to:
+    - "All reports generated"
+    - "All metrics published"
+    - "All capability claims"
+    - "All status assessments"
+    - "All feature announcements"
+    - "All performance reviews"
+  
+  no_exceptions: true
+
+purpose:
+  primary: "Prepare Station Calyx to endure scrutiny and earn trust"
+  secondary: "Evolve with confidence, not uncertainty"
+  goal: "Agents of truth and prosperity"
+

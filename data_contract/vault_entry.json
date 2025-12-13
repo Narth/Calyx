@@ -1,0 +1,12 @@
+{
+  "title": "Vault Entry (Ceremonal)",
+  "type": "object",
+  "properties": {
+    "entry_id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "hash": { "type": "string" },
+    "provenance": { "type": "string" }
+  },
+  "required": ["entry_id", "lineage_pointer"],
+  "additionalProperties": false
+}

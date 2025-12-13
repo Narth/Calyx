@@ -1,0 +1,20 @@
+{
+  "title": "Thread Engine States (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "permitted": {
+      "type": "array",
+      "items": {
+        "enum": ["idle", "reflecting", "threading_identity", "echoing_lineage", "holding_context"]
+      }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "enum": ["action", "planning", "change", "execute", "dispatch", "enforce", "schedule"]
+      }
+    }
+  },
+  "required": ["permitted", "forbidden"],
+  "additionalProperties": false
+}

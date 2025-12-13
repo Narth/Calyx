@@ -1,5 +1,5 @@
 ﻿import sounddevice as sd, numpy as np
-from scipy.signal import resample_poly
+from _resample_safe import resample_poly
 from faster_whisper import WhisperModel
 import yaml, pathlib, time
 

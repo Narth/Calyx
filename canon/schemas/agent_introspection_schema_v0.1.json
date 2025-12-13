@@ -1,0 +1,42 @@
+{
+  "title": "Agent Introspection Schema v0.1",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "agent_id",
+    "mandate_ref",
+    "lifecycle_phase",
+    "intent",
+    "current_task",
+    "inputs",
+    "constraints",
+    "uncertainty",
+    "last_decision",
+    "planned_next_step",
+    "respect_frame",
+    "health"
+  ],
+  "properties": {
+    "timestamp": { "type": "string" },
+    "agent_id": { "type": "string" },
+    "mandate_ref": { "type": "string" },
+    "lifecycle_phase": { "type": "string", "enum": ["seeded", "sprout", "bloom", "dormant", "compost"] },
+    "intent": { "type": "string" },
+    "current_task": { "type": "string" },
+    "inputs": { "type": "object" },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "uncertainty": { "type": "string" },
+    "last_decision": { "type": "string" },
+    "planned_next_step": { "type": "string" },
+    "respect_frame": {
+      "type": "object",
+      "required": ["laws", "respect_frame"],
+      "properties": {
+        "laws": { "type": "array", "items": { "type": ["integer", "string"] } },
+        "respect_frame": { "type": "string" }
+      }
+    },
+    "health": { "type": "object" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,207 @@
+{
+  "version": "1.0",
+  "description": "Station Calyx Dashboard Data Schemas",
+  "schemas": {
+    "system_health": {
+      "type": "object",
+      "properties": {
+        "timestamp": {"type": "string", "format": "date-time"},
+        "cpu": {
+          "type": "object",
+          "properties": {
+            "usage_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "throttling": {"type": "boolean"},
+            "cores": {"type": "integer"}
+          }
+        },
+        "ram": {
+          "type": "object",
+          "properties": {
+            "usage_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "used_mb": {"type": "number"},
+            "available_mb": {"type": "number"},
+            "total_mb": {"type": "number"}
+          }
+        },
+        "disk": {
+          "type": "object",
+          "properties": {
+            "usage_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "free_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "free_gb": {"type": "number"},
+            "total_gb": {"type": "number"}
+          }
+        },
+        "tes": {
+          "type": "object",
+          "properties": {
+            "current": {"type": "number", "minimum": 0, "maximum": 100},
+            "delta_24h": {"type": "number"},
+            "delta_7d": {"type": "number"},
+            "trend": {"type": "string", "enum": ["rising", "stable", "declining"]}
+          }
+        },
+        "network": {
+          "type": "object",
+          "properties": {
+            "status": {"type": "string", "enum": ["open", "closed"]},
+            "last_check": {"type": "string", "format": "date-time"}
+          }
+        },
+        "phases": {
+          "type": "object",
+          "properties": {
+            "phase0": {"type": "string", "enum": ["active", "idle"]},
+            "phase1": {"type": "string", "enum": ["active", "idle"]},
+            "phase2": {"type": "string", "enum": ["active", "idle"]},
+            "phase3": {"type": "string", "enum": ["active", "idle"]}
+          }
+        },
+        "pressure_heatmap": {
+          "type": "object",
+          "properties": {
+            "cpu": {"type": "string", "enum": ["low", "medium", "high"]},
+            "ram": {"type": "string", "enum": ["low", "medium", "high"]},
+            "disk": {"type": "string", "enum": ["low", "medium", "high"]},
+            "network": {"type": "string", "enum": ["low", "medium", "high"]},
+            "tes": {"type": "string", "enum": ["low", "medium", "high"]}
+          }
+        }
+      },
+      "required": ["timestamp", "cpu", "ram", "disk", "tes"]
+    },
+    "agent_status": {
+      "type": "object",
+      "properties": {
+        "agent_id": {"type": "string"},
+        "name": {"type": "string"},
+        "role": {"type": "string"},
+        "status": {"type": "string", "enum": ["active", "standby", "issue", "inactive"]},
+        "heartbeat": {"type": "string", "format": "date-time"},
+        "last_activity": {"type": "string", "format": "date-time"},
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "cpu_pct": {"type": "number"},
+            "mem_mb": {"type": "number"},
+            "uptime_s": {"type": "number"}
+          }
+        },
+        "capabilities": {"type": "array", "items": {"type": "string"}},
+        "recent_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": {"type": "string"},
+              "timestamp": {"type": "string", "format": "date-time"},
+              "target": {"type": "string"}
+            }
+          }
+        }
+      },
+      "required": ["agent_id", "name", "status", "heartbeat"]
+    },
+    "lease_status": {
+      "type": "object",
+      "properties": {
+        "lease_id": {"type": "string"},
+        "intent_id": {"type": "string"},
+        "status": {"type": "string", "enum": ["active", "expired", "revoked", "pending"]},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "time_remaining_s": {"type": "number"},
+        "cosigners": {
+          "type": "object",
+          "properties": {
+            "human": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "signed": {"type": "boolean"},
+                "signed_at": {"type": "string", "format": "date-time"}
+              }
+            },
+            "agent": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "signed": {"type": "boolean"},
+                "signed_at": {"type": "string", "format": "date-time"}
+              }
+            }
+          }
+        },
+        "execution": {
+          "type": "object",
+          "properties": {
+            "canary_tier": {"type": "number", "enum": [5, 25, 100]},
+            "health_status": {"type": "string", "enum": ["passing", "warning", "failing"]},
+            "metrics": {
+              "type": "object",
+              "properties": {
+                "tes_delta": {"type": "number"},
+                "error_rate": {"type": "number"},
+                "duration_s": {"type": "number"}
+              }
+            }
+          }
+        }
+      },
+      "required": ["lease_id", "status", "issued_at", "expires_at"]
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "approval_id": {"type": "string"},
+        "lease_id": {"type": "string"},
+        "intent_id": {"type": "string"},
+        "type": {"type": "string", "enum": ["cosignature", "promotion", "rollback"]},
+        "status": {"type": "string", "enum": ["pending", "approved", "rejected"]},
+        "requested_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "priority": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+        "details": {
+          "type": "object",
+          "properties": {
+            "reason": {"type": "string"},
+            "risk_level": {"type": "string", "enum": ["low", "medium", "high"]},
+            "canary_plan": {"type": "string"},
+            "agent_approval": {"type": "string"}
+          }
+        },
+        "human_action": {
+          "type": "object",
+          "properties": {
+            "action": {"type": "string", "enum": ["approve", "reject", "pending"]},
+            "timestamp": {"type": "string", "format": "date-time"},
+            "human_id": {"type": "string"}
+          }
+        }
+      },
+      "required": ["approval_id", "lease_id", "type", "status", "requested_at"]
+    },
+    "message_event": {
+      "type": "object",
+      "properties": {
+        "message_id": {"type": "string"},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "sender": {"type": "string"},
+        "recipient": {"type": "string"},
+        "channel": {"type": "string", "enum": ["broadcast", "direct", "targeted"]},
+        "content": {"type": "string"},
+        "status": {"type": "string", "enum": ["sent", "delivered", "read"]},
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "tagged_agents": {"type": "array", "items": {"type": "string"}},
+            "priority": {"type": "string", "enum": ["low", "medium", "high"]},
+            "svf_event_id": {"type": "string"}
+          }
+        }
+      },
+      "required": ["message_id", "timestamp", "sender", "channel", "content"]
+    }
+  }
+}
+

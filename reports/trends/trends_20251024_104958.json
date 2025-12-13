@@ -1,0 +1,88 @@
+{
+  "total_pulses": 6,
+  "pulses": [
+    {
+      "timestamp": "2025-10-23 21:35:55",
+      "pulse_id": "bp-diagnostic",
+      "cpu": 8.7,
+      "ram": 77.3,
+      "tes": 89.1,
+      "uptime": 100.0,
+      "status": "YELLOW"
+    },
+    {
+      "timestamp": "2025-10-23 21:39:17",
+      "pulse_id": "bp-cleanup",
+      "cpu": 23.2,
+      "ram": 72.0,
+      "tes": 89.1,
+      "uptime": 100.0,
+      "status": "YELLOW"
+    },
+    {
+      "timestamp": "2025-10-24 10:08:47",
+      "pulse_id": "bp-0004",
+      "cpu": 16.0,
+      "ram": 76.1,
+      "tes": 92.6,
+      "uptime": 100.0
+    },
+    {
+      "timestamp": "2025-10-23 21:12:22",
+      "pulse_id": "bp-0003",
+      "cpu": 17.4,
+      "ram": 82.9,
+      "tes": 89.1,
+      "uptime": 100.0,
+      "status": "YELLOW"
+    },
+    {
+      "timestamp": "2025-10-23 21:10:09",
+      "pulse_id": "bp-0002",
+      "cpu": 22.0,
+      "ram": 87.1,
+      "tes": 89.1,
+      "uptime": 100.0,
+      "status": "YELLOW"
+    },
+    {
+      "timestamp": "2025-10-23 21:09:06",
+      "pulse_id": "bp-0001",
+      "cpu": 31.4,
+      "ram": 86.9,
+      "tes": 89.1,
+      "uptime": 100.0,
+      "status": "YELLOW"
+    }
+  ],
+  "trends": {
+    "cpu": {
+      "latest": 8.7,
+      "avg": 19.78333333333333,
+      "min": 8.7,
+      "max": 31.4,
+      "trend": "decreasing"
+    },
+    "ram": {
+      "latest": 77.3,
+      "avg": 80.38333333333334,
+      "min": 72.0,
+      "max": 87.1,
+      "trend": "decreasing"
+    },
+    "tes": {
+      "latest": 89.1,
+      "avg": 89.68333333333332,
+      "min": 89.1,
+      "max": 92.6,
+      "trend": "stable"
+    },
+    "uptime": {
+      "latest": 100.0,
+      "avg": 100.0,
+      "min": 100.0,
+      "max": 100.0
+    }
+  },
+  "summary": "CPU: 8.7% (decreasing) | RAM: 77.3% (decreasing) | TES: 89.1 (stable) | Uptime: 100.0%"
+}

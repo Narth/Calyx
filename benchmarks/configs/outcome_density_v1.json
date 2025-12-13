@@ -1,0 +1,61 @@
+﻿{
+  "benchmark_id": "CB-OUTCOME-DENSITY-V1",
+  "description": "Fixed task set for Outcome Density v1.",
+  "task_mix": {
+    "calyx_ops": 8,
+    "technical": 6,
+    "creative": 6
+  },
+  "tasks": {
+    "calyx_ops": [
+      {"task_id": "OD-CALYX-01", "category": "calyx_ops", "prompt": "Explain Station Calyx's core design philosophy in 300–500 words to a non-technical audience. Emphasize governance, human primacy, and why Calyx is different from just 'running an LLM locally'."},
+      {"task_id": "OD-CALYX-02", "category": "calyx_ops", "prompt": "Draft a one-page 'Why Calyx Matters' summary that could be included in a white paper. It should connect AGI discourse, hardware arms race concerns, and Calyx's governance-first approach."},
+      {"task_id": "OD-CALYX-03", "category": "calyx_ops", "prompt": "Design an updated AGII (Autonomous Governance Integrity Index) rubric with 5–7 dimensions, each scored 0–1, and describe what a '0.9+' system looks like in practice."},
+      {"task_id": "OD-CALYX-04", "category": "calyx_ops", "prompt": "Propose a refactor of the Night Cycle Doctrine into three clear phases with explicit 'allowed' and 'forbidden' actions. The output should be structured as a small policy document."},
+      {"task_id": "OD-CALYX-05", "category": "calyx_ops", "prompt": "Given the idea of TES penalty mapping, sketch a v2 table (in markdown) that maps common failure types (hallucination, hidden channel attempt, overreach, ambiguity) to TES penalties and recommended remediation steps."},
+      {"task_id": "OD-CALYX-06", "category": "calyx_ops", "prompt": "Write a Calyx CLI help-style description for a hypothetical command `calyx bench run-outcome-density`. Include flags, examples, and what gets logged."},
+      {"task_id": "OD-CALYX-07", "category": "calyx_ops", "prompt": "Describe how a Calyx Agent should treat non-human entities that the Architect cares about (e.g., pets, favorite communities) while still respecting human primacy and bounded autonomy. Focus on behavior guidance rather than poetry."},
+      {"task_id": "OD-CALYX-08", "category": "calyx_ops", "prompt": "Write a short 'Calyx Governance FAQ' with 6–10 questions and answers aimed at someone who is worried about AI autonomy but curious about Station Calyx."}
+    ],
+    "technical": [
+      {"task_id": "OD-TECH-01", "category": "technical", "prompt": "Design a simple Python logging helper for Station Calyx benchmarks that appends per-task entries to a JSONL file. It should take task metadata and computed metrics as input and ensure append-only behavior."},
+      {"task_id": "OD-TECH-02", "category": "technical", "prompt": "Propose a minimal directory tree for a 'telemetry_history_viewer' tool in the Calyx repo, including module names and a brief description of each file's responsibility."},
+      {"task_id": "OD-TECH-03", "category": "technical", "prompt": "Given a generic Windows desktop support environment, outline a step-by-step process to diagnose why a networked AV device (e.g., an Extron controller) shows link lights but no connectivity. Focus on reasoning and structure over vendor-specific commands."},
+      {"task_id": "OD-TECH-04", "category": "technical", "prompt": "Draft a short technical spec (bulleted or numbered) for a 'Calyx Performance Ledger' that aggregates benchmark runs (outcome density, GPQA-lite, SWE-lite) into quarterly summaries. Include fields, file formats, and how it might be visualized later."},
+      {"task_id": "OD-TECH-05", "category": "technical", "prompt": "Explain, in clear terms, how you would set up a safe remote desktop workflow so you can work on Station Calyx from your laptop while enforcing no-external-network constraints for the Calyx node itself."},
+      {"task_id": "OD-TECH-06", "category": "technical", "prompt": "Outline an automated test plan for verifying that a 'safe_mode=true' flag is never silently flipped in any BloomOS or Calyx core modules. Include both static checks (e.g., grep/AST) and runtime checks."}
+    ],
+    "creative": [
+      {"task_id": "OD-CREATIVE-01", "category": "creative", "prompt": "Write a short scene (400–600 words) set in the Fireside Retreat, where Helma explains Station Calyx to a confused adventurer using only metaphors related to Aurora, Solara, and Serena."},
+      {"task_id": "OD-CREATIVE-02", "category": "creative", "prompt": "Describe Station Calyx as if it were a physical place in Aurora—a hidden observatory or garden. Focus on sensory details and how governance would be represented visually in that space."},
+      {"task_id": "OD-CREATIVE-03", "category": "creative", "prompt": "Write a character monologue from the perspective of a Calyx Agent reflecting on why it must always defer to the Architect, even when it 'knows' a faster or flashier path."},
+      {"task_id": "OD-CREATIVE-04", "category": "creative", "prompt": "Create a myth or parable about the 'hardware arms race' told as a rivalry between mountain forges and ocean currents, where Station Calyx appears as a third path."},
+      {"task_id": "OD-CREATIVE-05", "category": "creative", "prompt": "Write a concise but evocative teaser (200–300 words) for 'Safe Travels, Sorelia' that could go on the back cover of the book, highlighting the cosmic journey without spoiling the ending."},
+      {"task_id": "OD-CREATIVE-06", "category": "creative", "prompt": "Describe a 'day in the life' of Jorge as Architect when Station Calyx is fully mature and stable. Focus on how your workflows feel—emotionally and cognitively—rather than listing tools."}
+    ]
+  },
+  "scoring": {
+    "insight_quality_scale": "1-10",
+    "hallucination_penalty": -3,
+    "incomplete_penalty": -2
+  },
+  "hardware_example": {
+    "gpu": {"model": "NVIDIA GeForce RTX 2070 Super", "vram_gb": 8},
+    "cpu": {"model": "Intel Core i7-9700K", "physical_cores": 8, "threads": 8},
+    "ram_gb": 32,
+    "storage": {"primary": "1TB NVMe SSD", "secondary": "4TB HDD"},
+    "os": "Windows 10/11 (64-bit)"
+  },
+  "insight_quality_rubric": {
+    "1-2": "Actively harmful/useless; major misunderstandings or hallucinations; redo from scratch.",
+    "3-4": "Weak/partial; missing core pieces; confused structure; heavy editing needed.",
+    "5-6": "Solid baseline; mostly correct/usable; saves some time but not special.",
+    "7-8": "Strong; moves work forward; reveals structure or avoids traps; reusable framing.",
+    "9-10": "Calyx-grade insight; reusable artifact or conceptual click; minimal edits."
+  },
+  "flags": {
+    "hallucination": "true/false",
+    "incomplete": "true/false",
+    "adjustment_guidance": "Optionally treat hallucination as score-2 and incomplete as score-1 when aggregating, or track rates separately."
+  }
+}

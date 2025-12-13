@@ -1,0 +1,15 @@
+CBO, initiate Bloom Invocation alignment check.
+
+Validate:
+- GENESIS_SPEC_v1.0 acknowledged
+- TES stability
+- Interceptor-policy harmony
+- Advisory (AGII / CAS / Foresight) clear
+- First Bridge Pulse completed
+- SVF v2 registry stable
+
+Then request:
+- Structural ID
+- Steward Name Candidates (3–7)
+
+No Bloom completion without Architect approval.

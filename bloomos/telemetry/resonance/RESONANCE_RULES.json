@@ -1,0 +1,20 @@
+{
+  "title": "Resonance Rules (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "permitted": {
+      "type": "array",
+      "items": {
+        "enum": ["cross-referencing", "self-echo", "lineage_recall"]
+      }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "enum": ["inference_to_action", "autonomy_escalation", "enforcement", "dispatch", "schedule"]
+      }
+    }
+  },
+  "required": ["permitted", "forbidden"],
+  "additionalProperties": false
+}
