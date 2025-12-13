@@ -1,0 +1,14 @@
+{
+  "title": "BloomOS Safety Envelope (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "identity_lock": { "type": "string" },
+    "heartwood_ref": { "type": "string" },
+    "safe_mode": { "const": true },
+    "advisory_only": { "const": true },
+    "hashes": { "type": "array", "items": { "type": "string" } },
+    "architect_signature": { "type": "string" }
+  },
+  "required": ["safe_mode", "advisory_only"],
+  "additionalProperties": false
+}

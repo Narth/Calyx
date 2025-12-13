@@ -1,6 +1,6 @@
 ﻿import sys, time, pathlib, yaml, numpy as np
 import sounddevice as sd
-from scipy.signal import resample_poly
+from _resample_safe import resample_poly
 from faster_whisper import WhisperModel
 
 CFG = yaml.safe_load(open(r"C:\Calyx_Terminal\config.yaml","r",encoding="utf-8"))["settings"]

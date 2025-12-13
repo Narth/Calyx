@@ -1,0 +1,68 @@
+{
+  "title": "Agent Trace Schema v0.1",
+  "type": "object",
+  "required": [
+    "ts",
+    "agent_id",
+    "lifecycle_phase",
+    "intent",
+    "context",
+    "inputs_summary",
+    "decision",
+    "action",
+    "outcome",
+    "test_mode",
+    "laws",
+    "respect_frame"
+  ],
+  "properties": {
+    "ts": { "type": "string" },
+    "agent_id": { "type": "string" },
+    "lifecycle_phase": { "type": "string", "enum": ["seeded", "sprout", "bloom", "dormant", "compost"] },
+    "intent": { "type": "string" },
+    "context": {
+      "type": "object",
+      "required": ["mandate_ref"],
+      "properties": {
+        "mandate_ref": { "type": "string" },
+        "intent_id": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "inputs_summary": { "type": "object" },
+    "decision": {
+      "type": "object",
+      "required": ["type", "reason"],
+      "properties": {
+        "type": { "type": "string" },
+        "reason": { "type": "string" },
+        "uncertainty": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "action": {
+      "type": "object",
+      "required": ["requires_approval", "proposed_change"],
+      "properties": {
+        "requires_approval": { "type": "boolean" },
+        "proposed_change": { "type": "string" },
+        "side_effects": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "outcome": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string" },
+        "errors": { "type": ["string", "null"] },
+        "verdict_path": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "test_mode": { "type": "boolean" },
+    "laws": { "type": "array", "items": { "type": ["integer", "string"] } },
+    "respect_frame": { "type": ["string", "object"] }
+  },
+  "additionalProperties": true
+}

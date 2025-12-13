@@ -1,12 +1,16 @@
 import time, sys, numpy as np
 from faster_whisper import WhisperModel
 import sounddevice as sd, yaml
-import msvcrt  # Windows console hotkeys
+from ctypes import windll  # Windows key state
+
+import calyx_console
+from command_router import route
 
 def log(*a, **k):
     print(*a, **k); sys.stdout.flush()
 
-CFG = yaml.safe_load(open(r"C:\Calyx_Terminal\config.yaml","r",encoding="utf-8"))["settings"]
+CONFIG = yaml.safe_load(open(r"C:\Calyx_Terminal\config.yaml","r",encoding="utf-8"))
+CFG = CONFIG["settings"]
 DEV         = int(CFG.get("mic_device_index", -1))
 SR_IN       = int(CFG.get("samplerate", 44100))
 SR_OUT      = 16000
@@ -19,14 +23,17 @@ SIL_GATE    = max(0.05, min(0.08, SIL_GATE))
 GAIN_CAP    = min(2.5, float(CFG.get("gain_cap", 3.0)))
 
 # Decode settings (stable)
-BEAM_SIZE   = 1
-BEST_OF     = 1
+BEAM_SIZE   = 2
+BEST_OF     = 2
 TEMP        = 0.0
 
 # PTT settings
 USE_PTT_HOLD   = True   # Hold Space to arm capture
-PTT_TOGGLE_KEY = 't'    # Press T to toggle arm if you prefer toggle mode
-armed_toggle   = False
+armed_toggle   = False   # press T to toggle arm
+# virtual-key codes
+VK_SPACE = 0x20
+VK_T     = 0x54
+user32 = windll.user32
 
 log(f"[DBG] dev={DEV} sr_in={SR_IN} sr_out={SR_OUT} chunk={CHUNK_MS}ms overlap={OVERLAP_MS}ms gate={SIL_GATE:.4f} gain_cap={GAIN_CAP}")
 
@@ -85,9 +92,10 @@ def transcribe(x16):
         beam_size=BEAM_SIZE, best_of=BEST_OF, temperature=TEMP,
         vad_filter=True,
         vad_parameters=dict(
-            silero_threshold=0.70,
+            threshold=0.70,
             min_speech_duration_ms=350,
             max_speech_duration_s=10,
+            min_silence_duration_ms=200,
             speech_pad_ms=100
         ),
         condition_on_previous_text=False,
@@ -101,26 +109,88 @@ def transcribe(x16):
         return ""
     return txt
 
-def ptt_armed():
-    global armed_toggle
-    armed_hold = False
-    while msvcrt.kbhit():
-        ch = msvcrt.getwch()
-        if ch.lower() == ' ':
-            armed_hold = True  # we saw a space event; treat as held this tick
-        elif ch.lower() == PTT_TOGGLE_KEY:
-            armed_toggle = not armed_toggle
-            log(f"[PTT] toggle -> {'ARMED' if armed_toggle else 'idle'}")
-    # In practice: space events come as bursts; to truly require hold, also allow >0 activity
-    return (armed_hold if USE_PTT_HOLD else armed_toggle)
+_prev_t_down = False
+def _key_down(vk):
+    # high bit set means key is physically down now
+    return (user32.GetAsyncKeyState(vk) & 0x8000) != 0
 
-log("[DBG] starting… Hold SPACE to talk (or press T to toggle). Ctrl+C to stop.")
+def ptt_state():
+    """
+    Returns tuple: (armed_now, mode_str)
+    - HOLD: armed when Space is physically down
+    - TOGGLE: press T to flip armed_toggle (also arms if enabled)
+    """
+    global armed_toggle, _prev_t_down
+    # toggle edge on 'T'
+    t_down = _key_down(VK_T)
+    if t_down and not _prev_t_down:
+        armed_toggle = not armed_toggle
+        log(f"[PTT] toggle -> {'ARMED' if armed_toggle else 'idle'}")
+    _prev_t_down = t_down
+
+    hold = _key_down(VK_SPACE) if USE_PTT_HOLD else False
+    armed_now = hold or armed_toggle
+    mode = "PTT" if hold else (f"TOGGLE-{'ARMED' if armed_toggle else 'IDLE'}" if not USE_PTT_HOLD else ("PTT+TOGGLE" if armed_toggle else "PTT"))
+    return (armed_now, mode)
+
+log("[DBG] starting. Hold SPACE to talk (or press T to toggle). Ctrl+C to stop.")
 last_log = time.time()
 backlog = np.zeros(0, dtype=np.float32)
-read_size = chunk  # larger blocks reduce CPU/underruns
-MIN_NZ_RATIO = 0.15
+read_size = max(1024, int(SR_IN * 0.20))  # ~200ms blocks = more responsive PTT
+MIN_NZ_RATIO = 0.12
 COOLDOWN_S   = 0.8
+MAX_CAPTURE_S = 8.0
+MIN_CAPTURE_S = 0.35
 last_emit    = 0.0
+capture_buf  = np.zeros(0, dtype=np.float32)
+capture_active = False
+
+def emit_capture(buf):
+    """Run transcription on the buffered capture once the user releases PTT."""
+    global last_emit
+    if buf.size == 0:
+        return
+
+    min_samples = int(SR_IN * MIN_CAPTURE_S)
+    if buf.size < min_samples:
+        log("[PTT] capture too short (skip)")
+        return
+
+    x16, rms, nz, ratio, dyn_gate = preprocess(buf)
+    if ratio < MIN_NZ_RATIO:
+        log("[PTT] capture below activity threshold (skip)")
+        return
+
+    now = time.time()
+    if (now - last_emit) < COOLDOWN_S:
+        log("[PTT] cooldown (skip)")
+        return
+
+    try:
+        txt = transcribe(x16)
+    except Exception as e:
+        log(f"[ASR] error: {e!r}")
+        return
+
+    if txt:
+        log(f"[Heard] {txt!r}")
+    else:
+        log("[Heard] ''")
+    last_emit = now
+    return txt
+
+
+def handle_text(txt):
+    if not txt:
+        return
+    parts = route(txt)
+    if not parts:
+        return
+    log(f"[Route] {parts}")
+    try:
+        calyx_console.dispatch(CONFIG, parts, source="ptt", transcript=txt)
+    except Exception as exc:
+        log(f"[Route] dispatch error: {exc!r}")
 
 try:
     with sd.InputStream(device=DEV, channels=1, samplerate=SR_IN, dtype="float32",
@@ -138,34 +208,38 @@ try:
 
             x16, rms, nz, ratio, dyn_gate = preprocess(backlog)
             now = time.time()
+            # compute PTT state for this tick (no extra voice-activity gating)
+            armed_now, mode_str = ptt_state()
+            if armed_now:
+                if not capture_active:
+                    capture_buf = np.zeros(0, dtype=np.float32)
+                capture_buf = np.concatenate([capture_buf, x])
+                max_samples = int(SR_IN * MAX_CAPTURE_S)
+                if capture_buf.size > max_samples:
+                    capture_buf = capture_buf[-max_samples:]
+                capture_active = True
+            else:
+                if capture_active:
+                    txt = emit_capture(capture_buf)
+                    if txt:
+                        handle_text(txt)
+                    capture_buf = np.zeros(0, dtype=np.float32)
+                    capture_active = False
+
             if now - last_log > 0.5:
-                log(f"[VU] rms={rms:.4f} nz_ratio={ratio:.2%} dyn_gate={dyn_gate:.4f} mode={'PTT' if USE_PTT_HOLD else ('TOGGLE-ARMED' if armed_toggle else 'TOGGLE-IDLE')}")
+                log(f"[VU] rms={rms:.4f} nz_ratio={ratio:.2%} dyn_gate={dyn_gate:.4f} mode={mode_str}")
                 last_log = now
 
-            if (now - last_emit) < COOLDOWN_S:
-                log("[DBG] cooldown (skip)")
+            if not armed_now:
                 continue
 
+            # While armed we just keep buffering; ratio info is still useful for VU logs.
             if ratio < MIN_NZ_RATIO:
-                log("[DBG] gated silence/room noise (skip)")
                 continue
-
-            if USE_PTT_HOLD or armed_toggle:
-                if not ptt_armed():
-                    log("[PTT] not armed (skip)")
-                    continue
-
-            try:
-                txt = transcribe(x16)
-            except Exception as e:
-                log(f"[ASR] error: {e!r}")
-                continue
-
-            if txt:
-                log(f"[Heard] {txt!r}")
-                last_emit = now
-            else:
-                log("[Heard] ''")
 
 except KeyboardInterrupt:
+    if capture_active and capture_buf.size:
+        txt = emit_capture(capture_buf)
+        if txt:
+            handle_text(txt)
     log("\n[DBG] stopped.")

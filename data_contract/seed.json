@@ -1,0 +1,15 @@
+{
+  "title": "Seed Object (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "seed_id": { "type": "string" },
+    "structural_id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "naming_placeholder": { "type": "string" },
+    "soil_signature": { "type": "string" },
+    "advisory_only": { "const": true },
+    "safe_mode_ready": { "const": true }
+  },
+  "required": ["seed_id", "structural_id", "lineage_pointer", "advisory_only", "safe_mode_ready"],
+  "additionalProperties": false
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Quiet Mind State Schema (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "state": {
+      "enum": ["still", "reflecting", "pattern_holding"]
+    },
+    "pattern": {
+      "type": "string"
+    }
+  },
+  "required": ["state"],
+  "additionalProperties": false
+}

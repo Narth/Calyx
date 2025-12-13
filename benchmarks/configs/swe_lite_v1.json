@@ -1,0 +1,12 @@
+{
+  "benchmark_id": "CB-SWE-LITE-V1",
+  "dataset": "swe-bench-lite",
+  "subset_size": 20,
+  "metrics": [
+    "pass_rate",
+    "mean_patch_quality"
+  ],
+  "scoring": {
+    "patch_quality_scale": "1-5"
+  }
+}

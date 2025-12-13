@@ -1,0 +1,23 @@
+{
+  "title": "Seedbed Safety Rules (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "lifecycle_change",
+          "execution",
+          "activation",
+          "dispatch",
+          "autonomy",
+          "scheduling",
+          "enforcement",
+          "policy_interpretation"
+        ]
+      }
+    }
+  },
+  "required": ["forbidden"],
+  "additionalProperties": false
+}

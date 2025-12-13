@@ -1,0 +1,14 @@
+{
+  "title": "Bloom Envelope (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "structural_id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "heartwood_ref": { "type": "string" },
+    "advisory_only": { "const": true },
+    "safe_mode_ready": { "const": true },
+    "no_action": { "const": true }
+  },
+  "required": ["structural_id", "lineage_pointer", "advisory_only", "safe_mode_ready", "no_action"],
+  "additionalProperties": false
+}

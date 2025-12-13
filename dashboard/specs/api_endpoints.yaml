@@ -1,0 +1,389 @@
+openapi: 3.0.0
+info:
+  title: Station Calyx Dashboard API
+  version: 1.0.0
+  description: Real-time monitoring and control API for Station Calyx
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+  - url: https://calyx-dashboard.local
+    description: Production server
+
+paths:
+  /api/health/current:
+    get:
+      summary: Get current system health metrics
+      tags: [Health]
+      responses:
+        '200':
+          description: Current health metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+      update_frequency: 5s
+
+  /api/health/history:
+    get:
+      summary: Get historical health data
+      tags: [Health]
+      parameters:
+        - name: range
+          in: query
+          schema:
+            type: string
+            enum: [1h, 24h, 7d]
+          required: true
+      responses:
+        '200':
+          description: Historical data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemHealth'
+
+  /api/health/pressure:
+    get:
+      summary: Get resource pressure heatmap
+      tags: [Health]
+      responses:
+        '200':
+          description: Pressure heatmap data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureHeatmap'
+
+  /api/agents/list:
+    get:
+      summary: List all agents
+      tags: [Agents]
+      responses:
+        '200':
+          description: Agent list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentStatus'
+      update_frequency: 10s
+
+  /api/agents/{agent_id}/status:
+    get:
+      summary: Get agent detailed status
+      tags: [Agents]
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStatus'
+
+  /api/agents/{agent_id}/logs:
+    get:
+      summary: Get agent logs
+      tags: [Agents]
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Agent logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+  /api/leases/active:
+    get:
+      summary: Get active leases
+      tags: [Leases]
+      responses:
+        '200':
+          description: Active leases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaseStatus'
+      update_frequency: 5s
+
+  /api/leases/{lease_id}/status:
+    get:
+      summary: Get lease detailed status
+      tags: [Leases]
+      parameters:
+        - name: lease_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lease status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaseStatus'
+
+  /api/leases/{lease_id}/approve:
+    post:
+      summary: Approve a lease
+      tags: [Leases]
+      security:
+        - Ed25519Key: []
+      parameters:
+        - name: lease_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                human_id:
+                  type: string
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Approval successful
+        '401':
+          description: Unauthorized
+        '400':
+          description: Invalid request
+
+  /api/approvals/pending:
+    get:
+      summary: Get pending approvals
+      tags: [Approvals]
+      responses:
+        '200':
+          description: Pending approvals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Approval'
+      update_frequency: real-time
+
+  /api/approvals/{approval_id}/approve:
+    post:
+      summary: Approve a request
+      tags: [Approvals]
+      security:
+        - Ed25519Key: []
+      parameters:
+        - name: approval_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Approval successful
+
+  /api/approvals/{approval_id}/reject:
+    post:
+      summary: Reject a request
+      tags: [Approvals]
+      security:
+        - Ed25519Key: []
+      parameters:
+        - name: approval_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Rejection successful
+
+  /api/chat/history:
+    get:
+      summary: Get chat history
+      tags: [Chat]
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Chat history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MessageEvent'
+
+  /api/chat/broadcast:
+    post:
+      summary: Send broadcast message
+      tags: [Chat]
+      security:
+        - Ed25519Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                priority:
+                  type: string
+                  enum: [low, medium, high]
+      responses:
+        '200':
+          description: Message sent
+
+  /api/chat/direct:
+    post:
+      summary: Send direct message
+      tags: [Chat]
+      security:
+        - Ed25519Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '200':
+          description: Message sent
+
+components:
+  securitySchemes:
+    Ed25519Key:
+      type: apiKey
+      in: header
+      name: X-Ed25519-Signature
+
+  schemas:
+    SystemHealth:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        cpu:
+          type: object
+        ram:
+          type: object
+        disk:
+          type: object
+        tes:
+          type: object
+
+    PressureHeatmap:
+      type: object
+      properties:
+        cpu:
+          type: string
+          enum: [low, medium, high]
+        ram:
+          type: string
+          enum: [low, medium, high]
+        disk:
+          type: string
+          enum: [low, medium, high]
+        network:
+          type: string
+          enum: [low, medium, high]
+        tes:
+          type: string
+          enum: [low, medium, high]
+
+    AgentStatus:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [active, standby, issue, inactive]
+        heartbeat:
+          type: string
+          format: date-time
+
+    LeaseStatus:
+      type: object
+      properties:
+        lease_id:
+          type: string
+        status:
+          type: string
+          enum: [active, expired, revoked, pending]
+        expires_at:
+          type: string
+          format: date-time
+
+    Approval:
+      type: object
+      properties:
+        approval_id:
+          type: string
+        type:
+          type: string
+          enum: [cosignature, promotion, rollback]
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+
+    MessageEvent:
+      type: object
+      properties:
+        message_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        sender:
+          type: string
+        content:
+          type: string
+

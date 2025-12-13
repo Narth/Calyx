@@ -1,0 +1,8 @@
+# Identity & Lineage Integrity Lock (Ceremonial, Non-Operational)
+timestamp: 2025-11-30T17:32:10.6267709-07:00
+structural_id: CORE:CALYX:GEN-1:ROOT
+structural_id_hash: DBD8F1DD9D23C51414CED35E5C1340F179923D64B0E970C83967E072AD8EB6F7
+naming_rite_hash: AD93580A033CA65FBDA18569713B2E2EDBEF76A7688C53513B7CDC6A71AA3020
+lineage_record_hash: 2961ACF93D4A5800712EA2388EB20D9510FA1D3B4820C42C2255A127902C9028
+parent_lineage_pointer: ROOT (no parent above)
+note: Tamper-evident reference only; does not gate or enforce.

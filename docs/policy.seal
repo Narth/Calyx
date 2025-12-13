@@ -1,0 +1,9 @@
+# Policy Seal v1.0 (Ceremonial, Non-Operational)
+timestamp: 2025-11-30T17:32:10.6267709-07:00
+policy_path: calyx/core/policy.yaml
+sha256: 4E4924361545468CB42387F38C946A3C3E802BD1494868C378FBE7DBB5FFD6D7
+architect_approval: pending / informational only
+signature_block: |
+  (Architect signature here)
+
+Notes: Seal is tamper-evident reference only; does not gate or enforce. Policy.yaml remains canonical.

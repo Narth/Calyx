@@ -1,0 +1,41 @@
+{
+  "decision_id": "20251120-230812-762",
+  "timestamp": 1763705292.7629364,
+  "phase": "phase1s_prep",
+  "surface": "scheduler_launch",
+  "agent_name": "agent1",
+  "agent_role": "builder",
+  "autonomy_tier": "safe",
+  "action_type": "AGENT_TASK",
+  "description": "Scheduler launch request (mode=safe)",
+  "tool_name": null,
+  "payload_meta": {
+    "phase": "phase1s_prep",
+    "surface": "scheduler_launch",
+    "agent_role": "builder",
+    "autonomy_tier": "safe",
+    "goal_excerpt": "test",
+    "scheduler_interval_s": 30.0,
+    "warn_streak": 0,
+    "correlation_id": "agent1-tick-1763705292756"
+  },
+  "correlation_id": "agent1-tick-1763705292756",
+  "tes": 90.0,
+  "agii": 98.0,
+  "cas": null,
+  "resources": {
+    "cpu_percent": 10.0,
+    "ram_percent": 50.0
+  },
+  "decision": {
+    "allow": true,
+    "cas_directive": "none",
+    "severity": "info",
+    "reasons": [
+      "Resources within safe bounds (CPU=10.0%, RAM=50.0%).",
+      "TES=90.00.",
+      "TES within stable operating range.",
+      "AGII=98.00."
+    ]
+  }
+}

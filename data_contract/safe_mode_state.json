@@ -1,0 +1,11 @@
+{
+  "title": "Safe Mode State (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "state": { "enum": ["reflection_only", "sandbox_only"] },
+    "advisory_only": { "const": true },
+    "no_action": { "const": true }
+  },
+  "required": ["state", "advisory_only", "no_action"],
+  "additionalProperties": false
+}

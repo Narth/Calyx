@@ -1,0 +1,14 @@
+{
+  "schema": "naming_rites_v1",
+  "created_at": "2025-12-13T03:15:31.081Z",
+  "architect_display_name": "BET",
+  "system_roles": {
+    "architect": "Architect",
+    "governance_auditor": "CBO",
+    "kernel": "BloomOS Kernel"
+  },
+  "agent_naming_rules": {
+    "prefix": "Calyx",
+    "require_human_confirmation": true
+  }
+}

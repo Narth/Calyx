@@ -1,0 +1,12 @@
+{
+  "title": "Self Mirror State (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "telemetry_snapshot": { "type": "object" },
+    "reflection_summary": { "type": "string" },
+    "freshness_note": { "type": "string" },
+    "mode": { "const": "self_mirror_reflection_only" }
+  },
+  "required": ["mode"],
+  "additionalProperties": false
+}

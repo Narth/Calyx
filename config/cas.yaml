@@ -1,0 +1,24 @@
+version: 0.1
+weights:
+  IFCR: 0.35
+  HTI_prime: -0.20
+  SRR: 0.15
+  CTC: -0.10
+  SFT: 0.05
+  RHR: 0.05
+clamp_min: 0.0
+clamp_max: 1.0
+rolling_days: 30
+difficulty_weights:
+  easy: 0.5
+  normal: 1.0
+  hard: 1.5
+  extreme: 2.0
+anti_gaming:
+  random_audit_rate: 0.1
+  require_raw_logs: true
+  checksum_toolspec: true
+medians:
+  usd: 0.02
+  wall_time_sec: 120.0
+  tokens: 2500

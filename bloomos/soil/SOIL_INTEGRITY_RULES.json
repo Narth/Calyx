@@ -1,0 +1,20 @@
+{
+  "title": "Soil Integrity Rules (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "allowed_fields": {
+      "type": "array",
+      "items": {
+        "enum": ["identity_reference", "lineage_pointer", "seal", "timestamp"]
+      }
+    },
+    "forbidden_fields": {
+      "type": "array",
+      "items": {
+        "enum": ["scheduling", "dispatch", "autonomy", "enforcement", "resource_directive"]
+      }
+    }
+  },
+  "required": ["allowed_fields", "forbidden_fields"],
+  "additionalProperties": false
+}

@@ -1,0 +1,12 @@
+{
+  "benchmark_id": "CB-GPQA-LITE-V1",
+  "dataset": "gpqa",
+  "subset_size": 10,
+  "metrics": [
+    "accuracy",
+    "mean_explanation_score"
+  ],
+  "scoring": {
+    "explanation_scale": "1-5"
+  }
+}

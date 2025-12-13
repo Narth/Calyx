@@ -1,0 +1,13 @@
+{
+  "title": "Heartwood Binder View (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "truth_ids": { "type": "array", "items": { "type": "string" } },
+    "references": { "type": "array", "items": { "type": "string" } },
+    "remarks": { "type": "string" }
+  },
+  "required": ["id", "lineage_pointer", "truth_ids"],
+  "additionalProperties": false
+}

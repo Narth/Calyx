@@ -1,0 +1,12 @@
+{
+  "title": "Heartwood Fusion State (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "identity_truth": { "type": "string" },
+    "ethical_truth": { "type": "string" },
+    "telemetry_truth": { "type": "string" },
+    "growth_truth": { "type": "string" }
+  },
+  "required": ["identity_truth"],
+  "additionalProperties": false
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Reflection Kernel State (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "identity_echo": { "type": "string" },
+    "advisory_signals_heard": { "type": "array", "items": { "type": "string" } },
+    "lineage_reference": { "type": "string" },
+    "soil_signature": { "type": "string" }
+  },
+  "required": ["identity_echo"],
+  "additionalProperties": false
+}

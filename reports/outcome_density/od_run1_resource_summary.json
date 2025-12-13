@@ -1,0 +1,903 @@
+{
+  "assumptions": {
+    "t_start": "mtime - 30s default per file",
+    "mtime_timezone": "treated as UTC",
+    "cpu_power_w": "not available"
+  },
+  "run_window": {
+    "start": "2025-12-11T02:34:33.168912+00:00",
+    "end": "2025-12-13T04:06:13.698411+00:00"
+  },
+  "overall": {
+    "duration_sec": 1556.583,
+    "n_samples": 685,
+    "cpu": {
+      "avg": 11.357956204379562,
+      "max": 53.3
+    },
+    "ram_gb": {
+      "avg": 16.222037956204378,
+      "max": 16.909
+    },
+    "ram_percent": {
+      "avg": 50.93240875912409,
+      "max": 53.1
+    },
+    "gpu_util": {
+      "avg": 18.1712,
+      "max": 37.0
+    },
+    "gpu_mem_mb": {
+      "avg": 1624.8864,
+      "max": 1664.0
+    },
+    "gpu_power_w": {
+      "avg": 14.347938388625593,
+      "max": 38.68
+    },
+    "gpu_energy_wh": 4.1387881861111095,
+    "power_coverage": 0.6680581761460833
+  },
+  "per_prompt": [
+    {
+      "name": "OD-01",
+      "path": "benchmarks\\outcome\\Test 1\\OD-01.md",
+      "t_start": "2025-12-13T04:04:03.484605+00:00",
+      "t_end": "2025-12-13T04:04:33.484605+00:00",
+      "metrics": {
+        "duration_sec": 26.517,
+        "n_samples": 14,
+        "cpu": {
+          "avg": 27.357142857142858,
+          "max": 34.8
+        },
+        "ram_gb": {
+          "avg": 16.247642857142857,
+          "max": 16.716
+        },
+        "ram_percent": {
+          "avg": 51.01428571428572,
+          "max": 52.5
+        },
+        "gpu_util": {
+          "avg": 18.928571428571427,
+          "max": 24.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1636.7857142857142,
+          "max": 1656.0
+        },
+        "gpu_power_w": {
+          "avg": 14.540714285714285,
+          "max": 15.02
+        },
+        "gpu_energy_wh": 0.10711089166666667,
+        "power_coverage": 1.0
+      }
+    },
+    {
+      "name": "OD-02",
+      "path": "benchmarks\\outcome\\Test 1\\OD-02.md",
+      "t_start": "2025-12-13T04:04:08.594858+00:00",
+      "t_end": "2025-12-13T04:04:38.594858+00:00",
+      "metrics": {
+        "duration_sec": 28.576,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 25.633333333333333,
+          "max": 34.2
+        },
+        "ram_gb": {
+          "avg": 16.230533333333334,
+          "max": 16.716
+        },
+        "ram_percent": {
+          "avg": 50.96,
+          "max": 52.5
+        },
+        "gpu_util": {
+          "avg": 19.2,
+          "max": 27.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1635.7333333333333,
+          "max": 1647.0
+        },
+        "gpu_power_w": {
+          "avg": 14.513333333333332,
+          "max": 14.73
+        },
+        "gpu_energy_wh": 0.11510986111111113,
+        "power_coverage": 1.0
+      }
+    },
+    {
+      "name": "OD-03",
+      "path": "benchmarks\\outcome\\Test 1\\OD-03.md",
+      "t_start": "2025-12-13T04:04:15.307884+00:00",
+      "t_end": "2025-12-13T04:04:45.307884+00:00",
+      "metrics": {
+        "duration_sec": 28.569,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 23.253333333333334,
+          "max": 34.2
+        },
+        "ram_gb": {
+          "avg": 16.225933333333334,
+          "max": 16.716
+        },
+        "ram_percent": {
+          "avg": 50.95333333333333,
+          "max": 52.5
+        },
+        "gpu_util": {
+          "avg": 19.266666666666666,
+          "max": 27.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1636.1333333333334,
+          "max": 1648.0
+        },
+        "gpu_power_w": {
+          "avg": 14.541333333333334,
+          "max": 14.93
+        },
+        "gpu_energy_wh": 0.11532200833333334,
+        "power_coverage": 1.0
+      }
+    },
+    {
+      "name": "OD-04",
+      "path": "benchmarks\\outcome\\Test 1\\OD-04.md",
+      "t_start": "2025-12-13T04:04:20.459240+00:00",
+      "t_end": "2025-12-13T04:04:50.459240+00:00",
+      "metrics": {
+        "duration_sec": 28.57,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 21.226666666666667,
+          "max": 34.2
+        },
+        "ram_gb": {
+          "avg": 16.1618,
+          "max": 16.265
+        },
+        "ram_percent": {
+          "avg": 50.76,
+          "max": 51.1
+        },
+        "gpu_util": {
+          "avg": 20.066666666666666,
+          "max": 27.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1637.5333333333333,
+          "max": 1648.0
+        },
+        "gpu_power_w": {
+          "avg": 14.668000000000001,
+          "max": 16.17
+        },
+        "gpu_energy_wh": 0.11649830555555557,
+        "power_coverage": 1.0000000000000002
+      }
+    },
+    {
+      "name": "OD-05",
+      "path": "benchmarks\\outcome\\Test 1\\OD-05.md",
+      "t_start": "2025-12-13T04:04:24.555272+00:00",
+      "t_end": "2025-12-13T04:04:54.555272+00:00",
+      "metrics": {
+        "duration_sec": 28.572,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 19.48,
+          "max": 34.2
+        },
+        "ram_gb": {
+          "avg": 16.143800000000002,
+          "max": 16.265
+        },
+        "ram_percent": {
+          "avg": 50.7,
+          "max": 51.1
+        },
+        "gpu_util": {
+          "avg": 20.6,
+          "max": 27.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1639.3333333333333,
+          "max": 1649.0
+        },
+        "gpu_power_w": {
+          "avg": 14.734666666666667,
+          "max": 16.17
+        },
+        "gpu_energy_wh": 0.11699625972222223,
+        "power_coverage": 1.0000000000000002
+      }
+    },
+    {
+      "name": "OD-06",
+      "path": "benchmarks\\outcome\\Test 1\\OD-06.md",
+      "t_start": "2025-12-13T04:04:30.634325+00:00",
+      "t_end": "2025-12-13T04:05:00.634325+00:00",
+      "metrics": {
+        "duration_sec": 28.583,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 15.973333333333333,
+          "max": 34.2
+        },
+        "ram_gb": {
+          "avg": 16.116466666666668,
+          "max": 16.236
+        },
+        "ram_percent": {
+          "avg": 50.61333333333334,
+          "max": 51.0
+        },
+        "gpu_util": {
+          "avg": 21.2,
+          "max": 27.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1641.2666666666667,
+          "max": 1649.0
+        },
+        "gpu_power_w": {
+          "avg": 14.818000000000001,
+          "max": 16.17
+        },
+        "gpu_energy_wh": 0.11770740138888888,
+        "power_coverage": 1.0
+      }
+    },
+    {
+      "name": "OD-07",
+      "path": "benchmarks\\outcome\\Test 1\\OD-07.md",
+      "t_start": "2025-12-13T04:04:35.066754+00:00",
+      "t_end": "2025-12-13T04:05:05.066754+00:00",
+      "metrics": {
+        "duration_sec": 28.574,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 13.74,
+          "max": 19.9
+        },
+        "ram_gb": {
+          "avg": 16.113066666666665,
+          "max": 16.147
+        },
+        "ram_percent": {
+          "avg": 50.6,
+          "max": 50.7
+        },
+        "gpu_util": {
+          "avg": 21.933333333333334,
+          "max": 32.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1642.8666666666666,
+          "max": 1655.0
+        },
+        "gpu_power_w": {
+          "avg": 14.972,
+          "max": 16.49
+        },
+        "gpu_energy_wh": 0.11900534166666665,
+        "power_coverage": 1.0000000000000002
+      }
+    },
+    {
+      "name": "OD-08",
+      "path": "benchmarks\\outcome\\Test 1\\OD-08.md",
+      "t_start": "2025-12-13T04:04:39.313706+00:00",
+      "t_end": "2025-12-13T04:05:09.313706+00:00",
+      "metrics": {
+        "duration_sec": 28.569,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 14.186666666666667,
+          "max": 21.6
+        },
+        "ram_gb": {
+          "avg": 16.123666666666665,
+          "max": 16.171
+        },
+        "ram_percent": {
+          "avg": 50.64,
+          "max": 50.8
+        },
+        "gpu_util": {
+          "avg": 21.6,
+          "max": 32.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1643.0,
+          "max": 1655.0
+        },
+        "gpu_power_w": {
+          "avg": 15.029333333333334,
+          "max": 16.49
+        },
+        "gpu_energy_wh": 0.11933648888888888,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-09",
+      "path": "benchmarks\\outcome\\Test 1\\OD-09.md",
+      "t_start": "2025-12-13T04:04:43.912702+00:00",
+      "t_end": "2025-12-13T04:05:13.912702+00:00",
+      "metrics": {
+        "duration_sec": 28.567,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 14.606666666666666,
+          "max": 21.6
+        },
+        "ram_gb": {
+          "avg": 16.1342,
+          "max": 16.182
+        },
+        "ram_percent": {
+          "avg": 50.666666666666664,
+          "max": 50.8
+        },
+        "gpu_util": {
+          "avg": 21.866666666666667,
+          "max": 32.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1643.1333333333334,
+          "max": 1655.0
+        },
+        "gpu_power_w": {
+          "avg": 15.060666666666666,
+          "max": 16.49
+        },
+        "gpu_energy_wh": 0.11960895972222221,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-10",
+      "path": "benchmarks\\outcome\\Test 1\\OD-10.md",
+      "t_start": "2025-12-13T04:04:50.888844+00:00",
+      "t_end": "2025-12-13T04:05:20.888844+00:00",
+      "metrics": {
+        "duration_sec": 28.576,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 14.66,
+          "max": 21.6
+        },
+        "ram_gb": {
+          "avg": 16.1494,
+          "max": 16.186
+        },
+        "ram_percent": {
+          "avg": 50.7,
+          "max": 50.8
+        },
+        "gpu_util": {
+          "avg": 21.666666666666668,
+          "max": 32.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1642.8666666666666,
+          "max": 1655.0
+        },
+        "gpu_power_w": {
+          "avg": 15.009333333333332,
+          "max": 16.49
+        },
+        "gpu_energy_wh": 0.11919278750000002,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-11",
+      "path": "benchmarks\\outcome\\Test 1\\OD-11.md",
+      "t_start": "2025-12-13T04:04:56.267363+00:00",
+      "t_end": "2025-12-13T04:05:26.267363+00:00",
+      "metrics": {
+        "duration_sec": 26.544,
+        "n_samples": 14,
+        "cpu": {
+          "avg": 14.435714285714285,
+          "max": 21.6
+        },
+        "ram_gb": {
+          "avg": 16.163142857142855,
+          "max": 16.196
+        },
+        "ram_percent": {
+          "avg": 50.74285714285714,
+          "max": 50.8
+        },
+        "gpu_util": {
+          "avg": 21.285714285714285,
+          "max": 32.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1642.5714285714287,
+          "max": 1655.0
+        },
+        "gpu_power_w": {
+          "avg": 15.039285714285715,
+          "max": 16.49
+        },
+        "gpu_energy_wh": 0.1109784,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-12",
+      "path": "benchmarks\\outcome\\Test 1\\OD-12.md",
+      "t_start": "2025-12-13T04:05:01.335783+00:00",
+      "t_end": "2025-12-13T04:05:31.335783+00:00",
+      "metrics": {
+        "duration_sec": 28.567,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 15.213333333333333,
+          "max": 21.6
+        },
+        "ram_gb": {
+          "avg": 16.171333333333333,
+          "max": 16.196
+        },
+        "ram_percent": {
+          "avg": 50.77333333333333,
+          "max": 50.8
+        },
+        "gpu_util": {
+          "avg": 21.133333333333333,
+          "max": 32.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1644.2,
+          "max": 1655.0
+        },
+        "gpu_power_w": {
+          "avg": 15.046666666666665,
+          "max": 16.49
+        },
+        "gpu_energy_wh": 0.11899452083333334,
+        "power_coverage": 1.0000000000000002
+      }
+    },
+    {
+      "name": "OD-13",
+      "path": "benchmarks\\outcome\\Test 1\\OD-13.md",
+      "t_start": "2025-12-13T04:05:06.374399+00:00",
+      "t_end": "2025-12-13T04:05:36.374399+00:00",
+      "metrics": {
+        "duration_sec": 28.57,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 15.486666666666668,
+          "max": 23.7
+        },
+        "ram_gb": {
+          "avg": 16.1752,
+          "max": 16.196
+        },
+        "ram_percent": {
+          "avg": 50.78666666666666,
+          "max": 50.8
+        },
+        "gpu_util": {
+          "avg": 21.133333333333333,
+          "max": 26.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1643.8666666666666,
+          "max": 1651.0
+        },
+        "gpu_power_w": {
+          "avg": 14.96,
+          "max": 15.19
+        },
+        "gpu_energy_wh": 0.1186505625,
+        "power_coverage": 1.0
+      }
+    },
+    {
+      "name": "OD-14",
+      "path": "benchmarks\\outcome\\Test 1\\OD-14.md",
+      "t_start": "2025-12-13T04:05:11.774689+00:00",
+      "t_end": "2025-12-13T04:05:41.774689+00:00",
+      "metrics": {
+        "duration_sec": 28.561,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 14.646666666666667,
+          "max": 23.7
+        },
+        "ram_gb": {
+          "avg": 16.179066666666667,
+          "max": 16.2
+        },
+        "ram_percent": {
+          "avg": 50.79333333333333,
+          "max": 50.9
+        },
+        "gpu_util": {
+          "avg": 20.866666666666667,
+          "max": 26.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1643.2666666666667,
+          "max": 1651.0
+        },
+        "gpu_power_w": {
+          "avg": 14.914666666666667,
+          "max": 15.19
+        },
+        "gpu_energy_wh": 0.11830166249999999,
+        "power_coverage": 1.0000000000000002
+      }
+    },
+    {
+      "name": "OD-15",
+      "path": "benchmarks\\outcome\\Test 1\\OD-15.md",
+      "t_start": "2025-12-13T04:05:16.907584+00:00",
+      "t_end": "2025-12-13T04:05:46.907584+00:00",
+      "metrics": {
+        "duration_sec": 26.521,
+        "n_samples": 14,
+        "cpu": {
+          "avg": 15.178571428571429,
+          "max": 23.7
+        },
+        "ram_gb": {
+          "avg": 16.18285714285714,
+          "max": 16.211
+        },
+        "ram_percent": {
+          "avg": 50.80714285714286,
+          "max": 50.9
+        },
+        "gpu_util": {
+          "avg": 19.928571428571427,
+          "max": 24.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1643.857142857143,
+          "max": 1652.0
+        },
+        "gpu_power_w": {
+          "avg": 14.890714285714285,
+          "max": 15.19
+        },
+        "gpu_energy_wh": 0.10976204027777776,
+        "power_coverage": 1.0000000000000002
+      }
+    },
+    {
+      "name": "OD-16",
+      "path": "benchmarks\\outcome\\Test 1\\OD-16.md",
+      "t_start": "2025-12-13T04:05:22.060822+00:00",
+      "t_end": "2025-12-13T04:05:52.060822+00:00",
+      "metrics": {
+        "duration_sec": 28.552,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 15.84,
+          "max": 23.7
+        },
+        "ram_gb": {
+          "avg": 16.191133333333333,
+          "max": 16.217
+        },
+        "ram_percent": {
+          "avg": 50.839999999999996,
+          "max": 50.9
+        },
+        "gpu_util": {
+          "avg": 20.066666666666666,
+          "max": 24.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1645.3333333333333,
+          "max": 1652.0
+        },
+        "gpu_power_w": {
+          "avg": 14.797333333333334,
+          "max": 15.19
+        },
+        "gpu_energy_wh": 0.11730658194444445,
+        "power_coverage": 1.0
+      }
+    },
+    {
+      "name": "OD-17",
+      "path": "benchmarks\\outcome\\Test 1\\OD-17.md",
+      "t_start": "2025-12-13T04:05:28.200523+00:00",
+      "t_end": "2025-12-13T04:05:58.200523+00:00",
+      "metrics": {
+        "duration_sec": 28.546,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 16.326666666666668,
+          "max": 24.5
+        },
+        "ram_gb": {
+          "avg": 16.1988,
+          "max": 16.229
+        },
+        "ram_percent": {
+          "avg": 50.86666666666667,
+          "max": 51.0
+        },
+        "gpu_util": {
+          "avg": 19.8,
+          "max": 26.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1644.9333333333334,
+          "max": 1652.0
+        },
+        "gpu_power_w": {
+          "avg": 14.738666666666665,
+          "max": 15.03
+        },
+        "gpu_energy_wh": 0.11688239166666667,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-18",
+      "path": "benchmarks\\outcome\\Test 1\\OD-18.md",
+      "t_start": "2025-12-13T04:05:32.966755+00:00",
+      "t_end": "2025-12-13T04:06:02.966755+00:00",
+      "metrics": {
+        "duration_sec": 26.509,
+        "n_samples": 14,
+        "cpu": {
+          "avg": 16.62857142857143,
+          "max": 25.0
+        },
+        "ram_gb": {
+          "avg": 16.205642857142855,
+          "max": 16.229
+        },
+        "ram_percent": {
+          "avg": 50.885714285714286,
+          "max": 51.0
+        },
+        "gpu_util": {
+          "avg": 20.5,
+          "max": 26.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1646.642857142857,
+          "max": 1664.0
+        },
+        "gpu_power_w": {
+          "avg": 14.736428571428572,
+          "max": 15.09
+        },
+        "gpu_energy_wh": 0.10832960277777776,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-19",
+      "path": "benchmarks\\outcome\\Test 1\\OD-19.md",
+      "t_start": "2025-12-13T04:05:38.328170+00:00",
+      "t_end": "2025-12-13T04:06:08.328170+00:00",
+      "metrics": {
+        "duration_sec": 28.557,
+        "n_samples": 15,
+        "cpu": {
+          "avg": 16.226666666666667,
+          "max": 25.0
+        },
+        "ram_gb": {
+          "avg": 16.211466666666666,
+          "max": 16.229
+        },
+        "ram_percent": {
+          "avg": 50.9,
+          "max": 51.0
+        },
+        "gpu_util": {
+          "avg": 20.333333333333332,
+          "max": 26.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1648.4666666666667,
+          "max": 1664.0
+        },
+        "gpu_power_w": {
+          "avg": 14.764000000000001,
+          "max": 15.1
+        },
+        "gpu_energy_wh": 0.11705843611111111,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-20",
+      "path": "benchmarks\\outcome\\Test 1\\OD-20.md",
+      "t_start": "2025-12-13T04:05:43.698411+00:00",
+      "t_end": "2025-12-13T04:06:13.698411+00:00",
+      "metrics": {
+        "duration_sec": 26.516,
+        "n_samples": 14,
+        "cpu": {
+          "avg": 17.32857142857143,
+          "max": 25.9
+        },
+        "ram_gb": {
+          "avg": 16.217785714285714,
+          "max": 16.241
+        },
+        "ram_percent": {
+          "avg": 50.92142857142857,
+          "max": 51.0
+        },
+        "gpu_util": {
+          "avg": 20.785714285714285,
+          "max": 27.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1649.642857142857,
+          "max": 1664.0
+        },
+        "gpu_power_w": {
+          "avg": 14.750714285714285,
+          "max": 15.1
+        },
+        "gpu_energy_wh": 0.1087073388888889,
+        "power_coverage": 0.9999999999999999
+      }
+    },
+    {
+      "name": "OD-CALYX-01",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-01.md",
+      "t_start": "2025-12-11T02:34:33.168912+00:00",
+      "t_end": "2025-12-11T02:35:03.168912+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-02",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-02.md",
+      "t_start": "2025-12-11T02:34:33.168912+00:00",
+      "t_end": "2025-12-11T02:35:03.168912+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-03",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-03.md",
+      "t_start": "2025-12-11T02:34:33.169882+00:00",
+      "t_end": "2025-12-11T02:35:03.169882+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-04",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-04.md",
+      "t_start": "2025-12-11T02:34:33.170885+00:00",
+      "t_end": "2025-12-11T02:35:03.170885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-05",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-05.md",
+      "t_start": "2025-12-11T02:34:33.170885+00:00",
+      "t_end": "2025-12-11T02:35:03.170885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-06",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-06.md",
+      "t_start": "2025-12-11T02:34:33.170885+00:00",
+      "t_end": "2025-12-11T02:35:03.170885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-07",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-07.md",
+      "t_start": "2025-12-11T02:34:33.170885+00:00",
+      "t_end": "2025-12-11T02:35:03.170885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CALYX-08",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CALYX-08.md",
+      "t_start": "2025-12-11T02:34:33.171883+00:00",
+      "t_end": "2025-12-11T02:35:03.171883+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CREATIVE-01",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CREATIVE-01.md",
+      "t_start": "2025-12-11T02:34:33.174885+00:00",
+      "t_end": "2025-12-11T02:35:03.174885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CREATIVE-02",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CREATIVE-02.md",
+      "t_start": "2025-12-11T02:34:33.174885+00:00",
+      "t_end": "2025-12-11T02:35:03.174885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CREATIVE-03",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CREATIVE-03.md",
+      "t_start": "2025-12-11T02:34:33.174885+00:00",
+      "t_end": "2025-12-11T02:35:03.174885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CREATIVE-04",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CREATIVE-04.md",
+      "t_start": "2025-12-11T02:34:33.175884+00:00",
+      "t_end": "2025-12-11T02:35:03.175884+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CREATIVE-05",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CREATIVE-05.md",
+      "t_start": "2025-12-11T02:34:33.175884+00:00",
+      "t_end": "2025-12-11T02:35:03.175884+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-CREATIVE-06",
+      "path": "benchmarks\\outcome\\Test 1\\OD-CREATIVE-06.md",
+      "t_start": "2025-12-11T02:34:33.176883+00:00",
+      "t_end": "2025-12-11T02:35:03.176883+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-TECH-01",
+      "path": "benchmarks\\outcome\\Test 1\\OD-TECH-01.md",
+      "t_start": "2025-12-11T02:34:33.171883+00:00",
+      "t_end": "2025-12-11T02:35:03.171883+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-TECH-02",
+      "path": "benchmarks\\outcome\\Test 1\\OD-TECH-02.md",
+      "t_start": "2025-12-11T02:34:33.172885+00:00",
+      "t_end": "2025-12-11T02:35:03.172885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-TECH-03",
+      "path": "benchmarks\\outcome\\Test 1\\OD-TECH-03.md",
+      "t_start": "2025-12-11T02:34:33.172885+00:00",
+      "t_end": "2025-12-11T02:35:03.172885+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-TECH-04",
+      "path": "benchmarks\\outcome\\Test 1\\OD-TECH-04.md",
+      "t_start": "2025-12-11T02:34:33.173884+00:00",
+      "t_end": "2025-12-11T02:35:03.173884+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-TECH-05",
+      "path": "benchmarks\\outcome\\Test 1\\OD-TECH-05.md",
+      "t_start": "2025-12-11T02:34:33.174451+00:00",
+      "t_end": "2025-12-11T02:35:03.174451+00:00",
+      "metrics": null
+    },
+    {
+      "name": "OD-TECH-06",
+      "path": "benchmarks\\outcome\\Test 1\\OD-TECH-06.md",
+      "t_start": "2025-12-11T02:34:33.174885+00:00",
+      "t_end": "2025-12-11T02:35:03.174885+00:00",
+      "metrics": null
+    }
+  ]
+}

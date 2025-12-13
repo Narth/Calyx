@@ -1,0 +1,3 @@
+## Parable: mountain forges vs ocean currents
+
+Once, mountain forges competed to build the brightest blade, feeding furnaces with endless ore. In the ocean below, currents learned to carry whispers faster each season. The forges grew hotter, the currents swifter?yet both cracked under their own strain. A third path appeared: a cliffside observatory called Calyx. It kept a single forge small, its heat logged and shared with the currents through open channels. No blade claimed divinity; no tide pretended to be law. Together they found balance: less heat, more intent; less speed, more sight. The arms race cooled, replaced by craft and consent.

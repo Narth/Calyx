@@ -1,0 +1,68 @@
+version: 1
+agent:
+  name: scheduler
+  role: orchestration
+  owner: CBO
+  description: >
+    Launch controller that paces Agent1 micro tasks. Must stay in safe mode until
+    Phase 1-S intercept + sandbox review complete.
+
+execution:
+  entrypoint: python tools/agent_scheduler.py
+  default_args: "--interval 180 --auto-promote --adaptive-backoff"
+  working_dir: C:\Calyx_Terminal
+  heartbeat_file: outgoing/scheduler.lock
+  intercept:
+    required: true
+    mode: dry_run
+    log_dir: reports/intercepts
+  telemetry:
+    - logs/agent_scheduler.log
+    - logs/autonomy_decisions.jsonl
+
+sandbox:
+  filesystem:
+    read_only:
+      - config/**
+      - docs/**
+      - reports/**
+      - state/**
+    read_write:
+      - outgoing/scheduler.lock
+      - outgoing/agent1.lock
+      - logs/agent_scheduler.log
+      - logs/autonomy_decisions.jsonl
+      - reports/intercepts/**
+    deny:
+      - keys/**
+      - memory/**
+      - outgoing/User1/**
+  commands_allowlist:
+    - python tools/agent_scheduler.py*
+    - python tools/mailbox_poller.py*
+  env_allowlist:
+    - CALYX_PHASE_TAG
+  network:
+    outbound: deny
+    exceptions: []
+
+limits:
+  cpu_percent:
+    soft: 30
+    hard: 45
+  ram_percent:
+    soft: 74
+    hard: 80
+  max_runtime_s: 30
+  max_file_writes: 10
+
+auditing:
+  mailbox: outgoing/User1/
+  intercept_summary: reports/intercepts/
+  status_files:
+    - outgoing/agent1.lock
+    - outgoing/scheduler.lock
+  alerts:
+    tes_drop_threshold: 2.0
+    ram_percent_above: 75.0
+    notify: ["User1"]

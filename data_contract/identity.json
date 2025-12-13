@@ -1,0 +1,12 @@
+{
+  "title": "Identity Object (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "structural_id": { "type": "string" },
+    "steward_name": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "attribution": { "type": "string" }
+  },
+  "required": ["structural_id", "lineage_pointer"],
+  "additionalProperties": false
+}

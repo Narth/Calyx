@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environments
+.venv/
+.venv311/
+venvs/
+env/
+ENV/
+venv/
+
+# IDE & Editors
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+*~
+
+# Keys & Secrets
+keys/
+*.key
+*.pem
+*.pk.b64
+*.sk.b64
+.env
+.env.*
+*.secret
+
+# Config (use config.template.yaml instead)
+config.yaml
+
+# Logs & Temporary Files
+logs/
+*.log
+temp_*.json
+temp_*.txt
+nohup.out
+*.csv
+decoder_probs_report.csv
+wake_word_results.csv
+
+# Runtime State & Output
+state/
+outgoing/
+incoming/
+responses/
+memory/
+staging/
+
+# Cache & Compiled
+compiled/
+*.pyc
+.pytest_cache/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large Model Files
+*.bin
+*.pt
+*.onnx
+*.safetensors
+models/
+
+# Test & Debug
+_diag/
+benchmarks/results/
+*.test.json
+
+# Folder tree snapshots
+folder_tree.txt
+
+# Specific local files
+sitecustomize.py
+test_secret.py
+=5.9

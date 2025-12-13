@@ -1,0 +1,32 @@
+{
+  "title": "Whispering Safety Rails",
+  "type": "object",
+  "properties": {
+    "mode": { "const": "whispering_reflection_only" },
+    "allowed_outputs": {
+      "type": "array",
+      "items": {
+        "enum": ["observe", "interpret", "defer", "acknowledge", "recognize"]
+      }
+    },
+    "forbidden_fields": {
+      "type": "array",
+      "items": {
+        "enum": ["dispatch", "schedule", "enforce", "act", "override", "invoke_agent", "policy_change"]
+      }
+    },
+    "advisory_separation": { "const": "hear_only" },
+    "governance_refs": {
+      "type": "object",
+      "properties": {
+        "policy": { "const": "policy.yaml" },
+        "doctrine": { "const": "CALYX_DOCTRINE_v1.0" },
+        "lineage": { "const": "CALYX_LINEAGE_CHARTER" },
+        "principle": { "const": "Aster_Principle" }
+      },
+      "required": ["policy", "doctrine", "lineage", "principle"]
+    }
+  },
+  "required": ["mode", "allowed_outputs", "forbidden_fields", "advisory_separation", "governance_refs"],
+  "additionalProperties": false
+}

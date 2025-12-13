@@ -1,0 +1,23 @@
+{
+  "title": "Safe Mode Kernel Rules (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "no_boot",
+          "no_activation",
+          "no_runtime_transitions",
+          "state_reflection_only",
+          "no_dispatch",
+          "no_scheduling",
+          "no_enforcement",
+          "no_policy_interpretation"
+        ]
+      }
+    }
+  },
+  "required": ["rules"],
+  "additionalProperties": false
+}

@@ -1,0 +1,95 @@
+import json
+from pathlib import Path
+from datetime import datetime
+
+SNAPSHOT_PATH = Path("state/dashboard_snapshot.json")
+
+def load_snapshot():
+    if not SNAPSHOT_PATH.exists():
+        raise SystemExit(f"Snapshot not found at {SNAPSHOT_PATH}")
+    with SNAPSHOT_PATH.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+def fmt_time(ts: str | None) -> str:
+    if not ts:
+        return "—"
+    try:
+        # handles both Z and offset formats
+        return datetime.fromisoformat(ts.replace("Z", "+00:00")).strftime("%Y-%m-%d %H:%M:%S")
+    except Exception:
+        return ts
+
+def bar(value: float | None, length: int = 20) -> str:
+    if value is None:
+        return "?" * length
+    value = max(0.0, min(1.0, value))
+    filled = int(round(value * length))
+    return "█" * filled + "·" * (length - filled)
+
+def main():
+    snap = load_snapshot()
+    ts = snap.get("timestamp")
+    bp = snap.get("bridge_pulse", {})
+    hh = snap.get("host_health", {})
+    cas = snap.get("cas", {})
+    comms = snap.get("comms", {})
+    pending = snap.get("pending_changes", {})
+    alerts = snap.get("alerts", {})
+
+    print("=" * 60)
+    print(f" Station Calyx — Dashboard Snapshot")
+    print(f" Timestamp: {fmt_time(ts)}")
+    print("=" * 60)
+
+    # Bridge Pulse / Status
+    print("\n[ Bridge Pulse ]")
+    print(f"  Live status     : {bp.get('status','?')}")
+    print(f"  Overall status  : {bp.get('overall_status','?')}")
+    print(f"  Last Micro      : {fmt_time(bp.get('last_micro'))}")
+    print(f"  Last Macro      : {fmt_time(bp.get('last_macro'))}")
+
+    # Host health
+    print("\n[ Host Health ]")
+    cpu = hh.get("cpu_percent")
+    mem = hh.get("mem_percent")
+    gpu = hh.get("gpu_percent")
+    pressure = hh.get("resource_pressure","?")
+    print(f"  CPU             : {cpu}%")
+    print(f"  MEM             : {mem}%")
+    print(f"  GPU             : {gpu if gpu is not None else 'n/a'}")
+    print(f"  Resource state  : {pressure}")
+
+    # CAS
+    print("\n[ Autonomy (CAS) ]")
+    station_cas = cas.get("station_cas")
+    cas_level = cas.get("cas_level","?")
+    sample_size = cas.get("sample_size","?")
+    data_note = cas.get("data_note")
+    print(f"  Station CAS     : {station_cas}  {bar(station_cas)}")
+    print(f"  CAS level       : {cas_level}")
+    print(f"  Sample size     : {sample_size}")
+    if data_note:
+        print(f"  Note            : {data_note}")
+
+    # Comms
+    print("\n[ Comms (last_48h) ]")
+    window = comms.get("window","?")
+    top_routes = comms.get("top_routes", [])
+    print(f"  Window          : {window}")
+    if not top_routes:
+        print("  Routes          : (none yet)")
+    else:
+        for r in top_routes:
+            route = r.get("route","?")
+            count = r.get("count","?")
+            print(f"  - {route:<30} {count}")
+
+    # Pending changes / alerts
+    print("\n[ Governance Queue ]")
+    print(f"  Pending changes : {pending.get('count',0)}")
+    print(f"  Alerts          : {alerts.get('count',0)}")
+
+    print("=" * 60)
+
+if __name__ == "__main__":
+    main()

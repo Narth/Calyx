@@ -1,0 +1,14 @@
+{
+  "title": "Telemetry Mirror Output (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "identity_snapshot": { "type": "string" },
+    "heartwood_view": { "type": "string" },
+    "lineage_echo": { "type": "string" },
+    "soil_signature": { "type": "string" },
+    "safe_mode_state": { "type": "string" },
+    "mirror_timestamp": { "type": "string" }
+  },
+  "required": ["mirror_timestamp"],
+  "additionalProperties": false
+}
