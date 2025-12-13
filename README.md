@@ -1,6 +1,7 @@
+<<<<<<< HEAD
 # Calyx Terminal
 
-Local, real-time speech pipeline with optional wake-word biasing ("Calyx") and a lightweight phonetic KWS post-filter. Intended for development and experimentation on Windows PowerShell.
+Station Calyx governance and operation repo producing Outcome Density runs to assess system health, stability, and value in autonomous governance research. Local, real-time speech pipeline with optional wake-word biasing ("Calyx") and a lightweight phonetic KWS post-filter. Intended for development and experimentation on Windows PowerShell.
 
 ## Try it
 
@@ -117,3 +118,7 @@ Troubleshooting
 	- Use the lightweight debug listener which avoids SciPy dependencies: `Scripts/listener_plus_debug_noscipy.py` (this script uses a simplified audio path and is intended for quick local debugging).
 
 - ExecutionPolicy blocking script activation: see `OPERATIONS.md` for the temporary `-ExecutionPolicy Bypass` commands to run the venv activation or listeners without changing system policy.
+=======
+# Calyx
+The current repo structure for Station Calyx governance and operation, currently producing Outcoming Density runs to assess system health, stability, and value in autonomous governance research. 
+>>>>>>> origin/main
