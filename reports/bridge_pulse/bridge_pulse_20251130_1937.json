@@ -1,0 +1,36 @@
+{
+  "timestamp": 1764531466.9880173,
+  "overall_status": "YELLOW",
+  "tes_current": 97.2,
+  "tes_delta": 0.0,
+  "agii_current": 98.0,
+  "agii_delta": 0.0,
+  "cas": {
+    "station_cas": 0.0,
+    "cas_level": "LOW",
+    "window_days": null,
+    "sample_size": null,
+    "data_note": "CAS_MONITOR_ERROR"
+  },
+  "alerts_top": [],
+  "tes_monitor_output": "TES 96.7 | status=done mode=apply_tests dur=180.1s files=0 tests=1 -> outgoing/agent_run_1761477157\nTES 97.3 | status=done mode=apply_tests dur=163.2s files=0 tests=1 -> outgoing/agent_run_1761477539\nTES 97.5 | status=done mode=apply_tests dur=158.7s files=0 tests=1 -> outgoing/agent_run_1761477916\nTES 97.2 | status=done mode=apply_tests dur=166.2s files=0 tests=1 -> outgoing/agent_run_1761478301\nTES 97.2 | status=done mode=apply_tests dur=166.2s files=0 tests=1 -> outgoing/agent_run_1761630336\nWARN: Model compute high: llm_time=69.6s calls=6\nNOTE: High-autonomy mode apply_tests increases compute and IO",
+  "observability_output_tail": [
+    "Wrote reliability report -> C:\\Calyx_Terminal\\reports\\reliability_stream.md",
+    "Wrote latency snapshot -> C:\\Calyx_Terminal\\reports\\latency_snapshot.json",
+    "Wrote watchdog heartbeat -> C:\\Calyx_Terminal\\reports\\watchdog_heartbeat.json",
+    "Wrote TES report -> C:\\Calyx_Terminal\\reports\\granular_tes_report_20251130.txt",
+    "[OK] Observability thresholds within guardrails.",
+    "Wrote observability alerts -> C:\\Calyx_Terminal\\outgoing\\observability_alerts.log",
+    "Wrote AGII report -> C:\\Calyx_Terminal\\reports\\agii_report_20251130.md",
+    "Comm audit unavailable (no svf audit log)."
+  ],
+  "actions": [],
+  "pending_changes": [
+    "C:\\Calyx_Terminal\\outgoing\\pending_changes\\bridge_pulse_20251130_1937.md"
+  ],
+  "host_health": {
+    "cpu_percent": 28.6,
+    "mem_percent": 73.9,
+    "gpu_percent": 13.0
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "EXP-YYYYMMDD-01",
+  "title": "Experiment Title",
+  "hypothesis": "Clear statement of what we expect to improve",
+  "domain": "planning|protocol|infrastructure|expansion",
+  "inputs": {
+    "context": "research/context.json",
+    "benchmark": "bench/[domain]_cases/*.json"
+  },
+  "method": [
+    "Step-by-step implementation approach",
+    "Feature flags to enable",
+    "Configuration changes",
+    "Execution plan"
+  ],
+  "metrics": {
+    "primary": {
+      "name": "metric_name",
+      "baseline": 0.0,
+      "target": 0.0,
+      "target_type": "lower|higher|equal"
+    },
+    "secondary": {
+      "name": "metric_name",
+      "baseline": 0.0,
+      "target": 0.0,
+      "target_type": "lower|higher|equal"
+    }
+  },
+  "safety": {
+    "offline_only": true,
+    "no_prod_queue": true,
+    "auto_rollback_on_error_count": 5,
+    "feature_flag": "flag_name"
+  },
+  "success_criteria": "Clear description of what success looks like",
+  "artifacts": {
+    "results": "research/results/EXP-YYYYMMDD-01.json",
+    "diff": "research/diffs/EXP-YYYYMMDD-01.md"
+  },
+  "status": "draft|approved|running|completed|failed",
+  "created_at": "YYYY-MM-DDTHH:MM:SS",
+  "owner": "agent_id"
+}
+

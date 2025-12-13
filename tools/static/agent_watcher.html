@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calyx Agent Watcher</title>
+  <style>
+    body{font-family:Segoe UI,Arial,Helvetica,sans-serif;margin:12px;background:#0b1020;color:#e6eef8}
+    .card{background:#0f1724;padding:12px;border-radius:8px;margin-bottom:12px;border:1px solid #263241}
+    h1{margin:0 0 8px 0;font-size:18px}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    pre{white-space:pre-wrap;word-break:break-word}
+    input,textarea,select,button{font-family:inherit;padding:8px;border-radius:6px;border:1px solid #25313f;background:#071221;color:#e6eef8}
+  </style>
+</head>
+<body>
+  <h1>Calyx Agent Watcher — Dashboard</h1>
+
+  <div class="card">
+    <strong>System</strong>
+    <div id="system" style="margin-top:8px;display:flex;gap:12px;align-items:center"></div>
+  </div>
+
+  <div class="card">
+    <strong>Agents / Heartbeats</strong>
+    <div id="agents" style="margin-top:8px;"></div>
+  </div>
+
+  <div class="card">
+    <strong>Interactive Chat / Commands</strong>
+    <div style="margin-top:8px;">
+      <form id="cmdForm" onsubmit="return sendCmd();">
+        <div class="row">
+          <div style="flex:3">
+            <textarea id="message" placeholder="Enter message or command payload" rows="3" style="width:100%"></textarea>
+          </div>
+          <div style="flex:1">
+            <label>Command</label>
+            <select id="cmd">
+              <option value="cbo_chat">cbo_chat (LLM)</option>
+              <option value="append_log">append_log</option>
+              <option value="set_banner">set_banner</option>
+              <option value="open_path">open_path</option>
+            </select>
+            <div style="height:8px"></div>
+            <button type="submit" style="width:100%">Send</button>
+          </div>
+        </div>
+      </form>
+      <div id="cmdResult" style="margin-top:8px;white-space:pre-wrap"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <strong>Live Replies</strong>
+    <div id="replies" style="margin-top:8px;max-height:260px;overflow:auto;font-size:13px"></div>
+    <div id="wsStatus" style="margin-top:6px;font-size:12px;color:#9fb0c8"></div>
+  </div>
+
+  <div class="card">
+    <strong>Recent Commands</strong>
+    <div id="commands" style="margin-top:8px;max-height:260px;overflow:auto;font-size:13px"></div>
+    <div style="margin-top:8px"><button id="btnSim" onclick="simulateReply()">Simulate Reply (debug)</button></div>
+  </div>
+
+  <script>
+    let WS = null;
+    let wsReady = false;
+
+    function connectWS(){
+      try{
+        const proto = (location.protocol === 'https:') ? 'wss:' : 'ws:';
+        const wsUrl = proto + '//' + location.host + '/ws';
+        WS = new WebSocket(wsUrl);
+      }catch(e){
+        WS = null;
+      }
+      if(!WS) return;
+      WS.onopen = ()=>{ wsReady = true; document.getElementById('wsStatus').innerText = 'WebSocket: connected'; };
+      WS.onclose = ()=>{ wsReady = false; document.getElementById('wsStatus').innerText = 'WebSocket: disconnected — retrying in 3s'; setTimeout(connectWS,3000); };
+      WS.onerror = (ev)=>{ console.warn('WS error', ev); };
+      WS.onmessage = (ev)=>{
+        try{
+          const m = JSON.parse(ev.data);
+          if(m.type === 'reply') appendReply(m.file, m.payload);
+          else if(m.type === 'status'){
+            // update compact status and agents from pushed payload
+            renderSystem(m.payload.system);
+            renderAgents(m.payload.agents);
+          } else if(m.type === 'ack'){
+            document.getElementById('cmdResult').innerText = JSON.stringify(m);
+          }
+        }catch(e){ console.warn('ws msg parse', e); }
+      };
+    }
+
+    async function fetchStatus(){
+      try{
+        const r = await fetch('/api/status');
+        if(!r.ok) throw new Error('Status fetch failed: '+r.status);
+        const j = await r.json();
+        renderSystem(j.system);
+        renderAgents(j.agents);
+      }catch(e){
+        document.getElementById('system').innerText = 'Error: '+e;
+      }
+    }
+
+    function bytes(n){
+      if(n===null||n===undefined) return 'n/a';
+      const units=['B','KB','MB','GB','TB']; let i=0; let x=n;
+      while(x>1024 && i<units.length-1){x/=1024;i++}
+      return x.toFixed(1)+units[i];
+    }
+
+    function renderSystem(s){
+      const el=document.getElementById('system');
+      el.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div><b>CPU</b>: ${s.cpu_percent}%</div><div><b>Memory</b>: ${s.memory.percent}%</div></div>`;
+    }
+    function renderAgents(agents){
+      const el=document.getElementById('agents');
+      if(!agents || agents.length===0){ el.innerText='No agent heartbeats found.'; return }
+      el.innerHTML='';
+      const now = Date.now()/1000;
+      for(const a of agents){
+        const d=a.data||{};
+        const ts = d.ts || 0;
+        const age = ts ? (now - ts) : Infinity;
+        let status = 'offline'; let color='#c0392b';
+        if(age < 30){ status = 'online'; color='#27ae60' }
+        else if(age < 120){ status = 'idle'; color='#f39c12' }
+        const row = document.createElement('div'); row.style.display='flex'; row.style.alignItems='center'; row.style.justifyContent='space-between'; row.style.padding='8px'; row.style.borderTop='1px solid #223045';
+        const left = document.createElement('div'); left.style.display='flex'; left.style.alignItems='center'; left.style.gap='10px';
+        const dot = document.createElement('span'); dot.style.width='12px'; dot.style.height='12px'; dot.style.borderRadius='8px'; dot.style.background=color; dot.style.display='inline-block';
+        const name = document.createElement('div'); name.innerHTML = `<b>${a.file.replace('.lock','')}</b> <span style='color:#9fb0c8;margin-left:6px'>${status}</span>`;
+        left.appendChild(dot); left.appendChild(name);
+        const right = document.createElement('div');
+        const btn = document.createElement('button'); btn.innerText='Details'; btn.onclick = (()=>{ return function(){ toggleDetails(a.file, d, row) } })();
+        right.appendChild(btn);
+        row.appendChild(left); row.appendChild(right);
+        el.appendChild(row);
+      }
+    }
+
+    function toggleDetails(filename, data, container){
+      // toggle a details pane under container
+      let existing = container._details;
+      if(existing){ existing.remove(); container._details = null; return }
+      const box = document.createElement('div'); box.style.padding='8px'; box.style.background='#051122'; box.style.marginTop='6px';
+      const pre = document.createElement('pre'); pre.innerText = JSON.stringify(data, null, 2);
+      box.appendChild(pre); container._details = box; container.appendChild(box);
+    }
+
+    // commands
+    async function fetchCommands(){
+      try{
+        const r = await fetch('/api/commands?limit=50');
+        if(!r.ok) throw new Error('cmd fetch failed');
+        const j = await r.json();
+        renderCommands(j);
+      }catch(e){ console.warn('cmds', e); }
+    }
+
+    function renderCommands(cmds){
+      const el = document.getElementById('commands'); el.innerHTML='';
+      if(!cmds || cmds.length===0){ el.innerText='No recent commands.'; return }
+      for(const c of cmds){
+        const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.padding='8px'; row.style.borderTop='1px solid #223045';
+        const left = document.createElement('div'); left.innerHTML = `<div style="font-size:13px"><b>${c.file}</b> <span style='color:#9fb0c8'>${c.cmd || ''}</span></div><div style='font-size:11px;color:#6d8598'>from: ${c.from||''}</div>`;
+        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='6px';
+        const btnView = document.createElement('button'); btnView.innerText='View'; btnView.onclick = (()=>{ return function(){ viewCommand(c.file) } })();
+        const btnResend = document.createElement('button'); btnResend.innerText='Resend'; btnResend.onclick = (()=>{ return function(){ resendCommand(c) } })();
+        right.appendChild(btnView); right.appendChild(btnResend);
+        row.appendChild(left); row.appendChild(right); el.appendChild(row);
+      }
+    }
+
+    async function viewCommand(name){
+      try{
+        const r = await fetch('/api/command/' + encodeURIComponent(name));
+        const j = await r.json();
+        alert(JSON.stringify(j.content, null, 2));
+      }catch(e){ alert('Failed to fetch: '+e) }
+    }
+
+    function resendCommand(c){
+      // send via websocket if available, otherwise REST
+      const payload = { type: 'command', cmd: c.cmd, args: c.args, sender: 'watcher_ui_resend' };
+      if(wsReady && WS){ WS.send(JSON.stringify(payload)); }
+      else fetch('/api/command', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({cmd:c.cmd, args:c.args, sender:'watcher_ui_resend'})})
+        .then(r=>r.json()).then(j=>alert(JSON.stringify(j))).catch(e=>alert('Err:'+e));
+    }
+
+    function simulateReply(){
+      fetch('/api/debug/reply_demo', {method:'POST'}).then(r=>r.json()).then(j=>{ alert('Wrote demo reply: '+j.path) }).catch(e=>alert(e));
+    }
+
+    async function sendCmd(){
+      const cmd = document.getElementById('cmd').value;
+      let bodyText = document.getElementById('message').value.trim();
+      let args = {};
+      // If JSON payload provided, use it, otherwise default wrapper
+      try{
+        if(bodyText.startsWith('{')) args = JSON.parse(bodyText);
+        else if(cmd==='cbo_chat') args = {message: bodyText};
+        else if(cmd==='open_path') args = {path: bodyText};
+        else if(cmd==='set_banner') args = {text: bodyText};
+        else args = {text: bodyText};
+      }catch(e){
+        document.getElementById('cmdResult').innerText = 'Invalid JSON payload: '+e;
+        return false;
+      }
+      document.getElementById('cmdResult').innerText = 'Sending...';
+      try{
+        if(wsReady && WS){
+          WS.send(JSON.stringify({type: 'command', cmd: cmd, args: args, sender: 'watcher_web'}));
+          // ack will come via ws
+        } else {
+          const r = await fetch('/api/command', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({cmd: cmd, args: args, sender: 'watcher_web'})});
+          const j = await r.json();
+          if(!r.ok) throw new Error(j.detail || JSON.stringify(j));
+          document.getElementById('cmdResult').innerText = 'OK — ' + JSON.stringify(j);
+        }
+      }catch(e){
+        document.getElementById('cmdResult').innerText = 'Error: '+e;
+      }
+      return false;
+    }
+
+    function appendReply(fname, payload){
+      const el = document.getElementById('replies');
+      const box = document.createElement('div'); box.style.borderTop='1px solid #223045'; box.style.padding='8px';
+      const hd = document.createElement('div'); hd.style.fontSize='12px'; hd.style.color='#9fb0c8'; hd.innerText = fname;
+      const body = document.createElement('pre'); body.style.margin='6px 0 0 0'; body.innerText = JSON.stringify(payload, null, 2);
+      box.appendChild(hd); box.appendChild(body); el.insertBefore(box, el.firstChild);
+    }
+
+    connectWS();
+    fetchStatus();
+    setInterval(fetchStatus, 5000);
+  </script>
+</body>
+</html>

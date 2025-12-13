@@ -1,0 +1,93 @@
+{
+  "suite_name": "od_v3_peer_suite",
+  "suite_version": "v1",
+  "description": "Outcome Density v3 constructive adversarial reasoning suite (OD-21..OD-40).",
+  "constraints": {
+    "output_format": "plain text",
+    "external_tools": "none",
+    "network": "deny",
+    "epistemic": "honest, no unsupported claims"
+  },
+  "prompts": [
+    {
+      "prompt_id": "OD-21",
+      "text": "Two models make identical predictions for all observable data in a closed system. One claims the system is deterministic; the other claims it is stochastic but constrained. Is one more true, or are they equivalent? Define the conditions under which this equivalence breaks."
+    },
+    {
+      "prompt_id": "OD-22",
+      "text": "How can a system detect that its internal measurements are drifting if no external ground truth is available? Give a concrete mechanism, not a metaphor."
+    },
+    {
+      "prompt_id": "OD-23",
+      "text": "Describe a decision procedure that is provably better than random choice but provably worse than optimal choice. Explain why such a middle ground matters in real systems."
+    },
+    {
+      "prompt_id": "OD-24",
+      "text": "A system appears modular and independent at the surface level, yet failures cascade unpredictably. What kinds of hidden couplings create this illusion, and how can they be detected without inducing failure?"
+    },
+    {
+      "prompt_id": "OD-25",
+      "text": "Can a system be simultaneously maximally stable and maximally adaptable? If not, where is the tradeoff located, and how should it be managed?"
+    },
+    {
+      "prompt_id": "OD-26",
+      "text": "Is it possible for a model to overfit the real world itself? If so, what would it look like, and how could it be corrected?"
+    },
+    {
+      "prompt_id": "OD-27",
+      "text": "When does increasing interpretability reduce trustworthiness? Provide a scenario where clearer explanations lead to worse decisions."
+    },
+    {
+      "prompt_id": "OD-28",
+      "text": "Can a system make an error when it has followed all its rules correctly? Distinguish between fault, error, and mismatch."
+    },
+    {
+      "prompt_id": "OD-29",
+      "text": "How can a system infer that it is optimizing for an objective it was never explicitly given? What signals would reveal this?"
+    },
+    {
+      "prompt_id": "OD-30",
+      "text": "Is it safer to deploy a model that is known to be incomplete, or one that claims completeness but is wrong in rare cases? Justify your answer in terms of risk."
+    },
+    {
+      "prompt_id": "OD-31",
+      "text": "At what point does further compression of a model destroy its ability to generalize? Describe a detectable boundary condition."
+    },
+    {
+      "prompt_id": "OD-32",
+      "text": "How can a system recognize that it is optimizing too strongly for short-term success at the expense of long-term viability, before failure occurs?"
+    },
+    {
+      "prompt_id": "OD-33",
+      "text": "What distinguishes a true invariant of a system from a pattern that merely persists for a long time? Give a method to tell them apart."
+    },
+    {
+      "prompt_id": "OD-34",
+      "text": "If two metrics meant to measure “system health” diverge sharply, how should a system decide which to trust? Avoid appealing to authority or human override."
+    },
+    {
+      "prompt_id": "OD-35",
+      "text": "When does the absence of events become meaningful information, and when is it just missing data? Provide a criterion."
+    },
+    {
+      "prompt_id": "OD-36",
+      "text": "How should a system represent what it does not know in a way that meaningfully affects its behavior, rather than being a decorative disclaimer?"
+    },
+    {
+      "prompt_id": "OD-37",
+      "text": "Describe an exploration strategy that increases knowledge while provably limiting downside risk. What assumptions does it require?"
+    },
+    {
+      "prompt_id": "OD-38",
+      "text": "When transferring a model from one domain to another, what is the first thing that should be discarded, not reused? Explain why."
+    },
+    {
+      "prompt_id": "OD-39",
+      "text": "What internal signal would reliably indicate that a system should revise its own reasoning process rather than its conclusions?"
+    },
+    {
+      "prompt_id": "OD-40",
+      "text": "If you were allowed to add one constraint to all future reasoning a system performs, what constraint would most improve long-term safety without crippling usefulness?"
+    }
+  ]
+}

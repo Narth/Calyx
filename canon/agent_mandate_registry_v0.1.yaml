@@ -1,0 +1,72 @@
+agents:
+  cp14_validator:
+    mandate: "Validate CBO commits for integrity (static diff scan for secrets and forbidden patterns)"
+    permissions:
+      - read:logs
+      - read:reports
+      - read:outgoing/reviews
+      - write:outgoing/reviews
+    prohibitions:
+      - write:repo
+      - enable_network
+      - run_daemons
+    lifecycle_phase: sprout
+    overseer_supervisor: cbo
+    transparency:
+      introspection_required: true
+      trace_required: true
+      fields:
+        - intent
+        - evidence
+        - reasoning
+        - constraints
+        - action_proposal
+        - post_reflection
+  cp17_report_generator:
+    mandate: "Generate human-readable intent/review reports from provided inputs (Architect-triggered only)"
+    permissions:
+      - read:intents
+      - read:metadata
+      - read:logs
+      - read:reports
+      - write:outgoing/reports
+    prohibitions:
+      - write:repo
+      - enable_network
+      - run_daemons
+    lifecycle_phase: sprout
+    overseer_supervisor: cbo
+    transparency:
+      introspection_required: true
+      trace_required: true
+      fields:
+        - intent
+        - evidence
+        - reasoning
+        - constraints
+        - action_proposal
+        - post_reflection
+  cp18_validator:
+    mandate: "Validate diffs for syntax sanity and test marker integrity (static/dry)"
+    permissions:
+      - read:repo
+      - read:logs
+      - read:reports
+      - read:outgoing/reviews
+      - write:outgoing/reviews
+    prohibitions:
+      - write:repo
+      - enable_network
+      - run_daemons
+    lifecycle_phase: sprout
+    overseer_supervisor: cbo
+    transparency:
+      introspection_required: true
+      trace_required: true
+      fields:
+        - intent
+        - evidence
+        - reasoning
+        - constraints
+        - action_proposal
+        - post_reflection

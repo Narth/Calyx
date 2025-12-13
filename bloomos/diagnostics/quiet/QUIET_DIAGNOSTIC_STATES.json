@@ -1,0 +1,14 @@
+{
+  "title": "Quiet Diagnostic States (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "states": {
+      "type": "array",
+      "items": {
+        "enum": ["still", "reflecting", "checking_integrity", "reading_heartwood"]
+      }
+    }
+  },
+  "required": ["states"],
+  "additionalProperties": false
+}

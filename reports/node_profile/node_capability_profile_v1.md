@@ -1,0 +1,32 @@
+# Node Capability Profile v1
+- Node: DESKTOP-KSHNJ30
+- CPU: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz (logical: 8, physical: 8)
+- RAM total: 31.85 GB
+- Storage:
+  - ST4000DM000-1F2168 [HDD]  GB
+  - INTEL SSDPEKNW010T9 [SSD]  GB
+- GPUs:
+  - Parsec Virtual Display Adapter vram= GB driver=
+  - NVIDIA GeForce RTX 2070 SUPER vram= GB driver=
+  - Intel(R) UHD Graphics 630 vram= GB driver=
+- Network adapters:
+  - Realtek PCIe GbE Family Controller #2 speed= bps
+- OS:  ()
+- Uptime snapshot: 
+- Safe mode: true
+# Node Capability Profile v1
+- Node: DESKTOP-KSHNJ30
+- CPU: Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz (logical: 8, physical: 8)
+- RAM total: 31.85 GB
+- Storage:
+  - ST4000DM000-1F2168 [HDD]  GB
+  - INTEL SSDPEKNW010T9 [SSD]  GB
+- GPUs:
+  - Parsec Virtual Display Adapter vram= GB driver=
+  - NVIDIA GeForce RTX 2070 SUPER vram= GB driver=
+  - Intel(R) UHD Graphics 630 vram= GB driver=
+- Network adapters:
+  - Realtek PCIe GbE Family Controller #2 speed= bps
+- OS: Microsoft Windows 10 Home (10.0.19045)
+- Uptime snapshot: 00:12:24.1221950
+- Safe mode: true

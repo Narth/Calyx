@@ -1,0 +1,7 @@
+{
+  "version": "0.1",
+  "owner": "Architect",
+  "bloom_status": "OBSERVATION_ONLY",
+  "activation_allowed": false,
+  "notes": "Kernel seed is L1 manual-run, observation-only; no dispatch, gating, or autonomy."
+}

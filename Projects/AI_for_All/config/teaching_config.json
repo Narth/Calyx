@@ -1,0 +1,142 @@
+{
+  "adaptive_learning": {
+    "learning_rate": 0.1,
+    "momentum": 0.9,
+    "decay_rate": 0.95,
+    "min_improvement_threshold": 0.05,
+    "max_adaptation_attempts": 10,
+    "exploration_factor": 0.1,
+    "stability_weight": 0.7,
+    "efficiency_weight": 0.3,
+    "adaptation_sensitivity": 0.05
+  },
+  "performance_tracking": {
+    "retention_days": 30,
+    "baseline_update_interval": 3600,
+    "improvement_threshold": 0.1,
+    "metric_weights": {
+      "tes": 0.4,
+      "stability": 0.3,
+      "velocity": 0.2,
+      "error_rate": 0.1
+    },
+    "baseline_validity_days": 30
+  },
+  "knowledge_integration": {
+    "similarity_threshold": 0.8,
+    "min_pattern_strength": 0.7,
+    "knowledge_retention_period": 7,
+    "cross_agent_sharing_enabled": true,
+    "validation_required": true
+  },
+  "pattern_recognition": {
+    "min_occurrences": 3,
+    "strength_threshold": 0.7,
+    "max_patterns_per_agent": 50,
+    "decay_rate": 0.9,
+    "pattern_similarity_threshold": 0.8
+  },
+  "system_integration": {
+    "heartbeat_interval": 60,
+    "metrics_output_path": "outgoing/ai4all/",
+    "log_level": "INFO",
+    "enable_safety_gates": true,
+    "max_resource_usage": 0.3
+  },
+  "teaching_methods": {
+    "task_efficiency": {
+      "enabled": true,
+      "priority_weight": 0.8,
+      "target_metrics": [
+        "tes",
+        "velocity",
+        "stability"
+      ],
+      "adaptation_frequency": 300
+    },
+    "stability": {
+      "enabled": true,
+      "priority_weight": 0.7,
+      "target_metrics": [
+        "stability",
+        "error_rate"
+      ],
+      "adaptation_frequency": 600
+    },
+    "latency_optimization": {
+      "enabled": true,
+      "priority_weight": 0.6,
+      "target_metrics": [
+        "velocity",
+        "tes"
+      ],
+      "adaptation_frequency": 900
+    },
+    "error_reduction": {
+      "enabled": true,
+      "priority_weight": 0.5,
+      "target_metrics": [
+        "error_rate",
+        "stability"
+      ],
+      "adaptation_frequency": 1200
+    }
+  },
+  "integrations": {
+    "agent_system": {
+      "enabled": true,
+      "heartbeat_sync": true,
+      "metrics_collection": true
+    },
+    "scheduler": {
+      "enabled": true,
+      "learning_aware_scheduling": true,
+      "adaptation_cooldown": 1800
+    },
+    "triage": {
+      "enabled": true,
+      "adaptive_thresholds": true,
+      "learning_feedback": true
+    },
+    "navigator": {
+      "enabled": true,
+      "pattern_based_routing": true,
+      "efficiency_optimization": true
+    },
+    "svf": {
+      "enabled": true,
+      "knowledge_sharing": true,
+      "tone_learning": true
+    }
+  },
+  "safety": {
+    "max_performance_degradation": 0.1,
+    "min_stability_threshold": 0.5,
+    "require_approval_for_major_changes": false,
+    "max_consecutive_failures": 3,
+    "emergency_thresholds": {
+      "tes": 0.3,
+      "stability": 0.2,
+      "error_rate": 0.8
+    }
+  },
+  "reporting": {
+    "report_interval": 3600,
+    "detailed_reports": true,
+    "standard_metrics": [
+      "tes",
+      "stability",
+      "velocity",
+      "error_rate",
+      "adaptation_count",
+      "learning_progress"
+    ],
+    "report_retention_days": 90
+  },
+  "experimental": {
+    "cross_domain_learning": false,
+    "predictive_adaptation": false,
+    "collaborative_learning": false,
+    "neural_pattern_recognition": false
+  }
+}

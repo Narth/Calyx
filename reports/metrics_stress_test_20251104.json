@@ -1,0 +1,109 @@
+{
+  "generated": "2025-11-04T06:46:18.805335+00:00",
+  "window": 50,
+  "scenarios": {
+    "baseline_green": {
+      "arei_snapshot": {
+        "timestamp": "2025-11-04T06:46:18.596795+00:00",
+        "window": 50,
+        "integrity_of_self": 0.96,
+        "empathic_alignment": 0.956,
+        "sustainability": 0.98,
+        "arei": 96.36,
+        "status_counts": {
+          "done": 48,
+          "error": 2
+        }
+      },
+      "tes_summary": {
+        "safe": {
+          "count": 73,
+          "tes_mean": 95.44,
+          "tes_p50": 98.78,
+          "tes_p90": 100.0,
+          "stability_mean": 0.932
+        },
+        "tests": {
+          "count": 70,
+          "tes_mean": 97.33,
+          "tes_p50": 99.28,
+          "tes_p90": 100.0,
+          "stability_mean": 0.971
+        },
+        "apply_tests": {
+          "count": 57,
+          "tes_mean": 98.54,
+          "tes_p50": 98.85,
+          "tes_p90": 100.0,
+          "stability_mean": 1.0
+        }
+      },
+      "reliability": 0.965,
+      "sample_size": 200
+    },
+    "degraded_stability": {
+      "arei_snapshot": {
+        "timestamp": "2025-11-04T06:46:18.697492+00:00",
+        "window": 50,
+        "integrity_of_self": 0.68,
+        "empathic_alignment": 0.641,
+        "sustainability": 0.712,
+        "arei": 67.44,
+        "status_counts": {
+          "done": 34,
+          "error": 16
+        }
+      },
+      "tes_summary": {
+        "apply_tests": {
+          "count": 97,
+          "tes_mean": 65.36,
+          "tes_p50": 78.65,
+          "tes_p90": 94.04,
+          "stability_mean": 0.598
+        },
+        "tests": {
+          "count": 103,
+          "tes_mean": 66.34,
+          "tes_p50": 80.23,
+          "tes_p90": 91.56,
+          "stability_mean": 0.641
+        }
+      },
+      "reliability": 0.62,
+      "sample_size": 200
+    },
+    "resource_pressure": {
+      "arei_snapshot": {
+        "timestamp": "2025-11-04T06:46:18.795910+00:00",
+        "window": 50,
+        "integrity_of_self": 0.92,
+        "empathic_alignment": 0.845,
+        "sustainability": 0.208,
+        "arei": 71.58,
+        "status_counts": {
+          "done": 46,
+          "error": 4
+        }
+      },
+      "tes_summary": {
+        "tests": {
+          "count": 107,
+          "tes_mean": 53.15,
+          "tes_p50": 58.89,
+          "tes_p90": 71.37,
+          "stability_mean": 0.86
+        },
+        "apply_tests": {
+          "count": 93,
+          "tes_mean": 51.62,
+          "tes_p50": 56.67,
+          "tes_p90": 68.54,
+          "stability_mean": 0.849
+        }
+      },
+      "reliability": 0.855,
+      "sample_size": 200
+    }
+  }
+}

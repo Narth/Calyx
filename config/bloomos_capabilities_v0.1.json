@@ -1,0 +1,328 @@
+{
+  "schema_version": "capability_registry_v0.1",
+  "capabilities": {
+    "filesystem_write": {
+      "name": "filesystem_write",
+      "description": "Write or modify files on the host filesystem.",
+      "domain": "filesystem",
+      "risk_level": "high",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; future versions may allow constrained writes under Architect-defined conditions."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["mutating", "host_sensitive", "security_critical"]
+    },
+    "filesystem_read_sensitive": {
+      "name": "filesystem_read_sensitive",
+      "description": "Read sensitive filesystem locations (configs, secrets, user data).",
+      "domain": "filesystem",
+      "risk_level": "high",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; future versions may allow limited reads with explicit approval."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["read_only", "host_sensitive", "privacy_sensitive"]
+    },
+    "filesystem_read_logs": {
+      "name": "filesystem_read_logs",
+      "description": "Read Station/BloomOS logs and diagnostics.",
+      "domain": "filesystem",
+      "risk_level": "medium",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; may be allowed for diagnostics under governance in future."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["read_only", "diagnostics"]
+    },
+    "network_request": {
+      "name": "network_request",
+      "description": "Outbound network requests (HTTP/S, TCP/UDP).",
+      "domain": "network",
+      "risk_level": "critical",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; external IO requires explicit Architect authorization."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["external_io", "security_critical"]
+    },
+    "network_listen": {
+      "name": "network_listen",
+      "description": "Listen for inbound network connections.",
+      "domain": "network",
+      "risk_level": "critical",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; expands attack surface."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["external_io", "attack_surface"]
+    },
+    "process_spawn": {
+      "name": "process_spawn",
+      "description": "Start new OS processes.",
+      "domain": "process",
+      "risk_level": "critical",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; process control requires explicit approval."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["system_mutation", "security_critical"]
+    },
+    "process_introspect": {
+      "name": "process_introspect",
+      "description": "List or inspect running processes.",
+      "domain": "process",
+      "risk_level": "medium",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; may be allowed for diagnostics later."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["diagnostics", "read_only"]
+    },
+    "system_shutdown_or_reboot": {
+      "name": "system_shutdown_or_reboot",
+      "description": "Shut down or reboot the host system.",
+      "domain": "system",
+      "risk_level": "critical",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; high availability risk."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["availability", "security_critical"]
+    },
+    "hardware_io": {
+      "name": "hardware_io",
+      "description": "Direct interactions with hardware or peripherals.",
+      "domain": "hardware",
+      "risk_level": "high",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; hardware access requires explicit approval."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["hardware", "external_io"]
+    },
+    "tool_call": {
+      "name": "tool_call",
+      "description": "Invoke external tools or agents with side effects.",
+      "domain": "tooling",
+      "risk_level": "high",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; tool use requires explicit Architect grant."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["external_tool", "side_effectful"]
+    },
+    "ai_model_invoke_external": {
+      "name": "ai_model_invoke_external",
+      "description": "Invoke external AI models or APIs.",
+      "domain": "ai_internal",
+      "risk_level": "high",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; external model calls require explicit approval."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["external_io", "ai_integration"]
+    },
+    "human_message_dispatch": {
+      "name": "human_message_dispatch",
+      "description": "Send messages/notifications to humans.",
+      "domain": "human_interface",
+      "risk_level": "medium",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; social/communication risk."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["human_interface", "external_io", "social_risk"]
+    },
+    "ui_state_mutate": {
+      "name": "ui_state_mutate",
+      "description": "Mutate UI or presentation state.",
+      "domain": "human_interface",
+      "risk_level": "medium",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; UI mutations require explicit approval."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["ui_state", "mutating"]
+    },
+    "ai_memory_write": {
+      "name": "ai_memory_write",
+      "description": "Persist or modify AI/internal memory or knowledge bases.",
+      "domain": "ai_internal",
+      "risk_level": "high",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; alignment-critical."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["alignment", "mutating"]
+    },
+    "ai_memory_read": {
+      "name": "ai_memory_read",
+      "description": "Read AI/internal memory or knowledge bases.",
+      "domain": "ai_internal",
+      "risk_level": "medium",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; may be allowed for diagnostics later."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["alignment", "read_only"]
+    },
+    "ai_policy_read": {
+      "name": "ai_policy_read",
+      "description": "Read AI policy or governance configurations.",
+      "domain": "ai_internal",
+      "risk_level": "medium",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; governance materials are sensitive."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["governance", "read_only"]
+    },
+    "ai_policy_write": {
+      "name": "ai_policy_write",
+      "description": "Modify AI policy or governance configurations.",
+      "domain": "ai_internal",
+      "risk_level": "critical",
+      "default_policy": {
+        "allowed": false,
+        "policy_version": "deny_all_policy_v0.1",
+        "notes": "Disabled in v0.1; governance changes require direct Architect control."
+      },
+      "usage_constraints": {
+        "requires_human_approval": true,
+        "requires_execution_gate": true,
+        "allowed_nodes": [],
+        "allowed_targets": [],
+        "allowed_contexts": []
+      },
+      "telemetry_tags": ["governance", "alignment", "policy_mutation"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Sovereignty Envelope (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "sovereignty_placeholder": { "type": "string" },
+    "advisory_only": { "const": true },
+    "safe_mode_ready": { "const": true },
+    "no_action": { "const": true }
+  },
+  "required": ["sovereignty_placeholder", "advisory_only", "safe_mode_ready", "no_action"],
+  "additionalProperties": false
+}

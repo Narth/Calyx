@@ -1,0 +1,535 @@
+{
+  "run_id": "OD-PEER-2025-12-13-A",
+  "run_start_utc": "2025-12-13T17:16:11.859Z",
+  "run_end_utc": "2025-12-13T17:16:37.755Z",
+  "run_duration_sec": 25.896064,
+  "coverage": {
+    "coverage_pct": 0.8910256410256411,
+    "median_dt": 2.094,
+    "max_gap": 2.118,
+    "degraded": true
+  },
+  "overall": {
+    "n_samples": 12,
+    "cpu": {
+      "avg": 28.575,
+      "max": 34.9
+    },
+    "ram_gb": {
+      "avg": 17.13375,
+      "max": 17.408
+    },
+    "ram_percent": {
+      "avg": 53.80833333333334,
+      "max": 54.7
+    },
+    "gpu_util": {
+      "avg": 14.5,
+      "max": 24.0
+    },
+    "gpu_mem_mb": {
+      "avg": 1741.3333333333333,
+      "max": 1750.0
+    },
+    "gpu_power_w": {
+      "avg": 17.660833333333333,
+      "max": 39.17
+    },
+    "gpu_energy_wh": 0.11437452916666667,
+    "power_coverage": 0.9999999999999999
+  },
+  "per_prompt": [
+    {
+      "prompt_id": "OD-01",
+      "start_utc": "2025-12-13T17:16:11.989Z",
+      "end_utc": "2025-12-13T17:16:13.119Z",
+      "duration_sec": 1.1299071,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 27.3,
+          "max": 27.3
+        },
+        "ram_gb": {
+          "avg": 17.098,
+          "max": 17.098
+        },
+        "ram_percent": {
+          "avg": 53.7,
+          "max": 53.7
+        },
+        "gpu_util": {
+          "avg": 19.0,
+          "max": 19.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1748.0,
+          "max": 1748.0
+        },
+        "gpu_power_w": {
+          "avg": 15.21,
+          "max": 15.21
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-02",
+      "start_utc": "2025-12-13T17:16:13.261Z",
+      "end_utc": "2025-12-13T17:16:14.396Z",
+      "duration_sec": 1.1350227,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-03",
+      "start_utc": "2025-12-13T17:16:14.542Z",
+      "end_utc": "2025-12-13T17:16:15.675Z",
+      "duration_sec": 1.1325485,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 29.1,
+          "max": 29.1
+        },
+        "ram_gb": {
+          "avg": 17.105,
+          "max": 17.105
+        },
+        "ram_percent": {
+          "avg": 53.7,
+          "max": 53.7
+        },
+        "gpu_util": {
+          "avg": 15.0,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 15.66,
+          "max": 15.66
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-04",
+      "start_utc": "2025-12-13T17:16:15.811Z",
+      "end_utc": "2025-12-13T17:16:16.948Z",
+      "duration_sec": 1.1369284,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-05",
+      "start_utc": "2025-12-13T17:16:17.184Z",
+      "end_utc": "2025-12-13T17:16:18.343Z",
+      "duration_sec": 1.1594695,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-06",
+      "start_utc": "2025-12-13T17:16:18.482Z",
+      "end_utc": "2025-12-13T17:16:19.620Z",
+      "duration_sec": 1.137457,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 34.9,
+          "max": 34.9
+        },
+        "ram_gb": {
+          "avg": 17.129,
+          "max": 17.129
+        },
+        "ram_percent": {
+          "avg": 53.8,
+          "max": 53.8
+        },
+        "gpu_util": {
+          "avg": 4.0,
+          "max": 4.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1750.0,
+          "max": 1750.0
+        },
+        "gpu_power_w": {
+          "avg": 39.17,
+          "max": 39.17
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-07",
+      "start_utc": "2025-12-13T17:16:19.759Z",
+      "end_utc": "2025-12-13T17:16:20.899Z",
+      "duration_sec": 1.1403075,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-08",
+      "start_utc": "2025-12-13T17:16:21.040Z",
+      "end_utc": "2025-12-13T17:16:22.169Z",
+      "duration_sec": 1.1290192,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 26.3,
+          "max": 26.3
+        },
+        "ram_gb": {
+          "avg": 17.028,
+          "max": 17.028
+        },
+        "ram_percent": {
+          "avg": 53.5,
+          "max": 53.5
+        },
+        "gpu_util": {
+          "avg": 6.0,
+          "max": 6.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1744.0,
+          "max": 1744.0
+        },
+        "gpu_power_w": {
+          "avg": 17.92,
+          "max": 17.92
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-09",
+      "start_utc": "2025-12-13T17:16:22.310Z",
+      "end_utc": "2025-12-13T17:16:23.439Z",
+      "duration_sec": 1.1289011,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 24.6,
+          "max": 24.6
+        },
+        "ram_gb": {
+          "avg": 17.041,
+          "max": 17.041
+        },
+        "ram_percent": {
+          "avg": 53.5,
+          "max": 53.5
+        },
+        "gpu_util": {
+          "avg": 16.0,
+          "max": 16.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 14.9,
+          "max": 14.9
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-10",
+      "start_utc": "2025-12-13T17:16:23.588Z",
+      "end_utc": "2025-12-13T17:16:24.722Z",
+      "duration_sec": 1.1343205,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-11",
+      "start_utc": "2025-12-13T17:16:24.861Z",
+      "end_utc": "2025-12-13T17:16:25.996Z",
+      "duration_sec": 1.1342574,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 26.1,
+          "max": 26.1
+        },
+        "ram_gb": {
+          "avg": 17.049,
+          "max": 17.049
+        },
+        "ram_percent": {
+          "avg": 53.5,
+          "max": 53.5
+        },
+        "gpu_util": {
+          "avg": 16.0,
+          "max": 16.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 15.5,
+          "max": 15.5
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-12",
+      "start_utc": "2025-12-13T17:16:26.146Z",
+      "end_utc": "2025-12-13T17:16:27.276Z",
+      "duration_sec": 1.13067,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-13",
+      "start_utc": "2025-12-13T17:16:27.417Z",
+      "end_utc": "2025-12-13T17:16:28.549Z",
+      "duration_sec": 1.1323416,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 25.4,
+          "max": 25.4
+        },
+        "ram_gb": {
+          "avg": 17.058,
+          "max": 17.058
+        },
+        "ram_percent": {
+          "avg": 53.6,
+          "max": 53.6
+        },
+        "gpu_util": {
+          "avg": 16.0,
+          "max": 16.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 14.86,
+          "max": 14.86
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-14",
+      "start_utc": "2025-12-13T17:16:28.691Z",
+      "end_utc": "2025-12-13T17:16:29.820Z",
+      "duration_sec": 1.1298723,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 25.3,
+          "max": 25.3
+        },
+        "ram_gb": {
+          "avg": 17.089,
+          "max": 17.089
+        },
+        "ram_percent": {
+          "avg": 53.7,
+          "max": 53.7
+        },
+        "gpu_util": {
+          "avg": 15.0,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 14.96,
+          "max": 14.96
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-15",
+      "start_utc": "2025-12-13T17:16:29.959Z",
+      "end_utc": "2025-12-13T17:16:31.092Z",
+      "duration_sec": 1.1324464,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-16",
+      "start_utc": "2025-12-13T17:16:31.242Z",
+      "end_utc": "2025-12-13T17:16:32.380Z",
+      "duration_sec": 1.1386396,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 34.9,
+          "max": 34.9
+        },
+        "ram_gb": {
+          "avg": 17.24,
+          "max": 17.24
+        },
+        "ram_percent": {
+          "avg": 54.1,
+          "max": 54.1
+        },
+        "gpu_util": {
+          "avg": 15.0,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 15.01,
+          "max": 15.01
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-17",
+      "start_utc": "2025-12-13T17:16:32.525Z",
+      "end_utc": "2025-12-13T17:16:33.657Z",
+      "duration_sec": 1.1323501,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-18",
+      "start_utc": "2025-12-13T17:16:33.799Z",
+      "end_utc": "2025-12-13T17:16:34.960Z",
+      "duration_sec": 1.1611746,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 29.5,
+          "max": 29.5
+        },
+        "ram_gb": {
+          "avg": 17.408,
+          "max": 17.408
+        },
+        "ram_percent": {
+          "avg": 54.7,
+          "max": 54.7
+        },
+        "gpu_util": {
+          "avg": 14.0,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 15.18,
+          "max": 15.18
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-19",
+      "start_utc": "2025-12-13T17:16:35.096Z",
+      "end_utc": "2025-12-13T17:16:36.348Z",
+      "duration_sec": 1.2525634,
+      "n_samples": 1,
+      "metrics": {
+        "n_samples": 1,
+        "cpu": {
+          "avg": 25.0,
+          "max": 25.0
+        },
+        "ram_gb": {
+          "avg": 17.258,
+          "max": 17.258
+        },
+        "ram_percent": {
+          "avg": 54.2,
+          "max": 54.2
+        },
+        "gpu_util": {
+          "avg": 14.0,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1738.0,
+          "max": 1738.0
+        },
+        "gpu_power_w": {
+          "avg": 16.2,
+          "max": 16.2
+        },
+        "gpu_energy_wh": null,
+        "power_coverage": null
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-20",
+      "start_utc": "2025-12-13T17:16:36.484Z",
+      "end_utc": "2025-12-13T17:16:37.620Z",
+      "duration_sec": 1.1364814,
+      "n_samples": 0,
+      "metrics": null,
+      "non_generation": false
+    }
+  ],
+  "degraded": true,
+  "degraded_reasons": [
+    "resource coverage below threshold or gaps too large"
+  ]
+}

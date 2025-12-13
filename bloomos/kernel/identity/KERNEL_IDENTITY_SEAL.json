@@ -1,0 +1,20 @@
+{
+  "boundary_kernel_spec": {
+    "path": "bloomos/kernel/boundary/BOUNDARY_KERNEL_SPEC_v1.0.md",
+    "sha256": "0ABCD2BA6847883C954006C616ECB97FB75E3400A5CD175947BAD326457985E2"
+  },
+  "forbidden_action_matrix": {
+    "path": "bloomos/kernel/boundary/FORBIDDEN_ACTION_MATRIX.json",
+    "sha256": "9063455E4DFD0395DCC4134A48888586227A4EA786BDCFE120991407E0B7AC46"
+  },
+  "sovereignty_shield": {
+    "path": "bloomos/kernel/safe_mode/SOVEREIGNTY_SHIELD_SPEC_v1.0.md",
+    "sha256": "E3A427102D9DAFE15F132880DFEBA6D27596FEE256540F37F32CB5EF00237D33"
+  },
+  "identity_lock": {
+    "path": "bloomos/kernel/identity/BOUNDARY_KERNEL_IDENTITY_LOCK.md",
+    "sha256": "BDDA8308FFC8578040440ADF3FE2AA971F2FAE73FEC2BD31C055BB2B088B7B32"
+  },
+  "architect_signature": "<placeholder>",
+  "notes": "Ceremonial seal; no enforcement or operational effect."
+}

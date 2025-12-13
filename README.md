@@ -1,93 +1,119 @@
-# Calyx Terminal — Starter Kit (v1.0)
+# Calyx Terminal
 
-This starter kit gives you a **working prototype** of the Calyx Terminal on Windows.
-It includes:
-- Folder structure
-- Voice transcription with **faster-whisper** (GPU-accelerated)
-- A simple **Calyx Console** (Python CLI) with actions
-- AutoHotkey hotkeys to trigger common rituals
-- A placeholder **Memory** area for future semantic search
+Local, real-time speech pipeline with optional wake-word biasing ("Calyx") and a lightweight phonetic KWS post-filter. Intended for development and experimentation on Windows PowerShell.
 
----
+## Try it
 
-## 0) Prereqs (Windows, NVIDIA GPU)
-- Python 3.11+
-- NVIDIA drivers (updated)
-- Visual C++ Build Tools (if needed for some packages)
-- AutoHotkey (you already installed)
-- (Optional) Git
-
-## 1) Create the Windows folders
-Create `C:\Calyx_Terminal\` to mirror this kit. You can move this entire folder there after download.
-
-## 2) Create a virtual environment
 ```powershell
-cd C:\Calyx_Terminal\Scripts
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1  # PowerShell
+python -u .\Scripts\listener_plus.py
+```
+## Quickstart
+
+Prerequisites
+
+- Python 3.10+ (use a venv)
+- `requirements.txt` provides runtime deps
+
+Activate virtualenv (PowerShell):
+
+```powershell
+.\Scripts\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-## 3) Install packages
-GPU-accelerated Whisper (faster-whisper) via CTranslate2:
+Quick runtime checks
+
 ```powershell
-pip install --upgrade pip setuptools wheel
-pip install faster-whisper sounddevice pyyaml
+python .\Scripts\quick_check.py
+python -u .\Scripts\listener_plus.py
+python -u .\Scripts\listener_wake.py
 ```
-> If you hit CUDA errors, switch `faster_whisper_device` to `"cpu"` in `config.yaml` temporarily.
 
-## 4) Place these files
-- `Calyx_Console\calyx_console.py`
-- `Calyx_Console\actions.py`
-- `Calyx_Console\command_router.py`
-- `Voice\voice_to_command.py`
-- `config.yaml`
-- `hotkeys\Calyx.ahk`
+Microphone index and quick checks
 
-(They are included in this download; just move the entire `Calyx_Terminal` folder to `C:\`.)
-
-## 5) Test the console
 ```powershell
-cd C:\Calyx_Terminal\Scripts
-.\.venv\Scripts\python.exe calyx_console.py
-```
-Try commands:
-- `begin_session`
-- `summon Aurora`
-- `log_reflection "First Calyx day"`
-- `exit`
+# show available audio devices and their indexes
+python .\Scripts\list_mics.py
 
-## 6) Test voice trigger
-In another terminal:
+# run a mic sanity check (VU / short recording)
+python .\Scripts\quick_check.py
+
+# run wake listener
+python -u .\Scripts\listener_wake.py
+
+# run evaluation in mock mode (no model downloads)
+python .\tools\eval_wake_word.py --mock --out logs/eval_wake_word.csv
+```
+
+Run tests
+
 ```powershell
-.\.venv\Scripts\python.exe voice_to_command.py
+pytest -q
 ```
-Speak short commands like:
-- "Begin session"
-- "Summon Aurora"
-- "Log reflection: today I wired the console"
 
-## 7) AutoHotkey
-Run `Calyx.ahk`. Hotkeys:
-- `Ctrl + Alt + S` → Begin Session
-- `Ctrl + Alt + J` → Log Reflection
-- `Ctrl + Alt + V` → Toggle Voice Listener
+Evaluation (if available)
 
----
+```powershell
+python .\tools\eval_wake_word.py --cfg config.yaml --model small
+```
 
-## Folder Map
-C:\Calyx_Terminal\
-├─ Projects\ (Aurora, AI_for_All, Plainstates)
-├─ Codex\
-│  ├─ Journal\
-│  └─ Frameworks\
-├─ Voice_Notes\
-├─ Memory\
-└─ Scripts\
+Where to look
 
----
+- `asr/` — core pipeline: `pipeline.py`, `kws.py`, `normalize.py`, `config.py`
+- `Scripts/` — runnable listeners and utilities
+- `samples/wake_word/` — positive/negative examples for evaluation
+- `logs/wake_word_audit.csv` — KWS audit logging
+- `outgoing/telemetry/state.json` — lightweight telemetry (agents active, drift agent1↔scheduler)
+- Customize Watcher icons: `outgoing/watcher_icons.json` (emoji per agent name)
+- Compendium of agents/copilots/overseers: `docs/COMPENDIUM.md`
 
-## Notes
-- This is v1 (Seed → Sprout). Semantic Memory (vector DB) is a v1.1 add-on.
-- You can wire a local LLM later (Ollama, LM Studio) and connect it to your Codex.
+Agent Onboarding
 
-**You are the Architect. This is your console.**
+- Comprehensive guide: `docs/AGENT_ONBOARDING.md` ⭐ (start here!)
+- Quick reference: `docs/QUICK_REFERENCE.md` (common commands)
+- Onboarding tool: `python -u .\Scripts\agent_onboarding.py --verify`
+- Copilot guide: `docs/COPILOTS.md` (copilot-specific guidance)
+
+Milestones
+
+- See `MILESTONES.md` for landmark achievements and team accolades.
+- See `logs/HEARTBEATS.md` for a chronological index of heartbeat events (including the Genesis heartbeat).
+- See `logs/EVOLUTION.md` for multi-agent evolution stages and links to detailed reports.
+
+Triage
+
+- Learn about the 3-phase triage loop (A: proposer/validator, B: reviewer, C: stability) and how to run it: `docs/TRIAGE.md`.
+
+Tasks & goals
+
+- Unified dashboard: `logs/TASKS.md` (human-readable)
+- Machine view: `outgoing/tasks_dashboard.json`
+- To regenerate:
+
+```powershell
+python -u .\tools\generate_task_dashboard.py
+```
+
+Agent Watcher control (bridge)
+
+- The watcher GUI can accept safe commands from Agent1 when you explicitly unlock control.
+- Start the watcher, click "Control: Locked" to unlock, then run the test:
+
+```powershell
+python -u .\tools\test_watcher_control.py
+```
+
+See `docs/TRIAGE.md` for the triage loop, and `OPERATIONS.md` for watcher control details.
+
+Contributing
+
+- Keep changes config-driven and add unit tests for new behavior.
+- Update `requirements.txt` when adding new packages.
+
+Troubleshooting
+
+- SciPy / soundfile issues: on some Windows machines `soundfile` or `scipy` installations fail. If you encounter import errors for `soundfile` or `scipy` when running real audio paths, either:
+	- Install the binary wheels from PyPI using `pip install soundfile scipy` (ensure a compatible Python version), or
+	- Use the lightweight debug listener which avoids SciPy dependencies: `Scripts/listener_plus_debug_noscipy.py` (this script uses a simplified audio path and is intended for quick local debugging).
+
+- ExecutionPolicy blocking script activation: see `OPERATIONS.md` for the temporary `-ExecutionPolicy Bypass` commands to run the venv activation or listeners without changing system policy.

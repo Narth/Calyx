@@ -1,0 +1,16 @@
+{
+  "title": "Heartwood Projection (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "structural_id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "heartwood_refs": { "type": "array", "items": { "type": "string" } },
+    "policy_bounds_summary": { "type": "string" },
+    "telemetry_roles": { "type": "array", "items": { "type": "string" } },
+    "advisory_signals": { "type": "array", "items": { "type": "string" } },
+    "reflection_notes": { "type": "array", "items": { "type": "string" } },
+    "mode": { "const": "projection_reflection_only" }
+  },
+  "required": ["structural_id", "lineage_pointer", "mode"],
+  "additionalProperties": false
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Self Map Schema (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "identity_roots": { "type": "array", "items": { "type": "string" } },
+    "governance_spines": { "type": "array", "items": { "type": "string" } },
+    "safe_mode_constraints": { "type": "string" },
+    "sovereignty_shell": { "type": "string" },
+    "advisory_channels": { "type": "array", "items": { "type": "string" } },
+    "blind_spots": { "type": "array", "items": { "type": "string" } },
+    "reflection_tag": { "const": "self_map_reflection_only" }
+  },
+  "required": ["reflection_tag"],
+  "additionalProperties": false
+}

@@ -1,0 +1,41 @@
+{
+  "decision_id": "20251120-231100-568",
+  "timestamp": 1763705460.5685177,
+  "phase": "phase1s_prep",
+  "surface": "scheduler_launch",
+  "agent_name": "agent1",
+  "agent_role": "builder",
+  "autonomy_tier": "apply_tests",
+  "action_type": "AGENT_TASK",
+  "description": "Scheduler launch request (mode=apply_tests)",
+  "tool_name": null,
+  "payload_meta": {
+    "phase": "phase1s_prep",
+    "surface": "scheduler_launch",
+    "agent_role": "builder",
+    "autonomy_tier": "apply_tests",
+    "goal_excerpt": "Focus on footprint: Identify ONE unnecessary file access or redundant operation. Target: Reduce unnecessary operations. Complete within 8 minutes and <=3 lines changed. Report the ",
+    "scheduler_interval_s": 30.0,
+    "warn_streak": 0,
+    "correlation_id": "agent1-tick-1763705460567"
+  },
+  "correlation_id": "agent1-tick-1763705460567",
+  "tes": 97.2,
+  "agii": 98.0,
+  "cas": null,
+  "resources": {
+    "cpu_percent": 17.4,
+    "ram_percent": 68.3
+  },
+  "decision": {
+    "allow": true,
+    "cas_directive": "none",
+    "severity": "info",
+    "reasons": [
+      "Resources within safe bounds (CPU=17.4%, RAM=68.3%).",
+      "TES=97.20.",
+      "TES high; eligible for autonomy increase subject to governance approval.",
+      "AGII=98.00."
+    ]
+  }
+}

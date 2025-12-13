@@ -1,4 +1,9 @@
 profile: User1
+station:
+  name: "Station Calyx"
+  motto: "Station Calyx is the flag we fly; autonomy is the dream we share."
+  directives:
+    - "Maintain system uptime > 90% over 24 h."
 paths:
   root: C:\Calyx_Terminal
   projects: C:\Calyx_Terminal\Projects
@@ -9,12 +14,12 @@ paths:
   scripts: C:\Calyx_Terminal\Scripts
   memory: C:\Calyx_Terminal\Memory
 settings:
-  faster_whisper_device: "cpu"
-  faster_whisper_compute_type: "float32"
+  faster_whisper_device: "cuda"
+  faster_whisper_compute_type: "float16"
   model_size: "small"
   mic_device_index: 1
   samplerate: 44100
-  silence_gate: 0.099191
+  silence_gate: 0.06
   gain_cap: 3.0
   chunk_ms: 1000
   overlap_ms: 500
@@ -22,5 +27,341 @@ settings:
   beam_size: 5
   best_of: 5
   temperature: 0.0
+  # LLM GPU acceleration (llama_cpp offloading)
+  # Optimized 2025-10-24 by Cheetah: Reduce CPU overhead, maximize GPU utilization
+  llm:
+    gpu_offload_layers: -1  # -1 = all layers to GPU, 0 = CPU only
+    gpu_threads: 4          # Reduced from 6: Lower CPU usage, stable GPU inference
+    cpu_threads: 2          # Reduced from 6: Minimal CPU threads for GPU-accelerated work
+    enable_gpu: true        # Enable GPU acceleration when available
+  # Wake-word / KWS / biasing settings (defaults keep current behaviour)
+  wake_word: "Calyx"
+  bias:
+    enable_initial_prompt: false
+    initial_prompt_text: "Words you may hear: Calyx, Aurora, terminal, system."
+    beam_size: 5
+    best_of: 5
+    temperature: 0.0
+    word_timestamps: true
+    no_speech_threshold: 0.6
+    log_prob_threshold: -1.0
+    compression_ratio_threshold: 2.4
+  kws:
+    enabled: true
+    variants: ["calix","kaylix","calyxes","kelly's","kallax","caleks"]
+    trigger_threshold: 0.85
+    near_miss_low: 0.60
+    near_miss_high: 0.84
+    weights:
+      phonetic: 0.5
+      lev: 0.3
+      decoder: 0.2
+      # Additional guarded weight for the soft-phonetic confusables heuristic (default OFF)
+      phonetic_soft: 0.0
+    # Guard and parameters for soft phonetic fusion against confusables
+    phonetic:
+      allow: false
+      confusables: ["alex","galaxy","helix","kallax","kaylee","kelly's","call it","kellix"]
+  vad:
+    webrtcvad_enabled: true
+    silence_gate: 0.025
+  streaming:
+    chunk_ms: 1000
+    overlap_ms: 500
+  # Rescoring and guard rails
+  rescore_min_sec: 0.05
+  rescore_max_sec: 3.0
+  rescore_cooldown_sec: 5.0
+  rescore_strong_bias_prompt: "You may hear the proper noun 'Calyx' (pronounced KAY-liks). If unsure between 'Calix' and 'Calyx', prefer 'Calyx'."
+  auto_replace_threshold: 0.85
+  svf:
+    single_pass: true
+    max_msgs_per_cycle: 1
+  routing:
+    uncertain_band: [0.35, 0.55]
+    llm_allowed:
+      - uncertain_band
+      - human_request
+  caps:
+    cp6_per_10min: 1
+    cp7_per_15min: 1
+  scheduler:
+    interval_sec: 480  # Throttled: Increased from 240 to reduce CPU load (2025-10-26 CP16)
+    model_id: "tinyllama-1.1b-chat-q5_k_m"
+    adaptive_backoff: true
+    auto_promote: true
+    promote_after: 5
+    cooldown_mins: 15
+    # Cascading Micro-Task Architecture - Bloom cadence for multimodal drills
+    agent2_interval_sec: 420  # Bloom mode: tighter cadence for specialization drills
+    agent3_interval_sec: 540  # Bloom mode: align with multimodal training windows
+    agent4_enabled: true  # Enabled 2025-11-04: TES >=95 (48h), CPU load <70%, AREI >=95
+    agent4_interval_sec: 660  # Bloom cadence for advanced multimodal agent
+    agent1_max_steps: 5  # Standard task mode - re-enabled for teaching
+    agent2_max_steps: 5
+    agent3_max_steps: 5
+    agent4_max_steps: 5
+    micro_task_mode: false  # Disabled to allow proper teaching operations
+    cascading_learning: true  # Keep knowledge accumulation enabled
+    # Teaching mode re-enabled 2025-10-23 - Full task processing restored
+    # Research Mode Optimizations 2025-10-25: TES-focused improvements
+    research_mode:
+      enabled: true
+      tes_focus: true
+      goal_templates:
+        stability: "Improve code stability: Add one safety check, error handling, or validation. Complete in under 90s with under 2 files changed. Target: TES stability 0.8+"
+        velocity: "Optimize execution speed: Refactor one inefficient pattern or streamline one process. Complete in under 90s with under 2 files changed. Target: TES velocity 0.7+"
+        footprint: "Minimize change scope: Make one targeted improvement affecting 1 file max. Complete in under 90s. Target: TES footprint 0.8+"
+        balanced: "Make one balanced improvement: Small code quality fix improving clarity or consistency. Complete in under 90s with under 2 files changed. Target: TES 85+"
+      tes_thresholds:
+        min_tes_for_promotion: 80  # Must achieve TES >=80 before auto-promotion
+        stability_target: 0.85  # Target stability score
+        velocity_target: 0.70  # Target velocity score
+        footprint_target: 0.70  # Target footprint score
+      execution_strategy:
+        prioritize_stability: true  # Phase 1: Focus on stability
+        max_duration_sec: 90  # Target completion in under 90s
+        max_files_changed: 2  # Limit changes to maintain footprint score
+        conservative_first: true  # Start with conservative modes
+        validation_required: true  # Always validate before applying
+    bloom_mode:
+      enabled: true
+      autonomy_promotion:
+        agii_min: 95
+        tes_min: 95
+        arei_min: 90
+        warn_ratio_max: 0.05
+      specialization_pillars:
+        - name: "multimodal_perception"
+          focus_modes: ["tests", "apply_tests"]
+          curriculum: ["vision tagging", "audio alignment", "text reasoning"]
+        - name: "systems_excellence"
+          focus_modes: ["apply_tests"]
+          curriculum: ["self-healing", "resource arbitration", "watchdog co-training"]
+      objectives:
+        agent2:
+          mode: "tests"
+          agent_args: "--skip-patches --run-tests"
+          goal: "Perception drill: Improve multimodal tagging pipeline by adding or refining ONE vision/audio alignment signal (<3 lines, <=2 files). Emphasize clarity and instrumentation."
+        agent3:
+          mode: "tests"
+          agent_args: "--skip-patches --run-tests"
+          goal: "Cross-modal reasoning pulse: Strengthen text reasoning that references visual/audio cues. Make a lightweight consistency tweak and suggest the next perception check."
+        agent4:
+          mode: "apply_tests"
+          agent_args: "--apply --run-tests"
+          goal: "Systems excellence focus: reinforce self-healing or watchdog co-training by adding one guard, telemetry hook, or recovery note. Keep change surgically small."
+  navigator:
+    control_interval_sec: 60
+  triage:
+    use_llm: false  # LLM deps offline on Windows; thin probes only until cp6 stack restored
+    thin_probe:
+      - ps
+      - disk
+      - mem
+      - ports
+      - recent_excs
+    # Cheetah memory optimization 2025-10-24: Balanced pulse rate for memory efficiency
+    pulse_interval_sec: 3  # Triage pulse at 3s = 20/min (optimized for memory efficiency)
+  svf:
+    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
+  # AI-for-All Teaching System Configuration
+  ai4all_teaching:
+    enabled: true
+    config_path: "Projects/AI_for_All/config/teaching_config.json"
+    agent_configs_path: "Projects/AI_for_All/config/agent_teaching_configs.json"
+    heartbeat_interval: 60
+    monitoring:
+      enabled: true
+      interval: 60
+      alerting: true
+      alert_thresholds:
+        performance_decline: -0.1
+        adaptation_failure_rate: 0.5
+        system_stability: 0.7
+        resource_usage: 0.8
+    agents:
+      agent1:
+        enabled: true
+        learning_objectives: ["task_efficiency", "stability"]
+        baseline_metrics: {"tes": 85, "stability": 0.9, "velocity": 0.5}
+      triage:
+        enabled: true
+        learning_objectives: ["latency_optimization", "stability"]
+        baseline_metrics: {"tes": 90, "stability": 0.95, "velocity": 0.8}
+      cp6:
+        enabled: true
+        learning_objectives: ["interaction_efficiency", "harmony"]
+        baseline_metrics: {"harmony_score": 75, "interaction_quality": 0.8}
+      cp7:
+        enabled: true
+        learning_objectives: ["diagnostic_accuracy", "reporting_efficiency"]
+        baseline_metrics: {"accuracy": 0.9, "efficiency": 0.85}
+    learning:
+      enhanced_features: true
+      cross_domain_learning: true
+      predictive_optimization: true
+      neural_network_integration: false  # Enable when neural networks available
+    safety:
+      performance_protection: true
+      max_adaptation_attempts: 10
+      min_improvement_threshold: 0.05
+      emergency_thresholds:
+        tes: 0.3
+        stability: 0.2
+        error_rate: 0.8
 
+# Systems Resources Agent Configuration - Resource Optimization Framework
+resource_management:
+  enabled: true
+  priority_levels:
+    critical: ["emergency_responses", "system_stability"]
+    high: ["agent_operations", "teaching_updates"]
+    normal: ["monitoring", "logging"]
+    low: ["background_tasks", "analytics"]
 
+  adaptive_thresholds:
+    cpu_usage_soft_limit: 60%  # Phase 2: Lowered from 70% for aggressive recovery
+    cpu_usage_hard_limit: 75%  # Phase 2: Lowered from 85% for aggressive recovery
+    memory_soft_limit: 96%     # Bloom mode: allow multimodal drills while AREI stays >=90
+    memory_hard_limit: 98%     # Bloom mode: still below saturation, watchdog enforced
+    disk_io_soft_limit: 60%
+    disk_io_hard_limit: 80%
+
+  agent_profiles:
+    agent1:
+      priority: "high"
+      cpu_limit: 50%  # Cheetah training boost 2025-10-24: Increased from 40% for Agent1 training advancement
+      memory_limit: 400MB  # Cheetah training boost 2025-10-24: Increased from 300MB for Agent1 training advancement
+      io_priority: "high"
+      model_id: "qwen2.5-omni-7b-q4_k_m"  # Cheetah LLM distribution: GPU model for complex reasoning
+    agent2:
+      priority: "high"
+      cpu_limit: 45%  # Cheetah Phase 1 training boost 2025-10-24: Increased for Agent2 training advancement
+      memory_limit: 350MB  # Cheetah Phase 1 training boost 2025-10-24: Increased for Agent2 training advancement
+      io_priority: "high"
+      model_id: "qwen2.5-omni-7b-q4_k_m"  # Cheetah LLM distribution: GPU model for protocol development
+    agent3:
+      priority: "high"
+      cpu_limit: 35%  # Cheetah resource optimization 2025-10-24: Reduced from 45% - CPU model doesn't need high limits
+      memory_limit: 250MB  # Cheetah resource optimization 2025-10-24: Reduced from 350MB - CPU model is memory efficient
+      io_priority: "high"
+      model_id: "tinyllama-1.1b-chat-q5_k_m"  # Cheetah LLM distribution: CPU model for lightweight monitoring
+    agent4:
+      priority: "high"
+      cpu_limit: 35%  # Cheetah resource optimization 2025-10-24: Reduced from 45% - CPU model doesn't need high limits
+      memory_limit: 250MB  # Cheetah resource optimization 2025-10-24: Reduced from 350MB - CPU model is memory efficient
+      io_priority: "high"
+      model_id: "tinyllama-1.1b-chat-q5_k_m"  # Cheetah LLM distribution: CPU model for lightweight expansion
+    triage:
+      priority: "critical"
+      cpu_limit: 20%
+      memory_limit: 100MB
+      io_priority: "critical"
+    cp6:
+      priority: "normal"
+      cpu_limit: 10%  # Phase 2: Reduced from 15%
+      memory_limit: 100MB  # Cheetah optimization 2025-10-24: Reduced from 150MB
+      io_priority: "normal"
+    cp7:
+      priority: "normal"
+      cpu_limit: 10%  # Phase 2: Reduced from 15%
+      memory_limit: 100MB  # Cheetah optimization 2025-10-24: Reduced from 150MB
+      io_priority: "normal"
+    cp8:
+      priority: "normal"
+      cpu_limit: 10%  # Phase 2: Reduced from 15%
+      memory_limit: 100MB  # Cheetah optimization 2025-10-24: Reduced from 150MB
+      io_priority: "normal"
+    cp9:
+      priority: "normal"
+      cpu_limit: 10%  # Phase 2: Reduced from 15%
+      memory_limit: 100MB  # Cheetah optimization 2025-10-24: Reduced from 150MB
+      io_priority: "normal"
+    cp10:
+      priority: "normal"
+      cpu_limit: 10%  # Phase 2: Reduced from 15%
+      memory_limit: 100MB  # Cheetah optimization 2025-10-24: Reduced from 150MB
+      io_priority: "normal"
+    teaching_system:
+      priority: "high"
+      cpu_limit: 20%  # Phase 2: Reduced from 25%
+      memory_limit: 150MB  # Cheetah optimization 2025-10-24: Reduced from 200MB
+      io_priority: "high"
+
+# Enhanced Logging Optimization Configuration
+logging_optimization:
+  enabled: true
+  compression:
+    enable_auto_compress: true
+    compress_after_days: 7
+    compression_format: "gzip"
+
+  retention_policies:
+    agent_metrics: 90_days
+    system_heartbeats: 30_days
+    svf_communications: 60_days
+    debug_logs: 14_days
+
+  deduplication:
+    enable_cross_system: true
+    similarity_threshold: 0.85
+    batch_size: 1000
+
+  buffering:
+    enable_buffered_writes: true
+    buffer_size: 8192
+    flush_interval: 30
+    priority_flushing: true
+
+# SVF Communication Optimization Configuration
+svf_optimization:
+  enabled: true
+  adaptive_intervals:
+    base_interval: 5  # seconds
+    low_activity_interval: 15
+    high_activity_interval: 2
+    activity_threshold: 10  # messages per minute
+
+  message_optimization:
+    enable_compression: true
+    compression_threshold: 1024  # bytes
+    selective_routing: true
+    context_aware_delivery: true
+
+  resource_management:
+    max_concurrent_dialogues: 5
+    message_queue_size: 100
+    heartbeat_batch_size: 10
+
+# AI-for-All Teaching System Resource Optimization
+ai4all_optimization:
+  enabled: true
+  resource_aware_teaching:
+    enable_adaptive_scheduling: true
+    low_resource_mode: true
+    teaching_batch_size: 50
+    max_concurrent_learners: 3
+
+  knowledge_sharing:
+    compression_enabled: true
+    selective_sync: true
+    sync_batch_size: 100
+    resource_priority: "medium"
+
+  performance_protection:
+    emergency_resource_thresholds:
+      cpu_usage: 80%
+      memory_usage: 85%
+      disk_io: 75%
+    auto_scale_back: true
+    scale_back_factor: 0.5
+runtimes:
+  comm_bridge:
+    enabled: true              # Architect toggle for CRB-0
+    mode: "manual"             # never "auto"
+    health_requirements:
+      min_disk_free: 0.10      # 10% free disk minimum
+      max_cpu_load_1m: 0.95    # allow up to 95% avg load
+      require_safe_mode: true  # only run when Station is in Safe Mode
+# all other policy/spec docs are informational unless explicitly promoted

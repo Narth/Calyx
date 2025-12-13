@@ -1,0 +1,12 @@
+{
+  "title": "Telemetry Mirror (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "source": { "type": "string" },
+    "signal": { "type": "string" },
+    "value": { "type": "string" },
+    "timestamp": { "type": "string" }
+  },
+  "required": ["source", "signal"],
+  "additionalProperties": false
+}

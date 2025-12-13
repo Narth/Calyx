@@ -1,0 +1,785 @@
+{
+  "run_id": "OD-GENERATION-2025-12-13-B",
+  "run_start_utc": "2025-12-13T17:40:56.338Z",
+  "run_end_utc": "2025-12-13T17:43:41.764Z",
+  "run_duration_sec": 165.4258197,
+  "coverage": {
+    "coverage_pct": 0.9859756023841476,
+    "median_dt": 2.088,
+    "max_gap": 2.139,
+    "degraded": false
+  },
+  "overall": {
+    "n_samples": 79,
+    "cpu": {
+      "avg": 15.308860759493673,
+      "max": 20.7
+    },
+    "ram_gb": {
+      "avg": 15.820721518987341,
+      "max": 15.855
+    },
+    "ram_percent": {
+      "avg": 49.67848101265823,
+      "max": 49.8
+    },
+    "gpu_util": {
+      "avg": 14.075949367088608,
+      "max": 24.0
+    },
+    "gpu_mem_mb": {
+      "avg": 1741.26582278481,
+      "max": 1750.0
+    },
+    "gpu_power_w": {
+      "avg": 16.136708860759494,
+      "max": 40.93
+    },
+    "gpu_energy_wh": 0.7315665180555551,
+    "power_coverage": 0.9999999999999997
+  },
+  "per_prompt": [
+    {
+      "prompt_id": "OD-01",
+      "start_utc": "2025-12-13T17:40:56.469Z",
+      "end_utc": "2025-12-13T17:41:04.597Z",
+      "duration_sec": 8.1278546,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 17.25,
+          "max": 19.5
+        },
+        "ram_gb": {
+          "avg": 15.85225,
+          "max": 15.855
+        },
+        "ram_percent": {
+          "avg": 49.775,
+          "max": 49.8
+        },
+        "gpu_util": {
+          "avg": 15.25,
+          "max": 22.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1746.5,
+          "max": 1750.0
+        },
+        "gpu_power_w": {
+          "avg": 15.575000000000001,
+          "max": 16.69
+        },
+        "gpu_energy_wh": 0.02686662222222222,
+        "power_coverage": 1.0000000000000002
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-02",
+      "start_utc": "2025-12-13T17:41:04.727Z",
+      "end_utc": "2025-12-13T17:41:12.856Z",
+      "duration_sec": 8.1286271,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.175,
+          "max": 17.6
+        },
+        "ram_gb": {
+          "avg": 15.81925,
+          "max": 15.851
+        },
+        "ram_percent": {
+          "avg": 49.675,
+          "max": 49.8
+        },
+        "gpu_util": {
+          "avg": 8.75,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1742.0,
+          "max": 1742.0
+        },
+        "gpu_power_w": {
+          "avg": 22.5725,
+          "max": 40.93
+        },
+        "gpu_energy_wh": 0.042613736111111106,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-03",
+      "start_utc": "2025-12-13T17:41:12.985Z",
+      "end_utc": "2025-12-13T17:41:21.117Z",
+      "duration_sec": 8.131202,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.0,
+          "max": 20.7
+        },
+        "ram_gb": {
+          "avg": 15.8255,
+          "max": 15.833
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 14.0,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.75,
+          "max": 1742.0
+        },
+        "gpu_power_w": {
+          "avg": 15.43,
+          "max": 15.91
+        },
+        "gpu_energy_wh": 0.02691482222222222,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-04",
+      "start_utc": "2025-12-13T17:41:21.246Z",
+      "end_utc": "2025-12-13T17:41:29.376Z",
+      "duration_sec": 8.130219,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.1,
+          "max": 16.2
+        },
+        "ram_gb": {
+          "avg": 15.83,
+          "max": 15.835
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 14.25,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.2775,
+          "max": 15.57
+        },
+        "gpu_energy_wh": 0.026506033333333335,
+        "power_coverage": 0.9999999999999999
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-05",
+      "start_utc": "2025-12-13T17:41:29.507Z",
+      "end_utc": "2025-12-13T17:41:37.641Z",
+      "duration_sec": 8.1336052,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 14.525,
+          "max": 15.5
+        },
+        "ram_gb": {
+          "avg": 15.82725,
+          "max": 15.828
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 13.75,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.379999999999999,
+          "max": 15.81
+        },
+        "gpu_energy_wh": 0.026772187499999996,
+        "power_coverage": 0.9999999999999999
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-06",
+      "start_utc": "2025-12-13T17:41:37.772Z",
+      "end_utc": "2025-12-13T17:41:45.902Z",
+      "duration_sec": 8.1294575,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 16.8,
+          "max": 20.7
+        },
+        "ram_gb": {
+          "avg": 15.8225,
+          "max": 15.828
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 15.5,
+          "max": 21.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.45,
+          "max": 16.08
+        },
+        "gpu_energy_wh": 0.026882440277777774,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-07",
+      "start_utc": "2025-12-13T17:41:46.032Z",
+      "end_utc": "2025-12-13T17:41:54.158Z",
+      "duration_sec": 8.1264614,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 14.275,
+          "max": 16.3
+        },
+        "ram_gb": {
+          "avg": 15.82925,
+          "max": 15.846
+        },
+        "ram_percent": {
+          "avg": 49.725,
+          "max": 49.8
+        },
+        "gpu_util": {
+          "avg": 13.75,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.345,
+          "max": 16.07
+        },
+        "gpu_energy_wh": 0.02685749722222222,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-08",
+      "start_utc": "2025-12-13T17:41:54.286Z",
+      "end_utc": "2025-12-13T17:42:02.417Z",
+      "duration_sec": 8.1313906,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 16.7,
+          "max": 17.9
+        },
+        "ram_gb": {
+          "avg": 15.83325,
+          "max": 15.841
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 16.0,
+          "max": 24.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.63,
+          "max": 16.39
+        },
+        "gpu_energy_wh": 0.027618256944444447,
+        "power_coverage": 1.0000000000000002
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-09",
+      "start_utc": "2025-12-13T17:42:02.549Z",
+      "end_utc": "2025-12-13T17:42:10.681Z",
+      "duration_sec": 8.1315364,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.475,
+          "max": 16.6
+        },
+        "ram_gb": {
+          "avg": 15.8015,
+          "max": 15.843
+        },
+        "ram_percent": {
+          "avg": 49.6,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 16.25,
+          "max": 20.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.252500000000001,
+          "max": 15.8
+        },
+        "gpu_energy_wh": 0.02662718611111111,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-10",
+      "start_utc": "2025-12-13T17:42:10.813Z",
+      "end_utc": "2025-12-13T17:42:18.940Z",
+      "duration_sec": 8.126867,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 14.675,
+          "max": 15.8
+        },
+        "ram_gb": {
+          "avg": 15.777750000000001,
+          "max": 15.782
+        },
+        "ram_percent": {
+          "avg": 49.5,
+          "max": 49.5
+        },
+        "gpu_util": {
+          "avg": 13.5,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.35,
+          "max": 15.77
+        },
+        "gpu_energy_wh": 0.026763630555555556,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-11",
+      "start_utc": "2025-12-13T17:42:19.071Z",
+      "end_utc": "2025-12-13T17:42:27.209Z",
+      "duration_sec": 8.1378875,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.225,
+          "max": 16.7
+        },
+        "ram_gb": {
+          "avg": 15.78225,
+          "max": 15.789
+        },
+        "ram_percent": {
+          "avg": 49.55,
+          "max": 49.6
+        },
+        "gpu_util": {
+          "avg": 13.75,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.419999999999998,
+          "max": 16.33
+        },
+        "gpu_energy_wh": 0.027088238888888887,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-12",
+      "start_utc": "2025-12-13T17:42:27.339Z",
+      "end_utc": "2025-12-13T17:42:35.466Z",
+      "duration_sec": 8.1265601,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.825,
+          "max": 17.0
+        },
+        "ram_gb": {
+          "avg": 15.8155,
+          "max": 15.829
+        },
+        "ram_percent": {
+          "avg": 49.650000000000006,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 14.25,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.5925,
+          "max": 16.14
+        },
+        "gpu_energy_wh": 0.026933637500000003,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-13",
+      "start_utc": "2025-12-13T17:42:35.598Z",
+      "end_utc": "2025-12-13T17:42:43.730Z",
+      "duration_sec": 8.1316387,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.275,
+          "max": 16.3
+        },
+        "ram_gb": {
+          "avg": 15.82425,
+          "max": 15.832
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 15.75,
+          "max": 21.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.317499999999999,
+          "max": 15.49
+        },
+        "gpu_energy_wh": 0.026640336111111114,
+        "power_coverage": 1.0000000000000002
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-14",
+      "start_utc": "2025-12-13T17:42:43.862Z",
+      "end_utc": "2025-12-13T17:42:51.996Z",
+      "duration_sec": 8.1337818,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 16.5,
+          "max": 20.0
+        },
+        "ram_gb": {
+          "avg": 15.83925,
+          "max": 15.848
+        },
+        "ram_percent": {
+          "avg": 49.75,
+          "max": 49.8
+        },
+        "gpu_util": {
+          "avg": 13.5,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.385,
+          "max": 16.03
+        },
+        "gpu_energy_wh": 0.02693015277777778,
+        "power_coverage": 1.0000000000000002
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-15",
+      "start_utc": "2025-12-13T17:42:52.135Z",
+      "end_utc": "2025-12-13T17:43:00.270Z",
+      "duration_sec": 8.1352435,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 13.65,
+          "max": 15.3
+        },
+        "ram_gb": {
+          "avg": 15.82925,
+          "max": 15.835
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 13.25,
+          "max": 14.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.17,
+          "max": 15.31
+        },
+        "gpu_energy_wh": 0.026369284722222223,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-16",
+      "start_utc": "2025-12-13T17:43:00.425Z",
+      "end_utc": "2025-12-13T17:43:08.554Z",
+      "duration_sec": 8.1291597,
+      "n_samples": 3,
+      "metrics": {
+        "n_samples": 3,
+        "cpu": {
+          "avg": 16.166666666666668,
+          "max": 16.9
+        },
+        "ram_gb": {
+          "avg": 15.833333333333334,
+          "max": 15.837
+        },
+        "ram_percent": {
+          "avg": 49.70000000000001,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 14.666666666666666,
+          "max": 17.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.12,
+          "max": 15.35
+        },
+        "gpu_energy_wh": 0.017496625,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-17",
+      "start_utc": "2025-12-13T17:43:08.699Z",
+      "end_utc": "2025-12-13T17:43:16.837Z",
+      "duration_sec": 8.1371873,
+      "n_samples": 3,
+      "metrics": {
+        "n_samples": 3,
+        "cpu": {
+          "avg": 14.133333333333333,
+          "max": 16.4
+        },
+        "ram_gb": {
+          "avg": 15.814666666666668,
+          "max": 15.815
+        },
+        "ram_percent": {
+          "avg": 49.70000000000001,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 14.0,
+          "max": 16.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 15.043333333333331,
+          "max": 15.35
+        },
+        "gpu_energy_wh": 0.01755621111111111,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-18",
+      "start_utc": "2025-12-13T17:43:16.966Z",
+      "end_utc": "2025-12-13T17:43:25.105Z",
+      "duration_sec": 8.1389651,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 14.450000000000001,
+          "max": 18.1
+        },
+        "ram_gb": {
+          "avg": 15.815249999999999,
+          "max": 15.817
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 8.5,
+          "max": 15.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1741.0,
+          "max": 1741.0
+        },
+        "gpu_power_w": {
+          "avg": 22.445,
+          "max": 40.75
+        },
+        "gpu_energy_wh": 0.043306219444444446,
+        "power_coverage": 1.0000000000000002
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-19",
+      "start_utc": "2025-12-13T17:43:25.235Z",
+      "end_utc": "2025-12-13T17:43:33.363Z",
+      "duration_sec": 8.1281253,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 15.475,
+          "max": 16.5
+        },
+        "ram_gb": {
+          "avg": 15.824,
+          "max": 15.833
+        },
+        "ram_percent": {
+          "avg": 49.7,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 14.5,
+          "max": 16.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1740.0,
+          "max": 1740.0
+        },
+        "gpu_power_w": {
+          "avg": 15.485,
+          "max": 16.29
+        },
+        "gpu_energy_wh": 0.026948283333333337,
+        "power_coverage": 1.0
+      },
+      "non_generation": false
+    },
+    {
+      "prompt_id": "OD-20",
+      "start_utc": "2025-12-13T17:43:33.497Z",
+      "end_utc": "2025-12-13T17:43:41.632Z",
+      "duration_sec": 8.134145,
+      "n_samples": 4,
+      "metrics": {
+        "n_samples": 4,
+        "cpu": {
+          "avg": 14.7,
+          "max": 16.0
+        },
+        "ram_gb": {
+          "avg": 15.824,
+          "max": 15.829
+        },
+        "ram_percent": {
+          "avg": 49.675000000000004,
+          "max": 49.7
+        },
+        "gpu_util": {
+          "avg": 17.75,
+          "max": 19.0
+        },
+        "gpu_mem_mb": {
+          "avg": 1740.0,
+          "max": 1740.0
+        },
+        "gpu_power_w": {
+          "avg": 15.9475,
+          "max": 16.54
+        },
+        "gpu_energy_wh": 0.02791322361111111,
+        "power_coverage": 1.0000000000000002
+      },
+      "non_generation": false
+    }
+  ],
+  "degraded": false,
+  "degraded_reasons": []
+}

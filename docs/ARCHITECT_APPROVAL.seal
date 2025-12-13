@@ -1,0 +1,9 @@
+# Architect Approval Seal (Ceremonial, Non-Operational)
+scope: Gated changes requiring human authorization
+architect: Jorge Castro
+timestamp: 2025-11-30T17:32:10.6267709-07:00
+approval_status: pending / informational only
+signature_block: |
+  (Architect signature here)
+
+Notes: For documenting human authorization of gated changes; does not self-authorize or enforce.

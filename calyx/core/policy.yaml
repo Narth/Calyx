@@ -1,0 +1,8 @@
+﻿# Station Calyx policy baseline for CBO governance
+# all other policy/spec docs are informational unless explicitly promoted
+allow_api: false
+max_cpu_pct: 70  # CGPT recommendation: Reduced from 80% for stability (stability drops with contention)
+max_ram_pct: 80  # CGPT recommendation: Reduced from 85% for stability
+allow_unregistered_agents: false
+log_manifest_required: true
+restart_on_violation: true

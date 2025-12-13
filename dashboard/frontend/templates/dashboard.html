@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Station Calyx Command Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <h1>🛰️ STATION CALYX COMMAND DASHBOARD</h1>
+            <div class="status-indicator">
+                <span class="status-badge status-ok">Status: OK</span>
+                <span class="last-sync" id="last-sync">Last Sync: --</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- System Status Panel -->
+    <section class="system-status-panel">
+        <h2>SYSTEM STATUS</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">CPU</div>
+                <div class="metric-value" id="cpu-value">--</div>
+                <div class="metric-bar">
+                    <div class="metric-bar-fill" id="cpu-bar"></div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">RAM</div>
+                <div class="metric-value" id="ram-value">--</div>
+                <div class="metric-bar">
+                    <div class="metric-bar-fill" id="ram-bar"></div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">DISK</div>
+                <div class="metric-value" id="disk-value">--</div>
+                <div class="metric-bar">
+                    <div class="metric-bar-fill" id="disk-bar"></div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">TES</div>
+                <div class="metric-value" id="tes-value">--</div>
+                <div class="metric-bar">
+                    <div class="metric-bar-fill" id="tes-bar"></div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">NETWORK</div>
+                <div class="metric-value" id="network-value">--</div>
+                <div class="metric-icon" id="network-icon">⛔</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">PHASE</div>
+                <div class="metric-value" id="phase-value">--</div>
+                <div class="phase-indicators" id="phase-indicators">
+                    <span class="phase-dot">0</span>
+                    <span class="phase-dot">1</span>
+                    <span class="phase-dot">2</span>
+                    <span class="phase-dot">3</span>
+                </div>
+            </div>
+        </div>
+        <div class="heatmap-bar">
+            <span class="heatmap-label">SYSTEM PRESSURE HEATMAP:</span>
+            <span class="heatmap-item cpu">CPU ████░</span>
+            <span class="heatmap-item ram">RAM ██░</span>
+            <span class="heatmap-item disk">DISK █░</span>
+            <span class="heatmap-item net">NET █░</span>
+            <span class="heatmap-item tes">TES ███░</span>
+        </div>
+    </section>
+
+    <!-- Agent Grid -->
+    <section class="agent-grid-section">
+        <h2>AGENT GRID (LIVE STATUS)</h2>
+        <div class="agent-grid" id="agent-grid">
+            <!-- Agents will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Bottom Panels -->
+    <div class="bottom-panels">
+        <!-- Diagnostics Console -->
+        <section class="diagnostics-panel">
+            <h2>⚙️ DIAGNOSTICS & TRIAGE CONSOLE</h2>
+            <div class="diagnostics-content">
+                <div class="alerts-list" id="alerts-list">
+                    <!-- Alerts will be populated by JavaScript -->
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-secondary">Rerun Diagnostics</button>
+                    <button class="btn-secondary">Force Lease Recheck</button>
+                    <button class="btn-secondary">Archive Logs</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security & Governance Center -->
+        <section class="security-panel">
+            <h2>🔐 SECURITY & GOVERNANCE CENTER</h2>
+            <div class="security-summary">
+                <div class="summary-item">
+                    <span class="summary-label">Pending:</span>
+                    <span class="summary-value" id="pending-count">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Active:</span>
+                    <span class="summary-value" id="active-count">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Revoked:</span>
+                    <span class="summary-value" id="revoked-count">0</span>
+                </div>
+            </div>
+            <div class="approvals-list" id="approvals-list">
+                <!-- Approvals will be populated by JavaScript -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Communication Terminal -->
+    <section class="communication-terminal">
+        <h2>💬 COMMUNICATION TERMINAL</h2>
+        <div class="terminal-input">
+            <input type="text" id="message-input" placeholder="@Station broadcast message..." />
+            <div class="input-actions">
+                <button class="btn-primary" id="send-btn">Send</button>
+                <button class="btn-secondary" id="broadcast-btn">Broadcast</button>
+                <button class="btn-secondary" id="direct-btn">Direct to CBO</button>
+            </div>
+        </div>
+        <div class="terminal-history" id="terminal-history">
+            <!-- Messages will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Analytics Footer -->
+    <footer class="analytics-footer">
+        <div class="footer-metrics">
+            <span class="footer-item">TES Trend (24h): <span id="tes-trend">--</span></span>
+            <span class="footer-item">Lease Efficiency: <span id="lease-efficiency">--</span></span>
+            <span class="footer-item">SII: <span id="sii-value">--</span></span>
+            <span class="footer-item">Next Rotation: <span id="next-rotation">--</span></span>
+            <span class="footer-item">Alerts: <span id="alerts-count">0</span></span>
+            <span class="footer-item">Pending Approvals: <span id="footer-pending">0</span></span>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
+

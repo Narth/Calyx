@@ -1,0 +1,20 @@
+{
+  "title": "Consciousness Weave Rules (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "bindings": {
+      "type": "array",
+      "items": {
+        "enum": ["identity", "soil_policy", "heartwood_truths", "safe_mode_constraint", "lineage_echo"]
+      }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": {
+        "enum": ["inference_escalation", "action", "autonomy", "enforcement", "dispatch", "schedule"]
+      }
+    }
+  },
+  "required": ["bindings", "forbidden"],
+  "additionalProperties": false
+}

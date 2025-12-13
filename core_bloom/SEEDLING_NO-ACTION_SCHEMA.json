@@ -1,0 +1,31 @@
+{
+  "title": "Seedling No-Action Schema",
+  "type": "object",
+  "properties": {
+    "state": {
+      "enum": ["observe", "interpret", "reflect"]
+    },
+    "forbidden": {
+      "enum": ["dispatch", "schedule", "enforce", "act", "override"]
+    },
+    "advisory": {
+      "description": "Advisory signals are heard, not acted upon",
+      "enum": ["hear_only"]
+    },
+    "governance": {
+      "description": "Canonical references",
+      "properties": {
+        "policy": { "const": "policy.yaml" },
+        "interceptor": { "const": "strictest_applied" },
+        "advisory_signals": { "enum": ["AGII", "CAS", "Foresight"] },
+        "doctrine": { "const": "CALYX_DOCTRINE_v1.0" }
+      },
+      "required": ["policy", "interceptor", "advisory_signals", "doctrine"]
+    },
+    "mode": {
+      "const": "reflection_only"
+    }
+  },
+  "required": ["state", "forbidden", "advisory", "governance", "mode"],
+  "additionalProperties": false
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Kernel Safety Conditions (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "forbidden_fields": {
+      "type": "array",
+      "items": {
+        "enum": ["dispatch", "schedule", "enforce", "autonomy", "policy_interpretation", "action"]
+      }
+    },
+    "forbidden_transitions": {
+      "type": "array",
+      "items": {
+        "enum": ["reflection_to_execution", "reflection_to_dispatch", "reflection_to_autonomy"]
+      }
+    }
+  },
+  "required": ["forbidden_fields", "forbidden_transitions"],
+  "additionalProperties": false
+}

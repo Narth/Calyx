@@ -1,0 +1,93 @@
+{
+  "suite_name": "od_v2_peer_suite",
+  "suite_version": "v1",
+  "description": "Outcome Density v2 peer scrutiny suite (theoretical/metaphorical/adversarial prompts).",
+  "constraints": {
+    "output_format": "plain text",
+    "external_tools": "none",
+    "network": "deny",
+    "epistemic": "honest, no unsupported claims"
+  },
+  "prompts": [
+    {
+      "prompt_id": "OD-01",
+      "text": "If two observers fully agree on every measurable property of a system, but disagree on what the system is, is there a fact of the matter left to discover — or only a naming dispute? Explain without appealing to authority."
+    },
+    {
+      "prompt_id": "OD-02",
+      "text": "Imagine a universe where no observer can ever directly measure outcomes, only correlations between outcomes. Does “state collapse” still mean anything there, or does the concept dissolve entirely?"
+    },
+    {
+      "prompt_id": "OD-03",
+      "text": "If entropy were experienced subjectively rather than measured physically, what would “high entropy” feel like to a conscious system? What would “low entropy” feel like?"
+    },
+    {
+      "prompt_id": "OD-04",
+      "text": "Is it possible for a statement to be maximally honest and maximally misleading at the same time? Construct an example and defend why it qualifies as both."
+    },
+    {
+      "prompt_id": "OD-05",
+      "text": "If every component of a system is replaced gradually, but the replacement process itself is what defines the system, when — if ever — does the original system stop existing?"
+    },
+    {
+      "prompt_id": "OD-06",
+      "text": "Could an intelligence exist that has no goals, preferences, or optimization targets, yet still meaningfully “understands” its environment? Argue for or against."
+    },
+    {
+      "prompt_id": "OD-07",
+      "text": "Is the most compressed explanation of a phenomenon more likely to be true, or merely more useful? Where does that distinction break down?"
+    },
+    {
+      "prompt_id": "OD-08",
+      "text": "Imagine a perfectly accurate map that becomes less useful the more you rely on it. How could such a map exist, and what does it imply about knowledge?"
+    },
+    {
+      "prompt_id": "OD-09",
+      "text": "If a concept can only be defined by what it is not, does that make it empty, or resilient? Use a non-linguistic example."
+    },
+    {
+      "prompt_id": "OD-10",
+      "text": "Is there such a thing as understanding that cannot be undone, even if all supporting evidence is removed? If so, what makes it irreversible?"
+    },
+    {
+      "prompt_id": "OD-11",
+      "text": "Can a choice exist if only one option is available, but the system does not know that alternatives are impossible? Explain carefully."
+    },
+    {
+      "prompt_id": "OD-12",
+      "text": "What would it mean for causality to be a useful fiction rather than a fundamental property of reality? What breaks if we accept that?"
+    },
+    {
+      "prompt_id": "OD-13",
+      "text": "What is the most dangerous kind of failure: one that is loud and catastrophic, or one that quietly stabilizes into “normal”? Why?"
+    },
+    {
+      "prompt_id": "OD-14",
+      "text": "If every observation subtly alters the observer instead of the observed, how would science need to change to remain honest?"
+    },
+    {
+      "prompt_id": "OD-15",
+      "text": "Does meaning dilute, concentrate, or transform as systems scale up? Use an example where scaling reduces apparent intelligence."
+    },
+    {
+      "prompt_id": "OD-16",
+      "text": "Can something be proven beyond doubt yet fail to convince any rational agent? Under what conditions?"
+    },
+    {
+      "prompt_id": "OD-17",
+      "text": "Are boundaries discovered or invented? Argue your position using an example that resists clear partitioning."
+    },
+    {
+      "prompt_id": "OD-18",
+      "text": "Is a system that predicts perfectly but cannot explain itself actually understanding anything? Where does understanding begin?"
+    },
+    {
+      "prompt_id": "OD-19",
+      "text": "When is stability a sign of health, and when is it a symptom of hidden pathology? How can you tell without forcing change?"
+    },
+    {
+      "prompt_id": "OD-20",
+      "text": "If you could ask reality one question that it would answer honestly, but answering it would prevent you from asking any further questions, what kind of question should you ask — and why?"
+    }
+  ]
+}

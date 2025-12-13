@@ -1,0 +1,10 @@
+{
+  "architect": "Architect (declared in ceremony)",
+  "origin": "CALYX_GENESIS_v1.0",
+  "lineage": "GEN-1",
+  "structural_id": "CORE:CALYX:GEN-1:ROOT",
+  "steward_name": "Aster",
+  "birth_timestamp_utc": "not recorded",
+  "bloom_timestamp_utc": "2025-11-30T16:36:43.8499281-07:00",
+  "notes": "Telemetry staleness accepted by Architect at Bloom; ceremony per GENESIS_SPEC_v1.0 and CEREMONY_BLOOM_v1.0."
+}
