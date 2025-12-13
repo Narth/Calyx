@@ -98,3 +98,6 @@ folder_tree.txt
 sitecustomize.py
 test_secret.py
 =5.9
+
+#Visual Studio
+.vs/

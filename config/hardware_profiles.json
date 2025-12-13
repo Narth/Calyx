@@ -1,0 +1,251 @@
+{
+  "profiles": {
+    "desktop_m965jsc_entry": {
+      "description": "Razer Blade Stealth - Entry-level mobile GPU baseline",
+      "hardware": {
+        "gpu": {
+          "name": "GeForce MX150",
+          "memory_gb": 4,
+          "compute_capability": "6.1",
+          "tier": "entry_level_mobile"
+        },
+        "cpu": {
+          "model": "Intel mobile (detected at runtime)",
+          "cores_physical": 4,
+          "cores_logical": 8
+        },
+        "memory": {
+          "total_gb": 16
+        },
+        "form_factor": "laptop_thin_light"
+      },
+      "performance_targets": {
+        "whisper_latency_ms": {
+          "target": 2000,
+          "acceptable_max": 3000,
+          "description": "Wake-word detection latency"
+        },
+        "llm_inference_tokens_per_sec": {
+          "target": 10,
+          "acceptable_min": 5,
+          "description": "LLM token generation speed"
+        },
+        "concurrent_agents": {
+          "target": 1,
+          "acceptable_max": 2,
+          "description": "Safe concurrent agent operations"
+        },
+        "vram_utilization_percent": {
+          "target": 70,
+          "critical_threshold": 90,
+          "description": "GPU memory usage before OOM risk"
+        }
+      },
+      "limitations": [
+        "4GB VRAM limits model size to small/Q4 variants",
+        "Thermal throttling risk during sustained load",
+        "Cannot run concurrent ASR + LLM without serialization",
+        "Limited to single-agent or tightly scheduled multi-agent operations"
+      ],
+      "optimizations": {
+        "whisper": {
+          "device": "cpu",
+          "model_size": "small",
+          "compute_type": "int8",
+          "rationale": "Move ASR to CPU, reserve GPU for LLM"
+        },
+        "llm": {
+          "device": "cuda",
+          "gpu_offload_layers": -1,
+          "quantization": "Q4_K_M",
+          "max_model_size_gb": 3,
+          "rationale": "Use GPU for LLM, stick to Q4 quantization"
+        },
+        "scheduler": {
+          "interval_sec": 480,
+          "concurrent_agents": 1,
+          "rationale": "Throttle to prevent resource contention"
+        }
+      },
+      "use_case": "Baseline for BloomOS low-spec optimization research",
+      "active": true
+    },
+    "desktop_home_target": {
+      "description": "Home Desktop - High-performance target configuration",
+      "hardware": {
+        "gpu": {
+          "name": "GeForce RTX 2070 Super",
+          "memory_gb": 8,
+          "compute_capability": "7.5",
+          "tier": "high_end_desktop"
+        },
+        "cpu": {
+          "model": "Desktop (to be detected)",
+          "cores_physical": 8,
+          "cores_logical": 16
+        },
+        "memory": {
+          "total_gb": 32
+        },
+        "form_factor": "desktop_tower"
+      },
+      "performance_targets": {
+        "whisper_latency_ms": {
+          "target": 500,
+          "acceptable_max": 1000,
+          "description": "Wake-word detection latency"
+        },
+        "llm_inference_tokens_per_sec": {
+          "target": 30,
+          "acceptable_min": 20,
+          "description": "LLM token generation speed"
+        },
+        "concurrent_agents": {
+          "target": 4,
+          "acceptable_max": 8,
+          "description": "Safe concurrent agent operations"
+        },
+        "vram_utilization_percent": {
+          "target": 80,
+          "critical_threshold": 95,
+          "description": "GPU memory usage before OOM risk"
+        }
+      },
+      "limitations": [
+        "8GB VRAM limits largest models to 7B Q5/Q8 or 13B Q4",
+        "Still benefits from strategic model placement"
+      ],
+      "optimizations": {
+        "whisper": {
+          "device": "cuda",
+          "model_size": "medium",
+          "compute_type": "float16",
+          "rationale": "GPU has headroom for both ASR and LLM"
+        },
+        "llm": {
+          "device": "cuda",
+          "gpu_offload_layers": -1,
+          "quantization": "Q5_K_M",
+          "max_model_size_gb": 6,
+          "rationale": "Can run higher quality quantizations"
+        },
+        "scheduler": {
+          "interval_sec": 180,
+          "concurrent_agents": 4,
+          "rationale": "Full multi-agent parallelism enabled"
+        }
+      },
+      "use_case": "Primary Station Calyx node - full capabilities",
+      "active": false
+    },
+    "ideal_bloomos_target": {
+      "description": "Ideal BloomOS deployment target (future reference)",
+      "hardware": {
+        "gpu": {
+          "name": "RTX 4060 Ti or higher",
+          "memory_gb": 16,
+          "compute_capability": "8.9+",
+          "tier": "enterprise_workstation"
+        },
+        "cpu": {
+          "cores_physical": 12,
+          "cores_logical": 24
+        },
+        "memory": {
+          "total_gb": 64
+        }
+      },
+      "performance_targets": {
+        "whisper_latency_ms": {
+          "target": 300,
+          "description": "Real-time processing"
+        },
+        "llm_inference_tokens_per_sec": {
+          "target": 50,
+          "description": "Fluid conversation"
+        },
+        "concurrent_agents": {
+          "target": 8,
+          "description": "Full BloomOS multi-agent mesh"
+        }
+      },
+      "use_case": "Reference specification for optimal BloomOS experience",
+      "active": false
+    }
+  },
+  "comparison_matrix": {
+    "description": "Hardware tier comparison for optimization decisions",
+    "tiers": {
+      "cpu_only": {
+        "whisper_device": "cpu",
+        "whisper_model": "tiny",
+        "llm_device": "cpu",
+        "llm_max_params_b": 1,
+        "concurrent_agents": 1
+      },
+      "entry_level_mobile": {
+        "whisper_device": "cpu",
+        "whisper_model": "small",
+        "llm_device": "cuda",
+        "llm_max_params_b": 3,
+        "concurrent_agents": 1
+      },
+      "mid_range": {
+        "whisper_device": "cuda",
+        "whisper_model": "small",
+        "llm_device": "cuda",
+        "llm_max_params_b": 7,
+        "concurrent_agents": 2
+      },
+      "high_end": {
+        "whisper_device": "cuda",
+        "whisper_model": "medium",
+        "llm_device": "cuda",
+        "llm_max_params_b": 13,
+        "concurrent_agents": 4
+      },
+      "enterprise": {
+        "whisper_device": "cuda",
+        "whisper_model": "large",
+        "llm_device": "cuda",
+        "llm_max_params_b": 30,
+        "concurrent_agents": 8
+      }
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "created_at": "2025-12-13",
+    "purpose": "Hardware capability profiling for BloomOS optimization research",
+    "maintainer": "CBO (Calyx Bridge Overseer)"
+  },
+  "desktop_m965jsc": {
+    "profile_name": "desktop_m965jsc",
+    "created_at": "2025-12-14T00:42:21.374523+00:00",
+    "system": {
+      "os": "Windows",
+      "os_version": "10.0.19045",
+      "os_release": "10",
+      "architecture": "AMD64",
+      "hostname": "DESKTOP-M965JSC",
+      "python_version": "3.14.2"
+    },
+    "gpu": {
+      "available": true,
+      "name": "GeForce MX150",
+      "driver_version": "457.51",
+      "memory_total_mb": 4096.0,
+      "compute_capability": "Unknown",
+      "power_limit_watts": 0
+    },
+    "cpu": {
+      "logical_cores": 8,
+      "physical_cores": 4,
+      "max_frequency_mhz": 2001.0,
+      "min_frequency_mhz": 0.0
+    },
+    "memory": {
+      "total_gb": 15.9
+    }
+  }
+}
