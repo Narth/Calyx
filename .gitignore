@@ -51,6 +51,11 @@ decoder_probs_report.csv
 wake_word_results.csv
 reports/
 tools/bin/llama.cpp/*.exe
+logs/investigative_log.md
+logs/canon_ingestion_log.jsonl
+logs/overseer_loop_trace.jsonl
+samples/wake_word/*.wav
+local_backups/
 
 # Runtime State & Output
 state/
