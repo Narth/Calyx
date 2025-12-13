@@ -77,6 +77,15 @@ settings:
   svf:
     single_pass: true
     max_msgs_per_cycle: 1
+    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
+  # Hardware Performance Profiling (for BloomOS optimization research)
+  hardware_profiling:
+    enabled: true
+    active_profile: "desktop_m965jsc_entry"  # Auto-detected from hostname
+    collection_interval_sec: 60  # 1 minute for granular metrics
+    metrics_retention_days: 30
+    benchmark_on_startup: false
+    track_inference_timing: true
   routing:
     uncertain_band: [0.35, 0.55]
     llm_allowed:
@@ -163,8 +172,6 @@ settings:
       - recent_excs
     # Cheetah memory optimization 2025-10-24: Balanced pulse rate for memory efficiency
     pulse_interval_sec: 3  # Triage pulse at 3s = 20/min (optimized for memory efficiency)
-  svf:
-    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
   # AI-for-All Teaching System Configuration
   ai4all_teaching:
     enabled: true
@@ -356,6 +363,37 @@ ai4all_optimization:
       disk_io: 75%
     auto_scale_back: true
     scale_back_factor: 0.5
+# Node Evidence Relay v0 Configuration
+# [CBO • Governance]: Local evidence collection for distributed truth capture
+evidence:
+  enabled: true
+  node:
+    # Node identity is auto-generated from hardware fingerprint
+    # Override station_name if needed (defaults to station.name)
+    station_name_override: null
+  journal:
+    # Base directory for evidence journals (relative to ROOT)
+    base_dir: "logs/evidence"
+    # Maximum journal file size before rotation (0 = no rotation)
+    max_size_mb: 100
+  export:
+    # Base directory for export bundles (relative to ROOT)
+    export_dir: "exports"
+    # Maximum envelopes per export batch (0 = unlimited)
+    max_batch_size: 1000
+    # Auto-export interval in seconds (0 = manual only)
+    auto_export_interval_sec: 0
+  telemetry_bridge:
+    # Auto-capture telemetry snapshots
+    enabled: false
+    # Interval between telemetry captures (seconds)
+    interval_sec: 60
+  verification:
+    # Run chain verification on startup
+    verify_on_startup: false
+    # Periodic verification interval (0 = disabled)
+    verify_interval_sec: 0
+
 runtimes:
   comm_bridge:
     enabled: true              # Architect toggle for CRB-0
