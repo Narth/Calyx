@@ -1,0 +1,35 @@
+{
+  "session_id": "a858dbee",
+  "timestamp": "2026-01-10T04:06:06.392907+00:00",
+  "intent": {
+    "intent_id": "5a79f197",
+    "description": "Scheduled research - disk at 80.5%",
+    "advisory_profile": "stability_first",
+    "created_at": "2026-01-10T04:06:06.360096+00:00",
+    "metadata": {}
+  },
+  "events_analyzed": 100,
+  "reflection_session": "a858dbee",
+  "advisory_notes": [
+    {
+      "message": "ADVISORY: Anomaly detected - EVENT_GAPS. Found 1 gaps >1 hour in event timeline",
+      "confidence_level": "low",
+      "rationale": "Anomaly flagged by reflector analysis. Severity: info.",
+      "uncertainties": [
+        "Anomaly may be transient",
+        "Additional monitoring recommended"
+      ],
+      "evidence_refs": [
+        "reflection:anomaly:EVENT_GAPS"
+      ],
+      "profile_context": "Profile emphasizes: uptime, error prevention, gradual changes"
+    }
+  ],
+  "guardrail_check": {
+    "passed": true,
+    "violations": []
+  },
+  "advisor_role": "advisor_agent",
+  "advisory_only": true,
+  "execution_capability": false
+}

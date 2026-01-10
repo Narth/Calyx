@@ -1,0 +1,105 @@
+{
+  "session_id": "0a1e8bcb",
+  "timestamp": "2026-01-07T00:48:03.486374+00:00",
+  "events_analyzed": 32,
+  "snapshots_analyzed": 5,
+  "time_span_hours": 2.7,
+  "trends_detected": [
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "disk_percent_used",
+      "description": "disk_percent_used is increasing (88.5 -> 88.6, +0.1% over 2.7h)",
+      "direction": "increasing",
+      "confidence": "low",
+      "rationale": "Based on 5 data points over 2.7 hours, disk_percent_used shows a increasing trend with slope 0.0382/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 5 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-07T00:46:29"
+      ],
+      "data_points": 5,
+      "time_span_hours": 2.7,
+      "values_summary": {
+        "first": 88.5,
+        "last": 88.6,
+        "min": 88.5,
+        "max": 88.6,
+        "mean": 88.52,
+        "slope_per_hour": 0.0382
+      }
+    },
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "memory_percent",
+      "description": "memory_percent is increasing (45.6 -> 46.5, +2.0% over 2.7h)",
+      "direction": "increasing",
+      "confidence": "low",
+      "rationale": "Based on 5 data points over 2.7 hours, memory_percent shows a increasing trend with slope 0.2825/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 5 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-07T00:46:29"
+      ],
+      "data_points": 5,
+      "time_span_hours": 2.7,
+      "values_summary": {
+        "first": 45.6,
+        "last": 46.5,
+        "min": 45.6,
+        "max": 47.2,
+        "mean": 46.22,
+        "slope_per_hour": 0.2825
+      }
+    },
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "cpu_percent",
+      "description": "cpu_percent is volatile (7.4 -> 4.3, -41.9% over 2.7h)",
+      "direction": "volatile",
+      "confidence": "low",
+      "rationale": "Based on 5 data points over 2.7 hours, cpu_percent shows a volatile trend with slope -0.0893/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 5 samples only",
+        "Short observation window limits confidence"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-07T00:46:29"
+      ],
+      "data_points": 5,
+      "time_span_hours": 2.7,
+      "values_summary": {
+        "first": 7.4,
+        "last": 4.3,
+        "min": 2.0,
+        "max": 7.4,
+        "mean": 4.92,
+        "slope_per_hour": -0.0893
+      }
+    }
+  ],
+  "drift_warnings": [],
+  "recurring_patterns": [],
+  "total_findings": 3,
+  "analyzer_role": "temporal_analyzer",
+  "advisory_only": true,
+  "execution_capability": false,
+  "guardrails": {
+    "no_failure_predictions": true,
+    "no_execution_recommendations": true,
+    "uncertainty_stated": true,
+    "evidence_referenced": true
+  }
+}

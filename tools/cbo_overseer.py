@@ -259,12 +259,37 @@ def _ensure_adaptive_supervisor(cfg: CBOConfig) -> tuple[str, str, list[str]]:
         args.append('--navigator-control')
     if cfg.enable_scheduler:
         args += ['--include-scheduler', '--scheduler-interval', '180']
+    # Always-on telemetry: snapshots, enhanced metrics, bridge pulse scheduler, and freshness sentinel.
+    # These are supervised only when CBO is running in daemon mode.
+    if cfg.allow_daemons:
+        args += [
+            '--include-uptime-tracker', '--uptime-interval', '60',
+            '--include-enhanced-metrics', '--enhanced-metrics-interval', '300',
+            '--include-bridge-pulse-scheduler', '--bridge-pulse-interval', '20',
+            '--include-telemetry-sentinel', '--telemetry-sentinel-interval', '60',
+        ]
     if _is_wsl_ready():
         _start_detached_wsl('tools/svc_supervisor_adaptive.py', args)
         return "run", "supervisor stale; started svc_supervisor_adaptive (wsl)", ["started:svc_supervisor_adaptive"]
     else:
         _start_detached_win('tools/svc_supervisor_adaptive.py', args)
         return "run", "supervisor stale; started svc_supervisor_adaptive (win)", ["started:svc_supervisor_adaptive"]
+
+
+def _run_startup_telemetry_reconstructor(cfg: CBOConfig) -> tuple[str, str, list[str]]:
+    """Fire a one-shot telemetry gap reconstruction pass (detached).
+
+    This writes downtime story events to logs/station_timeline.jsonl based on
+    the telemetry contract in config.yaml.
+    """
+    if not cfg.allow_daemons:
+        return "skip", "telemetry reconstructor requires allow-daemons", []
+    args = ['--once']
+    if _is_wsl_ready():
+        _start_detached_wsl('tools/telemetry_gap_reconstructor.py', args)
+        return "run", "started telemetry gap reconstructor (wsl)", ["started:telemetry_gap_reconstructor"]
+    _start_detached_win('tools/telemetry_gap_reconstructor.py', args)
+    return "run", "started telemetry gap reconstructor (win)", ["started:telemetry_gap_reconstructor"]
 
 
 def _ensure_metrics_cron(interval_sec: int) -> tuple[str, str, list[str]]:
@@ -570,6 +595,11 @@ def run_loop(cfg: CBOConfig) -> None:
     _ensure_dirs()
     _ensure_permissions(cfg)
     _set_gate_defaults(cfg)
+    # One-shot: reconstruct downtime story from stale telemetry, then proceed with daemon loops.
+    try:
+        _run_startup_telemetry_reconstructor(cfg)
+    except Exception:
+        pass
     mode = "daemon" if cfg.allow_daemons else "safe"
     daemon_loops = ["supervisor", "metrics", "optimizer", "production_monitor", "housekeeping"]
     # Main loop

@@ -21,11 +21,16 @@ from typing import Optional
 
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOTS_FILE = ROOT / "logs" / "system_snapshots.jsonl"
+OUTGOING = ROOT / "outgoing"
+LOCK_PATH = OUTGOING / "uptime_tracker.lock"
 
 
 def get_system_snapshot() -> dict:
     """Collect current system snapshot"""
+    now = time.time()
     snapshot = {
+        'ts': now,
+        'iso_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(now)),
         'timestamp': datetime.now().isoformat(),
         'cpu_pct': 0.0,
         'ram_pct': 0.0,
@@ -86,10 +91,26 @@ def get_system_snapshot() -> dict:
 def write_snapshot(snapshot: dict) -> None:
     """Write snapshot to JSONL file"""
     SNAPSHOTS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    OUTGOING.mkdir(parents=True, exist_ok=True)
     
     try:
         with SNAPSHOTS_FILE.open('a', encoding='utf-8') as f:
             f.write(json.dumps(snapshot) + '\n')
+        # Write/update lock heartbeat for supervision.
+        try:
+            LOCK_PATH.write_text(
+                json.dumps(
+                    {
+                        "ts": snapshot.get("ts") or time.time(),
+                        "iso": snapshot.get("iso_utc") or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+                        "ok": True,
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+        except Exception:
+            pass
     except Exception as e:
         print(f"[ERROR] Failed to write snapshot: {e}")
 

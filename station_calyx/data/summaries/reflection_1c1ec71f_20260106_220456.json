@@ -1,0 +1,20 @@
+{
+  "session_id": "1c1ec71f",
+  "timestamp": "2026-01-06T22:04:56.195966+00:00",
+  "events_analyzed": 1,
+  "highlights": [
+    "Analyzed 1 events in this session.",
+    "Most common event types: SYSTEM_SNAPSHOT (1)",
+    "Active components: cli_snapshot"
+  ],
+  "anomalies": [],
+  "changes": [],
+  "questions": [
+    "Low event count. Should more connectors be enabled?"
+  ],
+  "suggested_next_steps": [
+    "ADVISORY: System appears stable. Continue monitoring."
+  ],
+  "reflector_role": "reflector_agent",
+  "advisory_only": true
+}

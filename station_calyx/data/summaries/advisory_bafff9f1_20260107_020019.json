@@ -1,0 +1,35 @@
+{
+  "session_id": "bafff9f1",
+  "timestamp": "2026-01-07T02:00:19.884975+00:00",
+  "intent": {
+    "intent_id": "3644dafd",
+    "description": "Default intent: General system monitoring",
+    "advisory_profile": "stability_first",
+    "created_at": "2026-01-07T01:44:08.833668+00:00",
+    "metadata": {}
+  },
+  "events_analyzed": 57,
+  "reflection_session": "bafff9f1",
+  "advisory_notes": [
+    {
+      "message": "ADVISORY: Disk usage at 88.6%. Consider reviewing disk space to maintain system stability.",
+      "confidence_level": "high",
+      "rationale": "High disk usage can impact system stability and performance. Current: 844.7GB / 953.17GB.",
+      "uncertainties": [
+        "Growth rate unknown",
+        "Critical threshold depends on workload"
+      ],
+      "evidence_refs": [
+        "snapshot:disk:2026-01-07T02:00:16"
+      ],
+      "profile_context": "Stability-first profile prioritizes preventing resource exhaustion."
+    }
+  ],
+  "guardrail_check": {
+    "passed": true,
+    "violations": []
+  },
+  "advisor_role": "advisor_agent",
+  "advisory_only": true,
+  "execution_capability": false
+}

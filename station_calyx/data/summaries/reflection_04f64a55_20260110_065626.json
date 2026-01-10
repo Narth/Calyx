@@ -1,0 +1,28 @@
+{
+  "session_id": "04f64a55",
+  "timestamp": "2026-01-10T06:56:26.076340+00:00",
+  "events_analyzed": 100,
+  "highlights": [
+    "Analyzed 100 events in this session.",
+    "Most common event types: SYSTEM_SNAPSHOT (29), SCHEDULED_SNAPSHOT (28), PATTERN_RECURRING (17)",
+    "Active components: temporal_analyzer, scheduled_research, sys_telemetry, intent_manager, advisor_agent",
+    "Events span 9.2 hours."
+  ],
+  "anomalies": [
+    {
+      "type": "EVENT_GAPS",
+      "severity": "info",
+      "description": "Found 1 gaps >1 hour in event timeline",
+      "max_gap_hours": 1.9
+    }
+  ],
+  "changes": [],
+  "questions": [
+    "Why were there gaps up to 1.9 hours? Was the system offline?"
+  ],
+  "suggested_next_steps": [
+    "ADVISORY: System appears stable. Continue monitoring."
+  ],
+  "reflector_role": "reflector_agent",
+  "advisory_only": true
+}
