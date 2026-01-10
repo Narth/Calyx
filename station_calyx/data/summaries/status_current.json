@@ -1,39 +1,27 @@
 {
-  "generated_at": "2026-01-10T21:01:49.915978+00:00",
+  "generated_at": "2026-01-10T22:51:49.930911+00:00",
   "system_state": {
-    "state": "stable",
-    "description": "No significant changes detected from 137 snapshot(s)",
+    "state": "notable_changes",
+    "description": "Drift warnings detected from 128 snapshot(s) over 89.1 hours (confidence: HIGH)",
     "error_count": 0,
-    "drift_count": 0,
-    "trend_count": 0,
-    "snapshot_count": 137,
-    "time_window_hours": 89.4,
-    "lowest_confidence": "unknown"
+    "drift_count": 4,
+    "trend_count": 2,
+    "snapshot_count": 128,
+    "time_window_hours": 89.1,
+    "lowest_confidence": "high"
   },
   "intent": {
     "profile": "stability_first",
     "description": "Scheduled research - disk at 80.6%"
   },
   "latest_snapshot": {
-    "timestamp": "2026-01-10T20:55:16",
+    "timestamp": "2026-01-10T22:40:30",
     "hostname": "DESKTOP-KSHNJ30",
-    "cpu_percent": 5.5,
-    "memory_percent": 45.0,
+    "cpu_percent": 16.3,
+    "memory_percent": 47.0,
     "disk_percent": 80.6
   },
   "recent_advisories": [
-    {
-      "timestamp": "2026-01-10T07:06:26",
-      "session_id": "174899d2",
-      "profile": "stability_first",
-      "notes_count": 1
-    },
-    {
-      "timestamp": "2026-01-10T10:06:43",
-      "session_id": "7017ad8d",
-      "profile": "stability_first",
-      "notes_count": 1
-    },
     {
       "timestamp": "2026-01-10T13:07:04",
       "session_id": "f2157718",
@@ -47,8 +35,20 @@
       "notes_count": 1
     },
     {
-      "timestamp": "2026-01-10T19:07:32",
-      "session_id": "0e2eae1d",
+      "timestamp": "2026-01-10T20:34:10",
+      "session_id": "2f0fbc06",
+      "profile": "stability_first",
+      "notes_count": 1
+    },
+    {
+      "timestamp": "2026-01-10T20:41:01",
+      "session_id": "066d68ee",
+      "profile": "stability_first",
+      "notes_count": 1
+    },
+    {
+      "timestamp": "2026-01-10T22:07:54",
+      "session_id": "362475a4",
       "profile": "stability_first",
       "notes_count": 1
     }
@@ -59,19 +59,19 @@
         "metric": "cpu_percent",
         "direction": "volatile",
         "confidence": "high",
-        "timestamp": "2026-01-10T16:05:54",
-        "occurrence_count": 1,
+        "timestamp": "2026-01-10T22:06:24",
+        "occurrence_count": 3,
         "values_summary": {
           "first": 7.4,
-          "last": 0.4,
+          "last": 1.9,
           "min": 0.0,
           "max": 18.7,
           "mean": 2.29,
-          "slope_per_hour": -0.0091
+          "slope_per_hour": -0.0078
         },
         "evidence_refs": [
           "snapshot:2026-01-06T22:04:49",
-          "snapshot:2026-01-10T15:57:54"
+          "snapshot:2026-01-10T21:55:24"
         ]
       }
     ],
@@ -80,58 +80,58 @@
         "metric": "disk_percent_used",
         "direction": "decreasing",
         "confidence": "high",
-        "timestamp": "2026-01-10T16:05:54",
-        "occurrence_count": 1,
+        "timestamp": "2026-01-10T22:06:24",
+        "occurrence_count": 3,
         "values_summary": {
           "first": 88.5,
-          "last": 80.5,
-          "min": 80.4,
+          "last": 80.6,
+          "min": 80.1,
           "max": 88.7,
-          "mean": 84.45,
-          "slope_per_hour": -0.1099
+          "mean": 84.02,
+          "slope_per_hour": -0.1063
         },
         "evidence_refs": [
           "snapshot:2026-01-06T22:04:49",
-          "snapshot:2026-01-10T15:57:54"
+          "snapshot:2026-01-10T21:55:24"
         ]
       },
       {
         "metric": "memory_percent",
         "direction": "decreasing",
         "confidence": "high",
-        "timestamp": "2026-01-10T16:05:54",
-        "occurrence_count": 1,
+        "timestamp": "2026-01-10T22:06:24",
+        "occurrence_count": 3,
         "values_summary": {
           "first": 45.6,
-          "last": 31.8,
+          "last": 45.7,
           "min": 31.5,
-          "max": 50.0,
-          "mean": 39.14,
-          "slope_per_hour": -0.1911
+          "max": 57.2,
+          "mean": 39.33,
+          "slope_per_hour": -0.1555
         },
         "evidence_refs": [
           "snapshot:2026-01-06T22:04:49",
-          "snapshot:2026-01-10T15:57:54"
+          "snapshot:2026-01-10T21:55:24"
         ]
       }
     ],
     "patterns": [
       {
         "summary": "'memory_percent' has shown 'increasing' trend 11 times over ",
-        "timestamp": "2026-01-10T16:05:54"
+        "timestamp": "2026-01-10T22:06:24"
       },
       {
-        "summary": "'cpu_percent' has shown 'volatile' trend 19 times over 83.3h",
-        "timestamp": "2026-01-10T16:05:54"
+        "summary": "'cpu_percent' has shown 'volatile' trend 22 times over 93.9h",
+        "timestamp": "2026-01-10T22:06:24"
       },
       {
         "summary": "'disk_percent_used' has shown 'increasing' trend 4 times ove",
-        "timestamp": "2026-01-10T16:05:54"
+        "timestamp": "2026-01-10T22:06:24"
       }
     ]
   },
   "events_analyzed": 500,
-  "last_event_ts": "2026-01-10T20:57:46.985880+00:00",
+  "last_event_ts": "2026-01-10T22:40:30.269049+00:00",
   "surface_role": "status_surface",
   "advisory_only": true
 }
