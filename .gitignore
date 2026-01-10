@@ -99,5 +99,5 @@ sitecustomize.py
 test_secret.py
 =5.9
 
-#Visual Studio
+# Visual Studio
 .vs/

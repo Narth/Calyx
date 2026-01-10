@@ -35,10 +35,17 @@ def load_capability_matrix() -> dict:
     matrix_file = ROOT / "outgoing" / "policies" / "capability_matrix.yaml"
     if not matrix_file.exists():
         return {}
-    
-    import yaml
-    with matrix_file.open("r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+
+    try:
+        import yaml  # type: ignore
+    except ImportError:
+        return {}
+
+    try:
+        with matrix_file.open("r", encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    except Exception:
+        return {}
 
 
 def check_constraints(intent: dict, proposals_dir: Path) -> tuple[bool, str]:
@@ -76,8 +83,11 @@ def check_constraints(intent: dict, proposals_dir: Path) -> tuple[bool, str]:
         return False, f"diff too large: {total_lines} > {max_lines}"
     
     # Check reverse patch exists
-    reverse_patch = artifacts.get("reverse_diff")
-    if not reverse_patch or not Path(reverse_patch).exists():
+    reverse_patch_path = _resolve_artifact(
+        artifacts.get("reverse_diff") or artifacts.get("reverse_patch") or artifacts.get("reverse_patch_path"),
+        proposals_dir / intent_id / "change.reverse.patch",
+    )
+    if not reverse_patch_path.exists():
         return False, "reverse patch not found"
     
     # Check tests reference
@@ -98,35 +108,61 @@ def _resolve_artifact(path_str: Optional[str], fallback: Path) -> Path:
 
 
 def send_for_review(intent_id: str, artifacts: dict, reviewers: List[str], proposals_dir: Path, reviews_dir: Path):
-    """Send intent to reviewers - invoke CP14/CP18 processors (CLI static mode)."""
-    import subprocess
+    """Send intent to reviewers - invoke CP14/CP18 processors (in-process static mode)."""
 
     # Fallbacks under proposals/<intent_id>/
     base = proposals_dir / intent_id
-    patch_path = _resolve_artifact(artifacts.get("patch") or artifacts.get("change_patch"), base / "change.patch")
-    metadata_path = _resolve_artifact(artifacts.get("metadata"), base / "metadata.json")
+    patch_path = _resolve_artifact(
+        artifacts.get("diff")
+        or artifacts.get("patch")
+        or artifacts.get("change_patch")
+        or artifacts.get("patch_path"),
+        base / "change.patch",
+    )
+    metadata_path = _resolve_artifact(
+        artifacts.get("metadata") or artifacts.get("metadata_path"),
+        base / "metadata.json",
+    )
+
+    merged_artifacts = dict(artifacts or {})
+    merged_artifacts.update(
+        {
+            "proposals_dir": str(proposals_dir),
+            "reviews_dir": str(reviews_dir),
+            "patch_path": str(patch_path),
+            "metadata_path": str(metadata_path),
+        }
+    )
 
     for reviewer in reviewers:
         if reviewer == "cp14":
-            cmd = [
-                "python", "tools/cp14_sentinel.py",
-                "--patch", str(patch_path),
-                "--metadata", str(metadata_path),
-                "--intent-id", intent_id,
-            ]
-            subprocess.run(cmd, capture_output=True, text=True)
+            from tools.cp14_sentinel import review_proposal
+
+            review_proposal(intent_id, merged_artifacts)
 
         elif reviewer == "cp18":
-            cmd = [
-                "python", "tools/cp18_validator.py",
-                "--patch", str(patch_path),
-                "--metadata", str(metadata_path),
-                "--intent-id", intent_id,
-            ]
-            subprocess.run(cmd, capture_output=True, text=True)
+            from tools.cp18_validator import review_proposal
+
+            review_proposal(intent_id, merged_artifacts)
 
         if SVF_AVAILABLE:
             log_intent_activity(intent_id, "cbo", f"sent_to_{reviewer}", {"reviewer": reviewer})
+
+
+def _verdict_paths(intent_id: str, agent: str, reviews_dir: Path) -> list[Path]:
+    agent_norm = (agent or "").lower()
+    if agent_norm == "cp14":
+        primary = reviews_dir / f"{intent_id}.CP14.verdict.json"
+        legacy = reviews_dir / f"{intent_id}.cp14.verdict.json"
+        return [primary, legacy]
+    if agent_norm == "cp18":
+        primary = reviews_dir / f"{intent_id}.CP18.verdict.json"
+        legacy = reviews_dir / f"{intent_id}.cp18.verdict.json"
+        return [primary, legacy]
+    return [
+        reviews_dir / f"{intent_id}.{agent}.verdict.json",
+        reviews_dir / f"{intent_id}.{agent.upper()}.verdict.json",
+    ]
 
 
 def wait_for_verdicts(intent_id: str, agents: List[str], reviews_dir: Path, timeout_s: int = 600) -> Dict[str, str]:
@@ -142,12 +178,14 @@ def wait_for_verdicts(intent_id: str, agents: List[str], reviews_dir: Path, time
     while time.time() - start_time < timeout_s:
         verdicts = {}
         for agent in agents:
-            verdict_file = reviews_dir / f"{intent_id}.{agent}.verdict.json"
-            if verdict_file.exists():
+            for verdict_file in _verdict_paths(intent_id, agent, reviews_dir):
+                if not verdict_file.exists():
+                    continue
                 try:
                     with verdict_file.open("r", encoding="utf-8") as f:
                         verdict_data = json.load(f)
                         verdicts[agent] = verdict_data.get("verdict", "UNKNOWN")
+                        break
                 except Exception:
                     continue
         

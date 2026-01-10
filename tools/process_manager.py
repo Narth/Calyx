@@ -65,6 +65,14 @@ def get_unique_process_signatures() -> Dict[str, List[Dict]]:
             signature = 'bridge_pulse_scheduler'
         elif 'uptime_tracker.py' in cmdline:
             signature = 'uptime_tracker'
+        elif 'enhanced_metrics_collector.py' in cmdline:
+            signature = 'enhanced_metrics'
+        elif 'telemetry_sentinel.py' in cmdline:
+            signature = 'telemetry_sentinel'
+        elif 'telemetry_gap_reconstructor.py' in cmdline:
+            signature = 'telemetry_gap_reconstructor'
+        elif 'telemetry_continuity_report.py' in cmdline:
+            signature = 'telemetry_continuity_report'
         elif 'production_monitor.py' in cmdline:
             signature = 'production_monitor'
         elif 'ai4all_teaching.py' in cmdline:
@@ -112,6 +120,8 @@ def should_be_singleton(signature: str) -> bool:
         'cbo_overseer',
         'bridge_pulse_scheduler',
         'uptime_tracker',
+        'enhanced_metrics',
+        'telemetry_sentinel',
         'production_monitor',
         'ai4all_teaching',
         'svc_supervisor'

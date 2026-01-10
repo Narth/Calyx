@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Iterable, List, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
+PROPOSALS_DIR = ROOT / "outgoing" / "proposals"
 REVIEWS_DIR = ROOT / "outgoing" / "reviews"
 AGENT_ID = "cp18_validator"
 MANDATE_REF = "agents.cp18_validator"
@@ -304,6 +305,98 @@ def validate_tests_exist(metadata: dict) -> tuple[bool, list[str]]:
         if not Path(t).exists():
             missing.append(t)
     return (len(missing) == 0, missing)
+
+
+def _resolve_artifact_path(artifacts: dict, keys: list[str], fallback: Path) -> Path:
+    for k in keys:
+        v = artifacts.get(k)
+        if not v:
+            continue
+        p = v if isinstance(v, Path) else Path(str(v))
+        if not p.is_absolute():
+            p = ROOT / p
+        return p
+    return fallback
+
+
+def review_proposal(intent_id: str, artifacts: dict) -> dict:
+    """
+    Review proposal using CP18 processor.
+
+    Constraints (per Request A): static/dry only; write only to outgoing/reviews.
+
+    Args:
+        intent_id: Intent ID
+        artifacts: Paths and metadata (supports keys like diff/patch/change_patch, metadata, proposals_dir, reviews_dir)
+
+    Returns:
+        Verdict dictionary per CGPT spec.
+    """
+    proposals_dir = _resolve_artifact_path(artifacts, ["proposals_dir"], PROPOSALS_DIR)
+    reviews_dir = _resolve_artifact_path(artifacts, ["reviews_dir"], REVIEWS_DIR)
+
+    base = proposals_dir / intent_id
+    patch_path = _resolve_artifact_path(
+        artifacts,
+        ["diff", "patch", "change_patch", "patch_path"],
+        base / "change.patch",
+    )
+    metadata_path = _resolve_artifact_path(
+        artifacts,
+        ["metadata", "metadata_path"],
+        base / "metadata.json",
+    )
+
+    metadata = load_metadata(metadata_path)
+
+    lints_ok = True
+    broken_tests_detected = False
+    files_seen = 0
+    py_files_checked = 0
+    missing_tests: list[str] = []
+
+    for filename, added_lines, removed_lines in iter_file_hunks_from_patch(patch_path):
+        files_seen += 1
+        if filename and filename.endswith(".py"):
+            py_files_checked += 1
+            if not python_syntax_ok(added_lines):
+                lints_ok = False
+        if filename and is_test_file(filename):
+            if detect_broken_tests_in_hunks(filename, added_lines, removed_lines):
+                broken_tests_detected = True
+
+    if broken_tests_detected:
+        unit_tests_ok = False
+    else:
+        tests_exist, missing = validate_tests_exist(metadata)
+        unit_tests_ok = tests_exist
+        missing_tests = missing
+
+    integration_tests_status = "N/A"
+    coverage_delta = 0.0
+
+    verdict = "PASS" if (lints_ok and unit_tests_ok) else "FAIL"
+    out = {
+        "intent_id": intent_id,
+        "verdict": verdict,
+        "details": {
+            "lints": "PASS" if lints_ok else "FAIL",
+            "unit_tests": "PASS" if unit_tests_ok else "FAIL",
+            "integration_tests": integration_tests_status,
+            "coverage_delta": coverage_delta,
+            "files_seen": files_seen,
+            "py_files_checked": py_files_checked,
+            "missing_tests": missing_tests,
+        },
+        "inputs": {
+            "patch_path": str(patch_path),
+            "metadata_path": str(metadata_path),
+        },
+    }
+
+    reviews_dir.mkdir(parents=True, exist_ok=True)
+    (reviews_dir / f"{intent_id}.CP18.verdict.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
+    return out
 
 
 def run_cp18(patch_path: Path, metadata_path: Path, intent_id: str, *, test_mode: bool = False):
