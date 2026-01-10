@@ -672,19 +672,19 @@ class EvidenceIngestResponse(BaseModel):
 async def ingest_evidence(request: EvidenceIngestRequest) -> EvidenceIngestResponse:
     """
     POST /v1/ingest/evidence
-    
+
     Ingest evidence envelopes from remote nodes.
-    
+
     Accepts either:
-    - { "envelopes": [ ... ] } — batch of envelopes
+    - { "envelopes": [ ... ] } - batch of envelopes
     - Single envelope object at root level
-    
+
     CONSTRAINTS:
     - Evidence ingest only (no commands)
     - Deterministic validation
     - Append-only storage
     - Receiver never "trusts conclusions"
-    
+
     VALIDATION:
     - Required fields must be present
     - seq must be > last_seq for node
