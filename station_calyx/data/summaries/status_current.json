@@ -1,33 +1,27 @@
 {
-  "generated_at": "2026-01-10T18:34:19.927140+00:00",
+  "generated_at": "2026-01-10T19:27:19.925710+00:00",
   "system_state": {
     "state": "notable_changes",
-    "description": "Drift warnings detected from 129 snapshot(s) over 87.5 hours (confidence: HIGH)",
+    "description": "Drift warnings detected from 132 snapshot(s) over 88.2 hours (confidence: HIGH)",
     "error_count": 0,
     "drift_count": 2,
     "trend_count": 1,
-    "snapshot_count": 129,
-    "time_window_hours": 87.5,
+    "snapshot_count": 132,
+    "time_window_hours": 88.2,
     "lowest_confidence": "high"
   },
   "intent": {
     "profile": "stability_first",
-    "description": "Scheduled research - disk at 80.5%"
+    "description": "Scheduled research - disk at 80.6%"
   },
   "latest_snapshot": {
-    "timestamp": "2026-01-10T18:24:58",
+    "timestamp": "2026-01-10T19:25:05",
     "hostname": "DESKTOP-KSHNJ30",
-    "cpu_percent": 2.3,
-    "memory_percent": 42.1,
+    "cpu_percent": 1.2,
+    "memory_percent": 42.2,
     "disk_percent": 80.6
   },
   "recent_advisories": [
-    {
-      "timestamp": "2026-01-10T04:06:06",
-      "session_id": "a858dbee",
-      "profile": "stability_first",
-      "notes_count": 1
-    },
     {
       "timestamp": "2026-01-10T07:06:26",
       "session_id": "174899d2",
@@ -49,6 +43,12 @@
     {
       "timestamp": "2026-01-10T16:07:24",
       "session_id": "8bb7ab60",
+      "profile": "stability_first",
+      "notes_count": 1
+    },
+    {
+      "timestamp": "2026-01-10T19:07:32",
+      "session_id": "0e2eae1d",
       "profile": "stability_first",
       "notes_count": 1
     }
@@ -131,7 +131,7 @@
     ]
   },
   "events_analyzed": 500,
-  "last_event_ts": "2026-01-10T18:24:58.294384+00:00",
+  "last_event_ts": "2026-01-10T19:25:05.683374+00:00",
   "surface_role": "status_surface",
   "advisory_only": true
 }
