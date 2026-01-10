@@ -654,7 +654,7 @@ class EvidenceIngestRequest(BaseModel):
     # Also accept single envelope at root level
     envelope_version: Optional[str] = None
     node_id: Optional[str] = None
-    
+
 
 class EvidenceIngestResponse(BaseModel):
     """Response from evidence ingest."""
@@ -668,48 +668,156 @@ class EvidenceIngestResponse(BaseModel):
     message: str
 
 
+def get_client_ip(request) -> str:
+    """Extract client IP from request."""
+    # Check for forwarded header (if behind proxy)
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    # Fall back to direct client
+    if request.client:
+        return request.client.host
+    return "unknown"
+
+
+def verify_ingest_token(request) -> tuple[bool, str]:
+    """
+    Verify the ingest token from Authorization header.
+    
+    Returns:
+        Tuple of (is_valid, reason)
+    """
+    config = get_config()
+    
+    # Check if token is configured
+    if not config.ingest.token:
+        # No token configured - allow local requests only
+        client_ip = get_client_ip(request)
+        if client_ip in ("127.0.0.1", "::1", "localhost"):
+            return True, "local_bypass"
+        return False, "token_not_configured"
+    
+    # Get Authorization header
+    auth_header = request.headers.get("authorization", "")
+    
+    if not auth_header:
+        return False, "missing_token"
+    
+    # Parse Bearer token
+    if not auth_header.lower().startswith("bearer "):
+        return False, "invalid_auth_format"
+    
+    token = auth_header[7:].strip()
+    
+    if token != config.ingest.token:
+        return False, "invalid_token"
+    
+    return True, "authenticated"
+
+
+def check_node_allowlist(node_ids: list[str]) -> tuple[bool, list[str]]:
+    """
+    Check if node IDs are in the allowlist.
+    
+    Returns:
+        Tuple of (all_allowed, rejected_node_ids)
+    """
+    config = get_config()
+    
+    # If no allowlist configured, allow all
+    if not config.ingest.allowed_node_ids:
+        return True, []
+    
+    rejected = []
+    for nid in node_ids:
+        if nid not in config.ingest.allowed_node_ids:
+            rejected.append(nid)
+    
+    return len(rejected) == 0, rejected
+
+
+from fastapi import Request
+
+
 @router.post("/ingest/evidence", response_model=EvidenceIngestResponse)
-async def ingest_evidence(request: EvidenceIngestRequest) -> EvidenceIngestResponse:
+async def ingest_evidence(request: Request, body: EvidenceIngestRequest) -> EvidenceIngestResponse:
     """
     POST /v1/ingest/evidence
-
+    
     Ingest evidence envelopes from remote nodes.
-
-    Accepts either:
-    - { "envelopes": [ ... ] } - batch of envelopes
-    - Single envelope object at root level
-
+    
+    SECURITY:
+    - Requires Authorization: Bearer <token> (if CALYX_INGEST_TOKEN set)
+    - Enforces node allowlist (if CALYX_ALLOWED_NODE_IDS set)
+    - Enforces max envelopes and max bytes limits
+    - All operations logged to audit trail
+    
     CONSTRAINTS:
     - Evidence ingest only (no commands)
     - Deterministic validation
     - Append-only storage
     - Receiver never "trusts conclusions"
-
-    VALIDATION:
-    - Required fields must be present
-    - seq must be > last_seq for node
-    - payload_hash must match computed
-    - prev_hash must match last_hash
     """
-    from ..evidence.store import ingest_batch
-    from ..schemas.evidence_envelope_v1 import REQUIRED_FIELDS
+    from ..evidence.store import ingest_batch, load_ingest_state
+    from ..evidence.audit import log_ingest_event, log_auth_failure
+    
+    config = get_config()
+    client_ip = get_client_ip(request)
+    
+    # Get request size (approximate from content-length)
+    content_length = int(request.headers.get("content-length", 0))
+    
+    # Check request size limit
+    if content_length > config.ingest.max_bytes:
+        log_auth_failure(client_ip, "request_too_large", content_length)
+        return EvidenceIngestResponse(
+            success=False,
+            accepted_count=0,
+            rejected_count=0,
+            rejection_reasons=[f"Request too large: {content_length} bytes (max {config.ingest.max_bytes})"],
+            message="Request exceeds size limit",
+        )
+    
+    # Verify authentication
+    is_valid, auth_reason = verify_ingest_token(request)
+    
+    if not is_valid:
+        log_auth_failure(client_ip, auth_reason, content_length)
+        
+        if auth_reason == "missing_token":
+            raise HTTPException(status_code=401, detail="Authorization required")
+        elif auth_reason == "invalid_token":
+            raise HTTPException(status_code=403, detail="Invalid token")
+        elif auth_reason == "token_not_configured":
+            raise HTTPException(status_code=403, detail="Ingest not configured for network access")
+        else:
+            raise HTTPException(status_code=403, detail="Authentication failed")
     
     # Collect envelopes from request
     envelopes = []
     
-    # Check for batch format
-    if request.envelopes:
-        envelopes.extend(request.envelopes)
+    if body.envelopes:
+        envelopes.extend(body.envelopes)
     
     # Check for single envelope at root
-    if request.envelope_version and request.node_id:
-        # Reconstruct single envelope from request fields
-        single_envelope = request.model_dump(exclude_none=True)
+    if body.envelope_version and body.node_id:
+        single_envelope = body.model_dump(exclude_none=True)
         if "envelopes" in single_envelope:
             del single_envelope["envelopes"]
         envelopes.append(single_envelope)
     
     if not envelopes:
+        log_ingest_event(
+            remote_addr=client_ip,
+            node_id=None,
+            accepted_count=0,
+            rejected_count=0,
+            last_seq_after=-1,
+            auth_status=auth_reason,
+            rejection_reasons=["No envelopes provided"],
+            request_size_bytes=content_length,
+            envelope_count_received=0,
+        )
         return EvidenceIngestResponse(
             success=False,
             accepted_count=0,
@@ -718,8 +826,75 @@ async def ingest_evidence(request: EvidenceIngestRequest) -> EvidenceIngestRespo
             message="No envelopes to ingest",
         )
     
+    # Check envelope count limit
+    if len(envelopes) > config.ingest.max_envelopes:
+        log_ingest_event(
+            remote_addr=client_ip,
+            node_id=None,
+            accepted_count=0,
+            rejected_count=len(envelopes),
+            last_seq_after=-1,
+            auth_status=auth_reason,
+            rejection_reasons=[f"Too many envelopes: {len(envelopes)} (max {config.ingest.max_envelopes})"],
+            request_size_bytes=content_length,
+            envelope_count_received=len(envelopes),
+        )
+        return EvidenceIngestResponse(
+            success=False,
+            accepted_count=0,
+            rejected_count=len(envelopes),
+            rejection_reasons=[f"Too many envelopes: {len(envelopes)} (max {config.ingest.max_envelopes})"],
+            message="Envelope count exceeds limit",
+        )
+    
+    # Extract node IDs and check allowlist
+    node_ids = list(set(e.get("node_id", "") for e in envelopes if e.get("node_id")));
+    all_allowed, rejected_nodes = check_node_allowlist(node_ids)
+    
+    if not all_allowed:
+        log_ingest_event(
+            remote_addr=client_ip,
+            node_id=",".join(rejected_nodes),
+            accepted_count=0,
+            rejected_count=len(envelopes),
+            last_seq_after=-1,
+            auth_status="node_not_allowed",
+            rejection_reasons=[f"Node not in allowlist: {n}" for n in rejected_nodes[:5]],
+            request_size_bytes=content_length,
+            envelope_count_received=len(envelopes),
+        )
+        return EvidenceIngestResponse(
+            success=False,
+            accepted_count=0,
+            rejected_count=len(envelopes),
+            rejection_reasons=[f"Node not in allowlist: {n}" for n in rejected_nodes[:5]],
+            message="One or more nodes not in allowlist",
+        )
+    
     # Ingest batch
     summary = ingest_batch(envelopes)
+    
+    # Get last seq for audit
+    last_seq_after = -1
+    if node_ids:
+        try:
+            state = load_ingest_state(node_ids[0])
+            last_seq_after = state.last_seq
+        except:
+            pass
+    
+    # Log to audit trail
+    log_ingest_event(
+        remote_addr=client_ip,
+        node_id=",".join(node_ids) if node_ids else None,
+        accepted_count=summary.accepted_count,
+        rejected_count=summary.rejected_count,
+        last_seq_after=last_seq_after,
+        auth_status=auth_reason,
+        rejection_reasons=summary.rejection_reasons[:5],
+        request_size_bytes=content_length,
+        envelope_count_received=len(envelopes),
+    )
     
     success = summary.accepted_count > 0 or summary.rejected_count == 0
     
@@ -768,7 +943,6 @@ async def list_nodes() -> NodesListResponse:
             last_ingested_at=state.last_ingested_at,
             total_envelopes=state.total_envelopes,
         )
-    
     return NodesListResponse(
         nodes=nodes,
         node_statuses=statuses,

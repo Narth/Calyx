@@ -18,6 +18,12 @@ from .store import (
     LOCAL_NODE_ID,
 )
 
+from .audit import (
+    log_ingest_event,
+    log_auth_failure,
+    get_recent_audit_events,
+)
+
 __all__ = [
     "IngestState",
     "IngestResult", 
@@ -33,4 +39,7 @@ __all__ = [
     "get_merged_evidence",
     "get_local_node_id",
     "LOCAL_NODE_ID",
+    "log_ingest_event",
+    "log_auth_failure",
+    "get_recent_audit_events",
 ]
