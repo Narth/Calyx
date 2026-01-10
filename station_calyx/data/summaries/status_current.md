@@ -1,6 +1,6 @@
 # Station Calyx Status
 
-*Generated: 2026-01-10T22:51:49*
+*Generated: 2026-01-10T21:01:49*
 
 > This is an informational summary. No action is required.
 > Station Calyx is advisory-only and does not execute commands.
@@ -9,14 +9,14 @@
 
 ## System State
 
-?? **Drift warnings detected from 128 snapshot(s) over 89.1 hours (confidence: HIGH)**
+?? **No significant changes detected from 137 snapshot(s)**
 
 ## Latest Snapshot
 
 - **Host:** DESKTOP-KSHNJ30
-- **Time:** 2026-01-10T22:40:30
-- **CPU:** 16.3%
-- **Memory:** 47.0%
+- **Time:** 2026-01-10T20:55:16
+- **CPU:** 5.5%
+- **Memory:** 45.0%
 - **Disk:** 80.6%
 
 ## Active Intent
