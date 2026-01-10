@@ -4,6 +4,7 @@ Enhanced Metrics Collector - Collect comprehensive system metrics every 5 minute
 Feeds data to predictive analytics engine for forecasting and anomaly detection
 """
 from __future__ import annotations
+import argparse
 import json
 import psutil
 import time
@@ -13,14 +14,16 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 ROOT = Path(__file__).resolve().parent.parent
+OUTGOING = ROOT / "outgoing"
+LOCK_PATH = OUTGOING / "enhanced_metrics.lock"
 
 
 class EnhancedMetricsCollector:
     """Collect detailed system metrics for foresight capability"""
     
-    def __init__(self):
+    def __init__(self, *, interval: int = 300):
         self.metrics_file = ROOT / "logs" / "enhanced_metrics.jsonl"
-        self.collection_interval = 300  # 5 minutes
+        self.collection_interval = int(interval)  # seconds
         self.metrics_window = deque(maxlen=1000)  # Keep last 1000 readings
         
     def collect_full_metrics(self) -> Dict:
@@ -36,7 +39,7 @@ class EnhancedMetricsCollector:
             swap = psutil.swap_memory()
             
             # Disk metrics
-            disk = psutil.disk_usage('/')
+            disk = psutil.disk_usage(str(ROOT))
             
             # Process metrics
             processes = list(psutil.process_iter(['pid', 'name', 'memory_percent', 'cpu_percent']))
@@ -161,6 +164,23 @@ class EnhancedMetricsCollector:
         try:
             with self.metrics_file.open("a", encoding="utf-8") as f:
                 f.write(json.dumps(metrics) + "\n")
+
+            # Supervision heartbeat lock.
+            try:
+                OUTGOING.mkdir(parents=True, exist_ok=True)
+                LOCK_PATH.write_text(
+                    json.dumps(
+                        {
+                            "ts": time.time(),
+                            "iso": datetime.now(timezone.utc).isoformat(),
+                            "ok": "error" not in metrics,
+                        },
+                        ensure_ascii=False,
+                    ),
+                    encoding="utf-8",
+                )
+            except Exception:
+                pass
             
             # Keep in memory window
             self.metrics_window.append(metrics)
@@ -196,7 +216,7 @@ class EnhancedMetricsCollector:
             print(f"[ERROR] Failed to read metrics: {e}")
             return metrics
     
-    def run_continuous(self):
+    def run_continuous(self, *, max_iters: int = 0):
         """Run continuous metrics collection"""
         print(f"[INFO] Enhanced Metrics Collector started")
         print(f"[INFO] Collection interval: {self.collection_interval} seconds (5 minutes)")
@@ -207,6 +227,10 @@ class EnhancedMetricsCollector:
         metrics = self.collect_full_metrics()
         self.save_metrics(metrics)
         print(f"[COLLECT] Initial collection complete")
+
+        iters = 1
+        if max_iters and iters >= max_iters:
+            return
         
         while True:
             try:
@@ -223,6 +247,10 @@ class EnhancedMetricsCollector:
                 print(f"  Memory: {metrics.get('memory', {}).get('percent', 0):.1f}%")
                 print(f"  TES: {metrics.get('tes', {}).get('current', 0):.1f}")
                 print(f"  Python Processes: {metrics.get('processes', {}).get('python', 0)}")
+
+                iters += 1
+                if max_iters and iters >= max_iters:
+                    break
                 
             except KeyboardInterrupt:
                 print("\n[INFO] Collector stopped by user")
@@ -234,8 +262,15 @@ class EnhancedMetricsCollector:
 
 def main():
     """Run metrics collector"""
-    collector = EnhancedMetricsCollector()
-    collector.run_continuous()
+    ap = argparse.ArgumentParser(description="Enhanced Metrics Collector")
+    ap.add_argument("--interval", type=int, default=300, help="Collection interval seconds (default 300)")
+    ap.add_argument("--max-iters", type=int, default=0, help="Stop after N collections (0=forever)")
+    ap.add_argument("--once", action="store_true", help="Collect once and exit")
+    args = ap.parse_args()
+
+    collector = EnhancedMetricsCollector(interval=int(args.interval))
+    max_iters = 1 if args.once else int(args.max_iters)
+    collector.run_continuous(max_iters=max_iters)
 
 
 if __name__ == "__main__":

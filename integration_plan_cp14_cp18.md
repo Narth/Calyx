@@ -98,21 +98,17 @@ def review_proposal(intent_id: str, artifacts: dict) -> dict:
 # In review_orchestrator.py
 
 def send_for_review(intent_id: str, artifacts: dict, reviewers: List[str]):
-    """Send intent to reviewers via SVF"""
+    """Send intent to reviewers (no subprocess; static only)."""
     for reviewer in reviewers:
         if reviewer == "cp14":
-            # Call CP14 processor
             from tools.cp14_sentinel import review_proposal
             verdict = review_proposal(intent_id, artifacts)
-            
+            # Persisted to outgoing/reviews/{intent_id}.CP14.verdict.json
+
         elif reviewer == "cp18":
-            # Call CP18 processor
             from tools.cp18_validator import review_proposal
             verdict = review_proposal(intent_id, artifacts)
-        
-        # Write verdict file
-        verdict_file = REVIEWS_DIR / f"{intent_id}.{reviewer}.verdict.json"
-        verdict_file.write_text(json.dumps(verdict, indent=2))
+            # Persisted to outgoing/reviews/{intent_id}.CP18.verdict.json
 ```
 
 ---

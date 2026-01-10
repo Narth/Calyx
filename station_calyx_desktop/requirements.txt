@@ -1,0 +1,2 @@
+# Station Calyx Desktop Requirements
+PySide6>=6.5.0

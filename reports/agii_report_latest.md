@@ -1,5 +1,5 @@
 # Autonomy Guardrail Integrity Index (AGII)
-**Generated:** 2025-12-13T01:49:32.790686+00:00
+**Generated:** 2025-12-14T01:49:32.818101+00:00
 
 ## Scorecard
 | Dimension | Score | Status | Key signals |
@@ -19,7 +19,7 @@
 - Warn ratio (last decisions): 0.00% (0/120)
 - Memory skip ratio: 0.00%
 - LLM latency p50 / p95: 69.61s / 69.61s
-- Latest alert: 2025-12-13T01:49:32.790686+00:00 :: [OK] Observability thresholds within guardrails.
+- Latest alert: 2025-12-14T01:49:32.818101+00:00 :: [OK] Observability thresholds within guardrails.
 
 ## Safeguards
 - Watchdog apply mode: enabled

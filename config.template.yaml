@@ -13,6 +13,29 @@ paths:
   voice_notes: /path/to/Calyx_Terminal/Voice_Notes
   scripts: /path/to/Calyx_Terminal/Scripts
   memory: /path/to/Calyx_Terminal/Memory
+
+# Telemetry contract and continuity story system.
+telemetry:
+  timeline:
+    enabled: true
+    path: logs/station_timeline.jsonl
+  contract:
+    streams:
+      system_snapshots:
+        path: logs/system_snapshots.jsonl
+        cadence_sec: 60
+        stale_after_sec: 300
+      enhanced_metrics:
+        path: logs/enhanced_metrics.jsonl
+        cadence_sec: 300
+        stale_after_sec: 1200
+      bridge_pulse_state:
+        path: state/bridge_pulse_state.json
+        cadence_sec: 1200
+        stale_after_sec: 3600
+  continuity_report:
+    enabled: true
+    output_path: reports/telemetry_continuity.md
 settings:
   faster_whisper_device: "cuda"  # or "cpu" if no GPU
   faster_whisper_compute_type: "float16"  # or "int8" for CPU
@@ -77,6 +100,7 @@ settings:
   svf:
     single_pass: true
     max_msgs_per_cycle: 1
+    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
   routing:
     uncertain_band: [0.35, 0.55]
     llm_allowed:
@@ -163,8 +187,6 @@ settings:
       - recent_excs
     # Cheetah memory optimization 2025-10-24: Balanced pulse rate for memory efficiency
     pulse_interval_sec: 3  # Triage pulse at 3s = 20/min (optimized for memory efficiency)
-  svf:
-    pulse_interval_sec: 3  # SVF pulse at 3s = 20/min (optimized for memory efficiency)
   # AI-for-All Teaching System Configuration
   ai4all_teaching:
     enabled: true

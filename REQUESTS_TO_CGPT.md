@@ -72,11 +72,16 @@ Phase 1 (Shadow Mode) implementation complete with all CGPT specifications fulfi
 - Generate verdict JSON per spec above
 - Integrate with existing SVF infrastructure
 
-**Integration Points:**
-- Existing CP14 agent (`tools/cp14_sentinel.py`)
-- Existing CP18 agent (`tools/cp18_validator.py`)
-- SVF channels for communication
-- Review orchestrator routing
+ **Integration Points:**
+ - Existing CP14 agent (`tools/cp14_sentinel.py`)
+ - Existing CP18 agent (`tools/cp18_validator.py`)
+ - SVF channels for communication
+ - Review orchestrator routing
+ 
+ **Preferred Integration API (drop-in):**
+ - Implement `review_proposal(intent_id: str, artifacts: dict) -> dict` in each processor module.
+ - Persist verdicts as `outgoing/reviews/{intent_id}.CP14.verdict.json` and `outgoing/reviews/{intent_id}.CP18.verdict.json`.
+ - Orchestrator calls these in-process (no subprocess; static only).
 
 ### Test Scenarios Available
 

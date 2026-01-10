@@ -17,6 +17,29 @@ powershell -File .\Scripts\Calyx-Overseer.ps1 -Status
 
 See `docs/CBO.md` for options and scheduled start at logon.
 
+Station Pulse — Traffic Flow Dashboard
+---------------------------------------
+
+View Station Calyx as a living traffic network with 10-second orientation:
+
+```powershell
+python -u .\tools\station_pulse.py
+```
+
+Console snapshot mode:
+
+```powershell
+python -u .\tools\station_pulse.py --console
+```
+
+Export current state:
+
+```powershell
+python -u .\tools\station_pulse.py --export-snapshot reports/pulse_snapshot.json
+```
+
+The dashboard shows agents grouped by lane (Builder, Oversight, Service, Scheduler, Monitoring), system posture (Calm/Moderate/Congestion/Distressed), CBO dispatch status, and gate states. It complements Agent Watcher (detailed multi-agent coordination) and CBO Indicator (bridge status overlay) by providing a human-aligned traffic flow perspective.
+
 Activate virtualenv (PowerShell):
 
 ```powershell
@@ -194,6 +217,33 @@ Keep a tiny status window open to see when the local agent/triage are working. I
 ```powershell
 python -u .\Scripts\agent_watcher.py
 ```
+
+BitNet LLM Integration
+----------------------
+
+Run local 1.58-bit LLM inference via WSL2 BitNet bridge:
+
+```powershell
+# Basic inference
+python -u .\Scripts\agent_bitnet.py --prompt "Your question here"
+
+# Custom parameters
+python -u .\Scripts\agent_bitnet.py `
+  --prompt "Explain Station Calyx" `
+  --n-predict 100 `
+  --temperature 0.5 `
+  --threads 4
+
+# Configuration validation
+python -u .\Scripts\agent_bitnet.py --prompt "test" --dry-run
+```
+
+**Requirements:**
+- WSL2 Ubuntu with BitNet compiled at `~/bitnet_build/BitNet/`
+- Gate authorization: `outgoing/gates/bitnet.ok` with `enabled: true`
+- Config section: `config.yaml` → `bitnet`
+
+**See**: `docs/BITNET_INTEGRATION.md` for full documentation
 
 Network gates and local-first operation
 --------------------------------------

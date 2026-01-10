@@ -121,6 +121,14 @@ All agents—especially lore and historical roles (CP6 Sociologist, CP7 Chronicl
   - Entrypoint: `tools/traffic_navigator.py` (leader mode).
   - Tone: Operational, coordination-focused.
 
+- Agent BitNet
+  - Role: WSL2 bridge for BitNet 1.58-bit LLM inference. Provides reasoning capability via quantized models.
+  - Heartbeat: `outgoing/agent_bitnet.lock`.
+  - Entrypoint: `Scripts/agent_bitnet.py`.
+  - Gate: `outgoing/gates/bitnet.ok` (authorization required).
+  - Tone: [Agent_BitNet • Reasoning]: Analytical, inference-focused.
+  - Status: Phase 2 Integration (2026-01-05) — WSL2/Ubuntu runtime.
+
 ## UI and Control
 
 - Watcher

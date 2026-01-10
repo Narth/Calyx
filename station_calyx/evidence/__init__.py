@@ -1,21 +1,36 @@
 # -*- coding: utf-8 -*-
-"""
-Evidence subsystem - Schema, journaling, and export for Node Evidence Relay.
+"""Station Calyx Evidence Package."""
 
-[CBO Governance]: This module provides the core evidence infrastructure for
-distributed truth capture across Station Calyx nodes. All evidence is:
-- Append-only (never modified after write)
-- Hash-chained (prev_hash links to previous envelope)
-- Sequence-numbered (monotonic ordering)
-- Node-attributed (traceable to origin)
-"""
-
-from .schemas import EvidenceEnvelopeV1, EvidenceType
-from .journal import EvidenceJournal, append_evidence
+from .store import (
+    IngestState,
+    IngestResult,
+    IngestSummary,
+    load_ingest_state,
+    save_ingest_state,
+    append_envelope,
+    ingest_batch,
+    ingest_jsonl_file,
+    get_known_nodes,
+    get_node_evidence,
+    get_all_evidence,
+    get_merged_evidence,
+    get_local_node_id,
+    LOCAL_NODE_ID,
+)
 
 __all__ = [
-    "EvidenceEnvelopeV1",
-    "EvidenceType",
-    "EvidenceJournal",
-    "append_evidence",
+    "IngestState",
+    "IngestResult", 
+    "IngestSummary",
+    "load_ingest_state",
+    "save_ingest_state",
+    "append_envelope",
+    "ingest_batch",
+    "ingest_jsonl_file",
+    "get_known_nodes",
+    "get_node_evidence",
+    "get_all_evidence",
+    "get_merged_evidence",
+    "get_local_node_id",
+    "LOCAL_NODE_ID",
 ]
