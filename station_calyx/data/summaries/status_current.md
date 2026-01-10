@@ -1,6 +1,10 @@
 # Station Calyx Status
 
+<<<<<<<<< Temporary merge branch 1
+*Generated: 2026-01-10T19:27:19*
+=========
 *Generated: 2026-01-10T21:01:49*
+>>>>>>>>> Temporary merge branch 2
 
 > This is an informational summary. No action is required.
 > Station Calyx is advisory-only and does not execute commands.
@@ -9,14 +13,24 @@
 
 ## System State
 
+<<<<<<<<< Temporary merge branch 1
+?? **Drift warnings detected from 132 snapshot(s) over 88.2 hours (confidence: HIGH)**
+=========
 ?? **No significant changes detected from 137 snapshot(s)**
+>>>>>>>>> Temporary merge branch 2
 
 ## Latest Snapshot
 
 - **Host:** DESKTOP-KSHNJ30
+<<<<<<<<< Temporary merge branch 1
+- **Time:** 2026-01-10T19:25:05
+- **CPU:** 1.2%
+- **Memory:** 42.2%
+=========
 - **Time:** 2026-01-10T20:55:16
 - **CPU:** 5.5%
 - **Memory:** 45.0%
+>>>>>>>>> Temporary merge branch 2
 - **Disk:** 80.6%
 
 ## Active Intent
