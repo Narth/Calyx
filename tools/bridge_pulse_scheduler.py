@@ -22,6 +22,8 @@ from typing import Optional
 ROOT = Path(__file__).resolve().parents[1]
 STATE_FILE = ROOT / "state" / "bridge_pulse_state.json"
 REPORTS_DIR = ROOT / "reports"
+OUTGOING = ROOT / "outgoing"
+LOCK_PATH = OUTGOING / "bridge_pulse_scheduler.lock"
 
 
 def read_state() -> dict:
@@ -39,6 +41,21 @@ def write_state(state: dict) -> None:
     try:
         with STATE_FILE.open('w', encoding='utf-8') as f:
             json.dump(state, f, indent=2)
+    except Exception:
+        pass
+
+
+def write_lock(*, ok: bool, last_pulse_id: int, next_due: float) -> None:
+    OUTGOING.mkdir(parents=True, exist_ok=True)
+    hb = {
+        "ts": time.time(),
+        "iso": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+        "ok": bool(ok),
+        "last_pulse_id": int(last_pulse_id),
+        "next_due": float(next_due),
+    }
+    try:
+        LOCK_PATH.write_text(json.dumps(hb, ensure_ascii=False), encoding="utf-8")
     except Exception:
         pass
 
@@ -71,6 +88,11 @@ def main(argv: Optional[list[str]] = None) -> int:
                     help="Interval in minutes between pulse reports (default: 20)")
     ap.add_argument("--max-iters", type=int, default=0,
                     help="Optional: stop after N pulses (0 = run forever)")
+    ap.add_argument(
+        "--heartbeat-only",
+        action="store_true",
+        help="Write heartbeat lock only; never generate pulse reports",
+    )
     
     args = ap.parse_args(argv)
     
@@ -99,8 +121,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         while not stopping:
             now = time.time()
             next_due = state.get('next_pulse_due', now)
+
+            write_lock(ok=True, last_pulse_id=pulse_id, next_due=float(next_due))
             
-            if now >= next_due:
+            if (not args.heartbeat_only) and now >= next_due:
                 pulse_id += 1
                 print(f"\n[PULSE] Generating pulse report bp-{pulse_id:04d} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
                 
@@ -112,6 +136,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 state['last_generated'] = datetime.now().isoformat()
                 state['success'] = success
                 write_state(state)
+                write_lock(ok=bool(success), last_pulse_id=pulse_id, next_due=float(state.get('next_pulse_due', now + interval_sec)))
                 
                 iter_count += 1
                 if args.max_iters and iter_count >= args.max_iters:
