@@ -1,0 +1,19 @@
+{
+  "session_id": "75e6e789",
+  "timestamp": "2026-01-12T17:03:23.782320+00:00",
+  "events_analyzed": 100,
+  "highlights": [
+    "Analyzed 100 events in this session.",
+    "Most common event types: SYSTEM_SNAPSHOT (33), SCHEDULED_SNAPSHOT (33), PATTERN_RECURRING (8)",
+    "Active components: sys_telemetry, scheduled_research, reflector_agent, temporal_analyzer, intent_manager",
+    "Events span 8.0 hours."
+  ],
+  "anomalies": [],
+  "changes": [],
+  "questions": [],
+  "suggested_next_steps": [
+    "ADVISORY: System appears stable. Continue monitoring."
+  ],
+  "reflector_role": "reflector_agent",
+  "advisory_only": true
+}

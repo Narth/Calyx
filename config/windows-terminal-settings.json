@@ -1,0 +1,79 @@
+{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "copyOnSelect": true,
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    
+    "profiles": {
+        "defaults": {
+            "colorScheme": "Tokyo Night",
+            "font": {
+                "face": "JetBrains Mono",
+                "size": 11
+            },
+            "padding": "8",
+            "cursorShape": "bar",
+            "useAcrylic": false,
+            "opacity": 100
+        },
+        "list": [
+            {
+                "name": "Station Calyx",
+                "commandline": "powershell.exe -NoExit -Command \"cd C:\\Calyx_Terminal; python calyx.py\"",
+                "guid": "{station-calyx-0000-0000-000000000001}",
+                "icon": "🌸",
+                "startingDirectory": "C:\\Calyx_Terminal",
+                "colorScheme": "Tokyo Night"
+            },
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell",
+                "source": "Windows.Terminal.PowershellCore"
+            },
+            {
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "name": "Windows PowerShell",
+                "hidden": false
+            }
+        ]
+    },
+    
+    "schemes": [
+        {
+            "name": "Tokyo Night",
+            "background": "#1A1B26",
+            "foreground": "#A9B1D6",
+            "cursorColor": "#C0CAF5",
+            "selectionBackground": "#33467C",
+            
+            "black": "#15161E",
+            "red": "#F7768E",
+            "green": "#9ECE6A",
+            "yellow": "#E0AF68",
+            "blue": "#7AA2F7",
+            "purple": "#BB9AF7",
+            "cyan": "#7DCFFF",
+            "white": "#A9B1D6",
+            
+            "brightBlack": "#414868",
+            "brightRed": "#F7768E",
+            "brightGreen": "#9ECE6A",
+            "brightYellow": "#E0AF68",
+            "brightBlue": "#7AA2F7",
+            "brightPurple": "#BB9AF7",
+            "brightCyan": "#7DCFFF",
+            "brightWhite": "#C0CAF5"
+        }
+    ],
+    
+    "actions": [
+        { "command": { "action": "copy", "singleLine": false }, "keys": "ctrl+c" },
+        { "command": "paste", "keys": "ctrl+v" },
+        { "command": "find", "keys": "ctrl+shift+f" },
+        { "command": { "action": "splitPane", "split": "auto", "splitMode": "duplicate" }, "keys": "alt+shift+d" },
+        { "command": { "action": "newTab" }, "keys": "ctrl+shift+t" },
+        { "command": { "action": "nextTab" }, "keys": "ctrl+tab" },
+        { "command": { "action": "prevTab" }, "keys": "ctrl+shift+tab" }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+  "proposal_id": "7915cc2a",
+  "timestamp": "2026-01-26T18:03:45.206903+00:00",
+  "action_category": "file_read",
+  "action_description": "Read Clawdbot status",
+  "action_parameters": {
+    "path": "station_calyx/data/clawdbot/"
+  },
+  "clawdbot_reasoning": "Check Clawdbot workspace",
+  "user_intent_reference": null,
+  "evidence_references": [],
+  "risk_level": "low",
+  "reversible": true,
+  "external_effects": false,
+  "status": "approved",
+  "decision_timestamp": "2026-01-26T18:36:08.753616+00:00",
+  "decision_by": "human",
+  "decision_reason": "CBO approved: test proposal, low-risk read within allowed workspace",
+  "denial_reason": null
+}

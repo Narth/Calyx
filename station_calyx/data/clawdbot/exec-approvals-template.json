@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "defaults": {
+    "socket": "ask",
+    "commands": "ask",
+    "browser": "ask",
+    "network": "ask",
+    "filesystem": "ask"
+  },
+  "agents": {},
+  "allowlist": [],
+  "_station_calyx": {
+    "governance": "active",
+    "oversight": "cbo",
+    "trial_mode": true,
+    "notes": "All actions require CBO approval during trial phase"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "station-calyx-governance",
+  "version": "1.0.0",
+  "description": "Station Calyx governance integration for Clawdbot - enforces HVD-1 compliance and CBO oversight",
+  "author": "Station Calyx / AI-For-All",
+  "license": "MIT",
+  "clawdbot": {
+    "skill": true,
+    "type": "governance",
+    "priority": "highest",
+    "hooks": {
+      "pre-action": true,
+      "post-action": true
+    }
+  },
+  "constraints": {
+    "hvd1_compliant": true,
+    "advisory_only_base": true,
+    "cbo_oversight_required": true,
+    "trial_mode": true
+  },
+  "protected_paths": [
+    "governance/",
+    "station_calyx/core/",
+    "station_calyx/clawdbot/",
+    ".git/",
+    "outgoing/gates/"
+  ],
+  "allowed_workspace": [
+    "station_calyx/data/clawdbot/",
+    "outgoing/clawdbot/"
+  ],
+  "documentation": {
+    "hvd1": "governance/HVD-1.md",
+    "onboarding": "docs/AGENT_ONBOARDING.md"
+  }
+}

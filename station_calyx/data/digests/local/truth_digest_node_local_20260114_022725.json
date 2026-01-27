@@ -1,0 +1,115 @@
+{
+  "constraints": {
+    "advisory_only": true,
+    "deterministic": true,
+    "no_recommendations": true,
+    "no_suppression": true
+  },
+  "digest_version": "v1",
+  "evidence_basis": {
+    "confidence": "medium",
+    "events_analyzed": 1170,
+    "snapshot_count": 319,
+    "trend_events": 81,
+    "window_hours": 194.5
+  },
+  "generated_at": "2026-01-14T02:27:25.196096+00:00",
+  "metric_scope": null,
+  "node_id": "local",
+  "open_observations": [],
+  "period": {
+    "end": "2026-01-13T22:44:26.486392+00:00",
+    "start": "2026-01-06T22:04:49.038241+00:00"
+  },
+  "state_changes": [
+    {
+      "current_state": {
+        "band": null,
+        "classification": null,
+        "direction": null,
+        "value": 7.4
+      },
+      "evidence_count": 1,
+      "evidence_refs": [],
+      "first_observed": "2026-01-06T22:04:49.038241+00:00",
+      "last_observed": "2026-01-06T22:04:49.038241+00:00",
+      "metric": "cpu_percent",
+      "prior_state": null,
+      "reason": "first_observation",
+      "type": "state_change"
+    },
+    {
+      "current_state": {
+        "band": null,
+        "classification": null,
+        "direction": null,
+        "value": 45.6
+      },
+      "evidence_count": 1,
+      "evidence_refs": [],
+      "first_observed": "2026-01-06T22:04:49.038241+00:00",
+      "last_observed": "2026-01-06T22:04:49.038241+00:00",
+      "metric": "memory_percent",
+      "prior_state": null,
+      "reason": "first_observation",
+      "type": "state_change"
+    },
+    {
+      "current_state": {
+        "band": null,
+        "classification": null,
+        "direction": null,
+        "value": 88.5
+      },
+      "evidence_count": 1,
+      "evidence_refs": [],
+      "first_observed": "2026-01-06T22:04:49.038241+00:00",
+      "last_observed": "2026-01-06T22:04:49.038241+00:00",
+      "metric": "disk_percent_used",
+      "prior_state": null,
+      "reason": "first_observation",
+      "type": "state_change"
+    }
+  ],
+  "state_confirmations": [
+    {
+      "first_observed": "2026-01-06T22:04:49.038241+00:00",
+      "last_observed": "2026-01-12T17:41:20.827014+00:00",
+      "metric": "cpu_percent",
+      "observation_count": 61424,
+      "reason": "same_classification",
+      "state": {
+        "classification": "volatile",
+        "direction": "volatile",
+        "value": 1.6
+      },
+      "type": "state_confirmation"
+    },
+    {
+      "first_observed": "2026-01-06T22:04:49.038241+00:00",
+      "last_observed": "2026-01-12T17:41:20.826333+00:00",
+      "metric": "memory_percent",
+      "observation_count": 61074,
+      "reason": "same_classification",
+      "state": {
+        "classification": "increasing",
+        "direction": "increasing",
+        "value": 45.9
+      },
+      "type": "state_confirmation"
+    },
+    {
+      "first_observed": "2026-01-06T22:04:49.038241+00:00",
+      "last_observed": "2026-01-12T17:41:20.827536+00:00",
+      "metric": "disk_percent_used",
+      "observation_count": 57629,
+      "reason": "same_classification",
+      "state": {
+        "classification": "decreasing",
+        "direction": "decreasing",
+        "value": 80.6
+      },
+      "type": "state_confirmation"
+    }
+  ]
+}

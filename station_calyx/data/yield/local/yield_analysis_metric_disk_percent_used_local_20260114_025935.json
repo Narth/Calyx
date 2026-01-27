@@ -1,0 +1,49 @@
+{
+  "analysis_timestamp": "2026-01-14T02:59:35.055019+00:00",
+  "analysis_version": "v1",
+  "constraints": {
+    "digest_only_input": true,
+    "no_recommendations": true,
+    "no_system_alteration": true
+  },
+  "current_window": {
+    "confirmations": 339,
+    "digest_id": "truth_digest_metric_disk_percent_used_local_20260114_022807",
+    "state_changes": 1,
+    "total_observations": 340,
+    "window_end": "2026-01-12T17:41:20.827536+00:00",
+    "window_start": "2026-01-06T22:04:49.038241+00:00",
+    "yield_percent": 0.29,
+    "yield_ratio": 0.0029411764705882353
+  },
+  "diminishing_returns": {
+    "consecutive_zero_yield_windows": 0,
+    "new_entity_in_window": false,
+    "status": "insufficient_data",
+    "threshold_n": 3,
+    "windows_analyzed": 2
+  },
+  "evidence_basis": {
+    "confidence": "low",
+    "digests_analyzed": [
+      "truth_digest_metric_disk_percent_used_local_20260114_022731",
+      "truth_digest_metric_disk_percent_used_local_20260114_022807"
+    ],
+    "period_end": "2026-01-12T17:41:20.827536+00:00",
+    "period_start": "2026-01-06T00:00:00+00:00"
+  },
+  "metric_breakdown": [],
+  "metric_scope": "disk_percent_used",
+  "node_id": "local",
+  "prior_window": {
+    "confirmations": 0,
+    "digest_id": "truth_digest_metric_disk_percent_used_local_20260114_022731",
+    "state_changes": 0,
+    "total_observations": 0,
+    "window_end": "2026-01-14T02:27:31.586897+00:00",
+    "window_start": "2026-01-06T00:00:00+00:00",
+    "yield_percent": 0.0,
+    "yield_ratio": 0.0
+  },
+  "yield_trend": "stable"
+}

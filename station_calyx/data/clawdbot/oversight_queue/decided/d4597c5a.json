@@ -1,0 +1,20 @@
+{
+  "proposal_id": "d4597c5a",
+  "timestamp": "2026-01-26T18:03:45.209187+00:00",
+  "action_category": "shell_command",
+  "action_description": "List directory contents",
+  "action_parameters": {
+    "command": "dir"
+  },
+  "clawdbot_reasoning": "Exploration of workspace",
+  "user_intent_reference": null,
+  "evidence_references": [],
+  "risk_level": "high",
+  "reversible": true,
+  "external_effects": false,
+  "status": "approved",
+  "decision_timestamp": "2026-01-26T18:36:13.899438+00:00",
+  "decision_by": "human",
+  "decision_reason": "CBO approved: test proposal, benign directory listing command",
+  "denial_reason": null
+}
