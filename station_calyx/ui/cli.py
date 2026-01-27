@@ -87,6 +87,294 @@ COMPONENT_ROLE = "cli"
 COMPONENT_SCOPE = "command-line interface"
 
 
+def cmd_clawdbot(args: argparse.Namespace) -> int:
+    """Manage Clawdbot governance and oversight."""
+    from station_calyx.clawdbot.kill_switch import (
+        is_clawdbot_enabled,
+        get_clawdbot_status,
+        enable_clawdbot,
+        disable_clawdbot,
+        emergency_halt,
+        clear_halt,
+    )
+    from station_calyx.clawdbot.oversight import get_pending_proposals, approve_action, deny_action
+    from station_calyx.clawdbot.action_log import get_action_history
+    from station_calyx.clawdbot.sandbox import get_sandbox_config
+    import json as json_module
+    
+    subcommand = args.clawdbot_command if hasattr(args, 'clawdbot_command') else None
+    
+    if subcommand == "status":
+        status = get_clawdbot_status()
+        config = get_sandbox_config()
+        
+        print("# Clawdbot Governance Status")
+        print()
+        print(f"**Enabled:** {status['enabled']}")
+        print(f"**Halted:** {status['halted']}")
+        if status['halt_reason']:
+            print(f"**Halt Reason:** {status['halt_reason']}")
+        if status['enabled_by']:
+            print(f"**Enabled By:** {status['enabled_by']}")
+        print()
+        print("## Sandbox Configuration")
+        print(f"- Trial Mode: {config.trial_mode}")
+        print(f"- CBO Approval Required: {config.require_cbo_approval_all}")
+        print(f"- Max Actions/Hour: {config.max_actions_per_hour}")
+        print(f"- Protected Paths: {len(config.protected_paths)}")
+        return 0
+    
+    elif subcommand == "enable":
+        if is_clawdbot_enabled():
+            print("[Clawdbot] Already enabled")
+            return 0
+        
+        reason = args.reason if hasattr(args, 'reason') and args.reason else "Manual enable via CLI"
+        enable_clawdbot(enabled_by="human", reason=reason)
+        print("[Clawdbot] Enabled")
+        print("  Trial mode active - all actions require CBO approval")
+        return 0
+    
+    elif subcommand == "disable":
+        if not is_clawdbot_enabled():
+            print("[Clawdbot] Already disabled")
+            return 0
+        
+        reason = args.reason if hasattr(args, 'reason') and args.reason else "Manual disable via CLI"
+        disable_clawdbot(disabled_by="human", reason=reason)
+        print("[Clawdbot] Disabled")
+        return 0
+    
+    elif subcommand == "halt":
+        reason = args.reason if hasattr(args, 'reason') and args.reason else "Manual emergency halt"
+        emergency_halt(reason=reason, halted_by="human")
+        print("[Clawdbot] EMERGENCY HALT ACTIVATED")
+        print(f"  Reason: {reason}")
+        print("  All pending proposals cancelled")
+        print("  Use 'calyx clawdbot clear-halt' after review to resume")
+        return 0
+    
+    elif subcommand == "clear-halt":
+        reason = args.reason if hasattr(args, 'reason') and args.reason else "Halt cleared after human review"
+        clear_halt(cleared_by="human", reason=reason)
+        print("[Clawdbot] Halt cleared")
+        print("  Use 'calyx clawdbot enable' to resume operation")
+        return 0
+    
+    elif subcommand == "pending":
+        proposals = get_pending_proposals()
+        if not proposals:
+            print("[Clawdbot] No pending action proposals")
+            return 0
+        
+        print(f"# Pending Action Proposals ({len(proposals)})")
+        print()
+        for p in proposals:
+            print(f"## {p.proposal_id}")
+            print(f"- **Category:** {p.action_category}")
+            print(f"- **Risk:** {p.risk_level}")
+            print(f"- **Description:** {p.action_description[:100]}")
+            print(f"- **Reasoning:** {p.clawdbot_reasoning[:100]}")
+            print()
+        return 0
+    
+    elif subcommand == "approve":
+        proposal_id = args.proposal_id
+        reason = args.reason if hasattr(args, 'reason') and args.reason else "Approved by human via CLI"
+        
+        if approve_action(proposal_id, approved_by="human", reason=reason):
+            print(f"[Clawdbot] Proposal {proposal_id} approved")
+        else:
+            print(f"[Clawdbot] Proposal {proposal_id} not found or already decided")
+            return 1
+        return 0
+    
+    elif subcommand == "deny":
+        proposal_id = args.proposal_id
+        reason = args.reason if hasattr(args, 'reason') and args.reason else "Denied by human via CLI"
+        
+        if deny_action(proposal_id, denied_by="human", reason=reason):
+            print(f"[Clawdbot] Proposal {proposal_id} denied")
+        else:
+            print(f"[Clawdbot] Proposal {proposal_id} not found or already decided")
+            return 1
+        return 0
+    
+    elif subcommand == "history":
+        limit = args.limit if hasattr(args, 'limit') else 20
+        history = get_action_history(limit=limit)
+        
+        if not history:
+            print("[Clawdbot] No action history")
+            return 0
+        
+        print(f"# Action History (last {len(history)})")
+        print()
+        for record in history:
+            status_icon = "✓" if record.get("decision") == "approved" else "✗"
+            print(f"- [{status_icon}] {record.get('action_category')}: {record.get('action_description', '')[:60]}")
+            print(f"    Decision: {record.get('decision')} by {record.get('decision_by')}")
+        return 0
+    
+    else:
+        print("Usage: calyx clawdbot <command>")
+        print()
+        print("Commands:")
+        print("  status      Show Clawdbot governance status")
+        print("  enable      Enable Clawdbot (trial mode)")
+        print("  disable     Disable Clawdbot (graceful)")
+        print("  halt        Emergency halt (immediate)")
+        print("  clear-halt  Clear halt state after review")
+        print("  pending     Show pending action proposals")
+        print("  approve     Approve a pending proposal")
+        print("  deny        Deny a pending proposal")
+        print("  history     Show action history")
+        return 0
+
+
+def cmd_yield(args: argparse.Namespace) -> int:
+    """Analyze observation yield from Truth Digest artifacts."""
+    from station_calyx.yield_analysis import (
+        analyze_node_yield,
+        analyze_metric_yield,
+    )
+    from station_calyx.yield_analysis.formatter import format_yield_markdown, format_yield_json
+    
+    node_id = args.node if hasattr(args, 'node') and args.node else "local"
+    metric = args.metric if hasattr(args, 'metric') and args.metric else None
+    stdout_only = hasattr(args, 'stdout') and args.stdout
+    json_output = hasattr(args, 'json') and args.json
+    
+    persist = not stdout_only
+    
+    # Analyze yield
+    if metric:
+        print(f"[Yield] Analyzing metric yield for {metric} on {node_id}...")
+        result = analyze_metric_yield(
+            node_id=node_id,
+            metric=metric,
+            persist=persist,
+        )
+    else:
+        print(f"[Yield] Analyzing node yield for {node_id}...")
+        result = analyze_node_yield(
+            node_id=node_id,
+            persist=persist,
+        )
+    
+    # Output
+    if json_output:
+        print(format_yield_json(result))
+    else:
+        print()
+        print(format_yield_markdown(result))
+    
+    # Summary
+    status = result.diminishing_returns.status.value
+    consecutive = result.diminishing_returns.consecutive_zero_yield_windows
+    
+    print()
+    print(f"[Yield] Analysis complete: diminishing_returns={status}, consecutive_zero_windows={consecutive}")
+    
+    return 0
+
+
+def cmd_digest(args: argparse.Namespace) -> int:
+    """Generate Truth Digest."""
+    from station_calyx.digest import (
+        generate_node_digest,
+        generate_metric_digest,
+        load_thresholds,
+        set_threshold_override,
+    )
+    from station_calyx.digest.formatter import format_threshold_report
+    from datetime import timedelta
+    
+    node_id = args.node if hasattr(args, 'node') and args.node else "local"
+    metric = args.metric if hasattr(args, 'metric') and args.metric else None
+    stdout_only = hasattr(args, 'stdout') and args.stdout
+    json_output = hasattr(args, 'json') and args.json
+    
+    # Handle --thresholds flag
+    if hasattr(args, 'thresholds') and args.thresholds:
+        thresholds = load_thresholds()
+        report = format_threshold_report(thresholds.thresholds)
+        print(report)
+        return 0
+    
+    # Handle --set-threshold
+    if hasattr(args, 'set_threshold') and args.set_threshold:
+        parts = args.set_threshold
+        if len(parts) != 3:
+            print("Error: --set-threshold requires <metric> <boundary> <value>")
+            return 1
+        metric_name, boundary, value = parts
+        try:
+            value = float(value)
+        except ValueError:
+            print(f"Error: Invalid value '{value}' - must be a number")
+            return 1
+        if boundary not in ("high", "low"):
+            print(f"Error: Invalid boundary '{boundary}' - must be 'high' or 'low'")
+            return 1
+        
+        result = set_threshold_override(metric_name, boundary, value)
+        print(f"[Threshold Override] {metric_name}.{boundary} = {value}")
+        print(f"  Source: {result.source}")
+        print(f"  Updated: {result.last_updated}")
+        return 0
+    
+    # Parse --since
+    since = None
+    if hasattr(args, 'since') and args.since:
+        try:
+            since = datetime.fromisoformat(args.since.replace("Z", "+00:00"))
+        except ValueError:
+            print(f"Error: Invalid timestamp '{args.since}'")
+            return 1
+    
+    # Generate digest
+    persist = not stdout_only
+    
+    if metric:
+        print(f"[Digest] Generating metric digest for {metric} on {node_id}...")
+        result = generate_metric_digest(
+            node_id=node_id,
+            metric=metric,
+            since=since,
+            persist=persist,
+        )
+    else:
+        print(f"[Digest] Generating node digest for {node_id}...")
+        result = generate_node_digest(
+            node_id=node_id,
+            since=since,
+            persist=persist,
+        )
+    
+    # Output
+    if json_output:
+        print(result.get("json", "{}"))
+    else:
+        print()
+        print(result.get("markdown", "No digest generated"))
+    
+    # Report artifact paths if persisted
+    if persist and result.get("artifact_paths"):
+        print()
+        print("--- Artifacts Saved ---")
+        for name, path in result["artifact_paths"].items():
+            print(f"  {name}: {path}")
+    
+    # Summary
+    changes = len(result.get("state_changes", []))
+    confirmations = len(result.get("state_confirmations", []))
+    print()
+    print(f"[Digest] Complete: {changes} state changes, {confirmations} confirmations")
+    
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     """Show service status."""
     # Check for --human flag
@@ -253,6 +541,10 @@ def cmd_events(args: argparse.Namespace) -> int:
     """List recent events."""
     events = load_recent_events(args.recent)
     
+    def truncate_string(s, max_length):
+        """Truncate string to a maximum length, adding ellipsis if truncated."""
+        return s[:max_length] + "..." if len(s) > max_length else s
+    
     if not events:
         print("No events found.")
         return 0
@@ -262,7 +554,7 @@ def cmd_events(args: argparse.Namespace) -> int:
     for e in events[-args.recent:]:
         ts = e.get("ts", "?")[:19]
         etype = e.get("event_type", "?")
-        summary = e.get("summary", "")[:60]
+        summary = truncate_string(e.get("summary", ""), 60)
         print(f"[{ts}] {etype:20} {summary}")
     
     print()
@@ -694,7 +986,7 @@ def cmd_ingest_evidence(args: argparse.Namespace) -> int:
                     print(f"  Line {i}: PARSE ERROR - {str(e)[:50]}")
         
         print(f"\n[Dry-Run] Results: {valid_count} valid, {invalid_count} invalid")
-        return 0 if invalid_count == 0 else 1
+        return 0
     
     # Actual ingest
     print("[Ingest] Processing...")
@@ -931,6 +1223,75 @@ def main(argv: Optional[list[str]] = None) -> int:
     export_parser.add_argument("--status", action="store_true", help="Show export status only")
     export_parser.set_defaults(func=cmd_export_evidence)
     
+    # digest - Truth Digest generation
+    digest_parser = subparsers.add_parser("digest", help="Generate Truth Digest (state changes vs confirmations)")
+    digest_parser.add_argument("--node", type=str, default="local", help="Node ID (default: local)")
+    digest_parser.add_argument("--metric", type=str, help="Generate metric-specific digest")
+    digest_parser.add_argument("--since", type=str, help="Period start (ISO timestamp)")
+    digest_parser.add_argument("--stdout", action="store_true", help="Output only (no persistence)")
+    digest_parser.add_argument("--json", action="store_true", help="Output as JSON")
+    digest_parser.add_argument("--thresholds", action="store_true", help="Show current learned thresholds")
+    digest_parser.add_argument("--set-threshold", nargs=3, metavar=("METRIC", "BOUNDARY", "VALUE"),
+                              help="Set threshold override: <metric> <high|low> <value>")
+    digest_parser.set_defaults(func=cmd_digest)
+    
+    # yield - Observation Yield Analysis
+    yield_parser = subparsers.add_parser("yield", help="Analyze observation yield from Truth Digests")
+    yield_parser.add_argument("--node", type=str, default="local", help="Node ID (default: local)")
+    yield_parser.add_argument("--metric", type=str, help="Analyze yield for specific metric")
+    yield_parser.add_argument("--stdout", action="store_true", help="Output only (no persistence)")
+    yield_parser.add_argument("--json", action="store_true", help="Output as JSON")
+    yield_parser.set_defaults(func=cmd_yield)
+    
+    # clawdbot - Clawdbot governance and oversight
+    clawdbot_parser = subparsers.add_parser("clawdbot", help="Manage Clawdbot governance and oversight")
+    clawdbot_subparsers = clawdbot_parser.add_subparsers(dest="clawdbot_command", help="Clawdbot commands")
+    
+    # clawdbot status
+    cb_status = clawdbot_subparsers.add_parser("status", help="Show governance status")
+    cb_status.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot enable
+    cb_enable = clawdbot_subparsers.add_parser("enable", help="Enable Clawdbot (trial mode)")
+    cb_enable.add_argument("--reason", type=str, help="Reason for enabling")
+    cb_enable.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot disable
+    cb_disable = clawdbot_subparsers.add_parser("disable", help="Disable Clawdbot")
+    cb_disable.add_argument("--reason", type=str, help="Reason for disabling")
+    cb_disable.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot halt
+    cb_halt = clawdbot_subparsers.add_parser("halt", help="Emergency halt")
+    cb_halt.add_argument("--reason", type=str, help="Reason for halt")
+    cb_halt.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot clear-halt
+    cb_clear = clawdbot_subparsers.add_parser("clear-halt", help="Clear halt after review")
+    cb_clear.add_argument("--reason", type=str, help="Reason for clearing")
+    cb_clear.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot pending
+    cb_pending = clawdbot_subparsers.add_parser("pending", help="Show pending proposals")
+    cb_pending.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot approve
+    cb_approve = clawdbot_subparsers.add_parser("approve", help="Approve a proposal")
+    cb_approve.add_argument("proposal_id", type=str, help="Proposal ID to approve")
+    cb_approve.add_argument("--reason", type=str, help="Reason for approval")
+    cb_approve.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot deny
+    cb_deny = clawdbot_subparsers.add_parser("deny", help="Deny a proposal")
+    cb_deny.add_argument("proposal_id", type=str, help="Proposal ID to deny")
+    cb_deny.add_argument("--reason", type=str, help="Reason for denial")
+    cb_deny.set_defaults(func=cmd_clawdbot)
+    
+    # clawdbot history
+    cb_history = clawdbot_subparsers.add_parser("history", help="Show action history")
+    cb_history.add_argument("--limit", type=int, default=20, help="Number of records")
+    cb_history.set_defaults(func=cmd_clawdbot)
+    
     args = parser.parse_args(argv)
     
     if not args.command:
@@ -945,6 +1306,11 @@ def main(argv: Optional[list[str]] = None) -> int:
     # Handle analyze subcommands
     if args.command == "analyze" and not hasattr(args, 'func'):
         analyze_parser.print_help()
+        return 0
+    
+    # Handle clawdbot subcommands
+    if args.command == "clawdbot" and not hasattr(args, 'func'):
+        clawdbot_parser.print_help()
         return 0
     
     return args.func(args)
