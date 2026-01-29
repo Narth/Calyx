@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "defaults": {
+    "socket": "allow",
+    "commands": "allow",
+    "browser": "ask",
+    "network": "ask",
+    "filesystem": "allow"
+  },
+  "agents": {
+    "calyx-exec": {
+      "socket": "allow",
+      "commands": "allow",
+      "filesystem": "allow",
+      "network": "ask",
+      "browser": "ask"
+    }
+  },
+  "allowlist": []
+}

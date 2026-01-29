@@ -1,0 +1,311 @@
+{
+  "session_id": "bcb17167",
+  "timestamp": "2026-01-11T10:06:50.581806+00:00",
+  "events_analyzed": 769,
+  "snapshots_analyzed": 193,
+  "time_span_hours": 107.9,
+  "trends_detected": [
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "cpu_percent",
+      "description": "cpu_percent is volatile (7.4 -> 0.8, -89.2% over 107.9h)",
+      "direction": "volatile",
+      "confidence": "high",
+      "rationale": "Based on 193 data points over 107.9 hours, cpu_percent shows a volatile trend with slope -0.0076/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 193 samples only"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-11T09:57:20"
+      ],
+      "data_points": 193,
+      "time_span_hours": 107.9,
+      "values_summary": {
+        "first": 7.4,
+        "last": 0.8,
+        "min": 0.0,
+        "max": 18.7,
+        "mean": 2.2,
+        "slope_per_hour": -0.0076
+      }
+    }
+  ],
+  "drift_warnings": [
+    {
+      "finding_type": "DRIFT_WARNING",
+      "metric_name": "disk_percent_used",
+      "description": "disk_percent_used is decreasing (88.5 -> 80.6, -8.9% over 107.9h)",
+      "direction": "decreasing",
+      "confidence": "high",
+      "rationale": "Based on 193 data points over 107.9 hours, disk_percent_used shows a decreasing trend with slope -0.0944/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 193 samples only"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-11T09:57:20"
+      ],
+      "data_points": 193,
+      "time_span_hours": 107.9,
+      "values_summary": {
+        "first": 88.5,
+        "last": 80.6,
+        "min": 80.1,
+        "max": 88.7,
+        "mean": 83.17,
+        "slope_per_hour": -0.0944
+      }
+    },
+    {
+      "finding_type": "DRIFT_WARNING",
+      "metric_name": "memory_percent",
+      "description": "memory_percent is decreasing (45.6 -> 44.9, -1.5% over 107.9h)",
+      "direction": "decreasing",
+      "confidence": "high",
+      "rationale": "Based on 193 data points over 107.9 hours, memory_percent shows a decreasing trend with slope -0.0557/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 193 samples only"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-06T22:04:49",
+        "snapshot:2026-01-11T09:57:20"
+      ],
+      "data_points": 193,
+      "time_span_hours": 107.9,
+      "values_summary": {
+        "first": 45.6,
+        "last": 44.9,
+        "min": 31.5,
+        "max": 57.2,
+        "mean": 41.4,
+        "slope_per_hour": -0.0557
+      }
+    }
+  ],
+  "recurring_patterns": [
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "advisory_intent:stability_first",
+      "description": "Intent 'stability_first' generated 19 advisories (avg 1.0 notes) over 104.8h",
+      "direction": null,
+      "confidence": "high",
+      "rationale": "The 'stability_first' intent profile has been consistently active, generating advisories 19 times. This suggests ongoing monitoring of this concern.",
+      "uncertainties": [
+        "Pattern may reflect normal monitoring cadence",
+        "Advisory frequency depends on snapshot rate"
+      ],
+      "evidence_refs": [
+        "advisory:2026-01-06T22:22:24",
+        "advisory:2026-01-07T01:44:08",
+        "advisory:2026-01-07T02:00:19",
+        "advisory:2026-01-07T02:52:25",
+        "advisory:2026-01-07T03:11:43"
+      ],
+      "data_points": 19,
+      "time_span_hours": 104.8,
+      "values_summary": {
+        "profile": "stability_first",
+        "occurrences": 19,
+        "avg_notes_per_advisory": 1.0,
+        "time_window_hours": 104.8
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "advisory_intent:resource_constrained",
+      "description": "Intent 'resource_constrained' generated 3 advisories (avg 1.0 notes) over 2.4h",
+      "direction": null,
+      "confidence": "low",
+      "rationale": "The 'resource_constrained' intent profile has been consistently active, generating advisories 3 times. This suggests ongoing monitoring of this concern.",
+      "uncertainties": [
+        "Pattern may reflect normal monitoring cadence",
+        "Advisory frequency depends on snapshot rate"
+      ],
+      "evidence_refs": [
+        "advisory:2026-01-06T22:23:04",
+        "advisory:2026-01-07T00:47:11",
+        "advisory:2026-01-07T00:49:02"
+      ],
+      "data_points": 3,
+      "time_span_hours": 2.4,
+      "values_summary": {
+        "profile": "resource_constrained",
+        "occurrences": 3,
+        "avg_notes_per_advisory": 1.0,
+        "time_window_hours": 2.4
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "advisory_intent:storage_pressure",
+      "description": "Intent 'storage_pressure' generated 10 advisories (avg 1.1 notes) over 68.5h",
+      "direction": null,
+      "confidence": "high",
+      "rationale": "The 'storage_pressure' intent profile has been consistently active, generating advisories 10 times. This suggests ongoing monitoring of this concern.",
+      "uncertainties": [
+        "Pattern may reflect normal monitoring cadence",
+        "Advisory frequency depends on snapshot rate"
+      ],
+      "evidence_refs": [
+        "advisory:2026-01-07T01:18:17",
+        "advisory:2026-01-07T03:36:36",
+        "advisory:2026-01-07T06:36:54",
+        "advisory:2026-01-07T09:37:11",
+        "advisory:2026-01-07T12:37:29"
+      ],
+      "data_points": 10,
+      "time_span_hours": 68.5,
+      "values_summary": {
+        "profile": "storage_pressure",
+        "occurrences": 10,
+        "avg_notes_per_advisory": 1.1,
+        "time_window_hours": 68.5
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "cooccurrence:cpu_percent+memory_percent",
+      "description": "Metrics 'cpu_percent' and 'memory_percent' trend together (3 co-occurrences)",
+      "direction": null,
+      "confidence": "low",
+      "rationale": "These metrics have shown correlated behavior 3 times, suggesting they may be related or share a common cause.",
+      "uncertainties": [
+        "Correlation does not imply causation",
+        "Co-occurrence may be coincidental"
+      ],
+      "evidence_refs": [
+        "trend_bucket:2026-01-06T22",
+        "trend_bucket:2026-01-07T00",
+        "trend_bucket:2026-01-07T01"
+      ],
+      "data_points": 3,
+      "time_span_hours": 17,
+      "values_summary": {
+        "metric_1": "cpu_percent",
+        "metric_2": "memory_percent",
+        "cooccurrence_count": 3
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "cooccurrence:disk_percent_used+memory_percent",
+      "description": "Metrics 'disk_percent_used' and 'memory_percent' trend together (3 co-occurrences)",
+      "direction": null,
+      "confidence": "low",
+      "rationale": "These metrics have shown correlated behavior 3 times, suggesting they may be related or share a common cause.",
+      "uncertainties": [
+        "Correlation does not imply causation",
+        "Co-occurrence may be coincidental"
+      ],
+      "evidence_refs": [
+        "trend_bucket:2026-01-06T22",
+        "trend_bucket:2026-01-07T00",
+        "trend_bucket:2026-01-07T01"
+      ],
+      "data_points": 3,
+      "time_span_hours": 17,
+      "values_summary": {
+        "metric_1": "disk_percent_used",
+        "metric_2": "memory_percent",
+        "cooccurrence_count": 3
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "trend_repeat:memory_percent",
+      "description": "'memory_percent' has shown 'increasing' trend 11 times over 10.8h",
+      "direction": null,
+      "confidence": "medium",
+      "rationale": "The metric 'memory_percent' repeatedly shows a 'increasing' trend, indicating a persistent condition rather than a one-time event.",
+      "uncertainties": [
+        "Repeated detection may reflect analysis frequency",
+        "Underlying cause requires investigation"
+      ],
+      "evidence_refs": [
+        "trend:2026-01-06T22:49:30",
+        "trend:2026-01-06T22:50:19",
+        "trend:2026-01-07T00:48:03",
+        "trend:2026-01-07T00:49:24",
+        "trend:2026-01-07T01:44:11"
+      ],
+      "data_points": 11,
+      "time_span_hours": 10.8,
+      "values_summary": {
+        "metric": "memory_percent",
+        "direction": "increasing",
+        "repetition_count": 11,
+        "time_window_hours": 10.8
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "trend_repeat:cpu_percent",
+      "description": "'cpu_percent' has shown 'volatile' trend 24 times over 101.3h",
+      "direction": null,
+      "confidence": "high",
+      "rationale": "The metric 'cpu_percent' repeatedly shows a 'volatile' trend, indicating a persistent condition rather than a one-time event.",
+      "uncertainties": [
+        "Repeated detection may reflect analysis frequency",
+        "Underlying cause requires investigation"
+      ],
+      "evidence_refs": [
+        "trend:2026-01-06T22:49:30",
+        "trend:2026-01-06T22:50:19",
+        "trend:2026-01-07T00:48:03",
+        "trend:2026-01-07T00:49:24",
+        "trend:2026-01-07T01:44:11"
+      ],
+      "data_points": 24,
+      "time_span_hours": 101.3,
+      "values_summary": {
+        "metric": "cpu_percent",
+        "direction": "volatile",
+        "repetition_count": 24,
+        "time_window_hours": 101.3
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "trend_repeat:disk_percent_used",
+      "description": "'disk_percent_used' has shown 'increasing' trend 4 times over 1.2h",
+      "direction": null,
+      "confidence": "low",
+      "rationale": "The metric 'disk_percent_used' repeatedly shows a 'increasing' trend, indicating a persistent condition rather than a one-time event.",
+      "uncertainties": [
+        "Repeated detection may reflect analysis frequency",
+        "Underlying cause requires investigation"
+      ],
+      "evidence_refs": [
+        "trend:2026-01-07T00:48:03",
+        "trend:2026-01-07T00:49:24",
+        "trend:2026-01-07T01:44:11",
+        "trend:2026-01-07T02:00:21"
+      ],
+      "data_points": 4,
+      "time_span_hours": 1.2,
+      "values_summary": {
+        "metric": "disk_percent_used",
+        "direction": "increasing",
+        "repetition_count": 4,
+        "time_window_hours": 1.2
+      }
+    }
+  ],
+  "total_findings": 11,
+  "analyzer_role": "temporal_analyzer",
+  "advisory_only": true,
+  "execution_capability": false,
+  "guardrails": {
+    "no_failure_predictions": true,
+    "no_execution_recommendations": true,
+    "uncertainty_stated": true,
+    "evidence_referenced": true
+  }
+}

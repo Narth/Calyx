@@ -1,0 +1,20 @@
+{
+  "digest_version": "v1",
+  "node_id": "test-node",
+  "metric_scope": null,
+  "period": {
+    "start": "2026-01-11T00:00:00+00:00",
+    "end": "2026-01-12T00:00:00+00:00"
+  },
+  "state_changes": [],
+  "state_confirmations": [
+    {
+      "metric": "cpu_percent",
+      "observation_count": 100
+    },
+    {
+      "metric": "memory_percent",
+      "observation_count": 100
+    }
+  ]
+}

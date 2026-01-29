@@ -1,0 +1,67 @@
+{
+  "analysis_timestamp": "2026-01-14T03:00:36.877296+00:00",
+  "analysis_version": "v1",
+  "constraints": {
+    "digest_only_input": true,
+    "no_recommendations": true,
+    "no_system_alteration": true
+  },
+  "current_window": {
+    "confirmations": 200,
+    "digest_id": "truth_digest_node_test-node_20260114_000000",
+    "state_changes": 0,
+    "total_observations": 200,
+    "window_end": "2026-01-15T00:00:00+00:00",
+    "window_start": "2026-01-14T00:00:00+00:00",
+    "yield_percent": 0.0,
+    "yield_ratio": 0.0
+  },
+  "diminishing_returns": {
+    "consecutive_zero_yield_windows": 5,
+    "new_entity_in_window": false,
+    "status": "detected",
+    "threshold_n": 3,
+    "windows_analyzed": 5
+  },
+  "evidence_basis": {
+    "confidence": "high",
+    "digests_analyzed": [
+      "truth_digest_node_test-node_20260110_000000",
+      "truth_digest_node_test-node_20260111_000000",
+      "truth_digest_node_test-node_20260112_000000",
+      "truth_digest_node_test-node_20260113_000000",
+      "truth_digest_node_test-node_20260114_000000"
+    ],
+    "period_end": "2026-01-15T00:00:00+00:00",
+    "period_start": "2026-01-10T00:00:00+00:00"
+  },
+  "metric_breakdown": [
+    {
+      "confirmations": 100,
+      "metric": "cpu_percent",
+      "state_changes": 0,
+      "yield_percent": 0.0,
+      "yield_ratio": 0.0
+    },
+    {
+      "confirmations": 100,
+      "metric": "memory_percent",
+      "state_changes": 0,
+      "yield_percent": 0.0,
+      "yield_ratio": 0.0
+    }
+  ],
+  "metric_scope": null,
+  "node_id": "test-node",
+  "prior_window": {
+    "confirmations": 200,
+    "digest_id": "truth_digest_node_test-node_20260113_000000",
+    "state_changes": 0,
+    "total_observations": 200,
+    "window_end": "2026-01-14T00:00:00+00:00",
+    "window_start": "2026-01-13T00:00:00+00:00",
+    "yield_percent": 0.0,
+    "yield_ratio": 0.0
+  },
+  "yield_trend": "stable"
+}

@@ -1,0 +1,36 @@
+{
+  "session_id": "971725cc",
+  "timestamp": "2026-01-11T22:10:53.098017+00:00",
+  "intent": {
+    "intent_id": "499447f6",
+    "description": "Scheduled research - disk at 80.6%",
+    "advisory_profile": "stability_first",
+    "created_at": "2026-01-11T22:10:53.059247+00:00",
+    "metadata": {}
+  },
+  "events_analyzed": 100,
+  "reflection_session": "971725cc",
+  "advisory_notes": [
+    {
+      "message": "ADVISORY: No specific concerns detected based on available evidence. System appears to be operating normally.",
+      "confidence_level": "medium",
+      "rationale": "Analysis of 100 events and reflection output revealed no anomalies matching stability_first profile concerns.",
+      "uncertainties": [
+        "Limited event history",
+        "Some issues may not be captured"
+      ],
+      "evidence_refs": [
+        "events:count:100",
+        "reflection:summary"
+      ],
+      "profile_context": "Profile: stability_first - Scheduled research - disk at 80.6%"
+    }
+  ],
+  "guardrail_check": {
+    "passed": true,
+    "violations": []
+  },
+  "advisor_role": "advisor_agent",
+  "advisory_only": true,
+  "execution_capability": false
+}

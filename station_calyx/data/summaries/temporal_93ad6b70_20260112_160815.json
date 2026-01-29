@@ -1,0 +1,185 @@
+{
+  "session_id": "93ad6b70",
+  "timestamp": "2026-01-12T16:08:15.842472+00:00",
+  "events_analyzed": 1000,
+  "snapshots_analyzed": 299,
+  "time_span_hours": 131.9,
+  "trends_detected": [
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "memory_percent",
+      "description": "memory_percent is increasing (49.0 -> 46.0, -6.1% over 131.9h)",
+      "direction": "increasing",
+      "confidence": "high",
+      "rationale": "Based on 299 data points over 131.9 hours, memory_percent shows a increasing trend with slope 0.0148/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 299 samples only"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-07T04:06:39",
+        "snapshot:2026-01-12T16:01:15"
+      ],
+      "data_points": 299,
+      "time_span_hours": 131.9,
+      "values_summary": {
+        "first": 49.0,
+        "last": 46.0,
+        "min": 31.5,
+        "max": 57.2,
+        "mean": 42.53,
+        "slope_per_hour": 0.0148
+      }
+    },
+    {
+      "finding_type": "TREND_DETECTED",
+      "metric_name": "cpu_percent",
+      "description": "cpu_percent is volatile (1.6 -> 1.6, +0.0% over 131.9h)",
+      "direction": "volatile",
+      "confidence": "high",
+      "rationale": "Based on 299 data points over 131.9 hours, cpu_percent shows a volatile trend with slope -0.0010/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 299 samples only"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-07T04:06:39",
+        "snapshot:2026-01-12T16:01:15"
+      ],
+      "data_points": 299,
+      "time_span_hours": 131.9,
+      "values_summary": {
+        "first": 1.6,
+        "last": 1.6,
+        "min": 0.0,
+        "max": 18.7,
+        "mean": 2.03,
+        "slope_per_hour": -0.001
+      }
+    }
+  ],
+  "drift_warnings": [
+    {
+      "finding_type": "DRIFT_WARNING",
+      "metric_name": "disk_percent_used",
+      "description": "disk_percent_used is decreasing (88.6 -> 80.6, -9.0% over 131.9h)",
+      "direction": "decreasing",
+      "confidence": "high",
+      "rationale": "Based on 299 data points over 131.9 hours, disk_percent_used shows a decreasing trend with slope -0.0681/hour. This is a statistical observation, not a prediction.",
+      "uncertainties": [
+        "Trend may not continue at observed rate",
+        "External factors may affect future values",
+        "Analysis based on 299 samples only"
+      ],
+      "evidence_refs": [
+        "snapshot:2026-01-07T04:06:39",
+        "snapshot:2026-01-12T16:01:15"
+      ],
+      "data_points": 299,
+      "time_span_hours": 131.9,
+      "values_summary": {
+        "first": 88.6,
+        "last": 80.6,
+        "min": 80.1,
+        "max": 88.7,
+        "mean": 81.88,
+        "slope_per_hour": -0.0681
+      }
+    }
+  ],
+  "recurring_patterns": [
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "advisory_intent:storage_pressure",
+      "description": "Intent 'storage_pressure' generated 8 advisories (avg 1.0 notes) over 63.2h",
+      "direction": null,
+      "confidence": "medium",
+      "rationale": "The 'storage_pressure' intent profile has been consistently active, generating advisories 8 times. This suggests ongoing monitoring of this concern.",
+      "uncertainties": [
+        "Pattern may reflect normal monitoring cadence",
+        "Advisory frequency depends on snapshot rate"
+      ],
+      "evidence_refs": [
+        "advisory:2026-01-07T06:36:54",
+        "advisory:2026-01-07T09:37:11",
+        "advisory:2026-01-07T12:37:29",
+        "advisory:2026-01-07T15:33:41",
+        "advisory:2026-01-07T16:21:45"
+      ],
+      "data_points": 8,
+      "time_span_hours": 63.2,
+      "values_summary": {
+        "profile": "storage_pressure",
+        "occurrences": 8,
+        "avg_notes_per_advisory": 1.0,
+        "time_window_hours": 63.2
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "advisory_intent:stability_first",
+      "description": "Intent 'stability_first' generated 23 advisories (avg 1.0 notes) over 63.1h",
+      "direction": null,
+      "confidence": "high",
+      "rationale": "The 'stability_first' intent profile has been consistently active, generating advisories 23 times. This suggests ongoing monitoring of this concern.",
+      "uncertainties": [
+        "Pattern may reflect normal monitoring cadence",
+        "Advisory frequency depends on snapshot rate"
+      ],
+      "evidence_refs": [
+        "advisory:2026-01-09T22:05:22",
+        "advisory:2026-01-10T01:05:46",
+        "advisory:2026-01-10T04:06:06",
+        "advisory:2026-01-10T07:06:26",
+        "advisory:2026-01-10T10:06:43"
+      ],
+      "data_points": 23,
+      "time_span_hours": 63.1,
+      "values_summary": {
+        "profile": "stability_first",
+        "occurrences": 23,
+        "avg_notes_per_advisory": 1.0,
+        "time_window_hours": 63.1
+      }
+    },
+    {
+      "finding_type": "PATTERN_RECURRING",
+      "metric_name": "trend_repeat:cpu_percent",
+      "description": "'cpu_percent' has shown 'volatile' trend 19 times over 120.5h",
+      "direction": null,
+      "confidence": "high",
+      "rationale": "The metric 'cpu_percent' repeatedly shows a 'volatile' trend, indicating a persistent condition rather than a one-time event.",
+      "uncertainties": [
+        "Repeated detection may reflect analysis frequency",
+        "Underlying cause requires investigation"
+      ],
+      "evidence_refs": [
+        "trend:2026-01-07T09:36:40",
+        "trend:2026-01-07T15:33:43",
+        "trend:2026-01-07T16:21:46",
+        "trend:2026-01-07T22:01:18",
+        "trend:2026-01-09T21:06:42"
+      ],
+      "data_points": 19,
+      "time_span_hours": 120.5,
+      "values_summary": {
+        "metric": "cpu_percent",
+        "direction": "volatile",
+        "repetition_count": 19,
+        "time_window_hours": 120.5
+      }
+    }
+  ],
+  "total_findings": 6,
+  "analyzer_role": "temporal_analyzer",
+  "advisory_only": true,
+  "execution_capability": false,
+  "guardrails": {
+    "no_failure_predictions": true,
+    "no_execution_recommendations": true,
+    "uncertainty_stated": true,
+    "evidence_referenced": true
+  }
+}

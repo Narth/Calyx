@@ -1,0 +1,18 @@
+{
+  "proposal_id": "3339b3f5",
+  "timestamp": "2026-01-26T18:03:14.244702+00:00",
+  "action_category": "file_read",
+  "action_description": "Read Station Calyx config",
+  "action_parameters": {},
+  "clawdbot_reasoning": "User requested system status check",
+  "user_intent_reference": null,
+  "evidence_references": [],
+  "risk_level": "low",
+  "reversible": true,
+  "external_effects": false,
+  "status": "approved",
+  "decision_timestamp": "2026-01-26T18:03:23.104096+00:00",
+  "decision_by": "human",
+  "decision_reason": "CBO approved: low-risk read operation",
+  "denial_reason": null
+}

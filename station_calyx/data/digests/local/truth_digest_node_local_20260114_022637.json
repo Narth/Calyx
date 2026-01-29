@@ -1,0 +1,26 @@
+{
+  "constraints": {
+    "advisory_only": true,
+    "deterministic": true,
+    "no_recommendations": true,
+    "no_suppression": true
+  },
+  "digest_version": "v1",
+  "evidence_basis": {
+    "confidence": "medium",
+    "events_analyzed": 1170,
+    "snapshot_count": 319,
+    "trend_events": 81,
+    "window_hours": 194.4
+  },
+  "generated_at": "2026-01-14T02:26:37.212053+00:00",
+  "metric_scope": null,
+  "node_id": "local",
+  "open_observations": [],
+  "period": {
+    "end": "2026-01-13T22:44:26.486392+00:00",
+    "start": "2026-01-06T22:04:49.038241+00:00"
+  },
+  "state_changes": [],
+  "state_confirmations": []
+}
