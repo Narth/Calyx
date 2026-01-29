@@ -27,9 +27,15 @@ ENVELOPE FIELDS:
 - event_type: Type of event (SYSTEM_SNAPSHOT, etc.)
 - payload: The actual event data
 - payload_hash: SHA256 of canonical JSON payload
-- prev_hash: Hash of previous envelope (null if first)
+- prev_hash: Hash of previous envelope's envelope_hash (null if first)
+- envelope_hash: SHA256 of this envelope (for chain linking)
 - signature: Cryptographic signature (null in v0)
 - collector_version: Version of collecting software
+
+HASH CHAIN SEMANTICS:
+- envelope_hash is computed from CHAIN_HASH_FIELDS only (deterministic)
+- prev_hash must equal the previous envelope's envelope_hash
+- payload_hash is an additional integrity check (not chain anchor)
 """
 
 from __future__ import annotations
@@ -43,6 +49,27 @@ from typing import Any, Optional
 
 ENVELOPE_VERSION = "v1"
 
+# Fields included in envelope_hash computation (deterministic, non-ephemeral)
+# Order matters for documentation but canonical_json sorts alphabetically
+CHAIN_HASH_FIELDS = [
+    "envelope_version",
+    "node_id",
+    "node_name",
+    "captured_at_iso",
+    "seq",
+    "event_type",
+    "payload",
+    "payload_hash",
+    "prev_hash",
+    "collector_version",
+]
+
+# Fields EXCLUDED from envelope_hash (ephemeral or computed)
+EXCLUDED_FROM_HASH = [
+    "envelope_hash",  # Self-referential, cannot include
+    "signature",      # Added after hash computation
+]
+
 
 @dataclass
 class EvidenceEnvelopeV1:
@@ -51,6 +78,10 @@ class EvidenceEnvelopeV1:
     
     This is the canonical structure for evidence exchange between Station Calyx nodes.
     All fields are immutable after creation.
+    
+    CHAIN SEMANTICS:
+    - envelope_hash = sha256(canonical_json(chain_fields))
+    - prev_hash = previous envelope's envelope_hash
     """
     
     # Required fields
@@ -66,6 +97,7 @@ class EvidenceEnvelopeV1:
     # Optional fields
     node_name: Optional[str] = None
     prev_hash: Optional[str] = None
+    envelope_hash: Optional[str] = None  # Computed, included in serialization
     signature: Optional[str] = None  # Reserved for v1 signing
     
     def to_dict(self) -> dict[str, Any]:
@@ -96,6 +128,7 @@ class EvidenceEnvelopeV1:
             payload=data["payload"],
             payload_hash=data["payload_hash"],
             prev_hash=data.get("prev_hash"),
+            envelope_hash=data.get("envelope_hash"),
             signature=data.get("signature"),
             collector_version=data["collector_version"],
         )
@@ -112,14 +145,38 @@ class EvidenceEnvelopeV1:
     
     def compute_envelope_hash(self) -> str:
         """
-        Compute hash of this envelope for chain linking.
+        Compute canonical envelope_hash for chain linking.
         
-        Uses canonical JSON of entire envelope (excluding signature).
+        INCLUDES: All fields in CHAIN_HASH_FIELDS
+        EXCLUDES: envelope_hash (self), signature (ephemeral)
+        
+        This is the canonical chain anchor used for prev_hash linking.
         """
-        # Create copy without signature for hashing
-        hash_dict = self.to_dict()
-        hash_dict["signature"] = None
-        return hashlib.sha256(canonical_json(hash_dict).encode("utf-8")).hexdigest()
+        return compute_envelope_hash_from_dict(self.to_dict())
+    
+    def verify_envelope_hash(self) -> bool:
+        """
+        Verify that envelope_hash matches computed value.
+        
+        Returns True if:
+        - envelope_hash is None (legacy, will be computed)
+        - envelope_hash matches computed value
+        """
+        if self.envelope_hash is None:
+            return True  # Legacy envelope, hash will be computed
+        computed = self.compute_envelope_hash()
+        return computed == self.envelope_hash
+    
+    def get_chain_hash(self) -> str:
+        """
+        Get the hash to use for chain linking.
+        
+        If envelope_hash is set and valid, use it.
+        Otherwise compute it.
+        """
+        if self.envelope_hash and self.verify_envelope_hash():
+            return self.envelope_hash
+        return self.compute_envelope_hash()
 
 
 def canonical_json(obj: Any) -> str:
@@ -158,6 +215,32 @@ def compute_payload_hash(payload: dict[str, Any]) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
+def compute_envelope_hash_from_dict(envelope_dict: dict[str, Any]) -> str:
+    """
+    Compute canonical envelope_hash from dictionary.
+    
+    This is the authoritative hash computation used for chain linking.
+    
+    INCLUDES: All fields in CHAIN_HASH_FIELDS
+    EXCLUDES: envelope_hash, signature
+    
+    Args:
+        envelope_dict: Envelope as dictionary
+        
+    Returns:
+        Hexadecimal SHA256 hash string
+    """
+    # Build hash input with only chain fields
+    hash_input = {}
+    for field in CHAIN_HASH_FIELDS:
+        if field in envelope_dict:
+            hash_input[field] = envelope_dict[field]
+    
+    # Compute hash
+    canonical = canonical_json(hash_input)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
 def create_envelope(
     node_id: str,
     seq: int,
@@ -169,7 +252,7 @@ def create_envelope(
     captured_at: Optional[datetime] = None,
 ) -> EvidenceEnvelopeV1:
     """
-    Create a new evidence envelope.
+    Create a new evidence envelope with computed hashes.
     
     Args:
         node_id: Unique identifier for this node
@@ -178,18 +261,19 @@ def create_envelope(
         payload: The actual event data
         collector_version: Version of the collecting software
         node_name: Optional human-readable node name
-        prev_hash: Hash of previous envelope (for chain integrity)
+        prev_hash: envelope_hash of previous envelope (for chain integrity)
         captured_at: Capture timestamp (defaults to now)
         
     Returns:
-        New EvidenceEnvelopeV1 instance
+        New EvidenceEnvelopeV1 instance with computed envelope_hash
     """
     if captured_at is None:
         captured_at = datetime.now(timezone.utc)
     
     payload_hash = compute_payload_hash(payload)
     
-    return EvidenceEnvelopeV1(
+    # Create envelope without envelope_hash first
+    envelope = EvidenceEnvelopeV1(
         envelope_version=ENVELOPE_VERSION,
         node_id=node_id,
         node_name=node_name,
@@ -199,9 +283,15 @@ def create_envelope(
         payload=payload,
         payload_hash=payload_hash,
         prev_hash=prev_hash,
-        signature=None,  # v0: unsigned
+        envelope_hash=None,
+        signature=None,
         collector_version=collector_version,
     )
+    
+    # Compute and set envelope_hash
+    envelope.envelope_hash = envelope.compute_envelope_hash()
+    
+    return envelope
 
 
 def validate_envelope(envelope: EvidenceEnvelopeV1) -> tuple[bool, list[str]]:
@@ -212,6 +302,7 @@ def validate_envelope(envelope: EvidenceEnvelopeV1) -> tuple[bool, list[str]]:
     - Required fields present
     - Envelope version is supported
     - Payload hash matches
+    - Envelope hash matches (if present)
     - Sequence is non-negative
     - Timestamp is valid ISO8601
     
@@ -251,6 +342,11 @@ def validate_envelope(envelope: EvidenceEnvelopeV1) -> tuple[bool, list[str]]:
         if not envelope.verify_payload_hash():
             errors.append("Payload hash mismatch: envelope may be tampered")
     
+    # Envelope hash verification (if present)
+    if envelope.envelope_hash:
+        if not envelope.verify_envelope_hash():
+            errors.append("Envelope hash mismatch: envelope may be tampered")
+    
     # Timestamp validation
     if envelope.captured_at_iso:
         try:
@@ -268,7 +364,7 @@ def validate_chain(envelopes: list[EvidenceEnvelopeV1]) -> tuple[bool, list[str]
     Checks:
     - Each envelope is individually valid
     - Sequence numbers are monotonically increasing
-    - prev_hash links are correct
+    - prev_hash links match envelope_hash chain
     - All envelopes are from the same node
     
     Args:
@@ -301,9 +397,9 @@ def validate_chain(envelopes: list[EvidenceEnvelopeV1]) -> tuple[bool, list[str]
                 f"{envelopes[i-1].seq} -> {envelopes[i].seq}"
             )
     
-    # Check hash chain integrity
+    # Check hash chain integrity using envelope_hash
     for i in range(1, len(envelopes)):
-        expected_prev = envelopes[i-1].compute_envelope_hash()
+        expected_prev = envelopes[i-1].get_chain_hash()
         actual_prev = envelopes[i].prev_hash
         
         if actual_prev != expected_prev:
@@ -331,6 +427,7 @@ REQUIRED_FIELDS = [
 OPTIONAL_FIELDS = [
     "node_name",
     "prev_hash",
+    "envelope_hash",
     "signature",
 ]
 
@@ -341,6 +438,7 @@ if __name__ == "__main__":
     print("=" * 40)
     print(f"Required fields: {REQUIRED_FIELDS}")
     print(f"Optional fields: {OPTIONAL_FIELDS}")
+    print(f"Chain hash fields: {CHAIN_HASH_FIELDS}")
     print()
     
     # Create sample envelope
@@ -350,7 +448,7 @@ if __name__ == "__main__":
         seq=1,
         event_type="SYSTEM_SNAPSHOT",
         payload=sample_payload,
-        collector_version="v1.6.0",
+        collector_version="v1.7.0",
         node_name="Laptop-Observer",
     )
     
@@ -358,5 +456,7 @@ if __name__ == "__main__":
     print(json.dumps(envelope.to_dict(), indent=2))
     print()
     print(f"Payload hash: {envelope.payload_hash}")
-    print(f"Envelope hash: {envelope.compute_envelope_hash()}")
+    print(f"Envelope hash: {envelope.envelope_hash}")
+    print(f"Computed hash: {envelope.compute_envelope_hash()}")
+    print(f"Hash match: {envelope.verify_envelope_hash()}")
     print(f"Valid: {validate_envelope(envelope)}")

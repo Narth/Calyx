@@ -1,8 +1,8 @@
 # Node Evidence Relay v0 Specification
 
-**Version:** v0 (Pre-Alpha)  
-**Status:** Contract Definition Only  
-**Date:** 2026-01-07
+**Version:** v0.2 (Hash Chain Alignment)  
+**Status:** Contract Definition  
+**Date:** 2026-01-10
 
 ---
 
@@ -46,14 +46,15 @@ Node Evidence Relay enables Station Calyx nodes to exchange append-only evidence
 | `event_type` | `string` | Type of event (e.g., `SYSTEM_SNAPSHOT`, `SCHEDULED_SNAPSHOT`). |
 | `payload` | `object` | The actual event data (existing event structure). |
 | `payload_hash` | `string` | SHA256 hash of canonical JSON payload. |
-| `collector_version` | `string` | Version of collecting software (e.g., `"v1.6.0"` or git SHA). |
+| `collector_version` | `string` | Version of collecting software (e.g., `"v1.7.0"` or git SHA). |
 
 ### Optional Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `node_name` | `string \| null` | Human-readable node name (e.g., `"Laptop-Observer"`). |
-| `prev_hash` | `string \| null` | SHA256 hash of previous envelope. `null` for first envelope. |
+| `prev_hash` | `string \| null` | **envelope_hash** of previous envelope. `null` for first envelope. |
+| `envelope_hash` | `string \| null` | SHA256 hash of this envelope (computed, for chain linking). |
 | `signature` | `string \| null` | Cryptographic signature. `null` in v0; reserved for v1. |
 
 ### Example Envelope
@@ -73,10 +74,62 @@ Node Evidence Relay enables Station Calyx nodes to exchange append-only evidence
   },
   "payload_hash": "a1b2c3d4e5f6...",
   "prev_hash": "9f8e7d6c5b4a...",
+  "envelope_hash": "e4f5a6b7c8d9...",
   "signature": null,
-  "collector_version": "v1.6.0"
+  "collector_version": "v1.7.0"
 }
 ```
+
+---
+
+## Hash Chain Semantics (CANONICAL)
+
+### Chain Anchor: envelope_hash
+
+The **envelope_hash** is the canonical chain anchor. All chain linking uses envelope_hash, not payload_hash.
+
+```
+envelope_hash = sha256(canonical_json(CHAIN_HASH_FIELDS))
+```
+
+### Fields Included in envelope_hash
+
+The following fields are included in the hash computation (alphabetically sorted by canonical_json):
+
+| Field | Included |
+|-------|----------|
+| `envelope_version` | ? |
+| `node_id` | ? |
+| `node_name` | ? |
+| `captured_at_iso` | ? |
+| `seq` | ? |
+| `event_type` | ? |
+| `payload` | ? |
+| `payload_hash` | ? |
+| `prev_hash` | ? |
+| `collector_version` | ? |
+| `envelope_hash` | ? (excluded - self-referential) |
+| `signature` | ? (excluded - added after hash) |
+
+### Chain Link Rule
+
+```
+Envelope[n].prev_hash = Envelope[n-1].envelope_hash
+```
+
+For the first envelope (seq=0):
+```
+Envelope[0].prev_hash = null
+```
+
+### Validation Order
+
+1. **Parse** - Deserialize envelope from JSON
+2. **Required fields** - All required fields present
+3. **payload_hash** - `payload_hash == sha256(canonical_json(payload))`
+4. **envelope_hash** - If present: `envelope_hash == computed_envelope_hash`
+5. **seq monotonic** - `envelope.seq > state.last_seq`
+6. **prev_hash chain** - `envelope.prev_hash == state.last_hash` (where last_hash is the envelope_hash of the last ingested envelope)
 
 ---
 
@@ -109,8 +162,21 @@ def canonical_json(obj):
 ```python
 import hashlib
 
+# Payload hash (integrity check)
 def compute_payload_hash(payload: dict) -> str:
     canonical = canonical_json(payload)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+# Envelope hash (chain anchor)
+CHAIN_HASH_FIELDS = [
+    "envelope_version", "node_id", "node_name", "captured_at_iso",
+    "seq", "event_type", "payload", "payload_hash", "prev_hash",
+    "collector_version"
+]
+
+def compute_envelope_hash(envelope_dict: dict) -> str:
+    hash_input = {k: envelope_dict[k] for k in CHAIN_HASH_FIELDS if k in envelope_dict}
+    canonical = canonical_json(hash_input)
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 ```
 
@@ -128,18 +194,32 @@ logs/evidence/<node_id>/evidence.jsonl
 
 - **Format:** JSON Lines (one envelope per line)
 - **Append-only:** New envelopes are appended; existing lines are never modified
-- **Hash chain:** Each envelope's `prev_hash` links to the previous envelope
+- **Hash chain:** Each envelope's `prev_hash` links to the previous envelope's `envelope_hash`
+
+### Ingest State
+
+Per-node ingest state tracks:
+
+```json
+{
+  "node_id": "laptop-001",
+  "last_seq": 42,
+  "last_hash": "e4f5a6b7c8d9...",  // envelope_hash of last ingested
+  "last_ingested_at": "2026-01-10T12:00:00+00:00",
+  "total_envelopes": 43
+}
+```
 
 ### Chain Integrity
 
 ```
-Envelope 0: prev_hash = null
-Envelope 1: prev_hash = hash(Envelope 0)
-Envelope 2: prev_hash = hash(Envelope 1)
+Envelope 0: prev_hash = null,           envelope_hash = H0
+Envelope 1: prev_hash = H0,             envelope_hash = H1
+Envelope 2: prev_hash = H1,             envelope_hash = H2
 ...
 ```
 
-If any envelope is modified, all subsequent `prev_hash` values become invalid.
+If any envelope is modified, its `envelope_hash` changes, breaking all subsequent `prev_hash` links.
 
 ---
 
@@ -251,6 +331,8 @@ exports/evidence_bundle_<node_id>_<timestamp>.jsonl
 | Version | Date | Changes |
 |---------|------|---------|
 | v0 | 2026-01-07 | Initial contract definition |
+| v0.1 | 2026-01-09 | Draft with Canonical JSON and Hash Chain |
+| v0.2 | 2026-01-10 | Explicit hash chain semantics, envelope_hash field |
 
 ---
 
