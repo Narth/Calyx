@@ -464,20 +464,57 @@ Commands:
                 console.print(json.dumps(hb, indent=2))
                 continue
             
-            if cmd == 'policy':
-                policy = client.get_policy()
-                console.print(json.dumps(policy, indent=2))
-                continue
-            
-            console.print(f"[yellow]Unknown command: {cmd}[/yellow]")
-            
-        except KeyboardInterrupt:
-            break
-    
-    console.print("\n[dim]Goodbye[/dim]")
+                        if cmd == 'policy':
+                            policy = client.get_policy()
+                            console.print(json.dumps(policy, indent=2))
+                            continue
+
+                        if cmd == 'push-evidence':
+                            console.print("[dim]Use: python tools/push_evidence.py --to <url> --token <token>[/dim]")
+                            console.print("[dim]Or: python tools/calyx_cli.py --push-evidence --to <url> --token <token>[/dim]")
+                            continue
+
+                        console.print(f"[yellow]Unknown command: {cmd}[/yellow]")
+
+                    except KeyboardInterrupt:
+                        break
+
+                console.print("\n[dim]Goodbye[/dim]")
 
 
-def main():
+            def run_push_evidence(args) -> int:
+                """Run push-evidence command."""
+                import os as _os
+
+                target_url = args.to or _os.environ.get("CALYX_HOME_INGEST_URL")
+                token = args.token or _os.environ.get("CALYX_INGEST_TOKEN")
+
+                if not target_url:
+                    console.print("[red]Target URL required. Use --to or set CALYX_HOME_INGEST_URL[/red]")
+                    return 1
+
+                if not args.dry_run and not token:
+                    console.print("[red]Auth token required. Use --token or set CALYX_INGEST_TOKEN[/red]")
+                    return 1
+
+                # Import and run push_evidence
+                try:
+                    from tools.push_evidence import run_push
+                    success, accepted, rejected = run_push(
+                        target_url=target_url,
+                        token=token or "",
+                        dry_run=args.dry_run,
+                    )
+                    return 0 if success else 1
+                except ImportError as e:
+                    console.print(f"[red]Failed to import push_evidence: {e}[/red]")
+                    return 1
+                except Exception as e:
+                    console.print(f"[red]Push failed: {e}[/red]")
+                    return 1
+
+
+            def main():
     parser = argparse.ArgumentParser(description="Station Calyx CLI")
     parser.add_argument("--status", action="store_true", help="Show system status")
     parser.add_argument("--report", action="store_true", help="Show detailed report")
@@ -485,9 +522,17 @@ def main():
     parser.add_argument("--priority", type=int, default=5, help="Priority (1-10) for objective")
     parser.add_argument("--chat", action="store_true", help="Enter chat mode")
     parser.add_argument("--api-url", default=CBO_API_URL, help="CBO API URL")
-    
+    parser.add_argument("--push-evidence", action="store_true", help="Push evidence to home workstation")
+    parser.add_argument("--to", help="Target URL for push-evidence (e.g., http://192.168.1.100:8420)")
+    parser.add_argument("--token", help="Auth token for push-evidence")
+    parser.add_argument("--dry-run", action="store_true", help="Dry run for push-evidence")
+
     args = parser.parse_args()
-    
+
+    # Handle push-evidence command separately (does not need CBO API)
+    if args.push_evidence:
+        return run_push_evidence(args)
+
     client = CBOClient(api_url=args.api_url)
     
     # Check if CBO is reachable
