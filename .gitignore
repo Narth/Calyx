@@ -1,4 +1,4 @@
-[[# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -17,12 +17,12 @@ env/
 ENV/
 venv/
 Scripts/.venv/
-local_backups/
 
 # IDE & Editors
 .vscode/
 .cursor/
 .idea/
+.vs/
 *.swp
 *.swo
 *~
@@ -33,80 +33,92 @@ keys/
 *.pem
 *.pk.b64
 *.sk.b64
+*.p12
+*.pfx
+*.secret
 .env
 .env.*
-*.secret
+!.env.example
 
-# Config (use config.template.yaml instead)
+# Config (use template)
 config.yaml
 
-# Logs & Temporary Files
-logs/
-*.log
-temp_*.json
-temp_*.txt
-nohup.out
-*.csv
-decoder_probs_report.csv
-wake_word_results.csv
-reports/
-tools/bin/llama.cpp/*.exe
-logs/investigative_log.md
-logs/canon_ingestion_log.jsonl
-logs/overseer_loop_trace.jsonl
-samples/wake_word/*.wav
-local_backups/
-
-# Runtime State & Output
+# Runtime state / generated outputs (never commit)
 state/
 outgoing/
 incoming/
 responses/
-memory/
 staging/
+memory/
+logs/
+reports/
+telemetry/
+exports/
+station_calyx/data/
+runtime/
 
-# Cache & Compiled
+# Evidence / logs / captures
+*.jsonl
+!tests/fixtures/*.jsonl
+!docs/examples/**/*.jsonl
+*.log
+*.csv
+*.sqlite
+*.sqlite3
+*.db
+*.tmp
+nohup.out
+
+# Audio / video / screenshots
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.ogg
+*.mp4
+*.mov
+*.avi
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Cache & compiled artifacts
 compiled/
 *.pyc
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.codex_cache/
+.claude_cache/
+.firecrawl_cache/
 
-# OS Files
+# OS files
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Large Model Files
+# Models and binaries
 *.bin
 *.pt
 *.onnx
 *.safetensors
 models/
 
-# Test & Debug
+# Debug/testing leftovers
 _diag/
 benchmarks/results/
 *.test.json
-
-# Large local archives (avoid pushing to origin)
-Codex/Archives/*.zip
-Codex/CGPT History/*.zip
-
-# Folder tree snapshots
 folder_tree.txt
-
-# Specific local files
 sitecustomize.py
 test_secret.py
-=5.9
 
-# Visual Studio
-.vs/
+# Large local archives
+Codex/Archives/*.zip
+Codex/CGPT History/*.zip
+local_backups/
 
-# Codex/OpenAI local caches
-.codex_cache/
-
-# Claude local cache
-.claude_cache/
-
-# Firecrawl local cache
-.firecrawl_cache/
+# Keep curated placeholders/examples as needed
+!telemetry/**/.gitkeep
+!docs/examples/**
+!samples/**

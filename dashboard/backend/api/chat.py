@@ -32,18 +32,18 @@ def get_chat_history(limit: int = 50) -> List[Dict[str, Any]]:
         comms_messages = get_recent_messages(channel='standard', limit=limit)
         
         for msg in comms_messages:
-                msg_id = msg.get("message_id") or msg.get("msg_id", "")
-            
+            msg_id = msg.get("message_id") or msg.get("msg_id", "")
+
             # Get receipt status for enrichment
             receipt_data = None
             if msg_id:
                 try:
                     receipt_data = get_receipt_status(msg_id)
-                except:
+                except Exception:
                     pass
-            
-                # Map svf_channels message fields to dashboard schema
-                messages.append({
+
+            # Map svf_channels message fields to dashboard schema
+            messages.append({
                     "message_id": msg_id,
                     "timestamp": msg.get("timestamp") or msg.get("ts", ""),
                     "sender": msg.get("sender", "unknown"),

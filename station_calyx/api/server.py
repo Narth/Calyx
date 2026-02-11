@@ -19,8 +19,10 @@ Usage:
 from __future__ import annotations
 
 import logging
+import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
+from ipaddress import ip_address
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -131,7 +133,8 @@ async def log_requests(request: Request, call_next):
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     """Handle uncaught exceptions."""
-    logger.error(f"Unhandled exception: {exc}", exc_info=True)
+    correlation_id = str(uuid.uuid4())[:12]
+    logger.error(f"Unhandled exception [{correlation_id}]: {exc}", exc_info=True)
     
     # Log error event
     try:
@@ -141,7 +144,7 @@ async def global_exception_handler(request: Request, exc: Exception):
             summary=f"Unhandled exception: {type(exc).__name__}",
             payload={
                 "error_type": type(exc).__name__,
-                "error_message": str(exc),
+                "error_message": f"internal_error:{correlation_id}",
                 "path": str(request.url.path),
                 "method": request.method,
             },
@@ -153,7 +156,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     
     return JSONResponse(
         status_code=500,
-        content={"detail": "Internal server error", "error": str(exc)},
+        content={"detail": "Internal server error", "correlation_id": correlation_id},
     )
 
 
@@ -189,9 +192,27 @@ async def root():
     }
 
 
+def _is_loopback_host(host: str) -> bool:
+    if host in {"localhost", "127.0.0.1", "::1"}:
+        return True
+    try:
+        return ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+
 def run_server(host: str = "127.0.0.1", port: int = 8420):
     """Run the server programmatically."""
+    import os
     import uvicorn
+
+    allow_non_loopback = os.getenv("CALYX_ALLOW_NON_LOOPBACK", "false").lower() == "true"
+    if not _is_loopback_host(host) and not allow_non_loopback:
+        raise RuntimeError(
+            "Refusing non-loopback bind. Set CALYX_ALLOW_NON_LOOPBACK=true only behind a secured gateway."
+        )
+
     uvicorn.run(app, host=host, port=port)
 
 

@@ -6,55 +6,47 @@ Phase A - Backend Skeleton (Placeholder for Phase D)
 """
 from __future__ import annotations
 
-import base64
-from pathlib import Path
+import os
 from typing import Optional, Tuple
 
-ROOT = Path(__file__).resolve().parents[2]
+
+def _dev_mode_enabled() -> bool:
+    return os.getenv("CALYX_DEV_MODE", "false").lower() == "true"
 
 
 def verify_signature(signature: str, public_key: str) -> bool:
     """
-    Verify Ed25519 signature
-    
-    Args:
-        signature: Base64 encoded signature
-        public_key: Public key identifier
-        
-    Returns:
-        True if valid
+    Verify Ed25519 signature.
+
+    Hard-fails outside explicit developer mode until real verification is wired.
     """
-    # TODO: Implement Ed25519 verification in Phase D
-    # Placeholder implementation
-    return True
+    if _dev_mode_enabled():
+        return bool(signature and public_key)
+    raise PermissionError(
+        "Dashboard auth verification backend is not configured. "
+        "Set CALYX_DEV_MODE=true for local development only."
+    )
 
 
 def authenticate_request(request_data: dict, signature: str) -> Tuple[bool, Optional[str]]:
     """
-    Authenticate API request
-    
-    Args:
-        request_data: Request data
-        signature: Request signature
-        
-    Returns:
-        (is_valid, human_id)
+    Authenticate API request.
+
+    In non-dev mode this fails closed so public deployments cannot run with placeholder auth.
     """
-    # TODO: Implement actual authentication in Phase D
-    # Placeholder implementation
-    return True, "user1"
+    if _dev_mode_enabled():
+        if not signature:
+            return False, None
+        return True, "user1"
+
+    raise PermissionError(
+        "Authentication is required but production auth backend is not configured. "
+        "Refusing request by default."
+    )
 
 
 def get_user_permissions(human_id: str) -> list[str]:
-    """
-    Get user permissions
-    
-    Args:
-        human_id: Human identifier
-        
-    Returns:
-        Permission list
-    """
-    # TODO: Implement permission system in Phase D
-    return ["read", "write", "approve", "admin"]
-
+    """Get user permissions."""
+    if _dev_mode_enabled():
+        return ["read", "write", "approve", "admin"]
+    return ["read"]
