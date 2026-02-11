@@ -1,0 +1,15 @@
+{
+    "scenario": "A",
+    "description": "Controlled AC Intake (Baseline)",
+    "artifacts": {
+        "t0_preplug": "telemetry/energy/charge_intake_t0_preplug.json",
+        "t2m": "telemetry/energy/charge_intake_t2m.json",
+        "t10m": "telemetry/energy/charge_intake_t10m.json",
+        "environment_fingerprint": "telemetry/energy/scenario_a_environment_fingerprint.json"
+    },
+    "validity": {
+        "state_observations": true,
+        "rate_calculations": false
+    },
+    "E3_baseline_reference": true
+}

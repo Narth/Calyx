@@ -1,0 +1,27 @@
+{
+  "action": "energy_telemetry_phase_e3",
+  "scope": "drain_rate_model",
+  "correlation_id": "e3-phase",
+  "artifacts": {
+    "snapshot_t0": {
+      "path": "telemetry/energy/drain_rate_t0.json",
+      "sha256": "722CF70743D704C66675E773AF754D33C2AFFD5DD8510D4E180351E1E3B89D99"
+    },
+    "snapshot_t10m": {
+      "path": "telemetry/energy/drain_rate_t10m.json",
+      "sha256": "6DBAA93260E7604BF989F831867EB19402F4778E32E7DB1880132A3A29D1BCE1"
+    },
+    "drain_rate_report": {
+      "path": "telemetry/energy/drain_rate_report.json",
+      "sha256": "C199A621BD416730A934349A4553553915BFC3B61ADB1D20A7C166CB74877B9E"
+    }
+  },
+  "evidence_commands": [
+    "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus,Status",
+    "Get-CimInstance Win32_OperatingSystem | Select LastBootUpTime",
+    "Get-Counter '\\Processor(_Total)\\% Processor Time'",
+    "[System.Windows.Forms.SystemInformation]::PowerStatus"
+  ],
+  "statement": "Energy Telemetry Phase E3 completed successfully. No actions taken.",
+  "ts_utc": "2026-02-09T18:28:48.4999601Z"
+}

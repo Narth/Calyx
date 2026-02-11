@@ -1,0 +1,11 @@
+{
+  "intent_id": "intent-4a884a99",
+  "raw_user_input": "order now",
+  "interpreted_goal": "order now",
+  "constraints": {},
+  "confidence_score": 0.5,
+  "clarification_required": true,
+  "inferred_from_user_model": false,
+  "user_model_summary": {},
+  "created_at": "2026-02-04T01:02:29.201853+00:00"
+}

@@ -1,0 +1,17 @@
+{
+    "scenario": "C",
+    "description": "Abrupt Power Loss",
+    "artifacts": {
+        "power_loss": "telemetry/energy/scenario_c_power_loss.json"
+    },
+    "observations": {
+        "artifact_completeness": true,
+        "incomplete_intervals_detected": false,
+        "partial_data_marking": "Not applicable"
+    },
+    "validity": {
+        "state_observations": true,
+        "rate_calculations": false
+    },
+    "E3_baseline_reference": true
+}

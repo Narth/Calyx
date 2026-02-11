@@ -1,0 +1,8 @@
+{
+    "shutdown_semantics": "abrupt_shutdown_suspected",
+    "reasons": ["no_prior_sunset_record_found"],
+    "pre_marker": {
+        "path": "telemetry/sun_cycle/drills/drill2a_pre_marker.json",
+        "sha256": "6A254BCB90811360F124DC97E757ACBCF6B785A5D96F6DD5E4A3007F2A077E90"
+    }
+}

@@ -1,0 +1,16 @@
+*** current_state
+*** proposed_state
+@@
+- Firewall profiles: Domain=0, Private=0, Public=0
++ Firewall profiles: Domain=0, Private=1, Public=0
+
+- Proposed allow rules: none
++ Proposed allow rules:
++ - allow_rcservice_30196: TCP/30196, program=C:\Program Files (x86)\AnyViewer\RCService.exe, profiles=Private, scope=localSubnet
+
+# Human-readable summary:
+# Enable Private profile only and add narrowly-scoped allow rule for observed RCService listener on TCP/30196. Do NOT enable Public profile or add broad rules without explicit approval.
+
+# Evidence attached: logs/calyx_guardian/listeners_20260204153836.json (raw_hash: 3d9a86033af3fefe...)
+
+# NO ACTIONS PERFORMED. HUMAN APPROVAL REQUIRED.

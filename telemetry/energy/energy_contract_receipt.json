@@ -1,0 +1,40 @@
+{
+  "action": "energy_telemetry_phase_e5",
+  "scope": "energy_contract_scaffolding",
+  "correlation_id": "e5-phase",
+  "artifacts": {
+    "energy_contract": {
+      "path": "governance/contracts/energy_contract.json",
+      "sha256": "D8C1C68CA8FF1AA802A4EF7BB03A895D557C28535FD4436546EF7EAA0CB80F04"
+    },
+    "energy_budget_advisory": {
+      "path": "telemetry/energy/energy_budget_advisory.json",
+      "sha256": "A471E2DF769421194F7DF9B73FACD8EB5DAFDBBA562FF8085404FBB9F16A2AC2"
+    },
+    "drain_rate_report": {
+      "path": "telemetry/energy/drain_rate_report.json",
+      "sha256": "C199A621BD416730A934349A4553553915BFC3B61ADB1D20A7C166CB74877B9E"
+    },
+    "policy": {
+      "path": "governance/policies/energy_viability_policy.json",
+      "sha256": "B3FF1F93507B351CB5BA403C018FB3857A5D352A4B87A7E55C96BFBE3784DDA9"
+    },
+    "last_sunset": {
+      "path": "telemetry/sun_cycle/sunsets/sunset_2026-02-09T17-56-41_e2-sunset.json",
+      "sha256": "E6127D46CC22FF4FA925D7753FA74A327315EDEE796DBA387D3408144157639D"
+    },
+    "boot_guard_report": {
+      "path": "telemetry/sun_cycle/bloomos_boot_guard_report.json",
+      "sha256": "C2E31AB18E47EBCB029BDC26C4A982A936610F7A4FE963AB705CD6EC527CB404"
+    }
+  },
+  "evidence_commands": [
+    "Get-FileHash governance/policies/energy_viability_policy.json",
+    "Get-FileHash telemetry/energy/energy_budget_advisory.json",
+    "Get-FileHash telemetry/energy/drain_rate_report.json",
+    "Get-FileHash telemetry/sun_cycle/sunsets/sunset_2026-02-09T17-56-41_e2-sunset.json",
+    "Get-FileHash telemetry/sun_cycle/bloomos_boot_guard_report.json"
+  ],
+  "statement": "Energy Telemetry Phase E5 completed successfully. No actions taken.",
+  "ts_utc": "2026-02-09T18:28:48.4999601Z"
+}

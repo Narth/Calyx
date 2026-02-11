@@ -398,6 +398,34 @@ Auto-ensure in maintenance routines:
 
 	```powershell
 	python -u .\tools\cycle_efficiency.py --interval 0.5 --max-cycles 1
+
+OpenClaw Skills (wrapped)
+-------------------------
+
+High-priority skills are wrapped via `tools/skills_cli.py` and governed by gates and station mode.
+
+List configured skills:
+
+```powershell
+py -3 tools/skills_cli.py list
+```
+
+Mock run (no network):
+
+```powershell
+py -3 tools/skills_cli.py run sysadmin-toolbox --args "--help" --mock
+```
+
+Real run (requires gates and config enabled):
+
+```powershell
+py -3 tools/skills_cli.py run process-watch --args "--interval 5" --enable
+```
+
+Configuration:
+- `config/skills.yaml` controls enabled state, per-skill command, and sleep-mode allowlist.
+- Network/LLM usage requires gates: `outgoing/gates/network.ok` and `outgoing/gates/llm.ok`.
+- Mutating skills require `outgoing/gates/apply.ok`.
 	```
 
 	- Continuous run (every 90s, until tie):

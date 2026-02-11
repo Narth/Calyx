@@ -1,0 +1,25 @@
+﻿{
+    "phase":  "energy_telemetry_phase_e3",
+    "marker":  "CURRENT",
+    "timestamp_utc":  "2026-02-09T18:33:46.3889948Z",
+    "correlation_id":  "e4-phase",
+    "power_status":  {
+                         "power_line_status":  "Offline",
+                         "battery_charge_status":  "0",
+                         "battery_life_percent":  0.65,
+                         "battery_life_remaining":  11276
+                     },
+    "battery":  {
+                    "EstimatedChargeRemaining":  64,
+                    "BatteryStatus":  1,
+                    "Status":  "OK"
+                },
+    "cpu_percent":  4.17,
+    "uptime_last_boot_utc":  "\/Date(1769822027321)\/",
+    "evidence_commands":  [
+                              "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus,Status",
+                              "Get-CimInstance Win32_OperatingSystem | Select LastBootUpTime",
+                              "Get-Counter \u0027\\\\Processor(_Total)\\\\% Processor Time\u0027",
+                              "[System.Windows.Forms.SystemInformation]::PowerStatus"
+                          ]
+}

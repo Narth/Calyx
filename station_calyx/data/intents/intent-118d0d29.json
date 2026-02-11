@@ -1,0 +1,14 @@
+{
+  "intent_id": "intent-118d0d29",
+  "raw_user_input": "ping",
+  "interpreted_goal": "ping",
+  "constraints": {},
+  "confidence_score": 0.7,
+  "clarification_required": true,
+  "inferred_from_user_model": true,
+  "user_model_summary": {
+    "pattern_confirmed_count": 1,
+    "last_confirmed": "2026-01-01T00:00:00Z"
+  },
+  "created_at": "2026-02-03T06:41:26.932808+00:00"
+}

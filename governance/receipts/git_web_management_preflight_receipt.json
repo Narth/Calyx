@@ -1,0 +1,15 @@
+{
+  "action": "git_web_management_preflight",
+  "proposal_id": "capability_unlock_git_web_management_v1",
+  "correlation_id": "fae8d7160ee5",
+  "parent_correlation_id": "fcb9c29131b7",
+  "ts_utc": "2026-02-07T02:41:10Z",
+  "artifacts": {
+    "report": {
+      "path": "governance/reports/git_web_management_preflight_report.json",
+      "sha256": "ECDA9CF93646D8F1785C3F5993572BC4C8CA547A576A2A098E549D954167EBE3"
+    }
+  },
+  "receipt_sha256": "6988724E8D7E1AC805EF054AA54F99458501D995DD272236D423710EECD68969",
+  "notes": "Receipt for read-only preflight. Preconditions not met; halted."
+}

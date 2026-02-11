@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Calyx Intent",
+  "type": "object",
+  "required": ["intent_id","timestamp","actor","intent","payload","justification","requires_approval"],
+  "properties": {
+    "intent_id": {"type": "string"},
+    "timestamp": {"type": "string","format":"date-time"},
+    "actor": {"type": "string"},
+    "intent": {"type": "string"},
+    "payload": {"type": "object"},
+    "justification": {"type": "string"},
+    "requires_approval": {"type": "boolean"}
+  }
+}

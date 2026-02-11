@@ -1,0 +1,17 @@
+{
+    "phase": "scenario_c",
+    "marker": "power_loss",
+    "timestamp_utc": "2026-02-10T01:40:00.0000000Z",
+    "power_status": {
+        "power_line_status": "Online",
+        "battery_charge_status": "Charging",
+        "battery_life_percent": 0.73,
+        "power_status_unavailable": false
+    },
+    "battery": {
+        "EstimatedChargeRemaining": 73,
+        "BatteryStatus": 2,
+        "Status": "OK"
+    },
+    "cpu_percent": 3.10
+}

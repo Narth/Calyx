@@ -1,0 +1,20 @@
+{
+    "ac_detection": {
+        "preplug_power_line_status": "Offline",
+        "postplug_power_line_status_t2m": "Online",
+        "postplug_power_line_status_t10m": "Online"
+    },
+    "charging_status_transitions": {
+        "preplug_battery_charge_status": "High",
+        "postplug_battery_charge_status_t2m": "Charging",
+        "postplug_battery_charge_status_t10m": "Charging"
+    },
+    "battery_percent_delta": {
+        "preplug": 37,
+        "t2m": 39,
+        "t10m": 47
+    },
+    "stability_classification": "stable_ac",
+    "contradictions": [],
+    "advisory_note": "Observation only — no actions taken."
+}

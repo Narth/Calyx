@@ -1,0 +1,14 @@
+{
+  "user_id": "user-test-01",
+  "confirmed_intents": [
+    {
+      "intent_id": "i1",
+      "interpreted_goal": "ping",
+      "confirmed_at": "2026-01-01T00:00:00Z"
+    }
+  ],
+  "rejected_interpretations": [],
+  "clarification_history": [],
+  "confidence_adjustments": [],
+  "last_updated": "2026-02-04T01:02:38.315054+00:00"
+}

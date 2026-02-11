@@ -1,0 +1,13 @@
+{
+  "action": "energy_telemetry_phase_e2_wait",
+  "scope": "ac_power_unavailable_or_unstable",
+  "correlation_id": "e2-wait-phase",
+  "artifacts": {
+    "wait_snapshot": {
+      "path": "telemetry/energy/energy_e2_wait_snapshot.json",
+      "sha256": "58CA4D6B382BB972142FA148A59A35E761E51F0E13398234C62802B92ABACCD1"
+    }
+  },
+  "statement": "Charge-window telemetry deferred due to unavailable or unsafe AC power. No actions taken.",
+  "ts_utc": "2026-02-09T17:35:31.9176141Z"
+}

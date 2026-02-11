@@ -1,0 +1,17 @@
+{
+    "proposed_thresholds": {
+        "sunset_start_percent": 10,
+        "sunrise_start_percent": 25
+    },
+    "proposed_ac_stability_requirement": {
+        "description": "AC must be stable for 5 minutes before initiating cascades.",
+        "stability_duration_minutes": 5
+    },
+    "proposed_openclaw_autostart_rule": {
+        "description": "OpenClaw auto-start is permitted only if boot guard status is PASS and battery is above 25%.",
+        "conditions": [
+            "boot_guard_status == PASS",
+            "battery_percent > 25"
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "phase": "charge_intake_phase_e2b",
+    "marker": "T0_preplug",
+    "timestamp_utc": "2026-02-10T01:12:59.4496864Z",
+    "power_status": {
+        "power_line_status": "Offline",
+        "battery_charge_status": "High",
+        "battery_life_percent": 0.37,
+        "battery_life_remaining": 21605,
+        "power_status_unavailable": false
+    },
+    "battery": {
+        "EstimatedChargeRemaining": 37,
+        "BatteryStatus": 1,
+        "Status": "OK"
+    },
+    "cpu_percent": 3.31,
+    "uptime_last_boot_utc": "\/Date(1769822024650)\/",
+    "E3_baseline_reference": true
+}

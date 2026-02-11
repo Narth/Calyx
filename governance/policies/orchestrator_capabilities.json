@@ -1,0 +1,17 @@
+{
+  "current_tier": "Tier0_5",
+  "tiers": {
+    "Tier0": {
+      "allowed_operations": ["read", "report"]
+    },
+    "Tier0_5": {
+      "allowed_operations": ["read", "test", "report"]
+    },
+    "Tier1": {
+      "allowed_operations": ["read", "test", "report", "write_docs"]
+    },
+    "Tier2": {
+      "allowed_operations": ["read", "test", "report", "write_code"]
+    }
+  }
+}

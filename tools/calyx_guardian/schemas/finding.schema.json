@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Calyx Guardian Finding",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "category",
+    "severity",
+    "confidence",
+    "confidence_score",
+    "added_due_to",
+    "evidence_refs",
+    "what_we_know",
+    "what_we_dont_know",
+    "recommendation",
+    "do_nothing_impact"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["patching", "defender", "firewall", "disk", "backup", "services", "integrity"]
+    },
+    "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+    "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+    "confidence_score": { "type": "number" },
+    "added_due_to": { "type": "string", "enum": ["new_observation", "elevated_visibility", "scope_expansion"] },
+    "evidence_refs": { "type": "array", "items": { "type": "string" } },
+    "what_we_know": { "type": "string" },
+    "what_we_dont_know": { "type": "string" },
+    "recommendation": { "type": ["string", "null"] },
+    "do_nothing_impact": { "type": "string" }
+  }
+}

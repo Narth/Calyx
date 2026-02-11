@@ -1,0 +1,24 @@
+{
+  "action": "energy_telemetry_phase_e1",
+  "scope": "read-only, verification-only",
+  "correlation_id": "e5f62796c170",
+  "parent_correlation_id": null,
+  "artifacts": {
+    "start_snapshot": {
+      "path": "telemetry/energy/energy_snapshot_start.json",
+      "sha256": "751A4CF2494EDA4A1A8EEE65FED049D19AC17443DFE2611A0B31CAD786C1A682"
+    },
+    "end_snapshot": {
+      "path": "telemetry/energy/energy_snapshot_end.json",
+      "sha256": "15B7BD1B9C8AD3CC4F02D68D7B1D6B6224EAFEC01A46563F22CEFCE686422EEE"
+    }
+  },
+  "evidence_commands": [
+    "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus",
+    "Get-CimInstance Win32_OperatingSystem | Select LastBootUpTime",
+    "Get-Counter '\\Processor(_Total)\\% Processor Time'",
+    "Get-NetAdapter | Select Name,Status,InterfaceDescription"
+  ],
+  "statement": "No system state was modified; observation only.",
+  "ts_utc": "2026-02-09T16:36:04.1786853Z"
+}

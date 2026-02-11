@@ -1,0 +1,16 @@
+﻿{
+    "phase":  "bloomos_boot_guard",
+    "timestamp_utc":  "2026-02-09T18:14:13.7808011Z",
+    "energy_viability_gate":  "pass",
+    "reasons":  [
+
+                ],
+    "last_sunset":  {
+                        "path":  "C:\\Calyx\\telemetry\\sun_cycle\\sunsets\\sunset_2026-02-09T17-56-41_e2-sunset.json",
+                        "sha256":  "E6127D46CC22FF4FA925D7753FA74A327315EDEE796DBA387D3408144157639D"
+                    },
+    "last_sunrise":  {
+                         "path":  "C:\\Calyx\\telemetry\\sun_cycle\\sunrises\\sunrise_2026-02-09T17-56-41_e2-sunrise.json",
+                         "sha256":  "F341D21A483D6BE57C123D977CFD787DD5596F1429BFB78ACBE1873DE0D44E46"
+                     }
+}

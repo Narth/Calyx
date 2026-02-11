@@ -1,0 +1,12 @@
+﻿{
+    "phase":  "energy_telemetry_phase_e2_wait",
+    "timestamp_utc":  "2026-02-09T17:35:46.9506543Z",
+    "correlation_id":  "e2-wait-phase",
+    "power_status":  {
+                         "power_line_status":  "Offline",
+                         "battery_charge_status":  "High",
+                         "battery_life_percent":  0.79
+                     },
+    "reason":  "ac_power_unavailable_or_unstable",
+    "statement":  "Charge-window telemetry deferred due to unavailable or unsafe AC power. No actions taken."
+}

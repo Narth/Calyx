@@ -1,0 +1,41 @@
+{
+    "active_network_adapters": [
+        {
+            "name": "Wi-Fi",
+            "status": "Up",
+            "interface_description": "Intel(R) Wireless-AC 9560 160MHz"
+        },
+        {
+            "name": "Bluetooth Network Connection",
+            "status": "Disconnected",
+            "interface_description": "Bluetooth Device (Personal Area Network)"
+        }
+    ],
+    "ip_info_summary": [
+        {
+            "ip_address": "172.20.10.5",
+            "address_family": "IPv4",
+            "prefix_origin": "Dhcp",
+            "suffix_origin": "Dhcp",
+            "classification": "private"
+        },
+        {
+            "ip_address": "2607:fb91:8e36:4c6f:8196:603e:47fb:dd98",
+            "address_family": "IPv6",
+            "prefix_origin": "RouterAdvertisement",
+            "suffix_origin": "Link",
+            "classification": "public"
+        }
+    ],
+    "dns_server_count": 2,
+    "connectivity_check": {
+        "computer_name": "github.com",
+        "port": 443,
+        "status": "Success"
+    },
+    "process_service_status": {
+        "calyx_daemon_running": false,
+        "clawdbot_gateway_running": false
+    },
+    "temporally_validated": true
+}

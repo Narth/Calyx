@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "task_contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "parent_id",
+    "role",
+    "inputs",
+    "outputs",
+    "allowed_operations",
+    "max_runtime_seconds",
+    "max_files_touched",
+    "success_criteria",
+    "required_evidence"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "parent_id": {"type": "string"},
+    "role": {
+      "type": "string",
+      "enum": ["test_steward", "refactor_steward", "schema_steward", "docs_steward"]
+    },
+    "inputs": {"type": "array", "items": {"type": "string"}},
+    "outputs": {"type": "array", "items": {"type": "string"}},
+    "allowed_operations": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["read", "write", "test", "report"]}
+    },
+    "max_runtime_seconds": {"type": "integer", "minimum": 1},
+    "max_files_touched": {"type": "integer", "minimum": 0},
+    "success_criteria": {"type": "string"},
+    "required_evidence": {"type": "array", "items": {"type": "string"}},
+    "exec": {"type": "string"},
+    "args": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"},
+    "no_progress_seconds": {"type": "integer", "minimum": 0}
+  }
+}

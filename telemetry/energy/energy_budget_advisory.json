@@ -1,0 +1,26 @@
+{
+  "phase": "energy_telemetry_phase_e4",
+  "correlation_id": "e4-phase",
+  "current_battery_percent": 73,
+  "observed_drain_rate": 0.5,
+  "estimated_minutes_to_sunrise_floor": 170,
+  "estimated_minutes_to_sunset": 40,
+  "recommended_max_task_duration_minutes": 30,
+  "advisory_level": "yellow",
+  "advisory_message": "Battery drain rate is moderate. Consider limiting tasks to 30 minutes or less to avoid reaching critical levels.",
+  "artifacts": {
+    "drain_rate_report": {
+      "path": "telemetry/energy/drain_rate_report.json",
+      "sha256": "C199A621BD416730A934349A4553553915BFC3B61ADB1D20A7C166CB74877B9E"
+    },
+    "sunrise_record": {
+      "path": "telemetry/sun_cycle/sunrises/sunrise_2026-02-09T17-56-41_e2-sunrise.json",
+      "sha256": "F341D21A483D6BE57C123D977CFD787DD5596F1429BFB78ACBE1873DE0D44E46"
+    },
+    "current_battery_snapshot": {
+      "path": "telemetry/energy/current_battery_snapshot.json",
+      "sha256": "CC221A8308C4A953959EB094EB53217E9C10D33191943CC8A3CB04D62503BA4F"
+    }
+  },
+  "ts_utc": "2026-02-09T18:28:48.4999601Z"
+}

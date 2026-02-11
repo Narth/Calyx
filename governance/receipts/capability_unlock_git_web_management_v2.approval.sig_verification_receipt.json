@@ -1,0 +1,32 @@
+{
+  "action": "approve_capability_unlock",
+  "scope": "git_web_management_outbound_only",
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "ts_utc": "2026-02-09T04:20:00Z",
+  "signature": {
+    "status": "verified",
+    "tool": "ssh-keygen -Y verify",
+    "signer": "architect",
+    "namespace": "calyx",
+    "public_key_fingerprint": "SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw"
+  },
+  "artifacts": {
+    "approval_json": {
+      "path": "governance/approvals/capability_unlock_git_web_management_v2.approval.json",
+      "sha256": "CEE97A295F8E100ED11D87E7984E4D5C79E2315AE89B4E31C3D68F7A03DCE30E"
+    },
+    "approval_sig": {
+      "path": "governance/approvals/capability_unlock_git_web_management_v2.approval.json.sig",
+      "sha256": "93F56D702226B58A8FEF9F181323BF3590F7D0C7F8799FED6EDF130943CB1332"
+    },
+    "allowed_signers": {
+      "path": "governance/identities/allowed_signers",
+      "sha256": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58"
+    }
+  },
+  "verification_evidence": {
+    "command_used": "type governance\\approvals\\capability_unlock_git_web_management_v2.approval.json | ssh-keygen -Y verify -f governance\\identities\\allowed_signers -I architect -n calyx -s governance\\approvals\\capability_unlock_git_web_management_v2.approval.json.sig",
+    "stdout_excerpt": "Good \"calyx\" signature for architect"
+  },
+  "notes": "Verification-only. No other actions executed."
+}

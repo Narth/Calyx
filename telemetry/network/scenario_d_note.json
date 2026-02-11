@@ -1,0 +1,13 @@
+{
+    "scenario": "D",
+    "description": "Network Stability Contrast (Home Internet Posture)",
+    "artifacts": {
+        "home_posture": "telemetry/network/scenario_d_home_posture.json",
+        "hotspot_posture": "telemetry/network/scenario_d_hotspot_posture.json"
+    },
+    "observations": [
+        "Home internet posture captured; no actions taken.",
+        "Hotspot posture captured; no actions taken.",
+        "Environmental classification only; no behavioral inference."
+    ]
+}

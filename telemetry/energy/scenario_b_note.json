@@ -1,0 +1,20 @@
+{
+    "scenario": "B",
+    "description": "Manual Sunset / Sunrise",
+    "artifacts": {
+        "sunset": "telemetry/energy/scenario_b_sunset.json",
+        "sunrise": "telemetry/energy/scenario_b_sunrise.json"
+    },
+    "observations": {
+        "state_continuity": true,
+        "artifact_completeness": true,
+        "transition_latency": {
+            "sunset_to_sunrise_seconds": 300
+        }
+    },
+    "validity": {
+        "state_observations": true,
+        "rate_calculations": false
+    },
+    "E3_baseline_reference": true
+}

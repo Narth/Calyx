@@ -1,0 +1,27 @@
+﻿{
+    "phase":  "energy_telemetry_phase_e2a",
+    "marker":  "T10M",
+    "timestamp_utc":  "2026-02-09T17:08:18.9291645Z",
+    "correlation_id":  "e2a-phase",
+    "parent_correlation_id":  "null",
+    "power_status":  {
+                         "power_line_status":  "Offline",
+                         "battery_charge_status":  "High",
+                         "battery_life_percent":  0.84,
+                         "battery_life_remaining":  32448,
+                         "power_status_unavailable":  false
+                     },
+    "battery":  {
+                    "EstimatedChargeRemaining":  84,
+                    "BatteryStatus":  1,
+                    "Status":  "OK"
+                },
+    "cpu_percent":  7.58,
+    "uptime_last_boot_utc":  "\/Date(1769822027321)\/",
+    "evidence_commands":  [
+                              "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus,Status",
+                              "Get-CimInstance Win32_OperatingSystem | Select LastBootUpTime",
+                              "Get-Counter \u0027\\\\Processor(_Total)\\\\% Processor Time\u0027",
+                              "[System.Windows.Forms.SystemInformation]::PowerStatus"
+                          ]
+}

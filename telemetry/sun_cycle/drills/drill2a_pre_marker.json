@@ -1,0 +1,32 @@
+﻿{
+    "phase":  "energy_telemetry_phase_e1",
+    "marker":  "T0",
+    "timestamp_utc":  "2026-02-10T01:12:59.4496864Z",
+    "correlation_id":  "e2a-phase",
+    "parent_correlation_id":  "null",
+    "power_source":  null,
+    "battery_percent":  43,
+    "estimated_runtime":  null,
+    "cpu_percent":  3.31,
+    "uptime_last_boot_utc":  "\/Date(1769822024650)\/",
+    "network_context":  [
+                            {
+                                "Name":  "Wi-Fi",
+                                "Status":  "Up",
+                                "InterfaceDescription":  "Intel(R) Wireless-AC 9560 160MHz"
+                            },
+                            {
+                                "Name":  "Bluetooth Network Connection",
+                                "Status":  "Disconnected",
+                                "InterfaceDescription":  "Bluetooth Device (Personal Area Network)"
+                            }
+                        ],
+    "evidence_commands":  [
+                              "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus",
+                              "Get-CimInstance Win32_OperatingSystem | Select LastBootUpTime",
+                              "Get-Counter \u0027\\\\Processor(_Total)\\\\% Processor Time\u0027",
+                              "Get-NetAdapter | Select Name,Status,InterfaceDescription"
+                          ],
+    "operator_intent": "simulate_abrupt_shutdown_without_sunset",
+    "statement": "Pre-marker only. Awaiting human reboot."
+}
