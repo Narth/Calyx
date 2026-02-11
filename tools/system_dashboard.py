@@ -10,6 +10,8 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 
+from calyx.cbo.runtime_paths import get_task_queue_path
+
 ROOT = Path(__file__).resolve().parents[1]
 
 def read_json(path: Path) -> Dict[str, Any]:
@@ -83,7 +85,7 @@ def get_active_agents() -> List[Dict[str, Any]]:
 
 def get_cbo_tasks() -> List[Dict[str, Any]]:
     """Get CBO task queue"""
-    task_queue = ROOT / "calyx" / "cbo" / "task_queue.jsonl"
+    task_queue = get_task_queue_path(ROOT)
     tasks = read_jsonl(task_queue, last_n=50)
     
     # Group by assignee and status

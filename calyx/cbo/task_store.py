@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence
 
 from .models import Task, TaskStatus
+from .runtime_paths import get_task_queue_path, get_task_status_path
 
 
 class TaskStore:
@@ -21,8 +22,8 @@ class TaskStore:
         status_log_path: Path | None = None,
     ) -> None:
         self.root = root
-        self.queue_path = queue_path or (root / "calyx" / "cbo" / "task_queue.jsonl")
-        self.status_log_path = status_log_path or (root / "calyx" / "cbo" / "task_status.jsonl")
+        self.queue_path = queue_path or get_task_queue_path(root)
+        self.status_log_path = status_log_path or get_task_status_path(root)
         self.queue_path.parent.mkdir(parents=True, exist_ok=True)
         self.status_log_path.parent.mkdir(parents=True, exist_ok=True)
 

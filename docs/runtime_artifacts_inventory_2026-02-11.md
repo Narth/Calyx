@@ -1,5 +1,7 @@
 # Tracked Runtime Artifact Inventory (Current State)
 
+**Note (2026-02-11):** CBO runtime JSONL (objectives, task_queue, task_status, etc.) have been relocated to `runtime/cbo/` and are no longer created under `calyx/cbo/`. See `reports/security/cbo_runtime_state_relocation_2026-02-11.md`.
+
 Total matched paths: 459
 
 ```text

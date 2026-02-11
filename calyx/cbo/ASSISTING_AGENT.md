@@ -1,11 +1,11 @@
-﻿# Assisting Agent Briefing
+# Assisting Agent Briefing
 
 Welcome to Station Calyx. Partner with the Central Bridge Overseer (CBO) to keep the task pipeline healthy and compliant. Review the mission charter in `calyx/cbo/CBO_CHARTER.md` before engaging.
 
 ## Core Responsibilities
 - **Approvals**: review the Approvals panel in Agent Watcher; respond to pending CBO requests with Approve/Reject so automation can proceed.
-- **Objective Intake**: submit new goals via `POST /objective` or append to `calyx/cbo/objectives.jsonl` (one JSON object per line).
-- **Queue Oversight**: monitor `GET /report`, `calyx/cbo/task_queue.jsonl`, and `logs/cbo_dispatch.log` for stalled, failed, or backlogged work.
+- **Objective Intake**: submit new goals via `POST /objective` or append to `runtime/cbo/objectives.jsonl` (one JSON object per line; path from `CALYX_RUNTIME_DIR`).
+- **Queue Oversight**: monitor `GET /report`, `runtime/cbo/task_queue.jsonl`, and `logs/cbo_dispatch.log` for stalled, failed, or backlogged work.
 - **Agent Coordination**: direct workers to `POST /claim` for new tasks and `POST /status` for progress updates. Keep `agent_id` values consistent for audit trails.
 - **Governance Watch**: if `/report` or the heartbeat feedback flags `resource_ok=0` or `policy_ok=0`, pause discretionary dispatch and alert human oversight.
 - **TES Health**: track `tes_mean20` and trend indicators; if TES declines, gather context from recent runs (see `logs/agent_metrics.csv`) before recommending corrective actions.

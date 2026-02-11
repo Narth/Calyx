@@ -9,6 +9,8 @@ import csv
 from pathlib import Path
 from datetime import datetime
 
+from calyx.cbo.runtime_paths import get_task_queue_path
+
 ROOT = Path(__file__).resolve().parents[1]
 
 def read_json(path: Path):
@@ -89,7 +91,7 @@ def collect_data():
         agents.extend(role_agents)
     
     # Get tasks
-    task_queue = ROOT / "calyx" / "cbo" / "task_queue.jsonl"
+    task_queue = get_task_queue_path(ROOT)
     tasks = read_jsonl(task_queue, last_n=10)
     
     # Get TES

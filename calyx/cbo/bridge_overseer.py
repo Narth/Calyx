@@ -15,6 +15,7 @@ from .feedback import FeedbackLoop
 from .governance import GovernanceMonitor
 from .models import Objective, PulseReport
 from .plan_engine import PlanEngine
+from .runtime_paths import get_objectives_path
 from .sensors import SensorHub
 from .task_store import TaskStore
 from .tes_analyzer import TesAnalyzer
@@ -47,7 +48,7 @@ class CBOBridgeOverseer:
     ) -> None:
         self.root = root
         self.heartbeat_seconds = heartbeat_seconds
-        self.objectives_path = objectives_path or (root / "calyx" / "cbo" / "objectives.jsonl")
+        self.objectives_path = objectives_path or get_objectives_path(root)
         self.objectives_history_path = self.objectives_path.with_name("objectives_history.jsonl")
         self.metrics_path = metrics_path or (root / "metrics" / "bridge_pulse.csv")
 

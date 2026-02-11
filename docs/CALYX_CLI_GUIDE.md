@@ -210,5 +210,5 @@ Both tools complement each other perfectly!
 For issues or questions:
 - Check `tools/CALYX_CLI_README.md` for detailed documentation
 - Review CBO API logs in `logs/cbo_dispatch.log`
-- Check CBO objectives in `calyx/cbo/objectives.jsonl`
+- Check CBO objectives in `runtime/cbo/objectives.jsonl`
 

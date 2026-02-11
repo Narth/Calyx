@@ -13,6 +13,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from .models import TaskStatus
+from .runtime_paths import get_cbo_runtime_dir, get_objectives_history_path, get_objectives_path
 from .sensors import SensorHub
 from .task_store import TaskStore
 from .tes_analyzer import TesAnalyzer
@@ -21,12 +22,11 @@ from .governance import GovernanceMonitor
 ROOT = Path(__file__).resolve().parents[2]
 APP = FastAPI(title="Station Calyx CBO", version="0.1.0")
 
-OBJECTIVES_PATH = ROOT / "calyx" / "cbo" / "objectives.jsonl"
-OBJECTIVES_HISTORY_PATH = ROOT / "calyx" / "cbo" / "objectives_history.jsonl"
+get_cbo_runtime_dir(ROOT)  # ensure runtime/cbo exists
+OBJECTIVES_PATH = get_objectives_path(ROOT)
+OBJECTIVES_HISTORY_PATH = get_objectives_history_path(ROOT)
 CHARTER_PATH = ROOT / "calyx" / "cbo" / "CBO_CHARTER.md"
 METRICS_PATH = ROOT / "metrics" / "bridge_pulse.csv"
-
-OBJECTIVES_PATH.parent.mkdir(parents=True, exist_ok=True)
 TASK_STORE = TaskStore(ROOT)
 SENSOR_HUB = SensorHub(ROOT)
 TES_ANALYZER = TesAnalyzer(ROOT)
