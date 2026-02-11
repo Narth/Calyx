@@ -1,0 +1,64 @@
+# OpenClaw skill integration config (opt-in)
+# Set enabled: true to allow skill execution (or use --enable flag).
+enabled: false
+station_mode_allowlist:
+  - sysadmin-toolbox
+  - process-watch
+  - uptime-kuma
+skills:
+  sysadmin-toolbox:
+    command: sysadmin-toolbox
+    requires_network: false
+    requires_apply: false
+  process-watch:
+    command: process-watch
+    requires_network: false
+    requires_apply: false
+  uptime-kuma:
+    command: uptime-kuma
+    requires_network: true
+    requires_apply: false
+  pi-admin:
+    command: pi-admin
+    requires_network: true
+    requires_apply: true
+  unraid:
+    command: unraid
+    requires_network: true
+    requires_apply: true
+  proxmox:
+    command: proxmox
+    requires_network: true
+    requires_apply: true
+  skills-audit:
+    command: skill-audit
+    requires_network: false
+    requires_apply: false
+  skills-search:
+    command: skills-search
+    requires_network: true
+    requires_apply: false
+  clawdhub:
+    command: clawdhub
+    requires_network: true
+    requires_apply: true
+  clawddocs:
+    command: clawddocs
+    requires_network: true
+    requires_apply: false
+  mcporter:
+    command: mcporter
+    requires_network: true
+    requires_apply: true
+  guru-mcp:
+    command: guru-mcp
+    requires_network: true
+    requires_apply: true
+  model-usage:
+    command: model-usage
+    requires_network: false
+    requires_apply: false
+  codex-orchestration:
+    command: codex-orchestration
+    requires_network: true
+    requires_apply: true

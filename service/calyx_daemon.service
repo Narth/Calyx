@@ -1,0 +1,13 @@
+[Unit]
+Description=Calyx Daemon
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/calyx
+ExecStart=/usr/bin/python3 /opt/calyx/tools/calyx_daemon.py
+Restart=on-failure
+User=calyx
+
+[Install]
+WantedBy=multi-user.target

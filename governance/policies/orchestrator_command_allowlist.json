@@ -1,0 +1,52 @@
+{
+  "test_steward": [
+    {
+      "exec": "py",
+      "required_arg_prefixes": ["-3.11", "-m", "pytest"],
+      "allowed_script_paths": ["tools/calyx_guardian/tests/test_smoke_phase0.py"],
+      "forbidden_flags": ["-k", "--maxfail", "--lf", "--ff"]
+    },
+    {
+      "exec": "powershell",
+      "required_arg_prefixes": ["-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File"],
+      "allowed_script_paths": ["tools/calyx_guardian/run_phase0_windows.ps1", "tools/calyx_guardian/guardian_watch_baseline.ps1", "tools/calyx_guardian/guardian_watch_observer.ps1", "tools/calyx_guardian/run_phase0_elevated.ps1"],
+      "forbidden_flags": ["-Command", "-EncodedCommand"]
+    }
+  ],
+  "schema_steward": [
+    {
+      "exec": "py",
+      "required_arg_prefixes": ["-3.11", "-c"],
+      "allowed_script_paths": [],
+      "forbidden_flags": ["-m"]
+    }
+  ],
+  "docs_steward": [
+    {
+      "exec": "py",
+      "required_arg_prefixes": ["-3.11", "tools/calyx_guardian/render/guardian_manifest.py"],
+      "allowed_script_paths": ["tools/calyx_guardian/render/guardian_manifest.py"],
+      "forbidden_flags": ["-m", "-c"]
+    },
+    {
+      "exec": "py",
+      "required_arg_prefixes": ["-3.11", "tools/calyx_guardian/render/guardian_watch_analysis.py"],
+      "allowed_script_paths": ["tools/calyx_guardian/render/guardian_watch_analysis.py"],
+      "forbidden_flags": ["-m", "-c"]
+    },
+    {
+      "exec": "py",
+      "required_arg_prefixes": ["-3.11", "tools/calyx_guardian/render/guardian_night_watch_brief.py"],
+      "allowed_script_paths": ["tools/calyx_guardian/render/guardian_night_watch_brief.py"],
+      "forbidden_flags": ["-m", "-c"]
+    }
+  ],
+  "refactor_steward": [
+    {
+      "exec": "py",
+      "required_arg_prefixes": ["-3.11", "-c"],
+      "allowed_script_paths": [],
+      "forbidden_flags": ["-m"]
+    }
+  ]
+}
