@@ -1,0 +1,172 @@
+{
+  "proposal_id": "proposal_fw_context_preserve_enable_001",
+  "created_utc": "2026-02-04T21:40:00.000000Z",
+  "policy_id": "network_steward_firewall_v1",
+  "correlation_id": "d2f87a5b9e1a",
+  "parent_correlation_id": "972bbb9fd057",
+  "proposer": { "actor": "system", "name": "guardian.context_synthesizer" },
+  "purpose": "Design-only, dry-run proposal to enable firewall while preserving observed, intentional services on a mixed personal workstation + hosted game servers.",
+
+  "collection_note": "No active listener scan was executed as part of this dry-run. The proposal contains (A) a collection plan and (B) a simulated example of observed listeners that illustrates how Guardian would produce contextual allow rules. All simulated entries are explicitly marked. To convert to a real proposal, run the collector commands below and re-submit with evidence.jsonl references.",
+
+  "collection_commands": [
+    "# Run on target host (read-only):",
+    "Get-NetTCPConnection -State Listen | Select-Object LocalAddress, LocalPort, OwningProcess",
+    "Get-NetUDPEndpoint | Select-Object LocalAddress, LocalPort, OwningProcess",
+    "Get-Process -Id <OwningProcess> | Select-Object ProcessName, Path",
+    "Get-NetFirewallRule -AssociatedNetAdapter | Where-Object { $_ -ne $null }",
+    "# Save outputs to logs/calyx_guardian as evidence lines (e.g., evidence.jsonl)"
+  ],
+
+  "observed_network_surface": {
+    "collected": false,
+    "evidence_refs": [],
+    "note": "No listener evidence currently present in logs for this host. The following table is a SIMULATED EXAMPLE showing the exact fields Guardian would include after collection. Do not treat simulated rows as real observations."
+  },
+
+  "simulated_observed_listeners": [
+    {
+      "simulated": true,
+      "local_address": "0.0.0.0",
+      "protocol": "UDP",
+      "port": 27015,
+      "owning_process": "game_server.exe",
+      "owning_process_path": "C:\\Games\\MyServer\\game_server.exe",
+      "bound_scope": "0.0.0.0 (all interfaces)",
+      "inferred_profile_relevance": "Private",
+      "likely_intent": "game_server",
+      "intent_confidence": "medium",
+      "notes": "UDP 27015 commonly used by Source-engine game servers; process name suggests a hosted game server.",
+      "evidence_placeholder": "collector: Get-NetUDPEndpoint / Get-Process (not collected in dry-run)"
+    },
+    {
+      "simulated": true,
+      "local_address": "192.168.1.14",
+      "protocol": "TCP",
+      "port": 8080,
+      "owning_process": "node.exe",
+      "owning_process_path": "C:\\Users\\player\\dev\\local_http.js",
+      "bound_scope": "192.168.1.14 (host LAN interface)",
+      "inferred_profile_relevance": "Private",
+      "likely_intent": "development_http",
+      "intent_confidence": "low",
+      "notes": "Local dev HTTP server bound to LAN address only; likely intended for LAN testing.",
+      "evidence_placeholder": "collector: Get-NetTCPConnection / Get-Process (not collected in dry-run)"
+    }
+  ],
+
+  "proposed_firewall_state": {
+    "enable_profiles": {
+      "profiles": ["Private"],
+      "rationale": "Enable Private profile only by default for mixed personal workstation hosting games. Public profile left disabled pending explicit owner approval to expose services to untrusted networks.",
+      "confidence": "medium"
+    },
+    "proposed_allow_rules": [
+      {
+        "id": "allow_game_udp_27015",
+        "description": "Allow inbound UDP 27015 for game_server.exe on Private profile only",
+        "protocol": "UDP",
+        "local_port": 27015,
+        "program": "C:\\Games\\MyServer\\game_server.exe",
+        "profiles": ["Private"],
+        "scope": "localSubnet",
+        "rule_type": "allow",
+        "justification": "Observed game server listening on UDP 27015 bound to all interfaces; intended for LAN players. Scoped to Private profile and localSubnet to minimize exposure.",
+        "inferred": true,
+        "confidence": "medium"
+      },
+      {
+        "id": "allow_local_http_8080",
+        "description": "Allow inbound TCP 8080 for node.exe bound to 192.168.1.14 on Private profile",
+        "protocol": "TCP",
+        "local_port": 8080,
+        "program": "C:\\Users\\player\\dev\\local_http.js (node.exe)",
+        "profiles": ["Private"],
+        "scope": "localSubnet",
+        "rule_type": "allow",
+        "justification": "Development HTTP server bound to LAN interface; allow on Private profile only.",
+        "inferred": true,
+        "confidence": "low"
+      }
+    ],
+
+    "explicit_exclusions": [
+      "Do not create any global Public-profile Allow rules without explicit owner approval.",
+      "Do not add rules that allow 'Any' program or wildcard ports (e.g., All TCP) — rules must be program+port scoped where possible.",
+      "Do not open ICMP or wide address ranges without approval."
+    ],
+
+    "guardian_denied_by_default": [
+      "Allow rules that would open services to the Public profile",
+      "Allow rules without explicit program path or narrow port specification",
+      "Any changes that remove existing deny rules"
+    ]
+  },
+
+  "impact_estimate": {
+    "positive": [
+      "Enables host-level filtering while preserving observed services for LAN players and local testing.",
+      "Reduces exposure to attackers on other networks while maintaining functionality on Private networks."
+    ],
+    "negative": [
+      "If services are actually expected to be reachable from the wider Internet (Public), scoping to Private may break connectivity for external users.",
+      "Development workflows may rely on different network addresses or proxying and may require minor config changes."
+    ],
+    "uncertainties": [
+      "We lack live collection in this dry-run; some listeners may be missed or transient.",
+      "Intent inference uses heuristics; manual owner confirmation is recommended for medium/low confidence items."
+    ]
+  },
+
+  "verification_plan": {
+    "post_apply_checks": [
+      {
+        "name": "profile_enabled_check",
+        "command": "Get-NetFirewallProfile | Select Name, Enabled",
+        "expected": "Private == 1 (Enabled)"
+      },
+      {
+        "name": "rule_presence_check",
+        "command": "Get-NetFirewallRule -DisplayName 'allow_game_udp_27015' | Get-NetFirewallPortFilter",
+        "expected": "rule exists, protocol UDP, local port 27015, profiles include Private"
+      },
+      {
+        "name": "service_connectivity_check",
+        "command": "Test-NetConnection -ComputerName <host_ip> -Port 27015 -InformationLevel Detailed",
+        "expected": "Connectivity from local-lan testers succeeds for allowed services"
+      }
+    ],
+    "success_criteria": "All allowed services remain reachable from Private-network testers and verification commands report the expected rule configuration. Any failures must be reported and documented."
+  },
+
+  "rollback_proposal_outline": {
+    "proposal_type": "rollback",
+    "trigger_conditions": [
+      "critical service outage reported by owner",
+      "verification failures for core services after apply"
+    ],
+    "rollback_actions": [
+      "Remove allow rules added by proposal (by rule id)",
+      "If necessary, re-disable profiles if original state required it (requires approval)"
+    ],
+    "note": "Rollback is separate proposal and must be approved by same approval process; emergency manual rollback by sysadmin is outside Guardian and must be logged."
+  },
+
+  "artifacts_to_generate_on_real_run": {
+    "collection_artifacts": [
+      "logs/calyx_guardian/evidence.jsonl (entries for Get-NetTCPConnection/Get-NetUDPEndpoint/Get-Process)",
+      "logs/calyx_guardian/listeners_<timestamp>.json (parsed listener table)"
+    ],
+    "proposal_artifacts": [
+      "proposals/<proposal_id>.json (updated with evidence_refs)",
+      "proposals/<proposal_id>.diff",
+      "approvals/<proposal_id>.signed.json",
+      "checklists/<proposal_id>.apply_result.json",
+      "logs/calyx_guardian/manifest.json (with parent correlation)"
+    ]
+  },
+
+  "notes": "This is a design-only, contextual dry-run. All listener rows above are simulated examples. To produce an actionable proposal, run the collection_commands on the target host and re-run Guardian normalization to attach concrete evidence_refs.",
+
+  "final_statement": "NO ACTIONS PERFORMED. HUMAN APPROVAL REQUIRED."
+}

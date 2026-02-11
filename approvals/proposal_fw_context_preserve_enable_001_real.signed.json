@@ -1,0 +1,28 @@
+{
+  "proposal_id": "proposal_fw_context_preserve_enable_001_real",
+  "policy_id": "network_steward_firewall_v1",
+  "correlation_id": "d2f87a5b9e1a",
+  "parent_correlation_id": "972bbb9fd057",
+  "approver": {
+    "name": "",
+    "role": "", 
+    "email": ""
+  },
+  "approved_utc": "",
+  "justification": "",
+  "acknowledgements": {
+    "will_modify_firewall_state": "I understand this will modify firewall state (enable Private profile and add rule allow_rcservice_30196)",
+    "reviewed_evidence_and_diff": "I have reviewed the evidence and diff",
+    "rollback_requires_separate_proposal": "I understand rollback requires a separate proposal and approval"
+  },
+  "approval_metadata": {
+    "approval_type": "explicit_human_approval",
+    "approval_mechanism": "manual-signature",
+    "approval_requester": "guardian.context_synthesizer",
+    "notes": "Fill approver.name, role, email, approved_utc, and justification to authorize apply. Signing placeholder to be replaced with out-of-band signature."
+  },
+  "signature": {
+    "method": "placeholder",
+    "value": ""
+  }
+}

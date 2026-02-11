@@ -1,0 +1,49 @@
+{
+  "thresholds": {
+    "sunset_threshold_percent": 8,
+    "sunrise_min_battery_percent": 25
+  },
+  "operating_modes": {
+    "green": "Normal operations allowed.",
+    "yellow": "Limited operations; avoid long tasks; recommend preparing sunset.",
+    "red": "Sunset-only behavior."
+  },
+  "shutdown_semantics": {
+    "graceful_sunset_expected": "Sunset record written before shutdown.",
+    "abrupt_shutdown_suspected": "No sunset record prior to shutdown, or mismatch between last known state and sunrise.",
+    "recovery_required": "Integrity checks must run; BloomOS cascade blocked until cleared."
+  },
+  "allowed_operations_by_state": {
+    "red_or_below_sunset_threshold": "Only telemetry + sunset artifact writing allowed.",
+    "below_sunrise_min": "Block BloomOS cascade (even if AC present)."
+  },
+  "integrity_requirements": {
+    "critical_artifacts": [
+      "allowed_signers",
+      "identity_json",
+      "last_approval_receipts"
+    ]
+  },
+  "provenance": {
+    "energy_budget_advisory": {
+      "path": "telemetry/energy/energy_budget_advisory.json",
+      "sha256": "A471E2DF769421194F7DF9B73FACD8EB5DAFDBBA562FF8085404FBB9F16A2AC2"
+    },
+    "drain_rate_report": {
+      "path": "telemetry/energy/drain_rate_report.json",
+      "sha256": "C199A621BD416730A934349A4553553915BFC3B61ADB1D20A7C166CB74877B9E"
+    },
+    "policy": {
+      "path": "governance/policies/energy_viability_policy.json",
+      "sha256": "B3FF1F93507B351CB5BA403C018FB3857A5D352A4B87A7E55C96BFBE3784DDA9"
+    },
+    "last_sunset": {
+      "path": "telemetry/sun_cycle/sunsets/sunset_2026-02-09T17-56-41_e2-sunset.json",
+      "sha256": "E6127D46CC22FF4FA925D7753FA74A327315EDEE796DBA387D3408144157639D"
+    },
+    "boot_guard_report": {
+      "path": "telemetry/sun_cycle/bloomos_boot_guard_report.json",
+      "sha256": "C2E31AB18E47EBCB029BDC26C4A982A936610F7A4FE963AB705CD6EC527CB404"
+    }
+  }
+}

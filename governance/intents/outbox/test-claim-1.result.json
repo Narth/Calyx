@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-02-04T01:02:38.866568+00:00",
+  "intent_id": "test-claim-1",
+  "action": "fs_read",
+  "executed": false,
+  "result": {
+    "outcome": "validation_failed",
+    "errors": [
+      "missing_field:timestamp",
+      "missing_field:actor",
+      "missing_field:justification"
+    ],
+    "outputs_summary": null
+  }
+}

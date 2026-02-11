@@ -1,0 +1,6 @@
+# Firecrawl config (opt-in)
+# Set `enabled: true` to allow firecrawl_mcp when gates are present.
+enabled: false
+api_url: https://api.firecrawl.dev/v1
+max_retries: 3
+max_pages: 100

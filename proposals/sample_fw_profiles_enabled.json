@@ -1,0 +1,90 @@
+{
+  "proposal_id": "proposal_fw_profiles_enable_001",
+  "created_utc": "2026-02-04T21:15:00.000000Z",
+  "policy_id": "network_steward_firewall_v1",
+  "parent_correlation_id": "972bbb9fd057",
+  "correlation_id": "d2f87a5b9e1a",
+  "proposer": {
+    "actor": "system",
+    "name": "guardian.phase1_synthesizer"
+  },
+  "purpose": "Dry-run proposal: enable Windows Firewall profiles on host(s) where all profiles observed disabled",
+  "current_state": {
+    "summary": "Windows Firewall profiles are reported disabled on target host(s).",
+    "evidence": [
+      {
+        "ts_utc": "2026-02-04T20:56:52.5818146Z",
+        "source": "powershell:Get-NetFirewallProfile",
+        "command": "Get-NetFirewallProfile | Select-Object Name, Enabled, DefaultInboundAction, DefaultOutboundAction",
+        "result_summary": "[{\"Name\":\"Domain\",\"Enabled\":0,\"DefaultInboundAction\":0,\"DefaultOutboundAction\":0},{\"Name\":\"Private\",\"Enabled\":0,\"DefaultInboundAction\":0,\"DefaultOutboundAction\":0},{\"Name\":\"Public\",\"Enabled\":0,\"DefaultInboundAction\":0,\"DefaultOutboundAction\":0}]",
+        "raw_hash": "284ffff18bb35c6b3099d47f8cfaf84d84f121df8ca1d4571ae306817bf0da53",
+        "evidence_location_hint": "logs/calyx_guardian/evidence.jsonl (line containing timestamp 2026-02-04T20:56:52.5818146Z)"
+      }
+    ]
+  },
+  "proposed_change": {
+    "human_readable": "Enable Windows Firewall profiles (Domain, Private, Public) on the target host(s). No changes to firewall rules are proposed; only the profile 'Enabled' flags will be set to 'True'.",
+    "structured_patch": [
+      {
+        "op": "replace",
+        "path": "/FirewallProfiles/Domain/Enabled",
+        "value": 1
+      },
+      {
+        "op": "replace",
+        "path": "/FirewallProfiles/Private/Enabled",
+        "value": 1
+      },
+      {
+        "op": "replace",
+        "path": "/FirewallProfiles/Public/Enabled",
+        "value": 1
+      }
+    ],
+    "commands_preview": [
+      "# What would run (example, not executed):",
+      "# PowerShell (single host):",
+      "Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True",
+      "# This command will set the Enabled flag for all three profiles to True."
+    ]
+  },
+  "diff": "--- current_state\n+++ proposed_state\n@@\n- Domain: Enabled = 0\n- Private: Enabled = 0\n- Public: Enabled = 0\n+ Domain: Enabled = 1\n+ Private: Enabled = 1\n+ Public: Enabled = 1\n",
+  "human_summary": "If applied, this change will turn on the Windows Firewall profile enforcement for Domain, Private, and Public profiles. No firewall rule modifications are included in this proposal. The host will begin enforcing inbound/outbound profile-level defaults immediately after enabling the profiles.\nEvidence: Get-NetFirewallProfile returned Enabled=0 for all profiles (raw_hash: 284ffff18bb35c6b...).",
+  "impact_estimate": {
+    "positive": [
+      "Restores host-level network filtering; reduces exposure to unsolicited inbound connections.",
+      "Aligns host with policy 'fw-profiles-enabled' requirement."
+    ],
+    "negative": [
+      "Hosts that relied on open inbound connections without explicit firewall rules may lose connectivity for those services.",
+      "Local development servers binding to 0.0.0.0 without appropriate allow rules may become unreachable from other hosts.",
+      "Administrative remote tools that depend on permissive firewall settings may require explicit allow rules after enabling."
+    ],
+    "estimated_affected_services_checklist": [
+      "HTTP servers (ports 80/443)",
+      "Custom application listeners",
+      "File shares (SMB)",
+      "Any service that expected firewall disabled by policy"
+    ]
+  },
+  "risk_level": "medium",
+  "risk_rationale": "Enabling profiles is a high-confidence security-positive change, but may interrupt network services that were intentionally exposed. Risk is mitigated by dry-run, impact estimate, and human approval requirement.",
+  "verification_plan": {
+    "post_apply_checks": [
+      {
+        "name": "profile_enabled_check",
+        "command": "Get-NetFirewallProfile | Select Name, Enabled",
+        "expected": "Enabled == 1 for Domain, Private, Public",
+        "evidence_refs": []
+      },
+      {
+        "name": "service_connectivity_spot_check",
+        "description": "Operator will verify any known inbound services (e.g., HTTP, SSH-like tunnels, custom ports) are reachable as expected; if not, file a rollback proposal or add allow rules.",
+        "commands": ["Test-NetConnection -ComputerName localhost -Port <port>"]
+      }
+    ],
+    "verification_success_criteria": "All three firewall profiles report Enabled==1 and any critical business services either remain reachable or have a documented owner-approved exception."
+  },
+  "notes": "This is a dry-run proposal: NO ACTIONS PERFORMED. The structured_patch is a what-would-change artifact and must be reviewed and approved before any apply.",
+  "created_by_tool_version": "calyx_guardian v1-design"
+}

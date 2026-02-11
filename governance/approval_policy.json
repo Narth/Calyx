@@ -1,0 +1,5 @@
+{
+  "default_requires_approval": true,
+  "auto_approve": ["fs_read", "fs_list", "repo_grep"],
+  "never_auto_approve": ["fs_write", "process_start", "discord_send", "http_post"]
+}

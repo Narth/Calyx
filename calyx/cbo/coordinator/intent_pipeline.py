@@ -8,6 +8,14 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from .schemas import Intent
+from station_calyx.core.intent_artifact import (
+    load_intent_artifact,
+    require_clarified,
+    ClarificationRequired,
+)
+from station_calyx.core.evidence import create_event, append_event
+from station_calyx.core.config import get_config
+from datetime import datetime, timezone
 
 
 class IntentPipeline:
@@ -45,6 +53,62 @@ class IntentPipeline:
     
     def add_intent(self, intent: Intent) -> bool:
         """Add intent with deduplication check"""
+        # Enforce: require an intent artifact to exist and be clarified.
+        try:
+            art = load_intent_artifact(intent.id)
+            if art is None:
+                # No artifact: reject per Calyx "no assumed intent" policy
+                reason = "No intent artifact present; ingestion required"
+                evt = create_event(
+                    event_type="INTENT_REJECTED_NO_ARTIFACT",
+                    node_role="intent_pipeline",
+                    summary=f"Intent {intent.id} rejected: no artifact",
+                    payload={"intent_id": intent.id, "reason": reason},
+                    tags=["intent", "rejection", "no_artifact"],
+                    session_id=intent.id,
+                )
+                append_event(evt)
+                return False
+
+            # Will raise ClarificationRequired if not clarified
+            require_clarified(art)
+        except ClarificationRequired as cr:
+            # Explicit refusal: do not add unclarified intents
+            # Emit an explicit rejection event with details
+            try:
+                evt = create_event(
+                    event_type="INTENT_REJECTED_UNCLARIFIED",
+                    node_role="intent_pipeline",
+                    summary=f"Intent {intent.id} rejected: unclarified",
+                    payload={
+                        "intent_id": intent.id,
+                        "threshold": float(art.confidence_score) if hasattr(art, 'confidence_score') else None,
+                        "confidence_score": float(getattr(art, 'confidence_score', 0.0)),
+                        "reason": str(cr),
+                    },
+                    tags=["intent", "rejection", "clarification_required"],
+                    session_id=intent.id,
+                )
+                append_event(evt)
+            except Exception:
+                pass
+            return False
+        except Exception:
+            # If artifact can't be loaded for unexpected reasons, reject for safety
+            reason = "Failed to load intent artifact"
+            try:
+                evt = create_event(
+                    event_type="INTENT_REJECTED_ARTIFACT_ERROR",
+                    node_role="intent_pipeline",
+                    summary=f"Intent {intent.id} rejected: artifact error",
+                    payload={"intent_id": intent.id, "reason": reason},
+                    tags=["intent", "rejection", "artifact_error"],
+                    session_id=intent.id,
+                )
+                append_event(evt)
+            except Exception:
+                pass
+            return False
         # Check for duplicates within last 4 pulses (16 minutes)
         cutoff_time = time.time() - (16 * 60)
         

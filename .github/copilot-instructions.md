@@ -159,6 +159,10 @@ New agents should:
 - Apply: Requires authority (`outgoing/gates/apply.ok`)
 - GPU: Opt-in (`outgoing/gates/gpu.ok`)
 
+## Elevated Operations
+
+Calyx Guardian is permitted to run elevated operations/processes under Calyx governance for this operation.
+
 ## Documentation Standards
 
 ### SVF Attribution

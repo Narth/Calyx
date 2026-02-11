@@ -1,0 +1,7 @@
+{
+    "drill2a_pre_marker": "<SHA256_HASH_OF_drill2a_pre_marker.json>",
+    "drill2a_sunrise_abrupt": "<SHA256_HASH_OF_drill2a_sunrise_abrupt.json>",
+    "drill2a_recovery_report": "<SHA256_HASH_OF_drill2a_recovery_report.json>",
+    "boot_guard_drill2a_report": "<SHA256_HASH_OF_boot_guard_drill2a_report.json>",
+    "drill2a_receipt": "<SHA256_HASH_OF_drill2a_receipt.json>"
+}

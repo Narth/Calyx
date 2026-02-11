@@ -5,7 +5,7 @@ Part of SVF v2.0 Phase 2 (implemented 2025-10-26)
 Enables agents to prioritize communications by urgency
 """
 from __future__ import annotations
-
+    
 import argparse
 import json
 import time
@@ -29,6 +29,25 @@ def _write_json(path: Path, data: Dict[str, Any]) -> None:
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        # Emit evidence event for MESSAGE_RECEIVED when messages are created via SVF
+        try:
+            from station_calyx.core.evidence import create_event, append_event
+            evt = create_event(
+                event_type="OUTBOUND_MESSAGE_WRITTEN",
+                node_role="svf_channels",
+                summary=f"Outbound message written by {data.get('sender')} to {path.name}",
+                payload={
+                    "message_id": data.get('message_id'),
+                    "sender": data.get('sender'),
+                    "channel": data.get('channel'),
+                    "direction": "outbound",
+                },
+                tags=["svf", "message", "outbound", data.get('channel')],
+                session_id=data.get('message_id'),
+            )
+            append_event(evt)
+        except Exception:
+            pass
     except Exception as e:
         print(f"Error writing {path}: {e}")
 
@@ -92,7 +111,7 @@ def send_message(sender: str, message: str, channel: str = "standard",
     
     # Choose directory based on channel
     if channel == "urgent":
-        msg_file = URGENT_DIR / f"{message_id}.msg.json"
+        msg_file = URGENT_DIR / f"{message_id}.msg.json"  # urgent messages
     elif channel == "casual":
         msg_file = CASUAL_DIR / f"{message_id}.msg.json"
     else:
@@ -127,7 +146,7 @@ def send_message(sender: str, message: str, channel: str = "standard",
     ctx = context or {}
     targets = []
     if "targets" in ctx and isinstance(ctx["targets"], list):
-        targets = [str(t) for t in ctx["targets"]]
+        targets = [str(t) for t in ctx["targets"]]  # target list
     elif "target" in ctx:
         targets = [str(ctx["target"])]
     else:
