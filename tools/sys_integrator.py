@@ -73,7 +73,8 @@ def _has_module(mod: str) -> bool:
 
 def _is_acknowledged(suggestion_id: str) -> bool:
     """Check if a suggestion has been acknowledged"""
-    ack_file = ROOT / "calyx" / "cbo" / "sysint_acknowledged.jsonl"
+    from calyx.cbo.runtime_paths import get_sysint_acknowledged_path
+    ack_file = get_sysint_acknowledged_path(ROOT)
     if not ack_file.exists():
         return False
     

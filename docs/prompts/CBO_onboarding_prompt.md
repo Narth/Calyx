@@ -105,7 +105,7 @@ Complete the following objectives to successfully integrate into Station Calyx:
 **Tasks:**
 1. Receive task from CBO objective queue
 2. Execute task per standard workflow:
-   - Read task details from `calyx/cbo/objectives.jsonl`
+   - Read task details from `runtime/cbo/objectives.jsonl` (or `{CALYX_RUNTIME_DIR}/cbo/objectives.jsonl`)
    - Plan approach (document in your heartbeat)
    - Execute with conservative defaults
    - Report completion to CBO

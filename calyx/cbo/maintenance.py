@@ -12,6 +12,14 @@ from pathlib import Path
 from sqlite3 import connect
 from typing import Dict, List, Optional, Tuple
 
+from .runtime_paths import (
+    get_cbo_runtime_dir,
+    get_memory_db_path,
+    get_objectives_history_path,
+    get_objectives_path,
+    get_task_queue_path,
+    get_task_status_path,
+)
 from .task_store import TaskStore
 
 LOGGER = logging.getLogger("cbo.maintenance")
@@ -54,14 +62,14 @@ class MaintenanceCycle:
         self.max_jsonl_rows = max_jsonl_rows
         self.max_metrics_rows = max_metrics_rows
 
-        cbo_dir = root / "calyx" / "cbo"
-        self.queue_path = cbo_dir / "task_queue.jsonl"
-        self.status_path = cbo_dir / "task_status.jsonl"
-        self.objectives_history_path = cbo_dir / "objectives_history.jsonl"
-        self.objectives_path = cbo_dir / "objectives.jsonl"
+        cbo_dir = get_cbo_runtime_dir(root)
+        self.queue_path = get_task_queue_path(root)
+        self.status_path = get_task_status_path(root)
+        self.objectives_history_path = get_objectives_history_path(root)
+        self.objectives_path = get_objectives_path(root)
         self.metrics_path = root / "metrics" / "bridge_pulse.csv"
         self.agent_metrics_path = root / "logs" / "agent_metrics.csv"
-        self.memory_db_path = cbo_dir / "memory.sqlite"
+        self.memory_db_path = get_memory_db_path(root)
         self.task_store = TaskStore(root)
 
     # ------------------------------------------------------------------ public API

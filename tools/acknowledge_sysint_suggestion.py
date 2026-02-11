@@ -9,8 +9,10 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
+from calyx.cbo.runtime_paths import get_sysint_acknowledged_path
+
 ROOT = Path(__file__).resolve().parents[1]
-ACKNOWLEDGED_FILE = ROOT / "calyx" / "cbo" / "sysint_acknowledged.jsonl"
+ACKNOWLEDGED_FILE = get_sysint_acknowledged_path(ROOT)
 
 def acknowledge_suggestion(suggestion_id: str, reason: str = "User acknowledged") -> None:
     """Add a suggestion to the acknowledged list"""

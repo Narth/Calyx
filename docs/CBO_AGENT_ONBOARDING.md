@@ -30,7 +30,7 @@ python -u .\tools\copilot_hello.py --name <agent_name> --status registering --me
 **CBO Actions:**
 1. **Validation Check** - Runs onboarding prerequisites via `Scripts/agent_onboarding.py --verify`
 2. **Registry Update** - Prepares registry entry with skills, role, autonomy level
-3. **Initial Task Assignment** - Queues onboarding objective in `calyx/cbo/objectives.jsonl`
+3. **Initial Task Assignment** - Queues onboarding objective in `runtime/cbo/objectives.jsonl`
 4. **Monitoring Setup** - Creates agent-specific monitoring in CBO heartbeat
 
 ---
@@ -97,7 +97,7 @@ onboarding_checks = {
 ```
 
 **CBO Dispatch:**
-- Queues onboarding objectives to `calyx/cbo/objectives.jsonl`
+- Queues onboarding objectives to `runtime/cbo/objectives.jsonl`
 - Plan engine assigns tasks to appropriate agents
 - Feedback loop monitors completion
 

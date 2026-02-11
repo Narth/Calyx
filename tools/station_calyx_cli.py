@@ -13,6 +13,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+from calyx.cbo.runtime_paths import get_task_queue_path
+
 ROOT = Path(__file__).resolve().parents[1]
 
 def print_banner():
@@ -154,7 +156,7 @@ def show_agents():
 
 def show_tasks():
     """Show current task queue"""
-    task_queue = ROOT / "calyx" / "cbo" / "task_queue.jsonl"
+    task_queue = get_task_queue_path(ROOT)
     
     if not task_queue.exists():
         print("\nNo tasks in queue.\n")

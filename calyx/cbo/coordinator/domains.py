@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from ..runtime_paths import get_memory_db_path
 from .schemas import Intent
 
 
@@ -310,7 +311,7 @@ class MemoryEmbeddingsDomain(AutonomousDomain):
     
     def __init__(self, root: Path):
         super().__init__(root)
-        self.memory_db = root / "calyx" / "cbo" / "memory.sqlite"
+        self.memory_db = get_memory_db_path(root)
         self.outgoing_dir = root / "outgoing"
     
     def can_execute(self, state: Dict[str, Any]) -> bool:
