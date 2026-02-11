@@ -45,6 +45,15 @@ except ImportError:
         def add_row(self, *args): pass
 
 import requests
+import uuid
+import os as _os
+
+from station_calyx.core.intent_artifact import (
+    IntentArtifact,
+    accept_intent_artifact,
+    require_clarified,
+    ClarificationRequired,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outgoing"
@@ -463,58 +472,57 @@ Commands:
                 hb = client.heartbeat()
                 console.print(json.dumps(hb, indent=2))
                 continue
-            
-                        if cmd == 'policy':
-                            policy = client.get_policy()
-                            console.print(json.dumps(policy, indent=2))
-                            continue
+            if cmd == 'policy':
+                policy = client.get_policy()
+                console.print(json.dumps(policy, indent=2))
+                continue
 
-                        if cmd == 'push-evidence':
-                            console.print("[dim]Use: python tools/push_evidence.py --to <url> --token <token>[/dim]")
-                            console.print("[dim]Or: python tools/calyx_cli.py --push-evidence --to <url> --token <token>[/dim]")
-                            continue
+            if cmd == 'push-evidence':
+                console.print("[dim]Use: python tools/push_evidence.py --to <url> --token <token>[/dim]")
+                console.print("[dim]Or: python tools/calyx_cli.py --push-evidence --to <url> --token <token>[/dim]")
+                continue
 
-                        console.print(f"[yellow]Unknown command: {cmd}[/yellow]")
+            console.print(f"[yellow]Unknown command: {cmd}[/yellow]")
 
-                    except KeyboardInterrupt:
-                        break
+        except KeyboardInterrupt:
+            break
 
-                console.print("\n[dim]Goodbye[/dim]")
-
-
-            def run_push_evidence(args) -> int:
-                """Run push-evidence command."""
-                import os as _os
-
-                target_url = args.to or _os.environ.get("CALYX_HOME_INGEST_URL")
-                token = args.token or _os.environ.get("CALYX_INGEST_TOKEN")
-
-                if not target_url:
-                    console.print("[red]Target URL required. Use --to or set CALYX_HOME_INGEST_URL[/red]")
-                    return 1
-
-                if not args.dry_run and not token:
-                    console.print("[red]Auth token required. Use --token or set CALYX_INGEST_TOKEN[/red]")
-                    return 1
-
-                # Import and run push_evidence
-                try:
-                    from tools.push_evidence import run_push
-                    success, accepted, rejected = run_push(
-                        target_url=target_url,
-                        token=token or "",
-                        dry_run=args.dry_run,
-                    )
-                    return 0 if success else 1
-                except ImportError as e:
-                    console.print(f"[red]Failed to import push_evidence: {e}[/red]")
-                    return 1
-                except Exception as e:
-                    console.print(f"[red]Push failed: {e}[/red]")
-                    return 1
+    console.print("\n[dim]Goodbye[/dim]")
 
 
-            def main():
+def run_push_evidence(args) -> int:
+    """Run push-evidence command."""
+    import os as _os
+
+    target_url = args.to or _os.environ.get("CALYX_HOME_INGEST_URL")
+    token = args.token or _os.environ.get("CALYX_INGEST_TOKEN")
+
+    if not target_url:
+        console.print("[red]Target URL required. Use --to or set CALYX_HOME_INGEST_URL[/red]")
+        return 1
+
+    if not args.dry_run and not token:
+        console.print("[red]Auth token required. Use --token or set CALYX_INGEST_TOKEN[/red]")
+        return 1
+
+    # Import and run push_evidence
+    try:
+        from tools.push_evidence import run_push
+        success, accepted, rejected = run_push(
+            target_url=target_url,
+            token=token or "",
+            dry_run=args.dry_run,
+        )
+        return 0 if success else 1
+    except ImportError as e:
+        console.print(f"[red]Failed to import push_evidence: {e}[/red]")
+        return 1
+    except Exception as e:
+        console.print(f"[red]Push failed: {e}[/red]")
+        return 1
+
+
+def main():
     parser = argparse.ArgumentParser(description="Station Calyx CLI")
     parser.add_argument("--status", action="store_true", help="Show system status")
     parser.add_argument("--report", action="store_true", help="Show detailed report")
@@ -526,8 +534,74 @@ Commands:
     parser.add_argument("--to", help="Target URL for push-evidence (e.g., http://192.168.1.100:8420)")
     parser.add_argument("--token", help="Auth token for push-evidence")
     parser.add_argument("--dry-run", action="store_true", help="Dry run for push-evidence")
+    # Intent ingestion (Phase 1)
+    parser.add_argument("--intent-file", help="Path to intent artifact JSON file to ingest")
+    parser.add_argument("--intent-raw", help="Raw user input text for intent creation")
+    parser.add_argument("--intent-goal", help="Interpreted goal (short) for the intent")
+    parser.add_argument("--intent-confidence", type=float, help="Confidence score (0.0-1.0)")
+    parser.add_argument("--intent-clarify", action="store_true", help="Mark intent as requiring clarification")
+    parser.add_argument("intent-audit-maintain", nargs='?', help="Run audit maintenance: rotate/cleanup audit sink", default=None)
+    subparsers = parser.add_subparsers(dest='subcmd')
+    um = subparsers.add_parser('usermodel', help='UserModel inspection and management')
+    um.add_argument('op', choices=['show','export','reset'], help='Operation')
+    um.add_argument('user_id', help='User ID')
 
     args = parser.parse_args()
+
+    # Handle intent ingestion if requested (Phase 1 ingress)
+    if args.intent_file or args.intent_raw:
+        # Build artifact either from file or from provided fields
+        if args.intent_file:
+            try:
+                raw = Path(args.intent_file).read_text(encoding="utf-8")
+                data = json.loads(raw)
+                artifact = IntentArtifact.from_dict(data)
+            except Exception as e:
+                console.print(f"[red]Failed to load intent file: {e}[/red]")
+                return 1
+        else:
+            if not args.intent_raw:
+                console.print("[red]Provide --intent-raw or --intent-file[/red]")
+                return 1
+            intent_id = f"intent-{uuid.uuid4().hex[:8]}"
+            confidence = float(args.intent_confidence) if args.intent_confidence is not None else 1.0
+            artifact = IntentArtifact(
+                intent_id=intent_id,
+                raw_user_input=args.intent_raw,
+                interpreted_goal=(args.intent_goal or ""),
+                confidence_score=confidence,
+                clarification_required=bool(args.intent_clarify),
+            )
+
+        # Persist artifact (accept as-provided)
+        try:
+            accept_intent_artifact(artifact)
+            console.print(f"[green]Intent artifact persisted: {artifact.intent_id}[/green]")
+        except Exception as e:
+            console.print(f"[red]Failed to persist intent artifact: {e}[/red]")
+            return 1
+
+        # Enforce clarification gate before any planning/governance
+        try:
+            require_clarified(artifact)
+            console.print("[green]Intent passes clarification threshold. Governance may proceed once plans are available.[/green]")
+            return 0
+        except ClarificationRequired as ce:
+            console.print(f"[yellow]Intent requires clarification: {ce}[/yellow]")
+            console.print("[dim]No governance or execution will proceed until clarified.[/dim]")
+            return 2
+
+    # Audit maintenance command
+    if args.intent_audit_maintain is not None:
+        try:
+            from station_calyx.core.intent_artifact import maintain_audit_sink
+            maintain_audit_sink()
+            console.print("[green]Audit maintenance completed.[/green]")
+            return 0
+        except Exception as e:
+            console.print(f"[red]Audit maintenance failed: {e}[/red]")
+            return 1
+
 
     # Handle push-evidence command separately (does not need CBO API)
     if args.push_evidence:

@@ -1,0 +1,36 @@
+{
+  "actions": [
+    {
+      "name": "fs_read",
+      "description": "Read a file from the repository (read-only).",
+      "required_capabilities": ["can_read_fs"],
+      "risk_level": "low",
+      "input_schema": {"type":"object","required":["path"],"properties":{"path":{"type":"string"}}},
+      "output_schema": {"type":"object","properties":{"snippet":{"type":"string"},"lines":{"type":"integer"}}}
+    },
+    {
+      "name": "fs_list",
+      "description": "List directory entries (non-recursive, read-only).",
+      "required_capabilities": ["can_fs_list"],
+      "risk_level": "low",
+      "input_schema": {"type":"object","required":["path"],"properties":{"path":{"type":"string"},"max_items":{"type":"integer"}}},
+      "output_schema": {"type":"object","properties":{"items":{"type":"array"},"count":{"type":"integer"}}}
+    },
+    {
+      "name": "repo_grep",
+      "description": "Search repository files for a pattern (read-only).",
+      "required_capabilities": ["can_read_fs"],
+      "risk_level": "low",
+      "input_schema": {"type":"object","required":["pattern"],"properties":{"pattern":{"type":"string"},"file_ext":{"type":"array"}}},
+      "output_schema": {"type":"object","properties":{"matches":{"type":"array"},"count":{"type":"integer"}}}
+    },
+    {
+      "name": "discord_send",
+      "description": "Send a message to Discord (stubbed until configured).",
+      "required_capabilities": ["can_access_discord"],
+      "risk_level": "low",
+      "input_schema": {"type":"object","required":["recipient","message"],"properties":{"recipient":{"type":"string"},"message":{"type":"string"}}},
+      "output_schema": {"type":"object","properties":{"status":{"type":"string"},"message_id":{"type":"string"}}}
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "sunset_threshold_percent": 8,
+  "sunrise_min_battery_percent": 25,
+  "ac_required": false,
+  "allow_on_battery_for_light_operations": false
+}

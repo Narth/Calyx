@@ -1,0 +1,15 @@
+{
+  "action": "git_web_management_workspace_preflight",
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "correlation_id": "4092b5d1bce3",
+  "parent_correlation_id": "fae8d7160ee5",
+  "ts_utc": "2026-02-07T02:58:00Z",
+  "artifacts": {
+    "report": {
+      "path": "governance/reports/helpingthehelp_git_workspace_preflight_report.json",
+      "sha256": "42A84615673B98C5B74E74F2F51C04F1EB5B2AAAF16AE85D1F04D33BBDE95C00"
+    }
+  },
+  "receipt_sha256": "14CF0A6E7A838A3E71B26DF9534E1E6C60BF765FFB847CF647F9F6469ECE33D3",
+  "notes": "Receipt for workspace provisioning + read-only preflight. Halt after artifacts."
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sun Cycle Record",
+  "type": "object",
+  "properties": {
+    "ts_utc": { "type": "string", "format": "date-time" },
+    "correlation_id": { "type": "string" },
+    "parent_correlation_id": { "type": ["string", "null"] },
+    "reason": {
+      "type": "string",
+      "enum": ["low_battery", "ac_unavailable", "operator_shutdown", "thermal_risk", "unknown"]
+    },
+    "energy": {
+      "type": "object",
+      "properties": {
+        "power_line_status": { "type": "string" },
+        "battery_charge_status": { "type": "string" },
+        "battery_life_percent": { "type": "number" },
+        "battery_life_remaining": { "type": ["number", "null"] }
+      },
+      "required": ["power_line_status", "battery_charge_status", "battery_life_percent"]
+    },
+    "station_state_snapshot": {
+      "type": "object",
+      "properties": {
+        "repo_roots_present": { "type": "array", "items": { "type": "string" } },
+        "node_id": { "type": "string" },
+        "active_workspaces": { "type": "array", "items": { "type": "string" } },
+        "last_known_correlation_id": { "type": ["string", "null"] },
+        "last_known_agent_statuses": { "type": "object" }
+      },
+      "required": ["repo_roots_present", "node_id", "active_workspaces"]
+    },
+    "integrity": {
+      "type": "object",
+      "properties": {
+        "allowed_signers_hash": { "type": "string" },
+        "identity_json_hash": { "type": "string" },
+        "most_recent_receipts_hash": { "type": "string" }
+      },
+      "required": ["allowed_signers_hash", "identity_json_hash", "most_recent_receipts_hash"]
+    },
+    "next_intended_boot_phase": { "type": "string" }
+  },
+  "required": ["ts_utc", "correlation_id", "reason", "energy", "station_state_snapshot", "integrity", "next_intended_boot_phase"]
+}

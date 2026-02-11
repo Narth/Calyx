@@ -1,0 +1,10 @@
+{
+  "identity_id": "architect",
+  "identity_type": "human_root_authority",
+  "key_type": "ssh-ed25519",
+  "public_key_fingerprint": "<fill-in-from-ssh-keygen -lf>",
+  "private_key_location": "removable_media_only",
+  "passphrase_handling": "human_memorized",
+  "automation_access": "denied",
+  "notes": "Architect authority requires physical presence and manual signing. No system component may derive or reconstruct secrets."
+}

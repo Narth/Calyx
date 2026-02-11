@@ -26,46 +26,41 @@ def get_chat_history(limit: int = 50) -> List[Dict[str, Any]]:
     messages = []
     
     try:
-        # Use new SVF Comms core
-        import sys
-        from pathlib import Path
-        
-        root_dir = Path(__file__).resolve().parents[3]
-        sys.path.insert(0, str(root_dir))
-        
-        from tools.svf_comms_core import get_messages
-        
-        # Get messages from new system
-        comms_messages = get_messages(limit=limit)
+        # Use SVF channels core (file-backed message store)
+        from tools.svf_channels import get_recent_messages
+
+        comms_messages = get_recent_messages(channel='standard', limit=limit)
         
         for msg in comms_messages:
-            msg_id = msg.get("msg_id", "")
+                msg_id = msg.get("message_id") or msg.get("msg_id", "")
             
             # Get receipt status for enrichment
-            receipt_data = None
-            if msg_id:
-                try:
-                    receipt_data = get_receipt_status(msg_id)
-                except:
-                    pass
+        receipt_data = None
+        if msg_id:
+            try:
+                receipt_data = get_receipt_status(msg_id)
+            except Exception as e:
+                print(f"Error getting receipt status: {e}")
+                receipt_data = None
             
-            messages.append({
-                "message_id": msg_id,
-                "timestamp": msg.get("ts", ""),
-                "sender": msg.get("from", {}).get("id", "unknown"),
-                "recipient": msg.get("to", "all"),
-                "channel": msg.get("route", "broadcast"),
-                "content": msg.get("text", ""),
-                "status": "delivered",
-                "metadata": {
-                    "thread_id": msg.get("thread_id"),
-                    "priority": msg.get("meta", {}).get("priority", "normal"),
-                    "receipt_status": receipt_data.get("status", "queued") if receipt_data else "queued",
-                    "receipt_delivered": receipt_data.get("delivered", 0) if receipt_data else 0,
-                    "receipt_read": receipt_data.get("read", 0) if receipt_data else 0,
-                    "receipt_total": receipt_data.get("total_recipients", 0) if receipt_data else 0
-                }
-            })
+                # Map svf_channels message fields to dashboard schema
+                messages.append({
+                    "message_id": msg_id,
+                    "timestamp": msg.get("timestamp") or msg.get("ts", ""),
+                    "sender": msg.get("sender", "unknown"),
+                    "recipient": msg.get("context", {}).get("recipient", "all"),
+                    "channel": msg.get("channel", "standard"),
+                    "content": msg.get("message") or msg.get("text", ""),
+                    "status": "delivered",
+                    "metadata": {
+                        "thread_id": msg.get("context", {}).get("thread_id"),
+                        "priority": msg.get("priority", "normal"),
+                        "receipt_status": receipt_data.get("status", "queued") if receipt_data else "queued",
+                        "receipt_delivered": receipt_data.get("delivered", 0) if receipt_data else 0,
+                        "receipt_read": receipt_data.get("read", 0) if receipt_data else 0,
+                        "receipt_total": receipt_data.get("total_recipients", 0) if receipt_data else 0
+                    }
+                })
     except Exception as e:
         print(f"Error getting chat history: {e}")
     

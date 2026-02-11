@@ -442,4 +442,3 @@ runtimes:
       min_disk_free: 0.10      # 10% free disk minimum
       max_cpu_load_1m: 0.95    # allow up to 95% avg load
       require_safe_mode: true  # only run when Station is in Safe Mode
-# all other policy/spec docs are informational unless explicitly promoted

@@ -1,0 +1,11 @@
+{
+  "agent": "CBO",
+  "can_read_fs": true,
+  "can_write_fs": true,
+  "can_fs_list": true,
+  "can_execute_commands": false,
+  "can_call_http": false,
+  "can_access_discord": false,
+  "can_control_processes": false,
+  "notes": "Local governance capabilities for Station Calyx."
+}

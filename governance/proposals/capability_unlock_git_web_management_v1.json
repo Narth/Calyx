@@ -1,0 +1,71 @@
+{
+  "proposal_id": "capability_unlock_git_web_management_v1",
+  "title": "Enable bounded Git-based management for Helping-the-Help website",
+  "intent": "Allow outbound-only Git operations required to update the Cloudflare Pages site via the main branch, with strict allowlists and evidence logging.",
+  "scope": {
+    "state_change": true,
+    "external_connectivity": "outbound_only",
+    "capability_category": "git_web_management"
+  },
+  "targets": {
+    "repo": {
+      "provider": "github",
+      "url": "https://github.com/Narth/Helping-the-Help",
+      "branch": "main"
+    }
+  },
+  "allow_policy": {
+    "allowed_commands": [
+      "git status",
+      "git diff",
+      "git log -1",
+      "git remote -v",
+      "git rev-parse --abbrev-ref HEAD",
+      "git rev-parse HEAD",
+      "git show --stat --oneline -1",
+      "git push origin main"
+    ],
+    "denied_patterns": [
+      "git remote set-url",
+      "git push --mirror",
+      "git push --force",
+      "git push -f",
+      "git config --global",
+      "git credential",
+      "gh auth",
+      "curl",
+      "powershell Invoke-WebRequest",
+      "iwr"
+    ],
+    "preconditions": {
+      "repo_path_must_be": "C:\\Calyx",
+      "branch_must_equal": "main",
+      "origin_must_match_exact_url": "https://github.com/Narth/Helping-the-Help"
+    }
+  },
+  "evidence_requirements": {
+    "must_record": [
+      "exact command strings",
+      "stdout/stderr summaries",
+      "current branch",
+      "origin remote value",
+      "commit hash (HEAD) before and after",
+      "diffstat for the pushed commit(s)",
+      "push result (success/fail)",
+      "correlation_id and parent_correlation_id"
+    ],
+    "must_not_record": [
+      "tokens",
+      "credentials",
+      "private keys",
+      "full environment dumps"
+    ]
+  },
+  "rollback": {
+    "strategy": "Disable capability by removing or denying git_web_management allow_policy; no inbound ports will be opened. Revert commits via git if needed."
+  },
+  "notes": [
+    "This unlock does not authorize any Cloudflare API or Tunnel usage.",
+    "No inbound firewall changes are permitted in this stage."
+  ]
+}

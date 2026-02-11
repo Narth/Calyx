@@ -1,4 +1,4 @@
-[[# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -101,3 +101,12 @@ test_secret.py
 
 # Visual Studio
 .vs/
+
+# Codex/OpenAI local caches
+.codex_cache/
+
+# Claude local cache
+.claude_cache/
+
+# Firecrawl local cache
+.firecrawl_cache/

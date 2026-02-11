@@ -1,0 +1,151 @@
+{
+  "proposal_id": "proposal_fw_context_preserve_enable_001_real",
+  "created_utc": "2026-02-04T22:38:36.4413240Z",
+  "policy_id": "network_steward_firewall_v1",
+  "correlation_id": "d2f87a5b9e1a",
+  "parent_correlation_id": "972bbb9fd057",
+  "proposer": { "actor": "system", "name": "guardian.context_synthesizer" },
+  "purpose": "Dry-run contextual proposal to enable Private firewall profile and preserve observed, intentional services on target host (real evidence attached).",
+
+  "observed_network_surface": {
+    "collected": true,
+    "evidence_refs": [
+      {
+        "raw_hash": "3d9a86033af3fefe002bfeb3d6ca11842decbcb6432cb5d0dd0c87dc08af2637",
+        "evidence_line_hint": "logs/calyx_guardian/evidence.jsonl (timestamp: 2026-02-04T22:38:36.4413240Z)",
+        "parsed_listeners": "logs/calyx_guardian/listeners_20260204153836.json"
+      }
+    ],
+    "listeners_table": [
+      {
+        "local_address": "0.0.0.0",
+        "protocol": "TCP",
+        "port": 30196,
+        "owning_process_id": 5088,
+        "owning_process_name": "RCService",
+        "owning_process_path": "C:\\Program Files (x86)\\AnyViewer\\RCService.exe",
+        "bound_scope": "0.0.0.0 (all interfaces)",
+        "profile_relevance_hint": "Private",
+        "listener_confidence": "high",
+        "notes": "Third-party remote-control service (AnyViewer) appears to be listening on TCP/30196 on all interfaces.",
+        "evidence_raw_hash": "3d9a86033af3fefe002bfeb3d6ca11842decbcb6432cb5d0dd0c87dc08af2637"
+      },
+      {
+        "local_address": "0.0.0.0",
+        "protocol": "UDP",
+        "port": 5050,
+        "owning_process_id": 7660,
+        "owning_process_name": "svchost",
+        "owning_process_path": "C:\\WINDOWS\\system32\\svchost.exe",
+        "bound_scope": "0.0.0.0",
+        "profile_relevance_hint": "unknown",
+        "listener_confidence": "low",
+        "notes": "UDP/5050 observed bound to all interfaces under system process; intent unclear — label unknown.",
+        "evidence_raw_hash": "3d9a86033af3fefe002bfeb3d6ca11842decbcb6432cb5d0dd0c87dc08af2637"
+      },
+      {
+        "local_address": "127.0.0.1",
+        "protocol": "TCP",
+        "port": 18789,
+        "owning_process_id": 20448,
+        "owning_process_name": "node",
+        "owning_process_path": "C:\\Program Files\\nodejs\\node.exe",
+        "bound_scope": "loopback only",
+        "profile_relevance_hint": "Private",
+        "listener_confidence": "medium",
+        "notes": "Node-based service bound to loopback — likely local development. Not recommended for Public exposure.",
+        "evidence_raw_hash": "3d9a86033af3fefe002bfeb3d6ca11842decbcb6432cb5d0dd0c87dc08af2637"
+      }
+    ]
+  },
+
+  "inferred_intents": [
+    {
+      "listener_ref": "TCP/30196 (RCService)",
+      "likely_intent": "remote_control_service",
+      "confidence": "medium",
+      "rationale": "Process name and path match a third-party remote access service (AnyViewer). Bound to all interfaces; likely intended for remote access."
+    },
+    {
+      "listener_ref": "UDP/5050 (svchost)",
+      "likely_intent": "unknown_system_service",
+      "confidence": "low",
+      "rationale": "Owned by system process (svchost). Could be OS or driver related; do not assume safe."
+    },
+    {
+      "listener_ref": "TCP/18789 (node loopback)",
+      "likely_intent": "development_http",
+      "confidence": "low",
+      "rationale": "Node process bound to loopback; likely local dev server."
+    }
+  ],
+
+  "proposed_firewall_state": {
+    "enable_profiles": {
+      "profiles": ["Private"],
+      "rationale": "Enable Private profile to protect the host on non-trusted networks while preserving LAN-local services. Public profile left disabled pending explicit owner approval.",
+      "confidence": "medium"
+    },
+
+    "proposed_allow_rules": [
+      {
+        "id": "allow_rcservice_30196",
+        "description": "Allow inbound TCP 30196 for RCService (AnyViewer) on Private profile, scope localSubnet",
+        "protocol": "TCP",
+        "local_port": 30196,
+        "program": "C:\\Program Files (x86)\\AnyViewer\\RCService.exe",
+        "profiles": ["Private"],
+        "scope": "localSubnet",
+        "rule_type": "allow",
+        "justification": "Observed RCService listening on TCP/30196 bound to all interfaces; allow on Private to preserve intended remote control for LAN/peered networks.",
+        "inferred": true,
+        "confidence": "medium",
+        "evidence_ref": "3d9a86033af3fefe002bfeb3d6ca11842decbcb6432cb5d0dd0c87dc08af2637"
+      }
+    ],
+
+    "explicit_exclusions": [
+      "No Public-profile allow rules will be created by default.",
+      "No allow rules will be created for listeners classified as 'unknown' without owner confirmation.",
+      "No wildcard program or port rules; rules must specify program and single port where possible."
+    ]
+  },
+
+  "impact_estimate": {
+    "positive": [
+      "Enables host-level filtering on Private networks while preserving observed remote-control service.",
+      "Reduces unintended exposure from other network interfaces."
+    ],
+    "negative": [
+      "If RCService was intended to serve remote users over the Public network, scoping to Private will break that use-case.",
+      "Unknown system UDP listeners left unhandled may still present vectors; further owner confirmation required."
+    ],
+    "uncertainties": [
+      "Some listeners are owned by system processes (svchost) and may correspond to OS services or drivers — intent unknown.",
+      "Transient listeners could be missed; repeated collection recommended."
+    ]
+  },
+
+  "verification_plan": {
+    "post_apply_checks": [
+      { "name": "profile_enabled_check", "command": "Get-NetFirewallProfile | Select Name, Enabled", "expected": "Private == 1" },
+      { "name": "rule_presence_check", "command": "Get-NetFirewallRule -DisplayName 'allow_rcservice_30196' | Get-NetFirewallPortFilter", "expected": "rule exists, TCP/30196, profiles include Private" },
+      { "name": "service_connectivity_check_lan", "command": "Test-NetConnection -ComputerName <lan_ip> -Port 30196", "expected": "connectivity from LAN testers succeeds" }
+    ],
+    "success_criteria": "Private profile enabled and allow rule exists; RCService connectivity verified from a LAN tester. Any failures require rollback proposal."
+  },
+
+  "rollback_proposal_outline": {
+    "actions": ["Remove rule allow_rcservice_30196 by id", "If approved, revert Private profile to disabled (requires separate approval)"],
+    "trigger": "Critical service outage reported or verification failures"
+  },
+
+  "artifacts_attached": [
+    "logs/calyx_guardian/evidence.jsonl (raw_hash: 3d9a86033af3fefe002bfeb3d6ca11842decbcb6432cb5d0dd0c87dc08af2637)",
+    "logs/calyx_guardian/listeners_20260204153836.json"
+  ],
+
+  "notes": "This is a dry-run conversion of the contextual proposal using collected listener evidence. Any uncertain listeners are labeled 'unknown' and not automatically allowed. No Public scoping without explicit owner confirmation.",
+
+  "final_statement": "NO ACTIONS PERFORMED. HUMAN APPROVAL REQUIRED."
+}
