@@ -44,6 +44,16 @@ def get_chat_history(limit: int = 50) -> List[Dict[str, Any]]:
 
             # Map svf_channels message fields to dashboard schema
             messages.append({
+        receipt_data = None
+        if msg_id:
+            try:
+                receipt_data = get_receipt_status(msg_id)
+            except Exception as e:
+                print(f"Error getting receipt status: {e}")
+                receipt_data = None
+            
+                # Map svf_channels message fields to dashboard schema
+                messages.append({
                     "message_id": msg_id,
                     "timestamp": msg.get("timestamp") or msg.get("ts", ""),
                     "sender": msg.get("sender", "unknown"),
