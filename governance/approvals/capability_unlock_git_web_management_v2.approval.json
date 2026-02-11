@@ -1,0 +1,29 @@
+{
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "action": "approve_capability_unlock",
+  "scope": "git_web_management_outbound_only",
+  "correlation_id": "4092b5d1bce3",
+  "parent_correlation_id": "fae8d7160ee5",
+  "created_utc": "2026-02-07T02:45:00Z",
+  "sha256": {
+    "proposal": {
+      "path": "governance/proposals/capability_unlock_git_web_management_v2.json",
+      "sha256": "AD0934B137B9CBAEE7313014494B8565176D6EAFF93056E83A3233A1F3277EDE"
+    },
+    "allowed_signers": {
+      "path": "governance/identities/allowed_signers",
+      "sha256": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58"
+    },
+    "architect_identity": {
+      "path": "governance/identities/architect_identity.json",
+      "sha256": "2B309F2E3E9651F82E3A6ECDE6AEDE8A3BEDCD3579D3805FEA9091939E089D20"
+    }
+  },
+  "statement": "No state changes executed in this step.",
+  "signature": {
+    "required": true,
+    "namespace": "calyx",
+    "status": "unsigned",
+    "note": "Await Architect-signed .sig. Absence of a valid signature is explicit denial."
+  }
+}

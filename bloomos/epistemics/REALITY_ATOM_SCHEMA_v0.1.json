@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Reality Atom Schema v0.1",
+  "description": "Single epistemic claim with classification, evidence refs, and optional confidence/validity. Observation-only; no behavior.",
+  "type": "object",
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "description": "Unique identifier for this claim (e.g. UUID or correlation-based id)."
+    },
+    "claim": {
+      "type": "string",
+      "description": "The system statement (observed truth, derived state, or declaration of unknown/blind spot)."
+    },
+    "ts_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp for when the claim was recorded or the observation was made."
+    },
+    "ts_window": {
+      "type": "string",
+      "description": "Optional time window (e.g. ISO interval or label) when the claim or underlying observation is valid."
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["observed_truth", "derived_state", "unknown", "blind_spot"],
+      "description": "Epistemic classification per EPISTEMIC_GLOSSARY_v1.0."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths or URIs to artifacts that support this claim (e.g. telemetry JSON, report paths)."
+    },
+    "evidence_commands": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional: commands or queries that produced the underlying data (e.g. PowerShell, CIM)."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional: confidence score for this claim (0–1)."
+    },
+    "validity_scope": {
+      "type": "string",
+      "description": "Optional: scope or conditions under which the claim is valid (e.g. state_observations only, rate_calculations provisional)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional: free-form notes (e.g. deferral reason, blind spot cause)."
+    }
+  },
+  "required": ["claim_id", "claim", "ts_utc", "classification", "evidence_refs"],
+  "additionalProperties": false
+}

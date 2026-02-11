@@ -1,8 +1,14 @@
 import time
 import sys
+import os
+import pytest
 import numpy as np
-import sounddevice as sd
 import yaml
+
+if "pytest" in sys.modules:
+    pytest.skip("Interactive audio test; run manually from the command line.", allow_module_level=True)
+
+import sounddevice as sd
 
 def log(*a, **k):
     print(*a, **k)

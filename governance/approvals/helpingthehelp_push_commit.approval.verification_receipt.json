@@ -1,0 +1,34 @@
+{
+  "action": "authorize_git_push",
+  "scope": "git_push_origin_main_commit_bound",
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "correlation_id": "d83b8aa4f782",
+  "parent_correlation_id": "4092b5d1bce3",
+  "ts_utc": "2026-02-09T04:05:00Z",
+  "signature": {
+    "status": "verified",
+    "tool": "ssh-keygen -Y verify",
+    "signer": "architect",
+    "namespace": "calyx",
+    "public_key_fingerprint": "SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw"
+  },
+  "artifacts": {
+    "approval_json": {
+      "path": "governance/approvals/helpingthehelp_push_commit.approval.json",
+      "sha256": "57C4FB3A72103E1D1E4CDC37A64C0010E00C7CAC27B4178320E8B544571E4AA2"
+    },
+    "approval_sig": {
+      "path": "governance/approvals/helpingthehelp_push_commit.approval.json.sig",
+      "sha256": "9A1E35FBAEF3BF9CE1514B2F6FF90DED38EE84AD2165A33787371E041207B2B4"
+    },
+    "allowed_signers": {
+      "path": "governance/identities/allowed_signers",
+      "sha256": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58"
+    }
+  },
+  "verification_evidence": {
+    "command_used": "type governance\\approvals\\helpingthehelp_push_commit.approval.json | ssh-keygen -Y verify -f governance\\identities\\allowed_signers -I architect -n calyx -s governance\\approvals\\helpingthehelp_push_commit.approval.json.sig",
+    "stdout_excerpt": "Good \"calyx\" signature for architect"
+  },
+  "notes": "Verification-only. No git push executed in this step."
+}

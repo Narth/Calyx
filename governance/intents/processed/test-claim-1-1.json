@@ -1,0 +1,1 @@
+{"intent_id": "test-claim-1", "intent": "fs_read", "payload": {"path": "README.md"}, "requires_approval": true}

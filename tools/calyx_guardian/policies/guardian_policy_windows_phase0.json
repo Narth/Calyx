@@ -1,0 +1,7 @@
+{
+  "disk_free_pct_warn": 25,
+  "disk_free_pct_critical": 15,
+  "patch_stale_days": 30,
+  "max_hotfixes_sampled": 25,
+  "max_update_events": 200
+}

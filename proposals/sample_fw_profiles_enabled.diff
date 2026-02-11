@@ -1,0 +1,14 @@
+*** current_state
+*** proposed_state
+@@
+- Domain: Enabled = 0
+- Private: Enabled = 0
+- Public: Enabled = 0
++ Domain: Enabled = 1
++ Private: Enabled = 1
++ Public: Enabled = 1
+
+# Commands (preview, not executed):
+# PowerShell (single host):
+Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True
+# End of preview

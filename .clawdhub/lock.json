@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "skills": {
+    "sysadmin-toolbox": {
+      "version": "1.1.0",
+      "installedAt": 1769994968043
+    },
+    "process-watch": {
+      "version": "1.0.0",
+      "installedAt": 1769994980139
+    },
+    "uptime-kuma": {
+      "version": "1.0.0",
+      "installedAt": 1769994982689
+    },
+    "pi-admin": {
+      "version": "1.0.0",
+      "installedAt": 1769994985886
+    },
+    "unraid": {
+      "version": "1.0.1",
+      "installedAt": 1769994988711
+    },
+    "proxmox": {
+      "version": "1.0.1",
+      "installedAt": 1769994991339
+    },
+    "skills-search": {
+      "version": "1.0.4",
+      "installedAt": 1769994995648
+    },
+    "clawdhub": {
+      "version": "1.0.0",
+      "installedAt": 1769994997765
+    },
+    "clawddocs": {
+      "version": "1.2.2",
+      "installedAt": 1769995000549
+    },
+    "mcporter": {
+      "version": "1.0.0",
+      "installedAt": 1769995002815
+    },
+    "guru-mcp": {
+      "version": "1.0.0",
+      "installedAt": 1769995004966
+    },
+    "model-usage": {
+      "version": "1.0.0",
+      "installedAt": 1769995007029
+    },
+    "codex-orchestration": {
+      "version": "2.0.0",
+      "installedAt": 1769995009512
+    },
+    "skill-audit": {
+      "version": "1.0.0",
+      "installedAt": 1769995950090
+    }
+  }
+}

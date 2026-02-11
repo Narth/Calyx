@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "compute_contract",
+  "type": "object",
+  "required": ["intent_id", "mode", "budgets", "cadence", "yield", "dedupe", "allowed_actions", "value_definition"],
+  "properties": {
+    "intent_id": {"type": "string"},
+    "mode": {"type": "string", "enum": ["ACTIVE", "SLEEP"]},
+    "budgets": {
+      "type": "object",
+      "properties": {
+        "max_input_tokens": {"type": "integer"},
+        "max_output_tokens": {"type": "integer"},
+        "max_tool_calls": {"type": "integer"},
+        "max_total_seconds": {"type": "number"}
+      }
+    },
+    "cadence": {
+      "type": "object",
+      "properties": {
+        "min_interval_seconds": {"type": "integer"},
+        "backoff_seconds": {"type": "integer"},
+        "backoff_multiplier": {"type": "number"},
+        "backoff_max_seconds": {"type": "integer"}
+      }
+    },
+    "yield": {
+      "type": "object",
+      "properties": {
+        "observation_window": {"type": "integer"},
+        "yield_threshold": {"type": "number"},
+        "confirmations_limit": {"type": "integer"}
+      }
+    },
+    "dedupe": {
+      "type": "object",
+      "properties": {
+        "signature": {"type": "string"},
+        "idempotency_key": {"type": "string"}
+      }
+    },
+    "allowed_actions": {"type": "array", "items": {"type": "string"}},
+    "value_definition": {"type": "string", "enum": ["state_delta", "attestation", "artifact_emitted"]}
+  }
+}

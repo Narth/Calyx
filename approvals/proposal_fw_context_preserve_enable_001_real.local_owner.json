@@ -1,0 +1,38 @@
+{
+  "proposal_id": "proposal_fw_context_preserve_enable_001_real",
+  "policy_id": "network_steward_firewall_v1",
+  "correlation_id": "d2f87a5b9e1a",
+  "approval_type": "local_owner_confirmation",
+  "target_scope": "single_host",
+  "elevation_achieved": true,
+  "action_category": "network_control",
+  "initiated_by": "local_user",
+  "local_user": {
+    "name": "jncr0",
+    "seat": "jncr0-session-0"
+  },
+  "actions": [
+    {
+      "type": "enable_profile",
+      "description": "Enable Private profile",
+      "details": { "profiles": ["Private"] }
+    },
+    {
+      "type": "create_firewall_rule",
+      "description": "allow_rcservice_30196 TCP/30196 program=C:\\Program Files (x86)\\AnyViewer\\RCService.exe",
+      "details": {
+        "id": "allow_rcservice_30196",
+        "protocol": "TCP",
+        "local_port": 30196,
+        "program": "C:\\Program Files (x86)\\AnyViewer\\RCService.exe",
+        "profiles": ["Private"],
+        "scope": "localSubnet"
+      }
+    }
+  ],
+  "confirmed_utc": "2026-02-04T22:40:00Z",
+  "confirmation_string": "CONFIRM proposal_fw_context_preserve_enable_001_real 890CFA97",
+  "proposal_fingerprint": "890CFA97",
+  "evidence_refs": ["logs/calyx_guardian/elevation_status.json","logs/calyx_guardian/evidence.jsonl:3d9a86033af3fefe..."],
+  "notes": "Local owner confirmation recorded via operator request (design-only)."
+}

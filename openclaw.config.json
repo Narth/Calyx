@@ -1,0 +1,17 @@
+{
+  "agent": {
+    "name": "Calyx Bridge Overseer (CBO)",
+    "model": "openai/gpt-4-turbo"
+  },
+  "providers": {
+    "openai": {
+      "apiKey": "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"
+    }
+  },
+  "channels": {
+    "discord": {
+      "botToken": "MTQ2NTQxNTk3MDE4NDIzMzAxMw.GXvOPe.zf2gJYZ0SSi4zd6k_tEWwGe-ZIOsK4J-joGtdY",
+      "applicationId": "1465415970184233013"
+    }
+  }
+}

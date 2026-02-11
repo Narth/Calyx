@@ -1,0 +1,23 @@
+﻿{
+    "correlation_id":  "51b1b2ebb0e1",
+    "parent_correlation_id":  "",
+    "ts_utc":  "2026-02-09T14:36:44.9856418Z",
+    "identity":  "architect",
+    "namespace":  "calyx",
+    "receipt":  {
+                    "path":  "C:\\Calyx\\governance\\approvals\\capability_unlock_git_web_management_v2.approval.json",
+                    "sha256":  "CEE97A295F8E100ED11D87E7984E4D5C79E2315AE89B4E31C3D68F7A03DCE30E"
+                },
+    "signature":  {
+                      "path":  "C:\\Calyx\\governance\\approvals\\capability_unlock_git_web_management_v2.approval.json.sig",
+                      "sha256":  "93F56D702226B58A8FEF9F181323BF3590F7D0C7F8799FED6EDF130943CB1332"
+                  },
+    "vhdx":  {
+                 "path":  "X:\\calyx_identity\\architect_identity.vhdx"
+             },
+    "tool":  {
+                 "name":  "tools/calyx_sign.ps1",
+                 "version":  "v1.1.1"
+             },
+    "statement":  "No secrets were stored or logged. Passphrase was entered by a human at the ssh-keygen prompt."
+}
