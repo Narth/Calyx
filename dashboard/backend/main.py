@@ -5,27 +5,68 @@ Phase A - Backend Skeleton
 """
 from __future__ import annotations
 
-from flask import Flask, jsonify, request, render_template
+import os
+from ipaddress import ip_address
+from pathlib import Path
+
+from flask import Flask, jsonify, request, render_template, g
 from flask_cors import CORS
 from data_broker import MetricsBroker
-from pathlib import Path
+from auth import authenticate_request
 
 # Configure Flask to use frontend directories
 BASE_DIR = Path(__file__).resolve().parent.parent
-app = Flask(__name__, 
-            template_folder=str(BASE_DIR / 'frontend' / 'templates'),
-            static_folder=str(BASE_DIR / 'frontend' / 'static'))
-CORS(app)
+app = Flask(
+    __name__,
+    template_folder=str(BASE_DIR / 'frontend' / 'templates'),
+    static_folder=str(BASE_DIR / 'frontend' / 'static'),
+)
+
+# Local-only CORS defaults
+CORS(app, resources={r"/api/*": {"origins": ["http://127.0.0.1", "http://localhost"]}})
 
 # Initialize data broker
 broker = MetricsBroker()
 broker.start()
 
 
+def _is_loopback_host(host: str) -> bool:
+    if host in {"localhost", "127.0.0.1", "::1"}:
+        return True
+    try:
+        return ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+@app.before_request
+def enforce_api_authentication() -> None:
+    """Fail closed for mutating API calls unless explicit dev mode auth is configured."""
+    if not request.path.startswith("/api/"):
+        return
+
+    if request.method in {"GET", "HEAD", "OPTIONS"}:
+        return
+
+    signature = request.headers.get("X-Calyx-Signature", "")
+    data = request.get_json(silent=True) or {}
+
+    try:
+        is_valid, human_id = authenticate_request(data, signature)
+    except PermissionError as exc:
+        return jsonify({"success": False, "error": str(exc)}), 503
+
+    if not is_valid:
+        return jsonify({"success": False, "error": "Authentication failed"}), 401
+
+    g.human_id = human_id
+
+
 @app.route('/')
 def index():
     """Serve dashboard HTML"""
     return render_template('dashboard.html')
+
 
 @app.route('/api/health/current', methods=['GET'])
 def get_current_health():
@@ -48,12 +89,14 @@ def get_pressure_heatmap():
     from api.health import get_pressure_heatmap
     return jsonify(get_pressure_heatmap())
 
+
 @app.route('/api/analytics/tes-trend', methods=['GET'])
 def get_tes_trend():
     """Get TES trend data"""
     from api.analytics import get_tes_trend
     days = request.args.get('days', 7, type=int)
     return jsonify(get_tes_trend(days))
+
 
 @app.route('/api/analytics/lease-efficiency', methods=['GET'])
 def get_lease_efficiency():
@@ -102,8 +145,8 @@ def get_lease_status(lease_id):
 def approve_lease(lease_id):
     """Approve a lease"""
     from api.leases import approve_lease
-    data = request.json
-    human_id = data.get('human_id', 'user1')
+    data = request.json or {}
+    human_id = data.get('human_id', getattr(g, 'human_id', 'user1'))
     reason = data.get('reason', '')
     success = approve_lease(lease_id, human_id, reason)
     return jsonify({"success": success})
@@ -128,7 +171,7 @@ def approve_request(approval_id):
 def reject_request(approval_id):
     """Reject a request"""
     from api.approvals import reject_request
-    data = request.json
+    data = request.json or {}
     reason = data.get('reason', '')
     success = reject_request(approval_id, reason)
     return jsonify({"success": success})
@@ -146,7 +189,7 @@ def get_chat_history():
 def send_broadcast():
     """Send broadcast message"""
     from api.chat import send_broadcast
-    data = request.json
+    data = request.json or {}
     content = data.get('content', '')
     priority = data.get('priority', 'medium')
     success = send_broadcast(content, priority)
@@ -157,11 +200,12 @@ def send_broadcast():
 def send_direct_message():
     """Send direct message"""
     from api.chat import send_direct_message
-    data = request.json
+    data = request.json or {}
     recipient = data.get('recipient', '')
     content = data.get('content', '')
     success = send_direct_message(recipient, content)
     return jsonify({"success": success})
+
 
 @app.route('/api/chat/agent-responses', methods=['GET'])
 def get_agent_responses():
@@ -169,6 +213,7 @@ def get_agent_responses():
     from api.chat import get_agent_responses
     limit = request.args.get('limit', 20, type=int)
     return jsonify(get_agent_responses(limit))
+
 
 @app.route('/api/chat/receipts/<msg_id>', methods=['GET'])
 def get_receipt_status(msg_id):
@@ -180,5 +225,15 @@ def get_receipt_status(msg_id):
 if __name__ == '__main__':
     print("Starting Station Calyx Dashboard Backend...")
     print("Phase A: Backend Skeleton")
-    app.run(host='127.0.0.1', port=8080, debug=True)
 
+    host = os.getenv("CALYX_DASHBOARD_HOST", "127.0.0.1")
+    port = int(os.getenv("CALYX_DASHBOARD_PORT", "8080"))
+    debug = os.getenv("CALYX_DASHBOARD_DEBUG", "false").lower() == "true"
+    allow_non_loopback = os.getenv("CALYX_ALLOW_NON_LOOPBACK", "false").lower() == "true"
+
+    if not _is_loopback_host(host) and not allow_non_loopback:
+        raise RuntimeError(
+            "Refusing non-loopback bind. Set CALYX_ALLOW_NON_LOOPBACK=true only behind a secured gateway."
+        )
+
+    app.run(host=host, port=port, debug=debug)

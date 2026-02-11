@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import os
 import signal
+from ipaddress import ip_address
 import subprocess
 import sys
 import time
@@ -114,6 +115,23 @@ def remove_pid_file() -> None:
     pid_file.unlink(missing_ok=True)
 
 
+
+def _is_loopback_host(host: str) -> bool:
+    if host in {"localhost", "127.0.0.1", "::1"}:
+        return True
+    try:
+        return ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+def _validate_bind_host(host: str) -> None:
+    allow_non_loopback = os.getenv("CALYX_ALLOW_NON_LOOPBACK", "false").lower() == "true"
+    if not _is_loopback_host(host) and not allow_non_loopback:
+        raise ValueError(
+            "Non-loopback bind refused. Set CALYX_ALLOW_NON_LOOPBACK=true only behind a secured gateway."
+        )
+
 def start_service(
     host: str = "127.0.0.1",
     port: int = 8420,
@@ -124,6 +142,8 @@ def start_service(
     
     CONSTRAINT: User-invoked only. No auto-start.
     """
+    _validate_bind_host(host)
+
     status = get_service_status()
     if status["running"]:
         return {
