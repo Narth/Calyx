@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Calyx Guardian Evidence Record",
+  "type": "object",
+  "required": [
+    "ts_utc",
+    "host_id",
+    "source",
+    "command",
+    "result_summary",
+    "raw_hash",
+    "raw_preview",
+    "severity_hint",
+    "notes"
+  ],
+  "properties": {
+    "ts_utc": { "type": "string" },
+    "host_id": { "type": "string" },
+    "source": { "type": "string" },
+    "command": { "type": "string" },
+    "result_summary": { "type": "string" },
+    "raw_hash": { "type": "string" },
+    "raw_preview": { "type": "string" },
+    "severity_hint": { "type": "string", "enum": ["info", "warn", "error"] },
+    "notes": { "type": "string" }
+  }
+}

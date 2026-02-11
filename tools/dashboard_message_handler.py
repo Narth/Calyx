@@ -10,6 +10,9 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Any, List
+from station_calyx.core.intent_gateway import process_inbound_message, echo_chain_info
+from station_calyx.core.session_router import get_selected_session
+from station_calyx.core.evidence import append_event, create_event
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMS_DIR = ROOT / "outgoing" / "comms" / "standard"
@@ -192,13 +195,63 @@ def process_dashboard_messages():
             continue  # Already processed
         
         # Generate response
-        response = generate_response(message_content)
-        print(f"Generated response: {response[:50]}")
+        # Build metadata from message context for identity binding.
+        msg_context = msg.get('context') or {}
+        metadata = {"message_id": message_id}
+        # If the dashboard does not include explicit user/session, consult the session router
+        if not msg_context.get('session_user'):
+            sel_session, sel_user = get_selected_session()
+            if sel_user:
+                metadata['session_user'] = sel_user
+        # If message context provides user/session info, prefer it
+        if isinstance(msg_context, dict):
+            if msg_context.get('user_id'):
+                metadata['user_id'] = msg_context.get('user_id')
+            if msg_context.get('session_user'):
+                metadata['session_user'] = msg_context.get('session_user')
+        # Pass message through IntentGateway
+        result = process_inbound_message(channel="standard", sender="dashboard", message=message_content, metadata=metadata)
+        print(f"IntentGateway result: {result}")
+
+        # Acknowledge to user based on result
+        if result.get("status") == "NEEDS_CLARIFICATION":
+            questions = result.get("clarification_questions", [])
+            ack_text = f"Intent {result.get('intent_id')} requires clarification: {questions[0] if questions else 'Please clarify.'}"
+            # Wait for a simulated user reply in the COMMS_DIR (for demo/testing)
+            # In production, this would be an interactive reply from the dashboard UI.
+            # Here we record an example of how confirmation would be processed.
+            # (No blocking behavior implemented.)
+        elif result.get("status") == "ACCEPTED":
+            ack_text = f"Intent {result.get('intent_id')} accepted and persisted."
+        else:
+            ack_text = f"Failed to persist intent {result.get('intent_id')}. Reason: {result.get('reason')}"
+
+        # Include echo-chain info for diagnostics
+        try:
+            echo = echo_chain_info(result.get('intent_id'))
+            ack_text += f"\nArtifact: {echo.get('artifact_path')}\nLast event: {echo.get('last_event_ts')}"
+        except Exception:
+            pass
+
+        print(f"Generated ack: {ack_text[:200]}")
         
         # Send response
-        if send_agent_response(message_id, response):
+        if send_agent_response(message_id, ack_text):
             processed_count += 1
             print(f"Acknowledged message {message_id}")
+            # Emit MESSAGE_ACK_SENT event
+            try:
+                evt_ack = create_event(
+                    event_type="MESSAGE_ACK_SENT",
+                    node_role="dashboard_handler",
+                    summary=f"Acknowledgment sent for {message_id}",
+                    payload={"message_id": message_id, "intent_id": result.get('intent_id')},
+                    tags=["ack", "dashboard"],
+                    session_id=result.get('intent_id') or message_id,
+                )
+                append_event(evt_ack)
+            except Exception:
+                pass
         else:
             print(f"Failed to acknowledge message {message_id}")
     

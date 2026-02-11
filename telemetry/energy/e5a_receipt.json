@@ -1,0 +1,32 @@
+{
+    "inputs": {
+        "scenario_a": [
+            "telemetry/energy/charge_intake_t0_preplug.json",
+            "telemetry/energy/charge_intake_t2m.json",
+            "telemetry/energy/charge_intake_t10m.json",
+            "telemetry/energy/scenario_a_environment_fingerprint.json",
+            "telemetry/energy/scenario_a_note.json"
+        ],
+        "scenario_b": [
+            "telemetry/energy/scenario_b_sunset.json",
+            "telemetry/energy/scenario_b_sunrise.json",
+            "telemetry/energy/scenario_b_note.json"
+        ],
+        "scenario_c": [
+            "telemetry/energy/scenario_c_power_loss.json",
+            "telemetry/energy/scenario_c_note.json",
+            "telemetry/energy/scenario_c_validity_addendum.json"
+        ],
+        "scenario_d": [
+            "telemetry/network/scenario_d_home_posture.json",
+            "telemetry/network/scenario_d_hotspot_posture.json",
+            "telemetry/network/scenario_d_note.json"
+        ],
+        "drain_rate_report": "telemetry/energy/drain_rate_report.json",
+        "energy_budget_advisory": "telemetry/energy/energy_budget_advisory.json"
+    },
+    "outputs": {
+        "e5a_consolidated_advisory": "BB9B39E4AE539320CFD39962B704C6D381CA1DF499EE6584BE7F730A96CA3B4E",
+        "e5a_policy_proposal_candidates": "<SHA256_HASH_OF_e5a_policy_proposal_candidates.json>"
+    }
+}

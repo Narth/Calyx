@@ -1,0 +1,22 @@
+{
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "action": "authorize_git_push",
+  "scope": "git_push_origin_main_commit_bound",
+  "repo_url": "https://github.com/Narth/Helping-the-Help",
+  "branch": "main",
+  "commit_hash": "d797a1b2349c1eb905d0dac04d6bab10da6367c0",
+  "correlation_id": "d83b8aa4f782",
+  "parent_correlation_id": "4092b5d1bce3",
+  "created_utc": "2026-02-09T03:56:30Z",
+  "sha256": {
+    "ops/deploy_test.txt": "BDD921DC211AAF9CBC8E8069ECC50FA90478E57F7238A4DF463F497B82CA2967",
+    "governance/identities/allowed_signers": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58",
+    "governance/approvals/helpingthehelp_push_commit.approval.json": "61AA22B26E2104E6E638FFE8A0B08CD4CBD3C2EF4FBC06B21EABA10CAEA1855A"
+  },
+  "statement": "No push executed in this step. Awaiting Architect signature.",
+  "signature": {
+    "required": true,
+    "namespace": "calyx",
+    "status": "unsigned"
+  }
+}

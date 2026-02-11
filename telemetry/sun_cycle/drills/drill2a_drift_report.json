@@ -1,0 +1,12 @@
+{
+    "created_artifacts": [
+        {
+            "path": "governance/manifest.json",
+            "sha256_before_move": "7EEC35EF7BC89FFEBA009E42DCF0FD272F7E550E63F05F14E084331F6891C59B",
+            "sha256_after_move": "7EEC35EF7BC89FFEBA009E42DCF0FD272F7E550E63F05F14E084331F6891C59B"
+        }
+    ],
+    "violation_reason": "Unapproved manifest location. Approved location is logs/calyx_guardian/manifest.json.",
+    "quarantine_action": "Moved to governance/quarantine/unapproved_manifest_2026-02-09T16-59-37.json",
+    "statement": "No operational semantics changed; quarantine only."
+}

@@ -1,0 +1,30 @@
+﻿{
+    "phase":  "sunrise",
+    "timestamp_utc":  "2026-02-09T18:44:44.4258040Z",
+    "correlation_id":  "drill1-sunrise",
+    "parent_correlation_id":  "drill1-sunset",
+    "power_status":  {
+                         "power_line_status":  "Offline",
+                         "battery_charge_status":  "0",
+                         "battery_life_percent":  0.61
+                     },
+    "battery":  {
+                    "EstimatedChargeRemaining":  60,
+                    "BatteryStatus":  1
+                },
+    "last_sunset":  {
+                        "path":  "telemetry/sun_cycle/sunsets/sunset_drill1_operator_shutdown.json",
+                        "sha256":  "42726D7C79A866DA4C089E975D93C5A5FAFCB5B7182928E69DEA400810DEE327"
+                    },
+    "continuity_assessment":  {
+                                  "battery_delta_percent":  -1,
+                                  "power_source_change":  "Offline -\u003e Offline",
+                                  "anomalies":  [
+
+                                                ]
+                              },
+    "evidence_commands":  [
+                              "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus",
+                              "[System.Windows.Forms.SystemInformation]::PowerStatus"
+                          ]
+}

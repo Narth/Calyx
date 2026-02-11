@@ -1,0 +1,30 @@
+﻿{
+    "phase":  "sunrise",
+    "timestamp_utc":  "2026-02-09T17:57:00.3225517Z",
+    "correlation_id":  "e2-sunrise",
+    "parent_correlation_id":  "e2-sunset",
+    "power_status":  {
+                         "power_line_status":  "Offline",
+                         "battery_charge_status":  "High",
+                         "battery_life_percent":  0.74
+                     },
+    "battery":  {
+                    "EstimatedChargeRemaining":  73,
+                    "BatteryStatus":  1
+                },
+    "last_sunset":  {
+                        "path":  "telemetry/sun_cycle/sunsets/sunset_2026-02-09T17-56-41_e2-sunset.json",
+                        "sha256":  "E6127D46CC22FF4FA925D7753FA74A327315EDEE796DBA387D3408144157639D"
+                    },
+    "continuity_assessment":  {
+                                  "battery_delta_percent":  0,
+                                  "power_source_change":  "Offline -\u003e Offline",
+                                  "anomalies":  [
+
+                                                ]
+                              },
+    "evidence_commands":  [
+                              "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus",
+                              "[System.Windows.Forms.SystemInformation]::PowerStatus"
+                          ]
+}

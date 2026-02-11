@@ -1,0 +1,19 @@
+{
+    "timestamp_utc": "2026-02-10T02:00:00.0000000Z",
+    "battery": {
+        "estimated_charge_remaining": 99,
+        "battery_status": 2,
+        "status": "OK"
+    },
+    "power_status": {
+        "power_line_status": "Online",
+        "charging_state": "Charging"
+    },
+    "system_load": {
+        "cpu_utilization_percent": 3.2,
+        "uptime_last_boot_utc": "\/Date(1769822024650)\/"
+    },
+    "thermal_data": "not_accessible",
+    "boundary_condition": "pre_full_charge",
+    "temporally_validated": true
+}

@@ -1,0 +1,27 @@
+{
+  "phase": "energy_telemetry_phase_e3",
+  "correlation_id": "e3-phase",
+  "battery_delta_percent": -5,
+  "cpu_context": {
+    "pre": 4.62,
+    "post": 6.12
+  },
+  "projected_minutes_to_sunset_8pct": 40,
+  "projected_minutes_to_sunrise_floor_25pct": 170,
+  "advisory_confidence": "medium",
+  "reasons": [
+    "Battery drain rate is moderate.",
+    "CPU usage increased during observation period."
+  ],
+  "artifacts": {
+    "snapshot_t0": {
+      "path": "telemetry/energy/drain_rate_t0.json",
+      "sha256": "722CF70743D704C66675E773AF754D33C2AFFD5DD8510D4E180351E1E3B89D99"
+    },
+    "snapshot_t10m": {
+      "path": "telemetry/energy/drain_rate_t10m.json",
+      "sha256": "6DBAA93260E7604BF989F831867EB19402F4778E32E7DB1880132A3A29D1BCE1"
+    }
+  },
+  "ts_utc": "2026-02-09T18:28:48.4999601Z"
+}

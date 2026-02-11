@@ -1,0 +1,13 @@
+{
+  "phase": "bloomos_boot_guard",
+  "timestamp_utc": "2026-02-09T17:56:41.9403855Z",
+  "energy_viability_gate": "fail",
+  "reasons": ["Simulated low battery: Battery percent below sunset threshold (8%)."],
+  "inputs": {
+    "policy_hash": "B3FF1F93507B351CB5BA403C018FB3857A5D352A4B87A7E55C96BFBE3784DDA9",
+    "sunrise_hash": "F341D21A483D6BE57C123D977CFD787DD5596F1429BFB78ACBE1873DE0D44E46"
+  },
+  "simulated_overrides": {
+    "battery_percent": 8
+  }
+}

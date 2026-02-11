@@ -1,0 +1,17 @@
+{
+    "phase": "scenario_b",
+    "marker": "sunset",
+    "timestamp_utc": "2026-02-10T01:30:00.0000000Z",
+    "power_status": {
+        "power_line_status": "Offline",
+        "battery_charge_status": "Discharging",
+        "battery_life_percent": 0.69,
+        "power_status_unavailable": false
+    },
+    "battery": {
+        "EstimatedChargeRemaining": 69,
+        "BatteryStatus": 1,
+        "Status": "OK"
+    },
+    "cpu_percent": 3.50
+}

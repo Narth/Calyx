@@ -1,0 +1,25 @@
+{
+  "action": "sunset_sunrise_scaffolding",
+  "scope": "lifecycle_gate",
+  "correlation_id": "e2-sunset-sunrise",
+  "artifacts": {
+    "sunset_record": {
+      "path": "telemetry/sun_cycle/sunsets/sunset_2026-02-09T17-56-41_e2-sunset.json",
+      "sha256": "E6127D46CC22FF4FA925D7753FA74A327315EDEE796DBA387D3408144157639D"
+    },
+    "sunrise_record": {
+      "path": "telemetry/sun_cycle/sunrises/sunrise_2026-02-09T17-56-41_e2-sunrise.json",
+      "sha256": "F341D21A483D6BE57C123D977CFD787DD5596F1429BFB78ACBE1873DE0D44E46"
+    },
+    "bloomos_boot_guard_report": {
+      "path": "telemetry/sun_cycle/bloomos_boot_guard_report.json",
+      "sha256": "<to-be-filled-after-write>"
+    }
+  },
+  "evidence_commands": [
+    "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus",
+    "[System.Windows.Forms.SystemInformation]::PowerStatus"
+  ],
+  "statement": "Lifecycle gate scaffolding implemented for energy telemetry continuity. No actions taken.",
+  "ts_utc": "2026-02-09T17:56:41.9403855Z"
+}

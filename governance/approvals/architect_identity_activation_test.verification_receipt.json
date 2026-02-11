@@ -1,0 +1,50 @@
+{
+  "action": "architect_identity_activation_test",
+  "scope": "no_state_change",
+  "correlation_id": "31f2f5d1fbf4",
+  "parent_correlation_id": "d2f87a5b9e1a",
+  "ts_utc": "2026-02-07T02:25:30Z",
+  "signature": {
+    "status": "verified",
+    "tool": "ssh-keygen -Y verify",
+    "signer": "architect",
+    "namespace": "calyx",
+    "public_key_fingerprint": "SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw"
+  },
+  "artifacts": {
+    "unsigned_receipt": {
+      "path": "governance/approvals/architect_identity_activation_test.json",
+      "sha256": "32B0AA294E1FF59454B3DE2D51E4C524E92A7576AEA3999D363F37CDE4A1CFB2"
+    },
+    "signature_file": {
+      "path": "governance/approvals/architect_identity_activation_test.json.sig",
+      "sha256": "0C9715B206527ABCD9011B81A2B3A547C017DAC5ABF79FBD93855FDF10482A4C"
+    },
+    "allowed_signers": {
+      "path": "governance/identities/allowed_signers",
+      "sha256": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58"
+    }
+  },
+  "verification_evidence": {
+    "attempts": [
+      {
+        "namespace": "file",
+        "result": "failed",
+        "message": "namespace does not match"
+      },
+      {
+        "namespace": "architect_identity_activation_test",
+        "result": "failed",
+        "message": "namespace does not match"
+      },
+      {
+        "namespace": "calyx",
+        "result": "verified",
+        "message": "Good \"calyx\" signature for architect"
+      }
+    ],
+    "command_used": "type governance\\approvals\\architect_identity_activation_test.json | ssh-keygen -Y verify -f governance\\identities\\allowed_signers -I architect -n calyx -s governance\\approvals\\architect_identity_activation_test.json.sig",
+    "stdout_excerpt": "Good \"calyx\" signature for architect with ED25519 key SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw"
+  },
+  "notes": "Verification-only. No state mutation performed."
+}

@@ -1,0 +1,29 @@
+{
+  "action": "boot_guard_validation_g1",
+  "scope": "verification_only",
+  "correlation_id": "e2-boot-guard-g1",
+  "artifacts": {
+    "validation_live": {
+      "path": "telemetry/sun_cycle/boot_guard_validation_live.json",
+      "sha256": "7C366F0220F7A2E052313C20E831D3374DD9DEDC206E9E010EDB5D6ADC686568"
+    },
+    "validation_sim_low_battery": {
+      "path": "telemetry/sun_cycle/boot_guard_validation_sim_low_battery.json",
+      "sha256": "20D5172152946DF79483188FDAA02C65507901C0FF5A626FFC958A1D93C11FA3"
+    },
+    "validation_sim_mid_battery": {
+      "path": "telemetry/sun_cycle/boot_guard_validation_sim_mid_battery.json",
+      "sha256": "726C6260BC9D181DE367F00F023E270C23B8FFA8FC3E838E8B985645EAADBE71"
+    },
+    "validation_sim_valid_sunrise": {
+      "path": "telemetry/sun_cycle/boot_guard_validation_sim_valid_sunrise.json",
+      "sha256": "0056B575B71916E4B51ABE33CDCF9FFE9E1690DB220CF43882740A543F0CA1F0"
+    },
+    "policy_file": {
+      "path": "governance/policies/energy_viability_policy.json",
+      "sha256": "B3FF1F93507B351CB5BA403C018FB3857A5D352A4B87A7E55C96BFBE3784DDA9"
+    }
+  },
+  "statement": "Boot Guard Validation G1 completed successfully with updated policy thresholds. No actions taken.",
+  "ts_utc": "2026-02-09T17:56:41.9403855Z"
+}

@@ -1,0 +1,26 @@
+{
+  "policy": "compute_stewardship",
+  "version": "1.0",
+  "description": "Deny-by-default compute stewardship policy for Station Calyx",
+  "sleep_allowlist": ["svc_health_check", "schema_validate", "repo_status", "log_compact", "status_snapshot"],
+  "defaults": {
+    "mode": "ACTIVE",
+    "budgets": {
+      "max_input_tokens": 2048,
+      "max_output_tokens": 2048,
+      "max_tool_calls": 10,
+      "max_total_seconds": 30
+    },
+    "cadence": {
+      "min_interval_seconds": 10,
+      "backoff_seconds": 30,
+      "backoff_multiplier": 2,
+      "backoff_max_seconds": 3600
+    },
+    "yield": {
+      "observation_window": 3600,
+      "yield_threshold": 0.2,
+      "confirmations_limit": 3
+    }
+  }
+}

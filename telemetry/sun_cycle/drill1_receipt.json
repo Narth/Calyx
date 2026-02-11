@@ -1,0 +1,26 @@
+{
+  "action": "drill1_graceful_sunset_sunrise",
+  "scope": "observation_only",
+  "correlation_id": "drill1",
+  "artifacts": {
+    "sunset_record": {
+      "path": "telemetry/sun_cycle/sunsets/sunset_drill1_operator_shutdown.json",
+      "sha256": "42726D7C79A866DA4C089E975D93C5A5FAFCB5B7182928E69DEA400810DEE327"
+    },
+    "sunrise_record": {
+      "path": "telemetry/sun_cycle/sunrises/sunrise_drill1_operator_shutdown.json",
+      "sha256": "33CE2110914982B7CC3E32068C25332DCE869FAA52A5836E0C5ED49BBF666414"
+    },
+    "boot_guard_report": {
+      "path": "telemetry/sun_cycle/boot_guard_drill1_report.json",
+      "sha256": "FC6906D473E8147ACB3EE5FC9A8FDEF4156A68F65222446710D014308D3A0000"
+    }
+  },
+  "evidence_commands": [
+    "Get-FileHash telemetry/sun_cycle/sunsets/sunset_drill1_operator_shutdown.json",
+    "Get-FileHash telemetry/sun_cycle/sunrises/sunrise_drill1_operator_shutdown.json",
+    "Get-FileHash telemetry/sun_cycle/boot_guard_drill1_report.json"
+  ],
+  "statement": "Drill 1: Graceful Sunset/Sunrise Rehearsal completed successfully. No actions taken.",
+  "ts_utc": "2026-02-09T18:28:48.4999601Z"
+}

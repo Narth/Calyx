@@ -1,0 +1,11 @@
+{
+  "intent_id": "intent-76cb3ddc",
+  "raw_user_input": "ping-ui-1",
+  "interpreted_goal": "ping-ui-1",
+  "constraints": {},
+  "confidence_score": 0.5,
+  "clarification_required": true,
+  "inferred_from_user_model": false,
+  "user_model_summary": {},
+  "created_at": "2026-01-30T07:40:55.486801+00:00"
+}

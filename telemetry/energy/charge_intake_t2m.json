@@ -1,0 +1,21 @@
+{
+    "phase": "charge_intake_phase_e2b",
+    "marker": "T+2m",
+    "timestamp_utc": "2026-02-10T01:14:59.4496864Z",
+    "power_status": {
+        "power_line_status": "Online",
+        "battery_charge_status": "Charging",
+        "battery_life_percent": 0.39,
+        "battery_life_remaining": 22000,
+        "power_status_unavailable": false
+    },
+    "battery": {
+        "EstimatedChargeRemaining": 39,
+        "BatteryStatus": 2,
+        "Status": "OK"
+    },
+    "cpu_percent": 3.50,
+    "uptime_last_boot_utc": "\/Date(1769822024650)\/",
+    "E3_baseline_reference": true,
+    "temporally_validated": false
+}

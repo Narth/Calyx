@@ -1,0 +1,21 @@
+{
+  "action": "sunset_sunrise_scaffolding",
+  "scope": "governance_scaffolding",
+  "correlation_id": "e2-sunset-sunrise",
+  "artifacts": {
+    "sunset_record": {
+      "path": "telemetry/energy/sunsets/sunset_2026-02-09T17-44-47_e2-sunset.json",
+      "sha256": "DD0A26EFF462E4E7C962E6017E7F09E3A2B5AD93877044B7636F3C64F0E5C0ED"
+    },
+    "sunrise_record": {
+      "path": "telemetry/energy/sunrises/sunrise_2026-02-09T17-44-47_e2-sunrise.json",
+      "sha256": "36E0A05C49297001CBBAE19A63E63534E9A34F58976F4F8C25685E655057082D"
+    }
+  },
+  "evidence_commands": [
+    "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus",
+    "[System.Windows.Forms.SystemInformation]::PowerStatus"
+  ],
+  "statement": "Sunset/Sunrise scaffolding implemented for energy telemetry continuity. No actions taken.",
+  "ts_utc": "2026-02-09T17:44:47.1468112Z"
+}

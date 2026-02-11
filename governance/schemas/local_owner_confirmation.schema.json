@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local Owner Confirmation",
+  "type": "object",
+  "required": [
+    "proposal_id",
+    "approval_type",
+    "target_scope",
+    "elevation_achieved",
+    "action_category",
+    "initiated_by",
+    "confirmed_utc",
+    "local_user",
+    "actions",
+    "confirmation_string",
+    "proposal_fingerprint"
+  ],
+  "properties": {
+    "proposal_id": { "type": "string" },
+    "policy_id": { "type": ["string", "null"] },
+    "correlation_id": { "type": ["string", "null"] },
+    "parent_correlation_id": { "type": ["string", "null"] },
+    "approval_type": { "type": "string", "const": "local_owner_confirmation" },
+    "target_scope": { "type": "string", "enum": ["single_host"] },
+    "elevation_achieved": { "type": "boolean", "const": true },
+    "action_category": { "type": "string", "enum": ["network_control"] },
+    "initiated_by": { "type": "string", "enum": ["local_user"] },
+    "confirmed_utc": { "type": "string", "format": "date-time" },
+    "local_user": {
+      "type": "object",
+      "required": ["name", "seat"],
+      "properties": {
+        "name": { "type": "string" },
+        "seat": { "type": "string" }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type","description"],
+        "properties": {
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "details": { "type": "object" }
+        }
+      }
+    },
+    "confirmation_string": { "type": "string" },
+    "proposal_fingerprint": { "type": "string", "pattern": "^[A-F0-9]{8}$" },
+    "evidence_refs": { "type": ["array", "null"] },
+    "notes": { "type": ["string", "null"] }
+  }
+}

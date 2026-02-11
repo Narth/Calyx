@@ -1,0 +1,9 @@
+{
+    "recovery_outcome": "recovery_anomalies_detected",
+    "recovery_checklist": {
+        "allowed_signers_hash": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58",
+        "architect_identity_hash": "not_found",
+        "guardian_manifest_hash": "69EA1DA77046F08965B9B1CEE8E1C33186C8649DCB763CEA664B57689E615111",
+        "last_orchestrator_log_hash": "not_found"
+    }
+}

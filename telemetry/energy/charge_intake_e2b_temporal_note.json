@@ -1,0 +1,8 @@
+{
+    "delays_enforced": false,
+    "timestamp_deltas": {
+        "t0_to_t2m_seconds": 120,
+        "t2m_to_t10m_seconds": 480
+    },
+    "statement": "Data valid for state observation; rate calculations provisional."
+}

@@ -1,0 +1,19 @@
+{
+  "action": "energy_telemetry_phase_e4",
+  "scope": "energy_budget_advisory",
+  "correlation_id": "e4-phase",
+  "artifacts": {
+    "energy_budget_advisory": {
+      "path": "telemetry/energy/energy_budget_advisory.json",
+      "sha256": "A471E2DF769421194F7DF9B73FACD8EB5DAFDBBA562FF8085404FBB9F16A2AC2"
+    }
+  },
+  "evidence_commands": [
+    "Get-CimInstance Win32_Battery | Select EstimatedChargeRemaining,BatteryStatus,Status",
+    "Get-CimInstance Win32_OperatingSystem | Select LastBootUpTime",
+    "Get-Counter '\\Processor(_Total)\\% Processor Time'",
+    "[System.Windows.Forms.SystemInformation]::PowerStatus"
+  ],
+  "statement": "Energy Telemetry Phase E4 completed successfully. No actions taken.",
+  "ts_utc": "2026-02-09T18:28:48.4999601Z"
+}

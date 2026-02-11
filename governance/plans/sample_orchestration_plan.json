@@ -1,0 +1,54 @@
+{
+  "plan_id": "guardian_phase0_sample",
+  "nodes": [
+    {
+      "task_id": "guardian_smoke_tests",
+      "parent_id": "plan_guardian_phase0",
+      "role": "test_steward",
+      "inputs": ["tools/calyx_guardian/tests/test_smoke_phase0.py"],
+      "outputs": ["logs/orchestrator/tasks/guardian_smoke_tests/stdout.log"],
+      "allowed_operations": ["test"],
+      "max_runtime_seconds": 120,
+      "max_files_touched": 0,
+      "success_criteria": "Pytest smoke passes",
+      "required_evidence": ["logs/orchestrator/tasks/guardian_smoke_tests/stdout.log"],
+      "exec": "py",
+      "args": ["-3.11", "-m", "pytest", "tools/calyx_guardian/tests/test_smoke_phase0.py", "-q"]
+    },
+    {
+      "task_id": "lint_format_probe",
+      "parent_id": "plan_guardian_phase0",
+      "role": "schema_steward",
+      "inputs": ["tools/calyx_guardian"],
+      "outputs": ["logs/orchestrator/tasks/lint_format_probe/noop.diff"],
+      "allowed_operations": ["read", "report"],
+      "max_runtime_seconds": 60,
+      "max_files_touched": 0,
+      "success_criteria": "Lint/format availability noted (no-op)",
+      "required_evidence": ["logs/orchestrator/tasks/lint_format_probe/noop.diff"],
+      "notes": "No formatter configured; emit no-op evidence only."
+    },
+    {
+      "task_id": "readme_update_stub",
+      "parent_id": "plan_guardian_phase0",
+      "role": "docs_steward",
+      "inputs": ["tools/calyx_guardian/README.md"],
+      "outputs": ["logs/orchestrator/tasks/readme_update_stub/noop.diff"],
+      "allowed_operations": ["read", "report"],
+      "max_runtime_seconds": 60,
+      "max_files_touched": 0,
+      "success_criteria": "README update planned (no-op)",
+      "required_evidence": ["logs/orchestrator/tasks/readme_update_stub/noop.diff"],
+      "notes": "Deterministic no-op update; actual edits require explicit approval."
+    }
+  ],
+  "edges": [
+    {"from": "guardian_smoke_tests", "to": "lint_format_probe"},
+    {"from": "lint_format_probe", "to": "readme_update_stub"}
+  ],
+  "global_budgets": {
+    "total_runtime_seconds": 600,
+    "total_files_changed": 0
+  },
+  "fail_policy": "fail_closed"
+}

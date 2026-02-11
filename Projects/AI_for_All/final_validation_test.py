@@ -9,6 +9,7 @@ import logging
 import subprocess
 from pathlib import Path
 from datetime import datetime
+from typing import Any, Dict
 
 # Import teaching system
 import sys

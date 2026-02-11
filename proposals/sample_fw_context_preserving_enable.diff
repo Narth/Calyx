@@ -1,0 +1,15 @@
+*** current_state
+*** proposed_state
+@@
+- Firewall profiles: Domain=0, Private=0, Public=0
++ Firewall profiles: Domain=0, Private=1, Public=0
+
+- Proposed allow rules: none
++ Proposed allow rules:
++ - allow_game_udp_27015: UDP/27015, program=C:\Games\MyServer\game_server.exe, profiles=Private, scope=localSubnet
++ - allow_local_http_8080: TCP/8080, program=node.exe (path: C:\Users\player\dev\local_http.js), profiles=Private, scope=localSubnet
+
+# Human-readable summary:
+# Enable Private profile only and add narrowly-scoped allow rules for observed listeners. Do NOT enable Public profile or add broad rules without explicit approval.
+
+# NO ACTIONS PERFORMED. HUMAN APPROVAL REQUIRED.

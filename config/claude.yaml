@@ -1,0 +1,6 @@
+# Claude config (opt-in)
+# Set `enabled: true` to allow claude_code_cli when gates are present.
+enabled: false
+model: claude-code-lite
+max_tokens: 256
+temperature: 0.0
