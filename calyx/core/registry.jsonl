@@ -1,0 +1,11 @@
+﻿{"skills":["dispatch","queue-management"],"interval_sec":240,"autonomy":"managed","role":"scheduler","agent_id":"scheduler-main","executable":"tools/agent_scheduler.py"}
+{"skills":["dispatch","queue-management"],"parameters":"--agent-id 2 --heartbeat-name agent2 --auto-promote --adaptive-backoff","interval_sec":300,"autonomy":"managed","role":"scheduler","agent_id":"scheduler-agent2","executable":"tools/agent_scheduler.py"}
+{"skills":["tes-analysis","coaching"],"interval_sec":60,"autonomy":"advisory","role":"mentor","agent_id":"cp6-sociologist","executable":"tools/cp6_sociologist.py"}
+{"skills":["reporting","observability"],"interval_sec":60,"autonomy":"advisory","role":"mentor","agent_id":"cp7-chronicler","executable":"tools/cp7_chronicler.py"}
+{"skills":["resource-planning","teaching"],"interval_sec":60,"autonomy":"advisory","role":"mentor","agent_id":"cp8-mentor","executable":"Scripts/agent_cp8.py"}
+{"skills":["autonomy-tuning","policy"],"interval_sec":60,"autonomy":"advisory","role":"mentor","agent_id":"cp9-tuner","executable":"Scripts/agent_cp9.py"}
+{"skills":["curriculum","reinforcement"],"parameters":"--start","autonomy":"managed","role":"teaching","agent_id":"teaching-loop","executable":"Projects/AI_for_All/ai4all_teaching.py"}
+{"skills":["systems","healthcheck"],"interval_sec":30,"autonomy":"managed","role":"guardian","agent_id":"sys-integrator","executable":"tools/sys_integrator.py"}
+{"skills":["monitoring","observability","agent-tracking"],"interval_sec":10,"autonomy":"managed","role":"watchdog","agent_id":"agent-watcher","executable":"Scripts/agent_watcher.py"}
+{"skills":["planning","governance"],"interval_sec":240,"autonomy":"core","role":"orchestrator","agent_id":"bridge-overseer","executable":"calyx/cbo/bridge_overseer.py"}
+{"autonomy":"core","executable":"calyx/cbo/api.py","skills":["api","fastapi"],"agent_id":"cbo-api","role":"service"}

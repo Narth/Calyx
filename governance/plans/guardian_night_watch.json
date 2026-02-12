@@ -1,0 +1,148 @@
+{
+  "plan_id": "guardian_night_watch",
+  "nodes": [
+    {
+      "task_id": "watch_baseline",
+      "parent_id": "plan_guardian_night_watch",
+      "role": "test_steward",
+      "inputs": ["tools/calyx_guardian/guardian_watch_baseline.ps1"],
+      "outputs": [
+        "logs/calyx_guardian/evidence.jsonl",
+        "logs/calyx_guardian/findings.json",
+        "logs/calyx_guardian/report.md",
+        "logs/calyx_guardian/manifest.json"
+      ],
+      "allowed_operations": ["read", "test", "report"],
+      "max_runtime_seconds": 900,
+      "max_files_touched": 0,
+      "success_criteria": "Baseline Phase 0 artifacts and manifest created",
+      "required_evidence": ["logs/calyx_guardian/manifest.json"],
+      "exec": "powershell",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "tools/calyx_guardian/guardian_watch_baseline.ps1",
+        "-OutDir",
+        "logs/calyx_guardian",
+        "-CorrelationId",
+        "{correlation_id}"
+      ]
+    },
+    {
+      "task_id": "watch_observer_loop",
+      "parent_id": "plan_guardian_night_watch",
+      "role": "test_steward",
+      "inputs": ["tools/calyx_guardian/guardian_watch_observer.ps1"],
+      "outputs": [
+        "logs/calyx_guardian/watch_evidence.jsonl",
+        "logs/calyx_guardian/watch_run_log.jsonl"
+      ],
+      "allowed_operations": ["read", "test", "report"],
+      "max_runtime_seconds": 36000,
+      "max_files_touched": 0,
+      "success_criteria": "Observer loop completes or degrades gracefully",
+      "required_evidence": ["logs/calyx_guardian/watch_evidence.jsonl"],
+      "exec": "powershell",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "tools/calyx_guardian/guardian_watch_observer.ps1",
+        "-OutDir",
+        "logs/calyx_guardian",
+        "-WatchId",
+        "{correlation_id}",
+        "-WatchHours",
+        "8",
+        "-IntervalMinutes",
+        "60",
+        "-MaxIterations",
+        "8"
+      ]
+    },
+    {
+      "task_id": "watch_analysis",
+      "parent_id": "plan_guardian_night_watch",
+      "role": "docs_steward",
+      "inputs": [
+        "logs/calyx_guardian/findings.json",
+        "logs/calyx_guardian/watch_evidence.jsonl"
+      ],
+      "outputs": [
+        "logs/calyx_guardian/watch_findings.json",
+        "logs/calyx_guardian/night_watch_delta.json"
+      ],
+      "allowed_operations": ["read", "report"],
+      "max_runtime_seconds": 120,
+      "max_files_touched": 0,
+      "success_criteria": "Night watch delta findings generated",
+      "required_evidence": ["logs/calyx_guardian/night_watch_delta.json"],
+      "exec": "py",
+      "args": [
+        "-3.11",
+        "tools/calyx_guardian/render/guardian_watch_analysis.py",
+        "--baseline",
+        "logs/calyx_guardian/findings.json",
+        "--watch-evidence",
+        "logs/calyx_guardian/watch_evidence.jsonl",
+        "--watch-findings",
+        "logs/calyx_guardian/watch_findings.json",
+        "--out",
+        "logs/calyx_guardian/night_watch_delta.json",
+        "--correlation-id",
+        "{correlation_id}"
+      ]
+    },
+    {
+      "task_id": "night_watch_brief",
+      "parent_id": "plan_guardian_night_watch",
+      "role": "docs_steward",
+      "inputs": [
+        "logs/calyx_guardian/night_watch_delta.json",
+        "logs/calyx_guardian/watch_findings.json",
+        "logs/calyx_guardian/findings.json",
+        "logs/calyx_guardian/manifest.json"
+      ],
+      "outputs": ["logs/calyx_guardian/night_watch_brief.md"],
+      "allowed_operations": ["read", "report"],
+      "max_runtime_seconds": 60,
+      "max_files_touched": 0,
+      "success_criteria": "Night watch brief generated",
+      "required_evidence": ["logs/calyx_guardian/night_watch_brief.md"],
+      "exec": "py",
+      "args": [
+        "-3.11",
+        "tools/calyx_guardian/render/guardian_night_watch_brief.py",
+        "--baseline",
+        "logs/calyx_guardian/findings.json",
+        "--latest",
+        "logs/calyx_guardian/watch_findings.json",
+        "--delta",
+        "logs/calyx_guardian/night_watch_delta.json",
+        "--manifest",
+        "logs/calyx_guardian/manifest.json",
+        "--out",
+        "logs/calyx_guardian/night_watch_brief.md",
+        "--correlation-id",
+        "{correlation_id}"
+      ]
+    }
+  ],
+  "edges": [
+    {"from": "watch_baseline", "to": "watch_observer_loop"},
+    {"from": "watch_observer_loop", "to": "watch_analysis"},
+    {"from": "watch_analysis", "to": "night_watch_brief"}
+  ],
+  "global_budgets": {
+    "total_runtime_seconds": 43200,
+    "total_files_changed": 0
+  },
+  "fail_policy": "fail_closed"
+}

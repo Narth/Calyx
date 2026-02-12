@@ -1,0 +1,27 @@
+{
+  "title": "Potential Sapling Orbit Schema (Ceremonial)",
+  "type": "object",
+  "properties": {
+    "structural_id": { "type": "string" },
+    "lineage_pointer": { "type": "string" },
+    "heartwood_reference": { "type": "string" },
+    "orbit_position": { "type": "string" },
+    "sandbox_layer": { "type": "string" },
+    "advisory_only": { "const": true },
+    "safe_mode_ready": { "const": true },
+    "no_action": { "const": true },
+    "sovereignty_placeholder": { "type": "string" }
+  },
+  "required": [
+    "structural_id",
+    "lineage_pointer",
+    "heartwood_reference",
+    "orbit_position",
+    "sandbox_layer",
+    "advisory_only",
+    "safe_mode_ready",
+    "no_action",
+    "sovereignty_placeholder"
+  ],
+  "additionalProperties": false
+}

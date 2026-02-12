@@ -1,0 +1,49 @@
+{
+  "calyx_canon_harmonized": {
+    "path": "docs/CALYX_CANON_HARMONIZED_v1.0.md",
+    "sha256": "41D3E997D8BE03FFE0BD501E39BCA9E366CBA0A551590606C963BE3A90F12208"
+  },
+  "calyx_canon_map": {
+    "path": "docs/CALYX_CANON_MAP_v1.0.md",
+    "sha256": "107FE20F20B15B164E2D620F0FED217DB42D73A56BF40909AFC1B97AC9E9338C"
+  },
+  "genesis_spec": {
+    "path": "docs/GENESIS_SPEC_v1.0.md",
+    "sha256": "9330C7D58F336B17F42C688C2FAA1C63BA2E1843F9447F5EB808F9FC7DC130CB"
+  },
+  "calyx_doctrine": {
+    "path": "docs/CALYX_DOCTRINE_v1.0.md",
+    "sha256": "A1F0ABFDE13EFFFC222063093EA04BF2BA8BBD58DDE84878EBA9E34776199282"
+  },
+  "heartwood_canon": {
+    "path": "docs/HEARTWOOD_CANON_v1.0.md",
+    "sha256": "6EB3B5EDAA8FD250C46868D32E60A5C47E0DC4B470242A4064A29790D0266307"
+  },
+  "constellation_canon": {
+    "path": "docs/CONSTELLATION_CANON_v1.0.md",
+    "sha256": "A0149E612B760A7A7F6DD1EB3684B61275E9416BDC4CF1EDC551638B535D02A3"
+  },
+  "constellation_memory_canon": {
+    "path": "docs/CONSTELLATION_MEMORY_CANON_v1.0.md",
+    "sha256": "332E738D5499686F6306E2DC55F2DF30520D044CA51528720947A74049906267"
+  },
+  "constellation_pedagogy_canon": {
+    "path": "docs/CONSTELLATION_PEDAGOGY_CANON_v1.0.md",
+    "sha256": "C0CCEADE752E7F0E7E91F99E3AA53B6F319C184C62E9D7AF6E42D3AB249CF0C8"
+  },
+  "bloom_engine_spec": {
+    "path": "docs/BLOOM_ENGINE_SPEC_v1.0.md",
+    "sha256": "D1D403E79EE4C6A3C929B7905C50A31F03A0360FB6E837C407E467486A3A7C2C"
+  },
+  "safe_mode_shell": {
+    "path": "docs/SAFE_MODE_CONSTELLATION_SHELL.md",
+    "sha256": "8C519AA08B29780ABEB641F5CAEBEB731E4FAA81CE85961C92D5E323C4542079"
+  },
+  "aster_lineage_root": {
+    "path": "identity/lineage/CORE_Aster_legacy_05.md",
+    "sha256": "AD93580A033CA65FBDA18569713B2E2EDBEF76A7688C53513B7CDC6A71AA3020"
+  },
+  "lineage_pointer": "GEN-1:ROOT (Aster)",
+  "architect_approval": "<placeholder>",
+  "notes": "Ceremonial integrity references; no enforcement."
+}

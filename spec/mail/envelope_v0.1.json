@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Calyx Mail Envelope Schema v0.1",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "header",
+    "ciphertext",
+    "signature"
+  ],
+  "properties": {
+    "protocol_version": {
+      "type": "string",
+      "pattern": "^0\\.1$",
+      "description": "Protocol version (must be '0.1' for this schema)"
+    },
+    "header": {
+      "type": "object",
+      "required": [
+        "sender_fp",
+        "recipient_fp",
+        "msg_id",
+        "timestamp"
+      ],
+      "properties": {
+        "sender_fp": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/=]{22,24}$",
+          "description": "Sender's ed25519 public key fingerprint (base64, no padding, 22-24 chars)"
+        },
+        "recipient_fp": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/=]{22,24}$",
+          "description": "Recipient's x25519 public key fingerprint (base64, no padding, 22-24 chars)"
+        },
+        "msg_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "description": "Message ID (UUID v4)"
+        },
+        "timestamp": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+          "description": "Message creation time (ISO 8601 UTC, format: YYYY-MM-DDTHH:MM:SSZ)"
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Optional subject line (plaintext, max 256 characters)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ciphertext": {
+      "type": "string",
+      "description": "x25519 sealed box ciphertext (base64-encoded)"
+    },
+    "signature": {
+      "type": "string",
+      "description": "ed25519 signature over canonical JSON of signed payload (base64-encoded)"
+    }
+  },
+  "additionalProperties": false
+}

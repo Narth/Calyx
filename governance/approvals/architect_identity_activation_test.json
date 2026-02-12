@@ -1,0 +1,27 @@
+{
+  "action": "architect_identity_activation_test",
+  "scope": "no_state_change",
+  "expected_effect": "none",
+  "correlation_id": "31f2f5d1fbf4",
+  "parent_correlation_id": "d2f87a5b9e1a",
+  "created_utc": "2026-02-07T02:20:30Z",
+  "files_hashed": [
+    {
+      "path": "governance/identities/governanceidentitiesarchitect_identity.json",
+      "sha256": "2B309F2E3E9651F82E3A6ECDE6AEDE8A3BEDCD3579D3805FEA9091939E089D20"
+    },
+    {
+      "path": "governance/identities/allowed_signers",
+      "sha256": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58"
+    },
+    {
+      "path": "governance/contracts/architect_approval.md",
+      "sha256": "72E57A215E50055833B930C7FCEE7D96CDC1A7CB7DFCF9BAC5DF05E3CDE42099"
+    }
+  ],
+  "signature": {
+    "required": true,
+    "status": "unsigned",
+    "note": "Dry run only. Absence of a valid Architect signature is explicit denial. No automation may derive or substitute approval."
+  }
+}

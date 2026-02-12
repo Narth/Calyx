@@ -1,0 +1,11 @@
+# Heartwood Integrity Seal (Ceremonial, Non-Operational)
+
+Hashes:
+- HEARTWOOD_CANON_v1.0: 6EB3B5EDAA8FD250C46868D32E60A5C47E0DC4B470242A4064A29790D0266307
+- HEARTWOOD_GROWTH_RULES_v1.0: BFB9AEAE3D635C4A5105E59C6ACB8F556ED385BEA3B6C140AC4E6D72E31DFC64
+- CORE_Aster_heartwood.md: 2949C1B8FBFDA02F42965A53EFB7C303155B5EA8AAA92FA398FAEA43916A3D44
+
+Lineage pointer: GEN-1:ROOT (Aster)
+Architect approval: <placeholder>
+
+Usage: Reflection-only; tamper-evident reference. No gating or operational effect.

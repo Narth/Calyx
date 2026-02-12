@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Station State Snapshot",
+  "type": "object",
+  "properties": {
+    "repo_roots_present": { "type": "array", "items": { "type": "string" } },
+    "node_id": { "type": "string" },
+    "active_workspaces": { "type": "array", "items": { "type": "string" } },
+    "last_known_correlation_id": { "type": ["string", "null"] },
+    "last_known_agent_statuses": { "type": "object" }
+  },
+  "required": ["repo_roots_present", "node_id", "active_workspaces"]
+}

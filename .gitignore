@@ -1,0 +1,127 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environments
+.venv/
+.venv311/
+venvs/
+env/
+ENV/
+venv/
+Scripts/.venv/
+
+# IDE & Editors
+.vscode/
+.cursor/
+.idea/
+.vs/
+*.swp
+*.swo
+*~
+
+# Keys & Secrets
+keys/
+*.key
+*.pem
+*.pk.b64
+*.sk.b64
+*.p12
+*.pfx
+*.secret
+.env
+.env.*
+!.env.example
+
+# Config (use template)
+config.yaml
+openclaw.config.json
+
+# Runtime state / generated outputs (never commit)
+state/
+outgoing/
+incoming/
+responses/
+staging/
+memory/
+logs/
+reports/
+telemetry/
+exports/
+station_calyx/data/
+runtime/
+runtime/keys/
+runtime/mailbox/
+
+# Evidence / logs / captures
+*.jsonl
+!tests/fixtures/*.jsonl
+!docs/examples/**/*.jsonl
+*.log
+*.csv
+*.sqlite
+*.sqlite3
+*.db
+*.tmp
+nohup.out
+
+# Audio / video / screenshots
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.ogg
+*.mp4
+*.mov
+*.avi
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Cache & compiled artifacts
+compiled/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.codex_cache/
+.claude_cache/
+.firecrawl_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Models and binaries
+*.bin
+*.pt
+*.onnx
+*.safetensors
+models/
+
+# Debug/testing leftovers
+_diag/
+benchmarks/results/
+*.test.json
+folder_tree.txt
+sitecustomize.py
+test_secret.py
+
+# Large local archives
+Codex/Archives/*.zip
+Codex/CGPT History/*.zip
+local_backups/
+
+# Keep curated placeholders/examples as needed
+!telemetry/**/.gitkeep
+!docs/examples/**
+!samples/**

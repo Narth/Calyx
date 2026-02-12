@@ -1,0 +1,76 @@
+{
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "title": "Enable bounded Git-based management for Helping-the-Help website (workspace-scoped)",
+  "intent": "Allow outbound-only Git operations required to update the Cloudflare Pages site via the main branch, in a dedicated workspace directory.",
+  "scope": {
+    "state_change": true,
+    "external_connectivity": "outbound_only",
+    "capability_category": "git_web_management"
+  },
+  "targets": {
+    "repo": {
+      "provider": "github",
+      "url": "https://github.com/Narth/Helping-the-Help",
+      "branch": "main"
+    },
+    "workspace": {
+      "path": "C:\\Calyx\\workspaces\\Helping-the-Help"
+    }
+  },
+  "allow_policy": {
+    "allowed_commands": [
+      "git --version",
+      "git status",
+      "git diff",
+      "git log -1",
+      "git remote -v",
+      "git rev-parse --abbrev-ref HEAD",
+      "git rev-parse HEAD",
+      "git show --stat --oneline -1",
+      "git clone https://github.com/Narth/Helping-the-Help C:\\Calyx\\workspaces\\Helping-the-Help",
+      "git checkout main",
+      "git push origin main"
+    ],
+    "denied_patterns": [
+      "git remote set-url",
+      "git push --mirror",
+      "git push --force",
+      "git push -f",
+      "git config --global",
+      "git credential",
+      "gh auth",
+      "curl",
+      "powershell Invoke-WebRequest",
+      "iwr"
+    ],
+    "preconditions": {
+      "workspace_path_must_be": "C:\\Calyx\\workspaces\\Helping-the-Help",
+      "origin_must_match_exact_url": "https://github.com/Narth/Helping-the-Help",
+      "branch_must_equal": "main"
+    }
+  },
+  "evidence_requirements": {
+    "must_record": [
+      "exact command strings",
+      "stdout/stderr summaries",
+      "workspace path",
+      "origin remote value",
+      "current branch",
+      "commit hash (HEAD) before and after",
+      "diffstat for the pushed commit(s)",
+      "push result (success/fail)",
+      "correlation_id and parent_correlation_id"
+    ],
+    "must_not_record": [
+      "tokens",
+      "credentials",
+      "private keys",
+      "full environment dumps"
+    ]
+  },
+  "notes": [
+    "Operations must be performed in the dedicated workspace. Do not operate in the Station repo.",
+    "This unlock does not authorize Cloudflare API or Tunnel usage.",
+    "No inbound firewall changes are permitted."
+  ]
+}

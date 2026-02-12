@@ -1,0 +1,83 @@
+{
+  "plan_id": "guardian_phase0_bundle",
+  "nodes": [
+    {
+      "task_id": "guardian_phase0_assessment",
+      "parent_id": "plan_guardian_phase0_bundle",
+      "role": "test_steward",
+      "inputs": ["tools/calyx_guardian/run_phase0_windows.ps1"],
+      "outputs": [
+        "logs/calyx_guardian/evidence.jsonl",
+        "logs/calyx_guardian/findings.json",
+        "logs/calyx_guardian/report.md",
+        "logs/calyx_guardian/run_log.jsonl"
+      ],
+      "allowed_operations": ["read", "test", "report"],
+      "max_runtime_seconds": 600,
+      "max_files_touched": 0,
+      "success_criteria": "Phase 0 assessment completed with artifacts",
+      "required_evidence": ["logs/calyx_guardian/report.md"],
+      "exec": "powershell",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "tools/calyx_guardian/run_phase0_windows.ps1",
+        "-OutDir",
+        "logs/calyx_guardian",
+        "-Verify"
+      ]
+    },
+    {
+      "task_id": "guardian_smoke_tests",
+      "parent_id": "plan_guardian_phase0_bundle",
+      "role": "test_steward",
+      "inputs": ["tools/calyx_guardian/tests/test_smoke_phase0.py"],
+      "outputs": ["logs/orchestrator/tasks/guardian_smoke_tests/stdout.log"],
+      "allowed_operations": ["test"],
+      "max_runtime_seconds": 120,
+      "max_files_touched": 0,
+      "success_criteria": "Pytest smoke passes",
+      "required_evidence": ["logs/orchestrator/tasks/guardian_smoke_tests/stdout.log"],
+      "exec": "py",
+      "args": ["-3.11", "-m", "pytest", "tools/calyx_guardian/tests/test_smoke_phase0.py", "-q"]
+    },
+    {
+      "task_id": "guardian_receipt_manifest",
+      "parent_id": "plan_guardian_phase0_bundle",
+      "role": "docs_steward",
+      "inputs": [
+        "logs/calyx_guardian/evidence.jsonl",
+        "logs/calyx_guardian/findings.json",
+        "logs/calyx_guardian/report.md"
+      ],
+      "outputs": ["logs/calyx_guardian/manifest.json"],
+      "allowed_operations": ["read", "report"],
+      "max_runtime_seconds": 60,
+      "max_files_touched": 0,
+      "success_criteria": "Manifest generated with hashes and correlation id",
+      "required_evidence": ["logs/calyx_guardian/manifest.json"],
+      "exec": "py",
+      "args": [
+        "-3.11",
+        "tools/calyx_guardian/render/guardian_manifest.py",
+        "--outdir",
+        "logs/calyx_guardian",
+        "--correlation-id",
+        "{correlation_id}"
+      ]
+    }
+  ],
+  "edges": [
+    {"from": "guardian_phase0_assessment", "to": "guardian_smoke_tests"},
+    {"from": "guardian_smoke_tests", "to": "guardian_receipt_manifest"}
+  ],
+  "global_budgets": {
+    "total_runtime_seconds": 900,
+    "total_files_changed": 0
+  },
+  "fail_policy": "fail_closed"
+}

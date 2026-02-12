@@ -1,0 +1,33 @@
+{
+  "action": "git_push_origin_main",
+  "proposal_id": "capability_unlock_git_web_management_v2",
+  "correlation_id": "d83b8aa4f782",
+  "parent_correlation_id": "4092b5d1bce3",
+  "ts_utc": "2026-02-09T04:10:00Z",
+  "artifacts": {
+    "push_execution_report": {
+      "path": "governance/reports/helpingthehelp_git_push_execution_report.json",
+      "sha256": "824BB0DC37EC9BFBAFE8A4287675A3C31912C881F9F76568F85E0DF3E5455927"
+    },
+    "authorized_push_receipt": {
+      "approval_json": {
+        "path": "governance/approvals/helpingthehelp_push_commit.approval.json",
+        "sha256": "57C4FB3A72103E1D1E4CDC37A64C0010E00C7CAC27B4178320E8B544571E4AA2"
+      },
+      "approval_sig": {
+        "path": "governance/approvals/helpingthehelp_push_commit.approval.json.sig",
+        "sha256": "9A1E35FBAEF3BF9CE1514B2F6FF90DED38EE84AD2165A33787371E041207B2B4"
+      },
+      "approval_verification_receipt": {
+        "path": "governance/approvals/helpingthehelp_push_commit.approval.verification_receipt.json",
+        "sha256": "DE755D3788B76EA6CF1C74589DD00EDD7521668F61690BE532F11EC63F4E3681"
+      },
+      "allowed_signers": {
+        "path": "governance/identities/allowed_signers",
+        "sha256": "E9B874A59FD4DBE463F1116E0EE0642749F76D664383E8A8ECDF92F2595E9C58"
+      }
+    }
+  },
+  "receipt_sha256": "D5370843B04D3F79D4C1299A5D4475385C53C234726AF5CB0F7F41AF72D65F6A",
+  "notes": "Receipt for single authorized git push. No additional operations performed."
+}
