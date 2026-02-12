@@ -1,13 +1,13 @@
-"""Envelope creation and verification for Calyx Mail."""
+"""Envelope creation and verification for Calyx Mail Protocol Layer v0.1."""
 
 from __future__ import annotations
 
 import base64
-import json
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Callable
 
+from .codec import build_signed_payload, canonical_encode, detect_version
 from .crypto import (
     DecryptionError,
     compute_fingerprint,
@@ -32,17 +32,7 @@ class ReplayError(Exception):
     pass
 
 
-def canonical_json(obj: dict[str, Any]) -> bytes:
-    """
-    Convert dict to canonical JSON bytes (sorted keys, no whitespace).
-    
-    Args:
-        obj: Dictionary to canonicalize
-        
-    Returns:
-        Canonical JSON bytes
-    """
-    return json.dumps(obj, sort_keys=True, separators=(',', ':')).encode('utf-8')
+# canonical_json moved to codec.py - use canonical_encode() instead
 
 
 def create_envelope(
@@ -52,9 +42,10 @@ def create_envelope(
     recipient_encryption_pub: bytes,
     subject: str | None = None,
     msg_id: str | None = None,
+    protocol_version: str = "0.1",
 ) -> dict[str, Any]:
     """
-    Create a signed and encrypted envelope.
+    Create a signed and encrypted envelope (v0.1).
     
     Args:
         plaintext: Message body bytes
@@ -63,9 +54,10 @@ def create_envelope(
         recipient_encryption_pub: Recipient's x25519 public key (32 bytes)
         subject: Optional subject line (max 256 chars)
         msg_id: Optional message ID (UUID v4). Generated if not provided.
+        protocol_version: Protocol version (default: "0.1")
         
     Returns:
-        Envelope dict with header, ciphertext, and signature
+        Envelope dict with protocol_version, header, ciphertext, and signature
     """
     # Generate message ID if not provided
     if msg_id is None:
@@ -84,7 +76,7 @@ def create_envelope(
     ciphertext_bytes = seal_to_recipient(plaintext, recipient_encryption_pub)
     ciphertext_b64 = base64.b64encode(ciphertext_bytes).decode('ascii')
     
-    # Create header
+    # Create header (keys will be sorted in build_signed_payload)
     header = {
         "sender_fp": sender_fp,
         "recipient_fp": recipient_fp,
@@ -94,19 +86,19 @@ def create_envelope(
     if subject is not None:
         header["subject"] = subject
     
-    # Create payload for signing (canonical JSON of header + ciphertext)
-    payload_dict = {
-        "header": header,
-        "ciphertext": ciphertext_b64,
-    }
-    payload_bytes = canonical_json(payload_dict)
+    # Build signed payload (explicit construction order: protocol_version, header, ciphertext)
+    payload = build_signed_payload(protocol_version, header, ciphertext_b64)
+    
+    # Canonical encode signed payload
+    payload_bytes = canonical_encode(payload)
     
     # Sign payload
     signature_bytes = sign(payload_bytes, sender_signing_priv)
     signature_b64 = base64.b64encode(signature_bytes).decode('ascii')
     
-    # Create envelope
+    # Create envelope (with protocol_version)
     envelope = {
+        "protocol_version": protocol_version,
         "header": header,
         "ciphertext": ciphertext_b64,
         "signature": signature_b64,
@@ -178,12 +170,18 @@ def verify_and_open_envelope(
         if not timestamp_check(timestamp):
             raise ReplayError(f"Timestamp validation failed: {timestamp}")
     
-    # Verify signature
-    payload_dict = {
-        "header": header,
-        "ciphertext": ciphertext_b64,
-    }
-    payload_bytes = canonical_json(payload_dict)
+    # Build signed payload (with explicit construction order)
+    protocol_version = envelope.get("protocol_version", "0.0")  # Legacy v0 support
+    if protocol_version == "0.1":
+        payload = build_signed_payload(protocol_version, header, ciphertext_b64)
+        payload_bytes = canonical_encode(payload)
+    else:
+        # Legacy v0: no protocol_version in signed payload
+        payload_dict = {
+            "header": header,
+            "ciphertext": ciphertext_b64,
+        }
+        payload_bytes = canonical_encode(payload_dict)
     
     try:
         signature_bytes = base64.b64decode(signature_b64)

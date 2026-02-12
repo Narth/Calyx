@@ -76,10 +76,16 @@ def test_mail_roundtrip_with_mailbox():
         outbox_path = mailbox.write_outbox(env, runtime_dir)
         assert outbox_path.exists()
         
+        # Initialize replay state (v0.1)
+        from calyx.mail import replay
+        replay_db_path = runtime_dir / "mailbox" / "replay_state.db"
+        replay_state = replay.ReplayState(replay_db_path)
+        
         # Deliver to inbox
         inbox_path = mailbox.deliver_to_inbox(
             env,
             runtime_dir,
+            replay_state=replay_state,
             check_allowlist=True,
             check_replay=True,
         )
@@ -90,13 +96,12 @@ def test_mail_roundtrip_with_mailbox():
         assert len(inbox_list) == 1
         assert inbox_list[0]["header"]["msg_id"] == env["header"]["msg_id"]
         
-        # Open envelope
+        # Open envelope (verify and decrypt)
         decrypted = envelope.verify_and_open_envelope(
             env,
             sender_signing_pub=sender_identity["signing_keypair"]["public"],
             recipient_encryption_priv=recipient_identity["encryption_keypair"]["private"],
             allowlist_check=lambda fp: fp in mailbox.load_allowlist(runtime_dir),
-            msg_id_seen_check=lambda mid: mid in mailbox.load_seen_cache(runtime_dir),
             timestamp_check=envelope.check_timestamp_window,
         )
         

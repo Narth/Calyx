@@ -1,14 +1,17 @@
-"""Mailbox operations: filesystem-based inbox, outbox, and receipt storage."""
+"""Mailbox operations: filesystem-based inbox, outbox, and receipt storage (v0.1 with hardening)."""
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .codec import compute_envelope_hash
 from .envelope import AllowlistError, ReplayError, check_timestamp_window
+from .replay import ReplayState, check_replay as check_replay_protection
 
 
 def get_mailbox_dir(runtime_dir: Path) -> Path:
@@ -43,7 +46,7 @@ def get_keys_dir(runtime_dir: Path) -> Path:
 
 def load_allowlist(runtime_dir: Path) -> list[str]:
     """
-    Load sender fingerprint allowlist from runtime/mailbox/allowlist.json.
+    Load sender fingerprint allowlist from runtime/mailbox/allowlist.json (v0.1 with symlink check).
     
     Args:
         runtime_dir: Runtime root directory
@@ -57,6 +60,8 @@ def load_allowlist(runtime_dir: Path) -> list[str]:
     if not allowlist_path.exists():
         return []
     
+    _check_symlink(allowlist_path)
+    
     try:
         with allowlist_path.open('r', encoding='utf-8') as f:
             data = json.load(f)
@@ -69,7 +74,7 @@ def load_allowlist(runtime_dir: Path) -> list[str]:
 
 def save_allowlist(runtime_dir: Path, fingerprints: list[str]) -> None:
     """
-    Save sender fingerprint allowlist to runtime/mailbox/allowlist.json.
+    Save sender fingerprint allowlist to runtime/mailbox/allowlist.json (v0.1 with atomic write).
     
     Args:
         runtime_dir: Runtime root directory
@@ -78,8 +83,11 @@ def save_allowlist(runtime_dir: Path, fingerprints: list[str]) -> None:
     mailbox_dir = get_mailbox_dir(runtime_dir)
     allowlist_path = mailbox_dir / "allowlist.json"
     
-    with allowlist_path.open('w', encoding='utf-8') as f:
-        json.dump(fingerprints, f, indent=2)
+    _check_symlink(allowlist_path)
+    
+    # Atomic write
+    content = json.dumps(fingerprints, indent=2).encode('utf-8')
+    _atomic_write(allowlist_path, content)
 
 
 def load_seen_cache(runtime_dir: Path) -> list[str]:
@@ -144,9 +152,55 @@ def add_to_seen_cache(runtime_dir: Path, msg_id: str) -> None:
     save_seen_cache(runtime_dir, seen)
 
 
+def _check_symlink(path: Path) -> None:
+    """Check if path is a symlink and reject if so."""
+    if path.is_symlink():
+        raise SecurityError(f"Symlinks not allowed: {path}")
+
+
+def _atomic_write(path: Path, content: bytes) -> None:
+    """Atomically write content to file (temporary file + atomic rename)."""
+    _check_symlink(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_suffix('.tmp')
+    try:
+        tmp_path.write_bytes(content)
+        tmp_path.replace(path)
+    except Exception as e:
+        if tmp_path.exists():
+            tmp_path.unlink()
+        raise OSError(f"Failed to atomically write {path}: {e}") from e
+
+
+def _verify_content_hash(path: Path, expected_hash: str) -> bool:
+    """
+    Verify that file content, when canonicalized, matches expected hash.
+    
+    Note: File content may be pretty-printed, but hash is computed from canonical form.
+    """
+    if not path.exists():
+        return False
+    try:
+        # Read and parse JSON
+        with path.open('r', encoding='utf-8') as f:
+            envelope = json.load(f)
+        
+        # Compute canonical hash
+        from .codec import compute_envelope_hash
+        actual_hash = compute_envelope_hash(envelope)
+        return actual_hash == expected_hash
+    except Exception:
+        return False
+
+
+class SecurityError(Exception):
+    """Raised when security check fails."""
+    pass
+
+
 def write_outbox(envelope_json: dict[str, Any], runtime_dir: Path) -> Path:
     """
-    Write envelope to outbox.
+    Write envelope to outbox (content-addressed filename, v0.1).
     
     Args:
         envelope_json: Envelope dict
@@ -159,11 +213,28 @@ def write_outbox(envelope_json: dict[str, Any], runtime_dir: Path) -> Path:
     outbox_dir = mailbox_dir / "outbox"
     outbox_dir.mkdir(parents=True, exist_ok=True)
     
-    msg_id = envelope_json.get("header", {}).get("msg_id", "unknown")
-    envelope_path = outbox_dir / f"{msg_id}.json"
+    _check_symlink(outbox_dir)
     
-    with envelope_path.open('w', encoding='utf-8') as f:
-        json.dump(envelope_json, f, indent=2)
+    # Compute content hash (full SHA256)
+    content_hash = compute_envelope_hash(envelope_json)
+    
+    # Content-addressed filename
+    envelope_path = outbox_dir / f"{content_hash}.json"
+    
+    # Check if file already exists (same content)
+    if envelope_path.exists():
+        if _verify_content_hash(envelope_path, content_hash):
+            return envelope_path
+        else:
+            raise SecurityError(f"Hash mismatch: filename hash {content_hash} does not match content")
+    
+    # Atomic write (pretty-printed for readability)
+    content = json.dumps(envelope_json, indent=2).encode('utf-8')
+    _atomic_write(envelope_path, content)
+    
+    # Verify hash: filename should match canonical hash
+    if envelope_path.stem != content_hash:
+        raise SecurityError(f"Filename hash mismatch: {envelope_path.stem} != {content_hash}")
     
     return envelope_path
 
@@ -171,24 +242,29 @@ def write_outbox(envelope_json: dict[str, Any], runtime_dir: Path) -> Path:
 def deliver_to_inbox(
     envelope_json: dict[str, Any],
     runtime_dir: Path,
+    replay_state: ReplayState | None = None,
     check_allowlist: bool = True,
     check_replay: bool = True,
+    check_timestamp: bool = True,
 ) -> Path:
     """
-    Deliver envelope to inbox (with allowlist and replay checks).
+    Deliver envelope to inbox (v0.1 with hardening).
     
     Args:
         envelope_json: Envelope dict
         runtime_dir: Runtime root directory
+        replay_state: Replay state database (required if check_replay=True)
         check_allowlist: If True, verify sender is in allowlist
-        check_replay: If True, verify message ID is not seen and timestamp is valid
+        check_replay: If True, verify envelope is not a replay
+        check_timestamp: If True, verify timestamp window
         
     Returns:
         Path to written envelope file
         
     Raises:
         AllowlistError: If sender is not in allowlist
-        ReplayError: If message ID is seen or timestamp is invalid
+        ReplayError: If envelope is a replay or timestamp invalid
+        SecurityError: If symlink or hash mismatch detected
     """
     header = envelope_json.get("header", {})
     sender_fp = header.get("sender_fp")
@@ -204,29 +280,50 @@ def deliver_to_inbox(
         if sender_fp not in allowlist:
             raise AllowlistError(f"Sender fingerprint not in allowlist: {sender_fp}")
     
-    # Check replay protection
-    if check_replay:
-        # Check message ID uniqueness
-        seen_cache = load_seen_cache(runtime_dir)
-        if msg_id in seen_cache:
-            raise ReplayError(f"Message ID already seen: {msg_id}")
-        
-        # Check timestamp window
+    # Check timestamp window (primary replay protection)
+    if check_timestamp:
         if not check_timestamp_window(timestamp):
             raise ReplayError(f"Timestamp validation failed: {timestamp}")
-        
-        # Add to seen cache
-        add_to_seen_cache(runtime_dir, msg_id)
+    
+    # Check replay protection (secondary, for recent duplicates)
+    if check_replay:
+        if replay_state is None:
+            # Fallback to legacy JSON cache for backward compatibility
+            seen_cache = load_seen_cache(runtime_dir)
+            if msg_id in seen_cache:
+                raise ReplayError(f"Message ID already seen: {msg_id}")
+            add_to_seen_cache(runtime_dir, msg_id)
+        else:
+            # Use SQLite replay state (v0.1)
+            check_replay_protection(envelope_json, replay_state)
+    
+    # Compute content hash (full SHA256)
+    content_hash = compute_envelope_hash(envelope_json)
     
     # Write to inbox
     mailbox_dir = get_mailbox_dir(runtime_dir)
     inbox_dir = mailbox_dir / "inbox"
     inbox_dir.mkdir(parents=True, exist_ok=True)
     
-    envelope_path = inbox_dir / f"{msg_id}.json"
+    _check_symlink(inbox_dir)
     
-    with envelope_path.open('w', encoding='utf-8') as f:
-        json.dump(envelope_json, f, indent=2)
+    # Content-addressed filename
+    envelope_path = inbox_dir / f"{content_hash}.json"
+    
+    # Check if file already exists (same content)
+    if envelope_path.exists():
+        if _verify_content_hash(envelope_path, content_hash):
+            return envelope_path
+        else:
+            raise SecurityError(f"Hash mismatch: filename hash {content_hash} does not match content")
+    
+    # Atomic write (pretty-printed for readability)
+    content = json.dumps(envelope_json, indent=2).encode('utf-8')
+    _atomic_write(envelope_path, content)
+    
+    # Verify hash: filename should match canonical hash
+    if envelope_path.stem != content_hash:
+        raise SecurityError(f"Filename hash mismatch: {envelope_path.stem} != {content_hash}")
     
     return envelope_path
 

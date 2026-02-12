@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Calyx Mail Receipt Schema v0.1",
+  "type": "object",
+  "required": [
+    "msg_id",
+    "status",
+    "timestamp"
+  ],
+  "properties": {
+    "msg_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "Message ID from envelope header (UUID v4)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["delivered", "read", "failed"],
+      "description": "Receipt status: delivered (decrypted successfully), read (opened by recipient), failed (decrypt/verify failed)"
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "description": "Receipt creation time (ISO 8601 UTC)"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if status is 'failed'"
+    }
+  },
+  "additionalProperties": false
+}

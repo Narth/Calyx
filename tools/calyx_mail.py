@@ -96,7 +96,7 @@ def cmd_send(args: argparse.Namespace) -> int:
     
     recipient_encryption_pub = base64.b64decode(recipient_encryption_pub_b64)
     
-    # Create envelope
+    # Create envelope (v0.1)
     plaintext = args.body.encode('utf-8')
     env = envelope.create_envelope(
         plaintext=plaintext,
@@ -104,6 +104,7 @@ def cmd_send(args: argparse.Namespace) -> int:
         sender_signing_pub=sender_signing_pub,
         recipient_encryption_pub=recipient_encryption_pub,
         subject=args.subject,
+        protocol_version="0.1",  # v0.1 protocol
     )
     
     # Write to outbox
@@ -172,9 +173,10 @@ def cmd_open(args: argparse.Namespace) -> int:
     allowlist = mailbox.load_allowlist(runtime_dir)
     allowlist_check = lambda fp: fp in allowlist
     
-    # Check replay protection
-    seen_cache = mailbox.load_seen_cache(runtime_dir)
-    msg_id_seen_check = lambda mid: mid in seen_cache
+    # Initialize replay state (v0.1)
+    from calyx.mail import replay
+    replay_db_path = runtime_dir / "mailbox" / "replay_state.db"
+    replay_state = replay.ReplayState(replay_db_path)
     
     timestamp_check = envelope.check_timestamp_window
     
@@ -185,12 +187,17 @@ def cmd_open(args: argparse.Namespace) -> int:
             sender_signing_pub,
             recipient_encryption_priv,
             allowlist_check=allowlist_check if allowlist else None,
-            msg_id_seen_check=msg_id_seen_check,
             timestamp_check=timestamp_check,
         )
         
-        # Deliver to inbox
-        mailbox.deliver_to_inbox(env, runtime_dir, check_allowlist=bool(allowlist), check_replay=True)
+        # Deliver to inbox (v0.1 with replay state)
+        mailbox.deliver_to_inbox(
+            env,
+            runtime_dir,
+            replay_state=replay_state,
+            check_allowlist=bool(allowlist),
+            check_replay=True,
+        )
         
         # Mark as delivered
         msg_id = header.get("msg_id")
