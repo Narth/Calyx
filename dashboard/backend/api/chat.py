@@ -44,32 +44,22 @@ def get_chat_history(limit: int = 50) -> List[Dict[str, Any]]:
 
             # Map svf_channels message fields to dashboard schema
             messages.append({
-        receipt_data = None
-        if msg_id:
-            try:
-                receipt_data = get_receipt_status(msg_id)
-            except Exception as e:
-                print(f"Error getting receipt status: {e}")
-                receipt_data = None
-            
-                # Map svf_channels message fields to dashboard schema
-                messages.append({
-                    "message_id": msg_id,
-                    "timestamp": msg.get("timestamp") or msg.get("ts", ""),
-                    "sender": msg.get("sender", "unknown"),
-                    "recipient": msg.get("context", {}).get("recipient", "all"),
-                    "channel": msg.get("channel", "standard"),
-                    "content": msg.get("message") or msg.get("text", ""),
-                    "status": "delivered",
-                    "metadata": {
-                        "thread_id": msg.get("context", {}).get("thread_id"),
-                        "priority": msg.get("priority", "normal"),
-                        "receipt_status": receipt_data.get("status", "queued") if receipt_data else "queued",
-                        "receipt_delivered": receipt_data.get("delivered", 0) if receipt_data else 0,
-                        "receipt_read": receipt_data.get("read", 0) if receipt_data else 0,
-                        "receipt_total": receipt_data.get("total_recipients", 0) if receipt_data else 0
-                    }
-                })
+                "message_id": msg_id,
+                "timestamp": msg.get("timestamp") or msg.get("ts", ""),
+                "sender": msg.get("sender", "unknown"),
+                "recipient": msg.get("context", {}).get("recipient", "all"),
+                "channel": msg.get("channel", "standard"),
+                "content": msg.get("message") or msg.get("text", ""),
+                "status": "delivered",
+                "metadata": {
+                    "thread_id": msg.get("context", {}).get("thread_id"),
+                    "priority": msg.get("priority", "normal"),
+                    "receipt_status": receipt_data.get("status", "queued") if receipt_data else "queued",
+                    "receipt_delivered": receipt_data.get("delivered", 0) if receipt_data else 0,
+                    "receipt_read": receipt_data.get("read", 0) if receipt_data else 0,
+                    "receipt_total": receipt_data.get("total_recipients", 0) if receipt_data else 0
+                }
+            })
     except Exception as e:
         print(f"Error getting chat history: {e}")
     
