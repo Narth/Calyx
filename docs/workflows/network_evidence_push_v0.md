@@ -47,7 +47,7 @@ This workflow enables evidence push from remote Station Calyx nodes over a priva
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-Example output: `Ks8mP2xQ9vR3wY7zA1bC4dE6fG8hJ0kL2mN4pQ6rS8t`
+Example output: `EXAMPLE_TOKEN_REDACTED_DO_NOT_USE_IN_PRODUCTION`
 
 ### Start Server on LAN IP
 
@@ -83,7 +83,7 @@ ipconfig | Select-String "IPv4"
 
 ```powershell
 # Set the token
-$token = "your-secure-token-here"
+$token = "<REDACTED_TOKEN>"
 $server = "http://192.168.1.100:8420"
 
 # Read evidence bundle
@@ -108,7 +108,7 @@ Invoke-RestMethod -Uri "$server/v1/ingest/evidence" `
 ```bash
 # Export bundle to JSON array format first
 curl -X POST "http://192.168.1.100:8420/v1/ingest/evidence" \
-    -H "Authorization: Bearer your-secure-token-here" \
+    -H "Authorization: Bearer <REDACTED_TOKEN>" \
     -H "Content-Type: application/json" \
     -d '{"envelopes": [...]}'
 ```
@@ -249,7 +249,7 @@ Expected: `401 Unauthorized`
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:8420/v1/ingest/evidence" `
     -Method POST `
-    -Headers @{ Authorization = "Bearer wrong-token" } `
+    -Headers @{ Authorization = "Bearer <INVALID_TOKEN_EXAMPLE>" } `
     -ContentType "application/json" `
     -Body '{"envelopes": []}'
 ```

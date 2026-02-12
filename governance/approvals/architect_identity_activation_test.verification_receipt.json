@@ -9,7 +9,7 @@
     "tool": "ssh-keygen -Y verify",
     "signer": "architect",
     "namespace": "calyx",
-    "public_key_fingerprint": "SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw"
+    "public_key_fingerprint": "SHA256:<REDACTED_FINGERPRINT>"
   },
   "artifacts": {
     "unsigned_receipt": {
@@ -44,7 +44,7 @@
       }
     ],
     "command_used": "type governance\\approvals\\architect_identity_activation_test.json | ssh-keygen -Y verify -f governance\\identities\\allowed_signers -I architect -n calyx -s governance\\approvals\\architect_identity_activation_test.json.sig",
-    "stdout_excerpt": "Good \"calyx\" signature for architect with ED25519 key SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw"
+    "stdout_excerpt": "Good \"calyx\" signature for architect with ED25519 key SHA256:<REDACTED_FINGERPRINT>"
   },
   "notes": "Verification-only. No state mutation performed."
 }

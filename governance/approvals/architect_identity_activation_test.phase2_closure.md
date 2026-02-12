@@ -23,7 +23,7 @@
 - Tool: `ssh-keygen -Y verify`
 - Signer identity label: `architect`
 - Namespace used for verification: `calyx`
-- Public key fingerprint (from verifier output): `SHA256:qipmUSDpJ8i2yPHCTYAK+hlA3f9WT+mdNsPiD1cwiaw`
+- Public key fingerprint (from verifier output): `SHA256:<REDACTED_FINGERPRINT>`
 
 ## Evidence (command excerpt)
 - `type governance\approvals\architect_identity_activation_test.json | ssh-keygen -Y verify -f governance\identities\allowed_signers -I architect -n calyx -s governance\approvals\architect_identity_activation_test.json.sig`
