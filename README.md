@@ -67,6 +67,9 @@ Station Calyx runs on a single machine (or private LAN) and provides:
 If you’re reviewing this repo for safety: the “public-ready” verification receipt lives in  
 `reports/security/public_release_readiness_verification_2026-02-11.md` (when present).
 
+**⚠️ History Rewrite Notice (2026-02-12):**  
+This repository underwent a Git history rewrite to remove exposed secrets. All commit SHAs have changed. If you cloned before 2026-02-12, please re-clone or reset your local branches: `git fetch origin --prune && git reset --hard origin/main`
+
 ---
 
 ## What this is not
