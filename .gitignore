@@ -42,6 +42,7 @@ keys/
 
 # Config (use template)
 config.yaml
+openclaw.config.json
 
 # Runtime state / generated outputs (never commit)
 state/

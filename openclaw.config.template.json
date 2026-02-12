@@ -1,0 +1,17 @@
+{
+  "agent": {
+    "name": "Calyx Bridge Overseer (CBO)",
+    "model": "openai/gpt-4-turbo"
+  },
+  "providers": {
+    "openai": {
+      "apiKey": "__SET_ME__"
+    }
+  },
+  "channels": {
+    "discord": {
+      "botToken": "__SET_ME__",
+      "applicationId": "__SET_ME__"
+    }
+  }
+}
