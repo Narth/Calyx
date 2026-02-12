@@ -2,16 +2,24 @@ name: Public Repo Hygiene
 
 on:
   pull_request:
+    branches: ["main"]
   push:
-    branches: ["main", "master", "work"]
+    branches: ["main"]
 
 jobs:
   hygiene:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Verify no forbidden runtime artifacts are tracked
         run: bash tools/check_forbidden_tracked_paths.sh
+
+      - name: Run gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: detect --verbose --redact --config=.gitleaks.toml
+
       - name: Compile critical Python modules
         run: |
           python -m py_compile \
