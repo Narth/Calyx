@@ -21,11 +21,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_CONFIG: .gitleaks.toml
 
-      - name: Compile critical Python modules
+      - name: Compile Python modules
         run: |
-          python -m py_compile \
-            dashboard/backend/main.py \
-            dashboard/backend/auth.py \
-            dashboard/backend/api/chat.py \
-            station_calyx/api/server.py \
-            station_calyx/api/routes.py
+          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' | tr '\n' ' ')
+          if [ -n "$files" ]; then
+            python -m py_compile $files
+          else
+            echo "No Python files found to compile."
+          fi
