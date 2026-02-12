@@ -95,3 +95,21 @@ This repository underwent a Git history rewrite to remove exposed secrets. All c
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 pytest -q
+```
+
+### Running Tests
+
+Tests are configured to run in clean environments without manual `PYTHONPATH` tweaks:
+
+```powershell
+# Run all mail tests
+pytest tests/ -k "test_mail" -v
+
+# Run specific test file
+pytest tests/test_mail_roundtrip.py -v
+
+# Run with clean environment (no PYTHONPATH)
+$env:PYTHONPATH = $null; pytest tests/ -k "test_mail" -v
+```
+
+**Configuration:** `pytest.ini` sets `pythonpath = .` to ensure the `calyx` package is importable.

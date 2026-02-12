@@ -153,13 +153,23 @@ def add_to_seen_cache(runtime_dir: Path, msg_id: str) -> None:
 
 
 def _check_symlink(path: Path) -> None:
-    """Check if path is a symlink and reject if so."""
+    """
+    Check if path is a symlink and reject if so.
+    
+    This is a baseline check. For additional hardening, see _atomic_write_fd()
+    which uses fd-based operations where platform supports it.
+    """
     if path.is_symlink():
         raise SecurityError(f"Symlinks not allowed: {path}")
 
 
 def _atomic_write(path: Path, content: bytes) -> None:
-    """Atomically write content to file (temporary file + atomic rename)."""
+    """
+    Atomically write content to file (temporary file + atomic rename).
+    
+    Uses baseline symlink check. For additional hardening on platforms that
+    support it, see _atomic_write_fd() which uses fd-based operations.
+    """
     _check_symlink(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = path.with_suffix('.tmp')
@@ -167,6 +177,62 @@ def _atomic_write(path: Path, content: bytes) -> None:
         tmp_path.write_bytes(content)
         tmp_path.replace(path)
     except Exception as e:
+        if tmp_path.exists():
+            tmp_path.unlink()
+        raise OSError(f"Failed to atomically write {path}: {e}") from e
+
+
+def _atomic_write_fd(path: Path, content: bytes) -> None:
+    """
+    Atomically write content using fd-based operations (best-effort hardening).
+    
+    Uses os.open() with O_NOFOLLOW where platform supports it to prevent
+    symlink/TOCTOU attacks. Falls back to _atomic_write() if not portable.
+    
+    Platform support:
+    - Unix-like (Linux, macOS): O_NOFOLLOW supported
+    - Windows: Not supported, falls back to baseline
+    
+    Args:
+        path: Target file path
+        content: Content to write (bytes)
+    """
+    import os
+    import stat
+    
+    # Check if platform supports O_NOFOLLOW
+    try:
+        O_NOFOLLOW = os.O_NOFOLLOW
+    except AttributeError:
+        # Platform doesn't support O_NOFOLLOW (e.g., Windows)
+        # Fall back to baseline atomic write
+        _atomic_write(path, content)
+        return
+    
+    # Unix-like platform: use fd-based operations
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_suffix('.tmp')
+    
+    try:
+        # Open temporary file with O_NOFOLLOW (prevents symlink attacks)
+        tmp_fd = os.open(
+            str(tmp_path),
+            os.O_WRONLY | os.O_CREAT | os.O_EXCL | O_NOFOLLOW,
+            stat.S_IRUSR | stat.S_IWUSR  # 0600 permissions
+        )
+        
+        try:
+            # Write content
+            os.write(tmp_fd, content)
+            os.fsync(tmp_fd)  # Ensure data is written to disk
+        finally:
+            os.close(tmp_fd)
+        
+        # Atomic rename (POSIX: atomic, Windows: best-effort)
+        tmp_path.replace(path)
+        
+    except OSError as e:
+        # Clean up temporary file on error
         if tmp_path.exists():
             tmp_path.unlink()
         raise OSError(f"Failed to atomically write {path}: {e}") from e
@@ -191,6 +257,21 @@ def _verify_content_hash(path: Path, expected_hash: str) -> bool:
         return actual_hash == expected_hash
     except Exception:
         return False
+
+
+def _validate_filename(filename: str) -> bool:
+    """
+    Validate that filename matches content-addressed pattern: ^[0-9a-f]{64}\\.json$
+    
+    Args:
+        filename: Filename to validate (e.g., "abc123.json")
+        
+    Returns:
+        True if filename matches pattern, False otherwise
+    """
+    import re
+    pattern = r'^[0-9a-f]{64}\.json$'  # Raw string: \. matches literal dot
+    return bool(re.match(pattern, filename))
 
 
 class SecurityError(Exception):
@@ -220,6 +301,10 @@ def write_outbox(envelope_json: dict[str, Any], runtime_dir: Path) -> Path:
     
     # Content-addressed filename
     envelope_path = outbox_dir / f"{content_hash}.json"
+    
+    # Validate filename pattern (content-addressed: 64 hex chars)
+    if not _validate_filename(envelope_path.name):
+        raise SecurityError(f"Invalid filename pattern: {envelope_path.name} (expected ^[0-9a-f]{{64}}\\.json$)")
     
     # Check if file already exists (same content)
     if envelope_path.exists():
@@ -310,6 +395,10 @@ def deliver_to_inbox(
     # Content-addressed filename
     envelope_path = inbox_dir / f"{content_hash}.json"
     
+    # Validate filename pattern (content-addressed: 64 hex chars)
+    if not _validate_filename(envelope_path.name):
+        raise SecurityError(f"Invalid filename pattern: {envelope_path.name} (expected ^[0-9a-f]{{64}}\\.json$)")
+    
     # Check if file already exists (same content)
     if envelope_path.exists():
         if _verify_content_hash(envelope_path, content_hash):
@@ -344,15 +433,36 @@ def list_inbox(runtime_dir: Path) -> list[dict[str, Any]]:
     if not inbox_dir.exists():
         return []
     
+    _check_symlink(inbox_dir)
+    
     envelopes = []
     for envelope_path in inbox_dir.glob("*.json"):
+        # Validate filename pattern (content-addressed: 64 hex chars)
+        if not _validate_filename(envelope_path.name):
+            continue  # Skip malformed filenames
+        
+        try:
+            _check_symlink(envelope_path)
+        except SecurityError:
+            continue  # Skip symlinks
+        
         try:
             with envelope_path.open('r', encoding='utf-8') as f:
                 envelope = json.load(f)
+                
+                # Verify content hash matches filename (v0.1 hardening)
+                expected_hash = envelope_path.stem  # Filename without .json
+                actual_hash = compute_envelope_hash(envelope)
+                
+                if actual_hash != expected_hash:
+                    # Hash mismatch - skip this file
+                    continue
+                
                 # Return header only (remove ciphertext and signature for listing)
                 header_only = {
                     "header": envelope.get("header", {}),
                     "msg_id": envelope.get("header", {}).get("msg_id"),
+                    "content_hash": actual_hash,
                 }
                 envelopes.append(header_only)
         except (json.JSONDecodeError, IOError):
