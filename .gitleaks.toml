@@ -1,0 +1,20 @@
+title = "Calyx gitleaks config"
+
+[[rules]]
+id = "discord-bot-token"
+description = "Discord bot token"
+regex = '''(?i)(?:discord(?:_|-|\s)?bot(?:_|-|\s)?token\s*[:=]\s*['\"]?)([MN][A-Za-z\d]{23}\.[\w-]{6}\.[\w-]{27})'''
+secretGroup = 1
+
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API key"
+regex = '''\b(sk-(?:proj-)?[A-Za-z0-9]{20,})\b'''
+secretGroup = 1
+
+[[rules]]
+id = "generic-high-entropy-secret"
+description = "Generic high-entropy credential assigned to a secret-like variable"
+regex = '''(?i)(?:secret|token|api[_-]?key|password|passwd|pwd|auth|bearer)[A-Za-z0-9_\-\s]{0,20}[:=]\s*['\"]?([A-Za-z0-9_\-\/=+]{20,})['\"]?'''
+secretGroup = 1
+entropy = 4.2
