@@ -1,0 +1,25 @@
+# Gitleaks configuration for Station Calyx public repository
+# Minimal config using default rules with custom allowlist
+
+title = "Station Calyx Public Repo"
+
+[extend]
+# Use default gitleaks rules
+useDefault = true
+
+[allowlist]
+# Allow redacted placeholders in documentation
+description = "Allow redacted placeholders in docs and test files"
+paths = [
+  '''docs/.*''',
+  '''governance/approvals/.*''',
+]
+
+# Allow common test/example patterns
+regexes = [
+  '''<REDACTED.*>''',
+  '''REDACTED.*''',
+  '''EXAMPLE.*''',
+  '''NOT_A.*''',
+  '''DO_NOT_USE.*''',
+]
