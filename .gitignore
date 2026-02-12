@@ -57,6 +57,8 @@ telemetry/
 exports/
 station_calyx/data/
 runtime/
+runtime/keys/
+runtime/mailbox/
 
 # Evidence / logs / captures
 *.jsonl
