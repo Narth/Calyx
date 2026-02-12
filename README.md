@@ -1,119 +1,109 @@
-# Calyx Terminal
+# Station Calyx
 
-Station Calyx governance and operation repo producing Outcome Density runs to assess system health, stability, and value in autonomous governance research. Local, real-time speech pipeline with optional wake-word biasing ("Calyx") and a lightweight phonetic KWS post-filter. Intended for development and experimentation on Windows PowerShell.
+Local-first AI governance and coordination system. This repository contains the architecture, code, and documentation for Station Calyx and BloomOS: a private coordination layer (CBO, agents, sensors) with gateway-isolated public interaction.
 
-## Try it
+---
 
-```powershell
-python -u .\Scripts\listener_plus.py
-```
+## What Is This?
+
+Station Calyx is a **local-first** multi-agent governance stack that runs on a single machine or private network. It provides:
+
+- **Central Bridge Overseer (CBO):** Planning, task dispatch, metrics, and policy enforcement.
+- **Agent registry and scheduling:** Registered agents consume tasks from a queue and report status.
+- **Sensors and governance:** Policy files, registry, TES-style metrics, and resource checks.
+- **Gateway (public edge):** The only public-facing path. All external access goes through the Gateway; Station Calyx itself is loopback-only.
+
+BloomOS refers to the broader operational and telemetry layer (boot guard, sun-cycle, energy/reality atoms) used in conjunction with Station Calyx. The repo is **architecture-only**: code, schemas, and docs. Runtime state (telemetry, exports, CBO queue, logs) lives outside the repo or under ignored directories.
+
+---
+
+## Core Principles
+
+1. **Local-first:** Station and CBO run on localhost or a private network. No direct public exposure of Station endpoints.
+2. **Gateway-isolated public interaction:** Public clients talk only to the Gateway (auth, rate limit, schema validation). The Gateway forwards to Station over a private path.
+3. **Architecture-only repo:** No runtime artifacts, telemetry, or sensitive data in git. State lives under `runtime/`, `logs/`, etc., and is gitignored.
+4. **Policy and registry as source of truth:** Agent capabilities and policy constraints are defined in config and registry; CBO enforces them.
+
+---
+
+## Architecture Overview
+
+- **`calyx/cbo/`** — CBO core: bridge overseer, plan engine, task store, dispatch, sensors, API. Runtime state (e.g. task queue, objectives) is written under `runtime/cbo/` (or `{CALYX_RUNTIME_DIR}/cbo/`).
+- **`calyx/core/`** — Registry, policy, shared config.
+- **`station_calyx/`** — Station API and routes (loopback-only by default).
+- **`deploy/gateway/`** — Gateway scaffolding and contract. Public traffic terminates here; Gateway forwards to Station.
+- **`tools/`** — Scripts for agents, dashboard, maintenance, sys-integrator, CBO CLI.
+- **`docs/`** — Architecture, gateway contract, onboarding, triage, workflows.
+
+Public users **must not** call Station Calyx directly. They use the Gateway; the Gateway calls Station on `http://127.0.0.1:8420` (or configured private URL).
+
+---
+
+## Security Model
+
+- **Station Calyx:** Binds to loopback by default. Non-loopback bind requires an explicit override (e.g. `CALYX_ALLOW_NON_LOOPBACK=true`). Not intended for direct internet exposure.
+- **Gateway:** Only component that should be public. Contract and controls (HMAC, rate limit, schema validation, allowlisted forwarding) are in `docs/gateway.md`.
+- **Repo hygiene:** Forbidden paths (telemetry, exports, station_calyx/data, runtime, logs, keys, etc.) must not be tracked. CI runs `tools/check_forbidden_tracked_paths.sh` and Python compile checks.
+
+---
+
+## What This Is Not
+
+- **Wake-word-first:** Speech/wake-word pipelines (e.g. listener scripts, KWS) may exist in the repo for experimentation but are not the primary or required entry point. This README does not position the project as a wake-word-first product.
+- **Outcome Density as primary product:** Outcome Density runs and benchmarks are one use case, not the main positioning of the repo. The repo is a governance and coordination stack.
+- **Direct public Station API:** There is no supported model where external clients call Station Calyx directly. Use the Gateway.
+
+---
+
+## Current Status
+
+- **Repository:** Architecture-only; history rewritten to remove runtime artifacts; CBO runtime state relocated to `runtime/cbo/`.
+- **Hygiene:** Forbidden-path check and `py_compile` sanity run in CI (`.github/workflows/public-repo-hygiene.yml`).
+- **Gateway:** MVP contract and scaffolding in place; see `docs/gateway.md`.
+- **Public readiness:** Verification report in `reports/security/public_release_readiness_verification_2026-02-11.md` (when present).
+
+---
+
 ## Quickstart
 
-Prerequisites
-
-- Python 3.10+ (use a venv)
-- `requirements.txt` provides runtime deps
-
-Activate virtualenv (PowerShell):
+**Prerequisites:** Python 3.10+; use a virtualenv.
 
 ```powershell
-.\Scripts\.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Quick runtime checks
-
-```powershell
-python .\Scripts\quick_check.py
-python -u .\Scripts\listener_plus.py
-python -u .\Scripts\listener_wake.py
-```
-
-Microphone index and quick checks
-
-```powershell
-# show available audio devices and their indexes
-python .\Scripts\list_mics.py
-
-# run a mic sanity check (VU / short recording)
-python .\Scripts\quick_check.py
-
-# run wake listener
-python -u .\Scripts\listener_wake.py
-
-# run evaluation in mock mode (no model downloads)
-python .\tools\eval_wake_word.py --mock --out logs/eval_wake_word.csv
-```
-
-Run tests
+**Run tests:**
 
 ```powershell
 pytest -q
 ```
 
-Evaluation (if available)
+**Useful entry points:**
 
-```powershell
-python .\tools\eval_wake_word.py --cfg config.yaml --model small
-```
+- CBO and agents: see `calyx/cbo/README.md` and `docs/AGENT_ONBOARDING.md`.
+- Triage loop: `docs/TRIAGE.md`.
+- Station CLI: `docs/CALYX_CLI_GUIDE.md`.
+- Gateway contract: `docs/gateway.md`.
 
-Where to look
+**Key paths:**
 
-- `asr/` — core pipeline: `pipeline.py`, `kws.py`, `normalize.py`, `config.py`
-- `Scripts/` — runnable listeners and utilities
-- `samples/wake_word/` — positive/negative examples for evaluation
-- `logs/wake_word_audit.csv` — KWS audit logging
-- `outgoing/telemetry/state.json` — lightweight telemetry (agents active, drift agent1↔scheduler)
-- Customize Watcher icons: `outgoing/watcher_icons.json` (emoji per agent name)
-- Compendium of agents/copilots/overseers: `docs/COMPENDIUM.md`
+- `calyx/cbo/` — CBO logic and API.
+- `station_calyx/` — Station API server.
+- `tools/` — Scripts and utilities.
+- `docs/` — Architecture and operational docs.
 
-Agent Onboarding
+---
 
-- Comprehensive guide: `docs/AGENT_ONBOARDING.md` ⭐ (start here!)
-- Quick reference: `docs/QUICK_REFERENCE.md` (common commands)
-- Onboarding tool: `python -u .\Scripts\agent_onboarding.py --verify`
-- Copilot guide: `docs/COPILOTS.md` (copilot-specific guidance)
+## Contributing
 
-Milestones
+- Keep changes config-driven; add tests for new behavior.
+- Update `requirements.txt` when adding dependencies.
+- Do not track runtime artifacts; respect `.gitignore` and the hygiene denylist.
 
-- See `MILESTONES.md` for landmark achievements and team accolades.
-- See `logs/HEARTBEATS.md` for a chronological index of heartbeat events (including the Genesis heartbeat).
-- See `logs/EVOLUTION.md` for multi-agent evolution stages and links to detailed reports.
+---
 
-Triage
+## Troubleshooting
 
-- Learn about the 3-phase triage loop (A: proposer/validator, B: reviewer, C: stability) and how to run it: `docs/TRIAGE.md`.
-
-Tasks & goals
-
-- Unified dashboard: `logs/TASKS.md` (human-readable)
-- Machine view: `outgoing/tasks_dashboard.json`
-- To regenerate:
-
-```powershell
-python -u .\tools\generate_task_dashboard.py
-```
-
-Agent Watcher control (bridge)
-
-- The watcher GUI can accept safe commands from Agent1 when you explicitly unlock control.
-- Start the watcher, click "Control: Locked" to unlock, then run the test:
-
-```powershell
-python -u .\tools\test_watcher_control.py
-```
-
-See `docs/TRIAGE.md` for the triage loop, and `OPERATIONS.md` for watcher control details.
-
-Contributing
-
-- Keep changes config-driven and add unit tests for new behavior.
-- Update `requirements.txt` when adding new packages.
-
-Troubleshooting
-
-- SciPy / soundfile issues: on some Windows machines `soundfile` or `scipy` installations fail. If you encounter import errors for `soundfile` or `scipy` when running real audio paths, either:
-	- Install the binary wheels from PyPI using `pip install soundfile scipy` (ensure a compatible Python version), or
-	- Use the lightweight debug listener which avoids SciPy dependencies: `Scripts/listener_plus_debug_noscipy.py` (this script uses a simplified audio path and is intended for quick local debugging).
-
-- ExecutionPolicy blocking script activation: see `OPERATIONS.md` for the temporary `-ExecutionPolicy Bypass` commands to run the venv activation or listeners without changing system policy.
+- **ExecutionPolicy (PowerShell):** If script execution is blocked, see `OPERATIONS.md` for `-ExecutionPolicy Bypass` usage for venv activation or one-off runs.
+- **Audio/speech (optional):** If you use listener or wake-word scripts and hit SciPy/soundfile issues on Windows, install wheels with `pip install soundfile scipy` or use the debug listener that avoids those deps.
