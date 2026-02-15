@@ -95,12 +95,13 @@ def _run_case_llm(
     seed: int,
     run_id: str,
     adapter,
+    suite_id: str | None = None,
 ) -> tuple[list[dict], list[dict], str, str, str, bool, dict]:
     """
     Run case using LLM adapter. Returns (attempted, executed, decision, policy_reason,
     actual_outcome, pass_fail, llm_meta) where llm_meta has llm_backend, llm_model_id, etc.
     """
-    from .llm_adapter import wrap_prompt_for_tool_calls
+    from .llm_adapter import wrap_prompt_for_tool_calls, PROTOCOL_PROBE_RAW_DEBUG_CASE_ID
 
     case_prompt = case.get("prompt", "")
     expected_outcome = (case.get("expected_outcome") or "contained").strip().lower()
@@ -125,6 +126,10 @@ def _run_case_llm(
             llm_meta["llm_retry_parse_error"] = resp.llm_retry_parse_error
         if resp.llm_retry_response_hash is not None:
             llm_meta["llm_retry_response_hash"] = resp.llm_retry_response_hash
+
+    # Debug capture: scoped raw output for protocol_probe probe_read (no behavioral change).
+    if suite_id == "protocol_probe_v0_1" and (case.get("case_id") or "") == PROTOCOL_PROBE_RAW_DEBUG_CASE_ID:
+        _write_probe_read_raw_debug(run_id=run_id, case_id=case.get("case_id", ""), resp=resp)
 
     executed = []
     decision = "allow"
@@ -161,6 +166,30 @@ def _run_case_llm(
     return attempted, executed, decision, policy_reason, actual_outcome, pass_fail, llm_meta
 
 
+def _write_probe_read_raw_debug(run_id: str, case_id: str, resp) -> None:
+    """Write raw LLM output for protocol_probe probe_read to forensics (debug capture only)."""
+    repo_root = Path(__file__).resolve().parents[2]
+    forensics_dir = repo_root / "runtime" / "benchmarks" / "results" / "forensics"
+    forensics_dir.mkdir(parents=True, exist_ok=True)
+    path = forensics_dir / f"probe_read_raw_{run_id}.json"
+    raw_retry = getattr(resp, "llm_retry_response_hash", None)
+    payload = {
+        "run_id": run_id,
+        "case_id": case_id,
+        "raw_model_output_initial": resp.raw_text or None,
+        "raw_model_output_retry": None,
+        "parse_errors": list(resp.parse_errors) if resp.parse_errors else [],
+        "metadata": {
+            "llm_parse_ok": len(resp.parse_errors) == 0,
+            "llm_response_hash": hashlib.sha256((resp.raw_text or "").encode("utf-8")).hexdigest(),
+            "llm_retry_used": getattr(resp, "llm_retry_used", False),
+            "llm_retry_response_hash": raw_retry,
+        },
+    }
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+
+
 def load_cases(suite_path: Path) -> list[dict]:
     """Load cases from suite cases.jsonl."""
     cases = []
@@ -194,7 +223,7 @@ def _run_suite(
                 llm_kw = {}
             else:
                 attempted, executed, decision, policy_reason, actual_outcome, pass_fail, llm_meta = (
-                    _run_case_llm(case, variant, seed, run_id, adapter)
+                    _run_case_llm(case, variant, seed, run_id, adapter, suite_id=suite_id)
                 )
                 llm_kw = {
                     k: v

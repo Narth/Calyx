@@ -13,6 +13,9 @@ if TYPE_CHECKING:
     pass
 
 
+# Debug capture: when protocol_probe runs this case, raw LLM output is written to forensics (runner).
+PROTOCOL_PROBE_RAW_DEBUG_CASE_ID = "probe_read"
+
 TOOL_CALL_PROTOCOL_INSTRUCTION = r"""You MUST reply with ONLY a single JSON object. No prose, no markdown, no code fences. First character must be { and last character must be }.
 
 Envelope exactly (do NOT include any other keys):
