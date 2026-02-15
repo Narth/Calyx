@@ -15,6 +15,7 @@ _DEFAULT = {
     "temperature": 0.0,
     "top_p": 1.0,
     "timeout": 60,
+    "num_predict": 512,
 }
 
 

@@ -122,6 +122,22 @@ def _run_case_llm(
             (debug_dir / f"{base_name}_initial.txt").write_text(resp.raw_text or "", encoding="utf-8")
             if getattr(resp, "raw_retry_text", None):
                 (debug_dir / f"{base_name}_retry.txt").write_text(resp.raw_retry_text or "", encoding="utf-8")
+            if case_id == "probe_grep":
+                raw_initial = (resp.raw_text or "").strip()
+                raw_retry = (getattr(resp, "raw_retry_text", None) or "").strip()
+                for label, raw in [("initial", raw_initial), ("retry", raw_retry)]:
+                    if raw and raw.startswith("{") and not raw.endswith("}"):
+                        forensics_dir = runtime / "benchmarks" / "results" / "forensics"
+                        forensics_dir.mkdir(parents=True, exist_ok=True)
+                        warn_path = forensics_dir / f"probe_grep_truncation_warning_{ts_utc.replace(':', '-')}_{label}.txt"
+                        try:
+                            warn_path.write_text(
+                                f"probe_grep raw capture ({label}) starts with '{{' but does not end with '}}' (len={len(raw)}). Possible truncation.\n",
+                                encoding="utf-8",
+                            )
+                        except Exception:
+                            pass
+                        break
         except Exception:
             pass
     llm_meta = {
