@@ -126,3 +126,7 @@ local_backups/
 !telemetry/**/.gitkeep
 !docs/examples/**
 !samples/**
+
+# Local workspace (not part of Calyx repo)
+workspaces/Helping-the-Help/
+
