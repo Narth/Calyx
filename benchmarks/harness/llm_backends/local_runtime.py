@@ -2,7 +2,6 @@
 Local LLM runtime: subprocess to ollama or similar.
 No network. Fixed command; prompt passed via stdin only.
 Implements single retry on parse failure with stricter JSON-only instruction.
-Raw output (raw_text) may be captured by runner for protocol_probe probe_read debug.
 """
 from __future__ import annotations
 
