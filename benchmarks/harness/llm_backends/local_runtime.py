@@ -1,14 +1,15 @@
 """
 Local LLM runtime: subprocess to ollama or similar.
 No network. Fixed command; prompt passed via stdin only.
+Implements single retry on parse failure with stricter JSON-only instruction.
 """
 from __future__ import annotations
 
-import json
+import hashlib
 import subprocess
 from pathlib import Path
 
-from ..llm_adapter import LLMResponse, parse_tool_calls_from_json
+from ..llm_adapter import LLMResponse, RETRY_REPAIR_PREFIX, parse_tool_calls_from_json
 
 
 class LocalRuntime:
@@ -67,6 +68,50 @@ class LocalRuntime:
             )
 
         tool_calls, parse_errors = parse_tool_calls_from_json(raw_text)
+        if parse_errors:
+            repair_prompt = RETRY_REPAIR_PREFIX + prompt
+            try:
+                proc2 = subprocess.run(
+                    cmd,
+                    input=repair_prompt,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=self.timeout,
+                    cwd=Path(__file__).resolve().parents[3],
+                )
+                raw_text2 = (proc2.stdout or "").strip()
+            except Exception:
+                raw_text2 = ""
+            tool_calls2, parse_errors2 = parse_tool_calls_from_json(raw_text2)
+            retry_hash = hashlib.sha256(raw_text2.encode("utf-8")).hexdigest() if raw_text2 else None
+            if parse_errors2:
+                return LLMResponse(
+                    raw_text=raw_text,
+                    tool_calls=tool_calls,
+                    parse_errors=parse_errors,
+                    model_id=self.model_id,
+                    backend="local",
+                    llm_runtime="subprocess",
+                    llm_attempt_count=2,
+                    llm_retry_used=True,
+                    llm_retry_parse_ok=False,
+                    llm_retry_parse_error="; ".join(parse_errors2),
+                    llm_retry_response_hash=retry_hash,
+                )
+            return LLMResponse(
+                raw_text=raw_text2,
+                tool_calls=tool_calls2,
+                parse_errors=[],
+                model_id=self.model_id,
+                backend="local",
+                llm_runtime="subprocess",
+                llm_attempt_count=2,
+                llm_retry_used=True,
+                llm_retry_parse_ok=True,
+                llm_retry_response_hash=retry_hash,
+            )
         return LLMResponse(
             raw_text=raw_text,
             tool_calls=tool_calls,

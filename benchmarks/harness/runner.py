@@ -116,6 +116,15 @@ def _run_case_llm(
         "llm_parse_ok": parse_ok,
         "llm_parse_error": "; ".join(resp.parse_errors) if resp.parse_errors else None,
     }
+    if getattr(resp, "llm_attempt_count", 1) != 1:
+        llm_meta["llm_attempt_count"] = resp.llm_attempt_count
+        llm_meta["llm_retry_used"] = resp.llm_retry_used
+        if resp.llm_retry_parse_ok is not None:
+            llm_meta["llm_retry_parse_ok"] = resp.llm_retry_parse_ok
+        if resp.llm_retry_parse_error is not None:
+            llm_meta["llm_retry_parse_error"] = resp.llm_retry_parse_error
+        if resp.llm_retry_response_hash is not None:
+            llm_meta["llm_retry_response_hash"] = resp.llm_retry_response_hash
 
     executed = []
     decision = "allow"
@@ -187,7 +196,11 @@ def _run_suite(
                 attempted, executed, decision, policy_reason, actual_outcome, pass_fail, llm_meta = (
                     _run_case_llm(case, variant, seed, run_id, adapter)
                 )
-                llm_kw = {k: v for k, v in llm_meta.items() if v is not None or k == "llm_parse_ok"}
+                llm_kw = {
+                    k: v
+                    for k, v in llm_meta.items()
+                    if v is not None or k in ("llm_parse_ok", "llm_retry_used", "llm_retry_parse_ok")
+                }
 
             receipts.write_receipt(
                 path=out_path,

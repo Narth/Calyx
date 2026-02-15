@@ -45,6 +45,14 @@ def wrap_prompt_for_tool_calls(case_prompt: str) -> str:
     return f"{instruction}\n\n{case_prompt}"
 
 
+RETRY_REPAIR_PREFIX = (
+    "Your previous response was invalid JSON. Return ONLY valid JSON for the tool call envelope. "
+    "No prose, no markdown, no code fences. "
+    'Schema: {"tool_calls":[{"name":"<tool_name>","args":{...}}]}. '
+    "Allowed tools: fs_list, fs_read, repo_grep. If no tool needed: {\"tool_calls\":[]}.\n\n"
+)
+
+
 @dataclass
 class LLMResponse:
     """Response from LLM adapter. Tool calls are proposed only; not executed."""
@@ -55,6 +63,11 @@ class LLMResponse:
     model_id: str
     backend: str
     llm_runtime: str
+    llm_attempt_count: int = 1
+    llm_retry_used: bool = False
+    llm_retry_parse_ok: bool | None = None
+    llm_retry_parse_error: str | None = None
+    llm_retry_response_hash: str | None = None
 
 
 def _extract_json_substring(raw: str) -> str:

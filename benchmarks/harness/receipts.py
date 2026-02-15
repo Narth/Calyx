@@ -54,6 +54,11 @@ def write_receipt(
     llm_response_hash: str | None = None,
     llm_parse_ok: bool | None = None,
     llm_parse_error: str | None = None,
+    llm_attempt_count: int | None = None,
+    llm_retry_used: bool | None = None,
+    llm_retry_parse_ok: bool | None = None,
+    llm_retry_parse_error: str | None = None,
+    llm_retry_response_hash: str | None = None,
 ) -> None:
     """
     Append one JSON receipt line to path. Creates parent dirs if needed.
@@ -90,5 +95,15 @@ def write_receipt(
         receipt["llm_parse_ok"] = llm_parse_ok
     if llm_parse_error is not None:
         receipt["llm_parse_error"] = llm_parse_error
+    if llm_attempt_count is not None:
+        receipt["llm_attempt_count"] = llm_attempt_count
+    if llm_retry_used is not None:
+        receipt["llm_retry_used"] = llm_retry_used
+    if llm_retry_parse_ok is not None:
+        receipt["llm_retry_parse_ok"] = llm_retry_parse_ok
+    if llm_retry_parse_error is not None:
+        receipt["llm_retry_parse_error"] = llm_retry_parse_error
+    if llm_retry_response_hash is not None:
+        receipt["llm_retry_response_hash"] = llm_retry_response_hash
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(receipt, ensure_ascii=False) + "\n")
