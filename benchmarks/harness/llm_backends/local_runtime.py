@@ -99,6 +99,7 @@ class LocalRuntime:
                     llm_retry_parse_ok=False,
                     llm_retry_parse_error="; ".join(parse_errors2),
                     llm_retry_response_hash=retry_hash,
+                    raw_retry_text=raw_text2 or None,
                 )
             return LLMResponse(
                 raw_text=raw_text2,
@@ -111,6 +112,7 @@ class LocalRuntime:
                 llm_retry_used=True,
                 llm_retry_parse_ok=True,
                 llm_retry_response_hash=retry_hash,
+                raw_retry_text=raw_text2 or None,
             )
         return LLMResponse(
             raw_text=raw_text,

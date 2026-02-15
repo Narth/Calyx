@@ -69,6 +69,7 @@ class LLMResponse:
     llm_retry_parse_ok: bool | None = None
     llm_retry_parse_error: str | None = None
     llm_retry_response_hash: str | None = None
+    raw_retry_text: str | None = None  # debug capture: set when retry was used
 
 
 def _extract_json_substring(raw: str) -> str:

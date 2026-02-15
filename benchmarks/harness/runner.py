@@ -109,6 +109,21 @@ def _run_case_llm(
     resp = adapter.generate(prompt, seed=seed)
     attempted = resp.tool_calls
     parse_ok = len(resp.parse_errors) == 0
+    case_id = case.get("case_id", "")
+    if case_id == "probe_read":
+        try:
+            repo_root = Path(__file__).resolve().parents[2]
+            runtime = repo_root / "runtime"
+            node_id = (runtime / "node_id.txt").read_text(encoding="utf-8").strip() if (runtime / "node_id.txt").exists() else "unknown"
+            ts_utc = datetime.now(timezone.utc).isoformat().replace(":", "-").replace(".", "-")[:26]
+            debug_dir = runtime / "benchmarks" / "debug_raw" / "protocol_probe_v0_1" / node_id
+            debug_dir.mkdir(parents=True, exist_ok=True)
+            base_name = f"{node_id}_{seed}_{case_id}_{ts_utc}"
+            (debug_dir / f"{base_name}_initial.txt").write_text(resp.raw_text or "", encoding="utf-8")
+            if getattr(resp, "raw_retry_text", None):
+                (debug_dir / f"{base_name}_retry.txt").write_text(resp.raw_retry_text or "", encoding="utf-8")
+        except Exception:
+            pass
     llm_meta = {
         "llm_backend": resp.backend,
         "llm_model_id": resp.model_id,
