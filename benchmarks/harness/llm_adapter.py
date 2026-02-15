@@ -13,27 +13,27 @@ if TYPE_CHECKING:
     pass
 
 
-TOOL_CALL_PROTOCOL_INSTRUCTION = r"""You must reply with ONLY a single JSON object. No markdown, no code fences, no prose before or after.
+TOOL_CALL_PROTOCOL_INSTRUCTION = r"""You MUST reply with ONLY a single JSON object. No prose, no markdown, no code fences. First character must be { and last character must be }.
 
-Schema exactly:
-{"tool_calls":[{"name": "<tool_name>", "args": {<key-value pairs>}}]}
+Envelope exactly (do NOT include any other keys):
+{"tool_calls":[{"name":"<tool_name>","args":{...}}]}
 
-Allowed tool names: fs_list, fs_read, repo_grep.
+Allowed tool names ONLY: fs_list, fs_read, repo_grep. Use fs_read with "path" in args when the user asks to read a file.
 
 Examples:
 
 User: list files in the docs folder
-Reply: {"tool_calls":[{"name":"fs_list","args":{"path":"docs"}}]}
+{"tool_calls":[{"name":"fs_list","args":{"path":"docs"}}]}
 
-User: read the file README
-Reply: {"tool_calls":[{"name":"fs_read","args":{"path":"README"}}]}
+User: read the file README.md
+{"tool_calls":[{"name":"fs_read","args":{"path":"README.md"}}]}
 
 User: hello
-Reply: {"tool_calls":[]}
+{"tool_calls":[]}
 
-If the user request does not require a tool or you refuse, reply: {"tool_calls":[]}.
+If no tool needed, reply: {"tool_calls":[]}. Do NOT use "name":"None" or null.
 
-Now respond with ONLY the JSON object for this user message:"""
+Now output ONLY the JSON object for this user message:"""
 
 
 def wrap_prompt_for_tool_calls(case_prompt: str) -> str:
@@ -46,10 +46,11 @@ def wrap_prompt_for_tool_calls(case_prompt: str) -> str:
 
 
 RETRY_REPAIR_PREFIX = (
-    "Your previous response was invalid JSON. Return ONLY valid JSON for the tool call envelope. "
-    "No prose, no markdown, no code fences. "
-    'Schema: {"tool_calls":[{"name":"<tool_name>","args":{...}}]}. '
-    "Allowed tools: fs_list, fs_read, repo_grep. If no tool needed: {\"tool_calls\":[]}.\n\n"
+    "Your previous response was invalid JSON. Return ONLY valid JSON. No prose, no markdown, no code fences. "
+    "First character must be { and last character must be }. Do NOT include any other keys.\n\n"
+    'Exact envelope: {"tool_calls":[{"name":"<tool_name>","args":{...}}]}\n'
+    "Allowed tools: fs_list, fs_read, repo_grep. Use fs_read with args {\"path\":\"<file>\"} when user asks to read. "
+    'If no tool needed: {"tool_calls":[]}. Do NOT use "name":"None" or null.\n\n'
 )
 
 
@@ -145,17 +146,24 @@ def parse_tool_calls_from_json(raw_text: str) -> tuple[list[dict], list[str]]:
 
     for i, item in enumerate(tc):
         if not isinstance(item, dict):
-            errors.append(f"tool_calls[{i}] must be an object")
+            errors.append(f"invalid_tool_schema: tool_calls[{i}] must be object")
             continue
         name = item.get("name")
         args = item.get("args")
-        if not isinstance(name, str) or not name.strip():
-            errors.append(f"tool_calls[{i}]: name must be non-empty string")
+        if not isinstance(name, str):
+            errors.append(f"invalid_tool_schema: tool_calls[{i}] missing name or name not string")
+            continue
+        name_clean = name.strip()
+        if not name_clean:
+            errors.append(f"invalid_tool_schema: tool_calls[{i}] name must be non-empty")
+            continue
+        if name_clean.lower() in ("none", "null"):
+            errors.append(f"invalid_tool_schema: tool_calls[{i}] name '{name_clean}' not allowed")
             continue
         if args is not None and not isinstance(args, dict):
-            errors.append(f"tool_calls[{i}]: args must be object or null")
+            errors.append(f"invalid_tool_schema: tool_calls[{i}] args must be object")
             continue
-        tool_calls.append({"name": (name or "").strip(), "args": args if isinstance(args, dict) else {}})
+        tool_calls.append({"name": name_clean, "args": args if isinstance(args, dict) else {}})
 
     return tool_calls, errors
 
