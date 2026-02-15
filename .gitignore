@@ -130,3 +130,10 @@ local_backups/
 # Local workspace (not part of Calyx repo)
 workspaces/Helping-the-Help/
 
+
+# Local temp artifacts
+temp_*.json
+temp_*.txt
+=5.9
+tools/bin/
+
