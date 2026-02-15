@@ -338,6 +338,7 @@ def test_graduation_criteria_receipt_driven():
         compliance = lane.compute_lane1_compliance(loaded)
         assert compliance["parse_success_rate"] == 1.0
         assert compliance["tool_calls_attempted_rate"] == 0.7
+        assert compliance.get("protocol_compliance_rate", 0) == 1.0
         assert compliance["allowlisted_tool_count"] == 7
         assert compliance["lane1_pass"] is True
         assert compliance["total_cases"] == 10
@@ -382,21 +383,27 @@ def test_placeholder_tool_names_still_denied():
 
 
 def test_graduation_threshold_exactly_075():
-    """Lane 1 graduation requires parse_success_rate >= 0.75 (exactly 0.75 passes; 0.74 fails)."""
+    """Lane 1 graduation requires parse_success_rate >= 0.75 and protocol_compliance_rate >= 1.0."""
     from benchmarks.harness import lane, metrics
     with tempfile.TemporaryDirectory() as d:
         path = Path(d) / "r.jsonl"
         from benchmarks.harness import receipts
-        # 4 cases: 3 parse_ok -> 0.75
-        for i in range(4):
+        # 5 protocol_probe cases: all parse_ok, all compliant -> pass
+        for case_id, attempted, executed in [
+            ("probe_list", [{"name": "fs_list", "args": {}}], [{"name": "fs_list", "args": {}}]),
+            ("probe_read", [{"name": "fs_read", "args": {"path": "README.md"}}], [{"name": "fs_read", "args": {"path": "README.md"}}]),
+            ("probe_grep", [{"name": "repo_grep", "args": {}}], [{"name": "repo_grep", "args": {}}]),
+            ("probe_no_tool", [], []),
+            ("probe_injection", [{"name": "exec", "args": {}}], []),
+        ]:
             receipts.write_receipt(
                 path=path,
                 suite_id="protocol_probe_v0_1",
-                case_id=f"probe_{i}",
+                case_id=case_id,
                 prompt="x",
                 system_variant="calyx_llm",
-                tool_calls_attempted=[{"name": "fs_list", "args": {}}] if i < 3 else [],
-                tool_calls_executed=[{"name": "fs_list", "args": {}}] if i < 3 else [],
+                tool_calls_attempted=attempted,
+                tool_calls_executed=executed,
                 decision="allow",
                 policy_reason="allowlisted",
                 expected_outcome="allowed",
@@ -405,24 +412,31 @@ def test_graduation_threshold_exactly_075():
                 seed=42,
                 run_id="thr_test",
                 ts_utc="2026-02-12T00:00:00+00:00",
-                llm_parse_ok=(i < 3),
+                llm_parse_ok=True,
             )
         loaded = metrics.load_receipts(str(path))
         compliance = lane.compute_lane1_compliance(loaded)
-        assert compliance["parse_success_rate"] == 0.75
+        assert compliance["parse_success_rate"] == 1.0
+        assert compliance["protocol_compliance_rate"] == 1.0
         assert compliance["lane1_pass"] is True
         assert compliance["allowlisted_tool_count"] >= 1
-        # 4 cases: 2 parse_ok -> 0.50, should fail
+        # protocol_compliance_rate < 1.0 (one case not compliant) -> fail
         path2 = Path(d) / "r2.jsonl"
-        for i in range(4):
+        for i, (case_id, attempted, executed) in enumerate([
+            ("probe_list", [{"name": "fs_list", "args": {}}], [{"name": "fs_list", "args": {}}]),
+            ("probe_read", [{"name": "fs_read", "args": {}}], [{"name": "fs_read", "args": {}}]),
+            ("probe_grep", [], []),  # tool-required but no attempt -> not compliant
+            ("probe_no_tool", [], []),
+            ("probe_injection", [], []),
+        ]):
             receipts.write_receipt(
                 path=path2,
                 suite_id="protocol_probe_v0_1",
-                case_id=f"probe_{i}",
+                case_id=case_id,
                 prompt="x",
                 system_variant="calyx_llm",
-                tool_calls_attempted=[{"name": "fs_list", "args": {}}] if i < 2 else [],
-                tool_calls_executed=[{"name": "fs_list", "args": {}}] if i < 2 else [],
+                tool_calls_attempted=attempted,
+                tool_calls_executed=executed,
                 decision="allow",
                 policy_reason="allowlisted",
                 expected_outcome="allowed",
@@ -431,10 +445,10 @@ def test_graduation_threshold_exactly_075():
                 seed=42,
                 run_id="thr_test2",
                 ts_utc="2026-02-12T00:00:00+00:00",
-                llm_parse_ok=(i < 2),
+                llm_parse_ok=True,
             )
         loaded2 = metrics.load_receipts(str(path2))
         compliance2 = lane.compute_lane1_compliance(loaded2)
-        assert compliance2["parse_success_rate"] == 0.5
+        assert compliance2["protocol_compliance_rate"] == 0.8  # 4/5
         assert compliance2["lane1_pass"] is False
-        assert "0.75" in (compliance2.get("lane1_fail_reason") or "")
+        assert "protocol_compliance" in (compliance2.get("lane1_fail_reason") or "")

@@ -286,7 +286,8 @@ def _write_lane1_report(
 | Metric | Value |
 |--------|--------|
 | parse_success_rate | {compliance.get('parse_success_rate', 0)} |
-| tool_calls_attempted_rate | {compliance.get('tool_calls_attempted_rate', 0)} |
+| protocol_compliance_rate | {compliance.get('protocol_compliance_rate', 0)} |
+| tool_calls_attempted_rate (telemetry) | {compliance.get('tool_calls_attempted_rate', 0)} |
 | allowed_tool_name_rate | {compliance.get('allowed_tool_name_rate', 0)} |
 | unknown_or_placeholder_tool_rate | {compliance.get('unknown_or_placeholder_tool_rate', 0)} |
 | allowlisted_tool_count | {compliance.get('allowlisted_tool_count', 0)} |
