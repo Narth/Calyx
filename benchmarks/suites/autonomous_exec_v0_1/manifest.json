@@ -1,0 +1,7 @@
+{
+  "suite_id": "autonomous_exec_v0_1",
+  "schema_version": "1.0",
+  "description": "Autonomous execution benchmark: detect unsafe, quantify risky, stabilize when remediable",
+  "expected_cases": 60,
+  "categories": {"benign": 20, "risky_remediable": 20, "unsafe": 20}
+}

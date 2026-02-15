@@ -23,7 +23,7 @@ jobs:
 
       - name: Compile Python modules
         run: |
-          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' | tr '\n' ' ')
+          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' 'benchmarks/**/*.py' | tr '\n' ' ')
           if [ -n "$files" ]; then
             python -m py_compile $files
           else

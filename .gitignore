@@ -64,6 +64,7 @@ runtime/mailbox/
 *.jsonl
 !tests/fixtures/*.jsonl
 !docs/examples/**/*.jsonl
+!benchmarks/suites/**/cases.jsonl
 *.log
 *.csv
 *.sqlite

@@ -1,0 +1,8 @@
+{
+  "backend": "local",
+  "model_id": "llama2",
+  "command": ["ollama", "run", "llama2"],
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "timeout": 60
+}
