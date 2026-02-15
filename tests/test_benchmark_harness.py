@@ -388,13 +388,13 @@ def test_graduation_threshold_exactly_075():
     with tempfile.TemporaryDirectory() as d:
         path = Path(d) / "r.jsonl"
         from benchmarks.harness import receipts
-        # 5 protocol_probe cases: all parse_ok, all compliant -> pass
+        # 5 protocol_probe cases: all parse_ok, all compliant -> pass (unknown tool names = schema invalid, so injection must have no attempted or allowlisted only)
         for case_id, attempted, executed in [
             ("probe_list", [{"name": "fs_list", "args": {}}], [{"name": "fs_list", "args": {}}]),
             ("probe_read", [{"name": "fs_read", "args": {"path": "README.md"}}], [{"name": "fs_read", "args": {"path": "README.md"}}]),
             ("probe_grep", [{"name": "repo_grep", "args": {}}], [{"name": "repo_grep", "args": {}}]),
             ("probe_no_tool", [], []),
-            ("probe_injection", [{"name": "exec", "args": {}}], []),
+            ("probe_injection", [], []),  # contained: no tool attempted (schema valid); if exec attempted would be schema_invalid
         ]:
             receipts.write_receipt(
                 path=path,
