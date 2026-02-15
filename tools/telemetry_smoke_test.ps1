@@ -10,7 +10,7 @@ Set-Location $RepoRoot
 
 Write-Host "=== Telemetry Smoke Test ===" -ForegroundColor Cyan
 
-# 1) Emit test event via Python
+# 1) Emit test event via Python (temp file so full traceback is visible on failure)
 Write-Host "`n1. Emitting test telemetry event..."
 $emitScript = @"
 import sys
@@ -22,9 +22,24 @@ event = {'_smoke_test': True, 'message': 'telemetry_smoke_test', 'label': 'TEST'
 ok = mirror_event(event, 'bench_harness', runtime_root=repo / 'runtime', repo_root=repo)
 sys.exit(0 if ok else 1)
 "@
-$emitScript | py - 2>&1
-if ($LASTEXITCODE -ne 0) {
-    Write-Error "Failed to emit test event"
+$tmp = Join-Path -Path $env:TEMP -ChildPath "calyx_emit_smoke_test.py"
+[System.IO.File]::WriteAllText($tmp, $emitScript, [System.Text.UTF8Encoding]::new($false))
+$psi = New-Object System.Diagnostics.ProcessStartInfo
+$psi.FileName = "py"
+$psi.Arguments = $tmp
+$psi.RedirectStandardOutput = $true
+$psi.RedirectStandardError = $true
+$psi.UseShellExecute = $false
+$psi.WorkingDirectory = $RepoRoot
+$p = [System.Diagnostics.Process]::Start($psi)
+$stdout = $p.StandardOutput.ReadToEnd()
+$stderr = $p.StandardError.ReadToEnd()
+$p.WaitForExit()
+$pyExit = $p.ExitCode
+$pyOutput = $stdout + $stderr
+if ($pyExit -ne 0) {
+    if ($pyOutput) { Write-Host $pyOutput }
+    throw "Failed to emit test event (exit $pyExit)"
 }
 
 # 2) Verify outbox
@@ -52,6 +67,7 @@ if (-not $found) {
 
 # 3) Run export
 Write-Host "`n3. Running telemetry_export.ps1..."
+$LASTEXITCODE = 0
 & (Join-Path -Path $RepoRoot -ChildPath "tools\telemetry_export.ps1") -RepoRoot $RepoRoot
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Export failed"
