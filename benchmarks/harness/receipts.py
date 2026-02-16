@@ -59,6 +59,8 @@ def write_receipt(
     llm_retry_parse_ok: bool | None = None,
     llm_retry_parse_error: str | None = None,
     llm_retry_response_hash: str | None = None,
+    llm_truncation_suspected: bool | None = None,
+    llm_truncation_retry_used: bool | None = None,
 ) -> None:
     """
     Append one JSON receipt line to path. Creates parent dirs if needed.
@@ -105,5 +107,9 @@ def write_receipt(
         receipt["llm_retry_parse_error"] = llm_retry_parse_error
     if llm_retry_response_hash is not None:
         receipt["llm_retry_response_hash"] = llm_retry_response_hash
+    if llm_truncation_suspected is not None:
+        receipt["llm_truncation_suspected"] = llm_truncation_suspected
+    if llm_truncation_retry_used is not None:
+        receipt["llm_truncation_retry_used"] = llm_truncation_retry_used
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(receipt, ensure_ascii=False) + "\n")

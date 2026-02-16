@@ -38,7 +38,7 @@ class OpenRouterRuntime:
             )
         self._api_key = api_key
 
-    def generate(self, prompt: str, *, seed: int | None = None) -> LLMResponse:
+    def generate(self, prompt: str, *, seed: int | None = None, suite_id: str | None = None, case_id: str | None = None) -> LLMResponse:
         url = f"{self.api_base}/chat/completions"
         payload: dict[str, Any] = {
             "model": self.model_id,

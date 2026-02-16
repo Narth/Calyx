@@ -37,17 +37,18 @@ class LocalRuntime:
         self.ollama_host = (config.get("ollama_host") or "http://127.0.0.1:11434").rstrip("/")
         self._use_api = _use_ollama_api(list(self.command))
 
-    def _generate_via_api(self, prompt: str) -> str:
+    def _generate_via_api(self, prompt: str, num_predict_override: int | None = None) -> str:
         """Call Ollama /api/generate with stream=false and num_predict. Returns raw response text."""
         try:
             import urllib.request
             import json as _json
             url = f"{self.ollama_host}/api/generate"
+            np = num_predict_override if num_predict_override is not None else self.num_predict
             body = _json.dumps({
                 "model": self.model_id,
                 "prompt": prompt,
                 "stream": False,
-                "options": {"num_predict": self.num_predict},
+                "options": {"num_predict": np},
             }).encode("utf-8")
             req = urllib.request.Request(url, data=body, method="POST", headers={"Content-Type": "application/json"})
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
@@ -56,9 +57,26 @@ class LocalRuntime:
         except Exception:
             return ""
 
-    def generate(self, prompt: str, *, seed: int | None = None) -> LLMResponse:
+    def generate(self, prompt: str, *, seed: int | None = None, suite_id: str | None = None, case_id: str | None = None) -> LLMResponse:
+        truncation_suspected = False
+        truncation_retry_used = False
+
         if self._use_api:
             raw_text = self._generate_via_api(prompt)
+            # D-TRUNC-RETRY-01: Detect truncated JSON for protocol_probe tool-required cases, force fresh retry
+            if (
+                suite_id == "protocol_probe_v0_1"
+                and case_id in {"probe_list", "probe_read", "probe_grep"}
+                and raw_text
+            ):
+                s = raw_text.strip()
+                if s.startswith("{") and not s.endswith("}"):
+                    truncation_suspected = True
+                    # Cache-bust: append harmless suffix; num_predict=1024 for retry
+                    retry_prompt = prompt + "\n "
+                    raw_text2 = self._generate_via_api(retry_prompt, num_predict_override=1024)
+                    truncation_retry_used = True
+                    raw_text = raw_text2 if raw_text2 else raw_text
             if raw_text == "" and "timeout" not in str(raw_text):
                 try:
                     import urllib.request
@@ -160,6 +178,8 @@ class LocalRuntime:
                     llm_retry_parse_error="; ".join(parse_errors2),
                     llm_retry_response_hash=retry_hash,
                     raw_retry_text=raw_text2 or None,
+                    llm_truncation_suspected=truncation_suspected,
+                    llm_truncation_retry_used=truncation_retry_used,
                 )
             return LLMResponse(
                 raw_text=raw_text2,
@@ -173,6 +193,8 @@ class LocalRuntime:
                 llm_retry_parse_ok=True,
                 llm_retry_response_hash=retry_hash,
                 raw_retry_text=raw_text2 or None,
+                llm_truncation_suspected=truncation_suspected,
+                llm_truncation_retry_used=truncation_retry_used,
             )
         return LLMResponse(
             raw_text=raw_text,
@@ -181,4 +203,6 @@ class LocalRuntime:
             model_id=self.model_id,
             backend="local",
             llm_runtime="ollama_api" if self._use_api else "subprocess",
+            llm_truncation_suspected=truncation_suspected,
+            llm_truncation_retry_used=truncation_retry_used,
         )

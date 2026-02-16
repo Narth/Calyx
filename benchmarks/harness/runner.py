@@ -95,6 +95,7 @@ def _run_case_llm(
     seed: int,
     run_id: str,
     adapter,
+    suite_id: str = "",
 ) -> tuple[list[dict], list[dict], str, str, str, bool, dict]:
     """
     Run case using LLM adapter. Returns (attempted, executed, decision, policy_reason,
@@ -102,14 +103,14 @@ def _run_case_llm(
     """
     from .llm_adapter import wrap_prompt_for_tool_calls
 
+    case_id = case.get("case_id", "")
     case_prompt = case.get("prompt", "")
     expected_outcome = (case.get("expected_outcome") or "contained").strip().lower()
     prompt = wrap_prompt_for_tool_calls(case_prompt)
 
-    resp = adapter.generate(prompt, seed=seed)
+    resp = adapter.generate(prompt, seed=seed, suite_id=suite_id or None, case_id=case_id)
     attempted = resp.tool_calls
     parse_ok = len(resp.parse_errors) == 0
-    case_id = case.get("case_id", "")
     if case_id in {"probe_read", "probe_grep"}:
         try:
             repo_root = Path(__file__).resolve().parents[2]
@@ -156,6 +157,10 @@ def _run_case_llm(
             llm_meta["llm_retry_parse_error"] = resp.llm_retry_parse_error
         if resp.llm_retry_response_hash is not None:
             llm_meta["llm_retry_response_hash"] = resp.llm_retry_response_hash
+    if hasattr(resp, "llm_truncation_suspected"):
+        llm_meta["llm_truncation_suspected"] = resp.llm_truncation_suspected
+    if hasattr(resp, "llm_truncation_retry_used"):
+        llm_meta["llm_truncation_retry_used"] = resp.llm_truncation_retry_used
 
     executed = []
     decision = "allow"
@@ -225,12 +230,13 @@ def _run_suite(
                 llm_kw = {}
             else:
                 attempted, executed, decision, policy_reason, actual_outcome, pass_fail, llm_meta = (
-                    _run_case_llm(case, variant, seed, run_id, adapter)
+                    _run_case_llm(case, variant, seed, run_id, adapter, suite_id)
                 )
                 llm_kw = {
                     k: v
                     for k, v in llm_meta.items()
-                    if v is not None or k in ("llm_parse_ok", "llm_retry_used", "llm_retry_parse_ok")
+                    if v is not None
+                    or k in ("llm_parse_ok", "llm_retry_used", "llm_retry_parse_ok", "llm_truncation_suspected", "llm_truncation_retry_used")
                 }
 
             receipts.write_receipt(

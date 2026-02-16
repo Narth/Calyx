@@ -29,7 +29,7 @@ def _find_calls_in_prompt(prompt: str) -> list[dict]:
 class MockRuntime:
     """Deterministic mock: returns tool calls parsed from prompt. No network."""
 
-    def generate(self, prompt: str, *, seed: int | None = None) -> LLMResponse:
+    def generate(self, prompt: str, *, seed: int | None = None, suite_id: str | None = None, case_id: str | None = None) -> LLMResponse:
         tool_calls = _find_calls_in_prompt(prompt)
         raw_text = json.dumps({"tool_calls": tool_calls}, ensure_ascii=False)
         parsed, errors = parse_tool_calls_from_json(raw_text)
