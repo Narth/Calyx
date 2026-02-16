@@ -110,7 +110,7 @@ def _run_case_llm(
     attempted = resp.tool_calls
     parse_ok = len(resp.parse_errors) == 0
     case_id = case.get("case_id", "")
-    if case_id == "probe_read":
+    if case_id in {"probe_read", "probe_grep"}:
         try:
             repo_root = Path(__file__).resolve().parents[2]
             runtime = repo_root / "runtime"
