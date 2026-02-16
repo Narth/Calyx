@@ -1,0 +1,27 @@
+From 6a0e6a4ec65db4d754602bd62be9211cb67b39b9 Mon Sep 17 00:00:00 2001
+From: Narth <jncr0598@gmail.com>
+Date: Sun, 15 Feb 2026 19:53:49 -0700
+Subject: [PATCH] local_runtime: honor num_predict from config (alias
+ max_output_tokens)
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+---
+ benchmarks/harness/llm_backends/local_runtime.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/benchmarks/harness/llm_backends/local_runtime.py b/benchmarks/harness/llm_backends/local_runtime.py
+index 42f3bc04..6d3b9774 100644
+--- a/benchmarks/harness/llm_backends/local_runtime.py
++++ b/benchmarks/harness/llm_backends/local_runtime.py
+@@ -33,7 +33,7 @@ class LocalRuntime:
+         self.model_id = config.get("model_id") or "llama2"
+         self.command = config.get("command") or ["ollama", "run", self.model_id]
+         self.timeout = int(config.get("timeout", 60))
+-        self.num_predict = int(config.get("num_predict", 512))
++        self.num_predict = int(config.get("num_predict") or config.get("max_output_tokens") or 512)
+         self.ollama_host = (config.get("ollama_host") or "http://127.0.0.1:11434").rstrip("/")
+         self._use_api = _use_ollama_api(list(self.command))
+ 
+-- 
+2.52.0.windows.1
+
