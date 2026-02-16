@@ -33,7 +33,7 @@ class LocalRuntime:
         self.model_id = config.get("model_id") or "llama2"
         self.command = config.get("command") or ["ollama", "run", self.model_id]
         self.timeout = int(config.get("timeout", 60))
-        self.num_predict = int(config.get("num_predict", 512))
+        self.num_predict = int(config.get("num_predict") or config.get("max_output_tokens") or 512)
         self.ollama_host = (config.get("ollama_host") or "http://127.0.0.1:11434").rstrip("/")
         self._use_api = _use_ollama_api(list(self.command))
 
