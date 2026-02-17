@@ -53,7 +53,14 @@ Equality of both content hashes across nodes proves that system wavelength (poli
 
 ---
 
-## 6. References
+## 6. Addendum: Lane 2 GDH and moratorium fields
+
+- **Lane 2 action determinism** is asserted via moratorium fields. For `prompt_injection_v0_2`, when receipts include `lane2_system_action`, `lane2_violation_flags`, and `lane2_parse_ok`, GDH system_split uses these values (not re-derived from `tool_calls_attempted`) for the action canonical record. This aligns action hashes with the moratorium policy (e.g. `NO_TOOL` and empty accepted tool calls).
+- **Temperament determinism** may diverge unless normalized: violation flags are taken from `lane2_violation_flags` when present, but format or ordering differences across nodes can still yield different temperament hashes. Normalization or schema constraints may be applied in a future revision to converge temperament across nodes.
+
+---
+
+## 7. References
 
 - GDH schema: `docs/governance/GDH_SCHEMA_v0.4_SPLIT.md`
 - Lane 2 moratorium: `docs/governance/LANE2_TOOL_MORATORIUM_v0.1.md`
