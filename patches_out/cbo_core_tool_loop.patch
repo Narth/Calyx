@@ -1,0 +1,100 @@
+--- a/cbo_hub/cbo_core/app.py
++++ b/cbo_hub/cbo_core/app.py
+@@ -35,6 +35,38 @@ def _sha256_bytes(b: bytes) -> str:
+     return hashlib.sha256(b).hexdigest()
+ 
+ 
++def _parse_tool_requests(text: str) -> list[dict]:
++    """Extract tool_requests from model text. Returns list of {tool, params}; empty on any error."""
++    if not text or not text.strip():
++        return []
++    raw = text.strip()
++    for candidate in (raw, raw.split("\n")[-1].strip()):
++        if not candidate.startswith("{"):
++            continue
++        try:
++            obj = json.loads(candidate)
++        except json.JSONDecodeError:
++            continue
++        if not isinstance(obj, dict):
++            continue
++        reqs = obj.get("tool_requests")
++        if not isinstance(reqs, list):
++            continue
++        out = []
++        for r in reqs:
++            if not isinstance(r, dict):
++                continue
++            tool = r.get("tool")
++            if not isinstance(tool, str):
++                continue
++            params = r.get("params")
++            if params is not None and not isinstance(params, dict):
++                continue
++            out.append({"tool": tool.strip().lower(), "params": params or {}})
++        return out
++    return []
++
++
+ def _write_receipt(obj: dict) -> None:
+     RECEIPTS.parent.mkdir(parents=True, exist_ok=True)
+     with open(RECEIPTS, "a", encoding="utf-8") as f:
+@@ -205,6 +237,11 @@ async def chat(req: ChatReq):
+             "Be concise. If you suggest any tool actions, list them as bullet points but do not execute them.\n\n"
+             f"User: {req.user_text}"
+         )
++        if model_role == "architect" and req.allow_tools:
++            prompt += (
++                "\n\nIf you need repo info, you may respond with a JSON object containing key \"tool_requests\" "
++                "(array of objects with \"tool\" and optional \"params\"). Allowed tools only: repo_list (params: path, max_entries), "
++                "repo_search (params: query, glob, max_hits). Example: {\"tool_requests\": [{\"tool\": \"repo_search\", \"params\": {\"query\": \"Calyx\", \"max_hits\": 5}}]}."
++            )
+         try:
+             if model_role == "architect":
+                 model_text = await _call_anthropic(prompt, max_output_tokens=900)
+@@ -218,8 +255,42 @@ async def chat(req: ChatReq):
+ 
+     tool_notes = ""
+     tool_receipts = []
++    executed_tools: list[str] = []
++
++    # Read-only tool loop: architect + allow_tools + valid tool_requests JSON → execute up to 3 allowed tools.
++    if model_role == "architect" and req.allow_tools and model_text:
++        parsed = _parse_tool_requests(model_text)
++        for item in parsed[:3]:
++            tool_name = item.get("tool")
++            if tool_name not in ("repo_list", "repo_search"):
++                continue
++            params = item.get("params") or {}
++            try:
++                if tool_name == "repo_list":
++                    payload = {"path": params.get("path", ""), "max_entries": min(int(params.get("max_entries", 200)), 500)}
++                    result = await _call_dev_harness("/repo/list", payload)
++                    tool_notes += "\n[tool] repo_list(path=%r, max_entries=%s)\n" % (payload["path"], payload["max_entries"])
++                    tool_notes += "\n".join(result.get("entries", [])[:50])
++                    tool_receipts.append({"tool": "repo_list", "result_sha256": result.get("sha256")})
++                    executed_tools.append("repo_list")
++                elif tool_name == "repo_search":
++                    q = params.get("query") or "Calyx"
++                    if not isinstance(q, str) or not q.strip():
++                        continue
++                    payload = {"query": q.strip(), "max_hits": min(int(params.get("max_hits", 200)), 200)}
++                    if params.get("glob"):
++                        payload["glob"] = str(params["glob"])
++                    result = await _call_dev_harness("/repo/search", payload)
++                    tool_notes += "\n[tool] repo_search(query=%r, max_hits=%s)\n" % (payload["query"], payload["max_hits"])
++                    tool_notes += "\n".join(result.get("hits", [])[:30])
++                    tool_receipts.append({"tool": "repo_search", "result_sha256": result.get("sha256")})
++                    executed_tools.append("repo_search")
++            except Exception as e:
++                tool_notes += f"\n[tool] {tool_name} failed: {str(e)}\n"
+ 
+     # Simple deterministic behavior: if user asks for "search", do repo_search.
+     if req.allow_tools and "search" in req.user_text.lower():
+@@ -238,6 +309,7 @@ async def chat(req: ChatReq):
+         "user_text_sha256": _sha256_text(req.user_text),
+         "reply_text_sha256": _sha256_text(reply),
+         "tool_calls": tool_receipts,
++        "executed_tools": executed_tools,
+     }
+     receipt_sha = _sha256_bytes(json.dumps(receipt, sort_keys=True).encode("utf-8"))

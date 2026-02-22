@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.openclaw.ai/schemas/openclaw.json",
+  "agents": {
+    "defaults": {
+      "workspace": null,
+      "model": "anthropic/claude-sonnet-4-20250514"
+    }
+  },
+  "channels": {
+    "discord": {}
+  },
+  "_comment": "Copy to ~/.openclaw/openclaw.json and set workspace to absolute path of Calyx_Terminal. workspace is set by setup script."
+}

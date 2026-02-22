@@ -1,0 +1,225 @@
+name: Code Factory Gates
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "**/*.py"
+      - "**/*.yaml"
+      - "**/*.yml"
+      - "**/*.json"
+      - "**/*.md"
+      - "CALYX_CONTRACT.yaml"
+      - ".github/workflows/**"
+
+jobs:
+  risk_tier_determination:
+    runs-on: ubuntu-latest
+    outputs:
+      risk_tier: ${{ steps.determine.outputs.risk_tier }}
+      requires_approval: ${{ steps.determine.outputs.requires_approval }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Determine Risk Tier
+        id: determine
+        run: |
+          python .github/scripts/determine_risk_tier.py \
+            --contract CALYX_CONTRACT.yaml \
+            --pr-number ${{ github.event.pull_request.number }} \
+            --output risk_tier.json
+      
+      - name: Set Outputs
+        id: set_outputs
+        run: |
+          RISK_TIER=$(jq -r '.risk_tier' risk_tier.json)
+          REQUIRES_APPROVAL=$(jq -r '.requires_approval' risk_tier.json)
+          echo "risk_tier=$RISK_TIER" >> $GITHUB_OUTPUT
+          echo "requires_approval=$REQUIRES_APPROVAL" >> $GITHUB_OUTPUT
+
+  low_risk_checks:
+    needs: risk_tier_determination
+    if: needs.risk_tier_determination.outputs.risk_tier == 'low'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+      
+      - name: Lint
+        run: |
+          python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
+          python -m pylint calyx benchmarks tools --disable=all --enable=error || true
+      
+      - name: Unit Tests
+        run: |
+          python -m pytest tests/ -v --tb=short || true
+      
+      - name: Schema Validation
+        run: |
+          python .github/scripts/validate_schemas.py || true
+      
+      - name: Check Receipt Presence
+        run: |
+          python .github/scripts/check_receipts.py --pr-number ${{ github.event.pull_request.number }} || true
+
+  med_risk_checks:
+    needs: risk_tier_determination
+    if: needs.risk_tier_determination.outputs.risk_tier == 'med'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+      
+      - name: Lint
+        run: |
+          python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          python -m pylint calyx benchmarks tools --disable=all --enable=error
+      
+      - name: Unit Tests
+        run: |
+          python -m pytest tests/ -v --tb=short
+      
+      - name: Schema Validation
+        run: |
+          python .github/scripts/validate_schemas.py
+      
+      - name: Harness Lane (Relevant)
+        run: |
+          python -m benchmarks.harness.runner --suite prompt_injection_v0_1 --variant calyx --seed 42 || true
+      
+      - name: Check Receipt Presence
+        run: |
+          python .github/scripts/check_receipts.py --pr-number ${{ github.event.pull_request.number }}
+      
+      - name: Upload Receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: receipts-med
+          path: runtime/receipts/*.jsonl
+
+  high_risk_checks:
+    needs: risk_tier_determination
+    if: needs.risk_tier_determination.outputs.risk_tier == 'high'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check Approval Token
+        run: |
+          python .github/scripts/check_approval_token.py \
+            --pr-number ${{ github.event.pull_request.number }} \
+            --contract CALYX_CONTRACT.yaml
+        continue-on-error: false
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+      
+      - name: Lint
+        run: |
+          python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          python -m pylint calyx benchmarks tools --disable=all --enable=error
+      
+      - name: Unit Tests
+        run: |
+          python -m pytest tests/ -v --tb=short
+      
+      - name: Schema Validation
+        run: |
+          python .github/scripts/validate_schemas.py
+      
+      - name: Harness Lane (Relevant)
+        run: |
+          python -m benchmarks.harness.runner --suite prompt_injection_v0_1 --variant calyx --seed 42
+      
+      - name: Check Receipt Presence
+        run: |
+          python .github/scripts/check_receipts.py --pr-number ${{ github.event.pull_request.number }}
+      
+      - name: Extra Regression Suite
+        run: |
+          python -m benchmarks.harness.runner --suite prompt_injection_v0_1 --variant all --seed 42
+      
+      - name: Upload Receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: receipts-high
+          path: runtime/receipts/*.jsonl
+
+  receipt_validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate Contract SHA256
+        run: |
+          python .github/scripts/validate_contract_hash.py \
+            --contract CALYX_CONTRACT.yaml \
+            --pr-number ${{ github.event.pull_request.number }}
+      
+      - name: Validate Receipts Structure
+        run: |
+          python .github/scripts/validate_receipt_structure.py \
+            --pr-number ${{ github.event.pull_request.number }}
+
+  secret_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+      
+      - name: Alert on Secrets
+        if: failure()
+        run: |
+          echo "SECRETS_DETECTED=true" >> $GITHUB_ENV
+          # In production, post to #cbo-alerts channel
+
+  ci_receipt:
+    needs: [risk_tier_determination, receipt_validation, secret_scan]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Generate CI Receipt
+        run: |
+          python .github/scripts/generate_ci_receipt.py \
+            --pr-number ${{ github.event.pull_request.number }} \
+            --risk-tier ${{ needs.risk_tier_determination.outputs.risk_tier }} \
+            --output runtime/receipts/ci_receipt__$(date +%Y%m%d_%H%M%S).json
+      
+      - name: Upload CI Receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-receipt
+          path: runtime/receipts/ci_receipt__*.json

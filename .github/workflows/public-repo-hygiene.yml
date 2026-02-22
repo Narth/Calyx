@@ -15,6 +15,10 @@ jobs:
       - name: Verify no forbidden runtime artifacts are tracked
         run: bash tools/check_forbidden_tracked_paths.sh
 
+      - name: Spine invariants (forbidden imports, top-level dirs documented)
+        run: |
+          python tools/check_spine_invariants.py
+
       - name: Run gitleaks secret scan
         uses: gitleaks/gitleaks-action@v2
         env:
