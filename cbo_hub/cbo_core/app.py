@@ -1,18 +1,29 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 import hashlib
 import pathlib
+import uuid
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import httpx
-import os
 from dotenv import load_dotenv
 
-REPO_ROOT = pathlib.Path(r"C:\Calyx_Terminal").resolve()
+
+def _resolve_repo_root() -> pathlib.Path:
+    """Resolve repo root. CALYX_REPO_ROOT env overrides; else parents[2] from this file."""
+    env_root = os.environ.get("CALYX_REPO_ROOT")
+    if env_root:
+        return pathlib.Path(env_root).resolve()
+    return pathlib.Path(__file__).resolve().parents[2]
+
+
+REPO_ROOT = _resolve_repo_root()
 RECEIPTS = REPO_ROOT / "cbo_hub" / "receipts" / "cbo_core.jsonl"
 
 load_dotenv(dotenv_path=REPO_ROOT / ".env.cbo")
@@ -25,6 +36,80 @@ DEV_HARNESS_BASE = "http://127.0.0.1:7777"
 
 
 app = FastAPI(title="CBO Core", version="0.1")
+
+
+@app.get("/state")
+def get_state():
+    """Return STATE.md contents for OpenClaw bridge and other consumers. Read-only."""
+    return {"state_md": _load_state_md()}
+
+
+@app.get("/sponsorship")
+def get_sponsorship():
+    """Return sponsorship status for BloomOS and stamping gates. Per CALYX_SIGN_CBO_SPONSORSHIP."""
+    try:
+        from .stamping import check_sponsorship
+        res = check_sponsorship(repo_root=REPO_ROOT, verify_signature=True)
+        return {"valid": res.valid, "reason": res.reason, "proposal_id": res.proposal_id}
+    except Exception as e:
+        return {"valid": False, "reason": f"check_error:{str(e)[:100]}", "proposal_id": "cbo_sponsorship_research_test_improve"}
+
+
+class ExecuteReq(BaseModel):
+    """Spine execution request: Mail -> Intent -> Work Envelope -> Contract Gate -> Execution."""
+    task_type: str = Field(default="doc_update", description="CALYX_CONTRACT allowed_tasks")
+    scope: Optional[dict] = Field(default=None, description="Scope paths; default {'paths': ['**']}")
+    constraints: Optional[dict] = Field(default=None, description="Timeout etc; default 300s")
+    intent_summary: str = Field(default="", description="Human-readable intent for artifact")
+
+
+@app.post("/execute")
+async def execute_spine(req: ExecuteReq):
+    """
+    Route execution through spine: Mail Envelope -> Intent Artifact -> Work Envelope -> Contract Gate -> Execution.
+    For Avatar Web, OpenClaw bridge, and other CBO Core callers. Deny-by-default.
+    """
+    integrity_err = _check_integrity_gate()
+    if integrity_err:
+        raise HTTPException(status_code=503, detail=integrity_err)
+    try:
+        from calyx.kernel.paths import resolve_runtime_dir
+        from calyx.mail.router import deliver_to_cbo_ingest
+        from calyx.cbo.intent_pipeline import ingest_mail_envelope, mint_work_envelope, mark_ready
+        from calyx.execution.hub_runner import process_work_outbox
+    except ImportError as e:
+        raise HTTPException(status_code=501, detail=f"spine_unavailable:{e}")
+
+    runtime_dir = resolve_runtime_dir(REPO_ROOT)
+    envelope_id = f"cbo_core_{uuid.uuid4().hex[:12]}"
+    ts = datetime.now(timezone.utc).isoformat()
+    envelope = {
+        "envelope_id": envelope_id,
+        "msg_id": envelope_id,
+        "ts_utc": ts,
+        "source": "cbo_core",
+        "task_type": req.task_type,
+        "scope": req.scope or {"paths": ["**"]},
+        "constraints": req.constraints or {"timeout_seconds": 300},
+        "intent": req.intent_summary or f"Spine execution: {req.task_type}",
+    }
+    mail_path = deliver_to_cbo_ingest(envelope, runtime_dir, replay_ledger=True)
+    if mail_path is None:
+        raise HTTPException(status_code=503, detail="deliver_failed_integrity_or_replay")
+    intent_id = ingest_mail_envelope(mail_path, runtime_dir)
+    if not intent_id:
+        raise HTTPException(status_code=500, detail="ingest_failed")
+    mark_ready(intent_id, runtime_dir)
+    we = mint_work_envelope(intent_id, runtime_dir, repo_root=REPO_ROOT)
+    if not we:
+        raise HTTPException(status_code=500, detail="mint_failed")
+    counts = process_work_outbox(repo_root=REPO_ROOT)
+    return {
+        "envelope_id": envelope_id,
+        "intent_id": intent_id,
+        "processed": counts.get("processed", 0),
+        "denied": counts.get("denied", 0),
+    }
 
 
 def _now_iso() -> str:
@@ -222,13 +307,30 @@ async def _call_openai(prompt: str, max_output_tokens: int = 800) -> tuple[str, 
     return text, {"provider": "openai", "model_id": model, "usage": usage if usage else None}
 
 
+# Optional STATE.md cache to reduce disk I/O and CPU during heavy use (env: CBO_STATE_CACHE_SEC, 0=off)
+_state_cache: tuple[str, float] = ("", 0.0)
+
+
 def _load_state_md() -> str:
-    """Read STATE.md from repo root for context injection. Read-only."""
+    """Read STATE.md from repo root for context injection. Read-only. Uses short TTL cache if CBO_STATE_CACHE_SEC > 0."""
+    global _state_cache
+    cache_sec = 0
+    try:
+        cache_sec = int(os.getenv("CBO_STATE_CACHE_SEC", "30").strip() or "0")
+    except ValueError:
+        pass
+    if cache_sec > 0:
+        now = time.perf_counter()
+        if _state_cache[0] and (now - _state_cache[1]) < cache_sec:
+            return _state_cache[0]
     p = REPO_ROOT / "STATE.md"
     if not p.exists() or not p.is_file():
         return ""
     try:
-        return p.read_text(encoding="utf-8", errors="replace").strip()
+        text = p.read_text(encoding="utf-8", errors="replace").strip()
+        if cache_sec > 0:
+            _state_cache = (text, time.perf_counter())
+        return text
     except Exception:
         return ""
 
@@ -376,9 +478,31 @@ class ChatResp(BaseModel):
 # 2) CBO can invoke dev harness tools in a controlled way
 # Next phase replaces the scripted logic with LLM + tool-loop.
 
+def _check_integrity_gate() -> Optional[str]:
+    """Run spine integrity gate before chat. Returns None if pass, else error message."""
+    try:
+        from calyx.kernel.integrity_gate import gate_before_action
+        from calyx.kernel.paths import resolve_repo_root, resolve_runtime_dir
+        gate_before_action(
+            runtime_dir=resolve_runtime_dir(REPO_ROOT),
+            repo_root=REPO_ROOT,
+            include_execution_path=False,
+        )
+        return None
+    except ImportError:
+        return None  # calyx not available; skip gate
+    except Exception as e:
+        failures = getattr(e, "failures", None)
+        err = "; ".join(f"{f.component}:{f.reason}" for f in failures) if failures else str(e)
+        return f"integrity_gate_failed:{err}"
+
+
 @app.post("/chat", response_model=ChatResp)
 async def chat(req: ChatReq):
     _start = time.perf_counter()
+    integrity_err = _check_integrity_gate()
+    if integrity_err:
+        raise HTTPException(status_code=503, detail=integrity_err)
     model_text = ""
     model_role = (req.model_role or "none").strip().lower()
     if model_role == "second":
@@ -392,7 +516,8 @@ async def chat(req: ChatReq):
     if model_role and model_role != "none":
         prompt = (
             "You are CBO, orchestrator of Station Calyx.\n"
-            "Be concise. If you suggest any tool actions, list them as bullet points but do not execute them.\n\n"
+            "Be concise. If you suggest any tool actions, list them as bullet points but do not execute them.\n"
+            "If the user only asks you to confirm receipt (or to confirm via a specific API), reply briefly with a confirmation and do not use tools.\n\n"
             f"User: {req.user_text}"
         )
         if model_role == "second_opinion":
@@ -456,10 +581,15 @@ async def chat(req: ChatReq):
     tool_receipts = []
     executed_tools: list[str] = []
 
-    # Read-only tool loop: architect | workhorse | second_opinion | local + allow_tools + valid tool_requests JSON → execute up to 3 allowed tools.
+    # Read-only tool loop: up to CBO_TOOL_LOOP_MAX (default 3) to reduce CPU load during major operations.
+    _tool_loop_max = 3
+    try:
+        _tool_loop_max = max(1, min(5, int(os.getenv("CBO_TOOL_LOOP_MAX", "3").strip() or "3")))
+    except ValueError:
+        pass
     if model_role in ("architect", "workhorse", "second_opinion", "local") and req.allow_tools and model_text:
         parsed = _parse_tool_requests(model_text)
-        for item in parsed[:3]:
+        for item in parsed[:_tool_loop_max]:
             tool_name = item.get("tool")
             if tool_name not in ("repo_list", "repo_search"):
                 continue
@@ -487,22 +617,53 @@ async def chat(req: ChatReq):
             except Exception as e:
                 tool_notes += f"\n[tool] {tool_name} failed: {str(e)}\n"
 
-    # Simple deterministic behavior: if user asks for "search", do repo_search.
-    if req.allow_tools and "search" in req.user_text.lower():
+    # Simple deterministic behavior: if user asks for "search", do repo_search (skip if already at tool cap to reduce load).
+    if req.allow_tools and "search" in req.user_text.lower() and len(executed_tools) < _tool_loop_max:
         try:
             result = await _call_dev_harness("/repo/search", {"query": "Calyx", "max_hits": 5})
             tool_notes += "\n[tool] repo_search(query='Calyx', max_hits=5)\n"
             tool_notes += "\n".join(result.get("hits", [])[:5])
             tool_receipts.append({"tool": "repo_search", "result_sha256": result.get("sha256")})
+            if "repo_search" not in executed_tools:
+                executed_tools.append("repo_search")
         except Exception as e:
             tool_notes += f"\n[tool] repo_search failed: {str(e)}"
 
+    # Local availability authentication: when tools are on, always verify CBO is locally available via Dev Harness.
+    # Ensures we never report "Tools used: none" without having attested local availability; one successful tool call = attestation.
+    local_available: Optional[bool] = None  # None = tools off (unverified), True = verified, False = harness unreachable
+    if req.allow_tools:
+        if not executed_tools:
+            try:
+                result = await _call_dev_harness("/repo/list", {"path": "", "max_entries": 1})
+                tool_notes += "\n[local availability] Dev Harness OK\n"
+                tool_receipts.append({"tool": "repo_list", "result_sha256": result.get("sha256")})
+                executed_tools.append("repo_list")
+                local_available = True
+            except Exception as e:
+                tool_notes += f"\n[local availability] Dev Harness unreachable: {str(e)}\n"
+                local_available = False
+        else:
+            local_available = True
+    else:
+        local_available = None
+
     tools_used = "Tools used: " + (", ".join(executed_tools) if executed_tools else "none")
+    if req.allow_tools and not executed_tools:
+        tools_used = "Tools used: none (local availability check failed)"
     footer = tools_used
     if state_injected:
         footer += "\nContext: STATE.md injected."
+    # Attestation: CBO locally available (same as human auth — we attest this response is from local CBO).
+    if local_available is True:
+        attestation = "CBO locally available: yes (Dev Harness verified)"
+    elif local_available is False:
+        attestation = "CBO locally available: no (Dev Harness unreachable)"
+    else:
+        attestation = "CBO locally available: unverified (tools off)"
     reply = (
         f"[CBO online] session={req.session_id} mode={req.mode} allow_tools={req.allow_tools}\n"
+        f"{attestation}\n"
         f"You said: {req.user_text}\n"
         f"Dev harness: {DEV_HARNESS_BASE}\n"
         f"{tool_notes}\n"

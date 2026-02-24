@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 import subprocess
 import pathlib
@@ -11,7 +12,15 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 
-REPO_ROOT = pathlib.Path(r"C:\Calyx_Terminal").resolve()
+def _resolve_repo_root() -> pathlib.Path:
+    """Resolve repo root. CALYX_REPO_ROOT env overrides; else parents[2] from this file."""
+    env_root = os.environ.get("CALYX_REPO_ROOT")
+    if env_root:
+        return pathlib.Path(env_root).resolve()
+    return pathlib.Path(__file__).resolve().parents[2]
+
+
+REPO_ROOT = _resolve_repo_root()
 RECEIPTS = REPO_ROOT / "cbo_hub" / "receipts" / "dev_harness.jsonl"
 
 SANDBOX_IMAGE = "calyx-sandbox:dev"
