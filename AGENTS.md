@@ -193,3 +193,32 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## Cursor Cloud specific instructions
+
+### Project overview
+
+Station Calyx is a Python-based AI agent governance/coordination stack. See `README.md` for details.
+
+### Services
+
+| Service | Port | Start command |
+|---------|------|---------------|
+| CBO API | 8080 | `source .venv/bin/activate && python -m uvicorn calyx.cbo.api:APP --host 0.0.0.0 --port 8080` |
+| Dev Harness | 7777 | `source .venv/bin/activate && python -m uvicorn cbo_hub.dev_harness.app:app --host 127.0.0.1 --port 7777` |
+| CBO Core | 7778 | `source .venv/bin/activate && python -m uvicorn cbo_hub.cbo_core.app:app --host 127.0.0.1 --port 7778` |
+
+### Gotchas
+
+- **Windows-hardcoded paths**: `cbo_hub/dev_harness/app.py` and `cbo_hub/cbo_core/app.py` hardcode `REPO_ROOT = pathlib.Path(r"C:\Calyx_Terminal")`. On Linux, the Dev Harness `/repo/*` endpoints will fail to find files because of this. The CBO API (`calyx/cbo/api.py`) uses `Path(__file__).resolve().parents[2]` and works correctly on any OS.
+- **Missing imports in requirements.txt**: `httpx`, `python-dotenv`, `rich`, `pytest`, `flake8`, and `pylint` are not listed in `requirements.txt` but are needed. The update script installs them alongside `requirements.txt`.
+- **Pre-existing lint issues**: `calyx/cbo/discord_intake.py` has an undefined `uuid` name (F821); `calyx/kernel/integrity_gate.py` imports `msvcrt` (Windows-only); `tools/calyx_mail.py` has a possible use-before-assignment. These are not regressions.
+- **Spine invariants check** (`python tools/check_spine_invariants.py`) fails because several top-level directories are not documented in `docs/INDEX.md`. This is pre-existing.
+
+### Testing & Linting
+
+- **Tests**: `source .venv/bin/activate && pytest tests/ -v` (66 tests, all passing)
+- **Lint (flake8)**: `source .venv/bin/activate && python -m flake8 calyx benchmarks tools tests --select=E9,F63,F7,F82 --show-source --statistics`
+- **Lint (pylint)**: `source .venv/bin/activate && python -m pylint calyx benchmarks tools --disable=all --enable=E`
+- **Hygiene**: `bash tools/check_forbidden_tracked_paths.sh`
+- See `pytest.ini` for test configuration. `pythonpath = .` ensures imports work without `PYTHONPATH`.
