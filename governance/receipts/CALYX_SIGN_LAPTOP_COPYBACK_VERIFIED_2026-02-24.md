@@ -29,4 +29,4 @@ To restore the script on the laptop so future signs can run there:
 - Copy **from this repo** to the laptop:
   - `C:\Calyx_Terminal\tools\calyx_sign.ps1` → `C:\Calyx\tools\calyx_sign.ps1`
 
-Behavior is compatible (same ceremony, same receipt schema). Functionality confirmed: request flow and signature verification both succeed from this repo.
+**Desktop adoption of laptop script:** The laptop implementation (Z:\tools\calyx_sign.ps1) is preferred; the desktop has had V: visibility issues. When Z: is mapped, run `Scripts\sync_calyx_sign_from_laptop.ps1` to copy the laptop script into `tools/calyx_sign.ps1` on the desktop.
