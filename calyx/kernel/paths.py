@@ -49,3 +49,13 @@ def resolve_intents_dir(repo_root: Path | None = None) -> Path:
 def resolve_manifests_dir(repo_root: Path | None = None) -> Path:
     """Canonical manifests directory under runtime."""
     return resolve_runtime_dir(repo_root) / "manifests"
+
+
+def resolve_perf_receipts_dir(repo_root: Path | None = None) -> Path:
+    """Performance receipts directory: runtime/receipts/perf/."""
+    return resolve_receipts_dir(repo_root) / "perf"
+
+
+def resolve_perf_receipts_dir(repo_root: Path | None = None) -> Path:
+    """Performance receipts directory: runtime/receipts/perf/."""
+    return resolve_receipts_dir(repo_root) / "perf"

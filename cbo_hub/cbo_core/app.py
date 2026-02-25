@@ -567,7 +567,26 @@ async def chat(req: ChatReq):
                 else:
                     model_text, kimi_receipt = await _call_kimi(prompt, max_output_tokens=900)
             elif model_role == "local":
-                model_text, local_receipt = await _call_local(prompt, max_output_tokens=900)
+                try:
+                    from calyx.kernel.ollama_gate import check as ollama_gate_check, release as ollama_gate_release, record_failure as ollama_gate_record_failure, record_success as ollama_gate_record_success
+                    gate = ollama_gate_check(
+                        caller_key=req.session_id or "home",
+                        request_metadata={"model": "local", "prompt_len": len(prompt)},
+                    )
+                    if not gate.get("allowed"):
+                        model_text = f"[local] Ollama gate: {gate.get('reason', 'denied')}. Retry after {gate.get('retry_after_ms', 0)}ms."
+                        local_receipt = {"provider": "local", "called": False, "base_url": None, "model_id": None, "http_status": None, "error_snippet": model_text, "request_id": None}
+                    else:
+                        try:
+                            model_text, local_receipt = await _call_local(prompt, max_output_tokens=900)
+                            if local_receipt.get("http_status", 0) >= 400 or local_receipt.get("error_snippet"):
+                                ollama_gate_record_failure(req.session_id or "home")
+                            else:
+                                ollama_gate_record_success(req.session_id or "home")
+                        finally:
+                            ollama_gate_release(req.session_id or "home")
+                except ImportError:
+                    model_text, local_receipt = await _call_local(prompt, max_output_tokens=900)
             else:
                 model_text = f"[cbo] Unknown model_role '{req.model_role}'"
         except Exception as e:
