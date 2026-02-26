@@ -12,6 +12,15 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 
+def _emit(event: str, msg: str, level: str = "INFO", data: dict | None = None) -> None:
+    """Emit to Station Event Ledger. Never throws."""
+    try:
+        from calyx.kernel.event_ledger import emit as _le
+        _le(level=level, component="dev_harness", event=event, msg=msg, data=data or {})
+    except Exception:
+        pass
+
+
 def _resolve_repo_root() -> pathlib.Path:
     """Resolve repo root. CALYX_REPO_ROOT env overrides; else parents[2] from this file."""
     env_root = os.environ.get("CALYX_REPO_ROOT")
@@ -27,6 +36,13 @@ SANDBOX_IMAGE = "calyx-sandbox:dev"
 
 
 app = FastAPI(title="Calyx Dev Harness", version="0.1")
+
+# WO_NERVOUS_SYSTEM_PHASE1: request-scoped corr_id + station.smoke at boundary
+try:
+    from calyx.kernel.ledger_middleware import LedgerCorrIdMiddleware
+    app.add_middleware(LedgerCorrIdMiddleware, service_name="dev_harness")
+except Exception:
+    pass
 
 
 def _now_iso() -> str:
@@ -58,8 +74,24 @@ class RepoListResp(BaseModel):
     entries: List[str]
     sha256: str
 
+@app.on_event("startup")
+def _dev_harness_startup():
+    try:
+        from calyx.kernel.event_ledger import emit as _le, get_ledger_dir
+        _le("INFO", "dev_harness", "station.boot", "Dev Harness started", data={})
+        _le("INFO", "dev_harness", "station.service.identity", "Dev Harness identity", data={
+            "service": "dev_harness",
+            "pid": os.getpid(),
+            "cwd": str(pathlib.Path.cwd()),
+            "ledger_dir": str(get_ledger_dir()),
+        })
+    except Exception:
+        pass
+
+
 @app.post("/repo/list", response_model=RepoListResp)
 def repo_list(req: RepoListReq):
+    _emit("dev_harness.repo_list", f"POST /repo/list path={req.path or '.'}", data={"path": req.path or ".", "max_entries": req.max_entries})
     p = _jail_path(req.path or ".")
     if not p.exists() or not p.is_dir():
         raise HTTPException(404, "Directory not found.")
@@ -97,6 +129,7 @@ class RepoReadResp(BaseModel):
 
 @app.post("/repo/read", response_model=RepoReadResp)
 def repo_read(req: RepoReadReq):
+    _emit("dev_harness.repo_read", f"POST /repo/read path={req.path}", data={"path": req.path})
     p = _jail_path(req.path)
     if not p.exists() or not p.is_file():
         raise HTTPException(404, "File not found.")
@@ -129,6 +162,9 @@ class RepoSearchReq(BaseModel):
     query: str = Field(..., min_length=1)
     glob: Optional[str] = None
     max_hits: int = 200
+    override_ignore_globs: bool = Field(default=False, description="WO_V2: Human explicit reference overrides ignore policies")
+    override_include_deprecated: bool = Field(default=False, description="WO_DOC_HYGIENE: Include deprecated/archived docs")
+    override_source: Optional[str] = Field(default=None, description="WO_GOVERNANCE_SINGULARITY_V3: envelope|legacy_token|null")
 
 
 class RepoSearchResp(BaseModel):
@@ -137,9 +173,22 @@ class RepoSearchResp(BaseModel):
     sha256: str
 
 
+# Exclude meta-docs that describe the system itself; they contaminate code searches (e.g. "event_ledger" hits FE log).
+REPO_SEARCH_IGNORE_GLOBS = ["!**/FAILURE_EVENT_LOG.md"]
+
+
 @app.post("/repo/search", response_model=RepoSearchResp)
 def repo_search(req: RepoSearchReq):
+    _emit("dev_harness.repo_search", f"POST /repo/search query={req.query[:50]}", data={"query": req.query[:100], "max_hits": req.max_hits})
     cmd = ["rg", "--line-number", "--no-heading", req.query, str(REPO_ROOT)]
+    # WO_REQUEST_ORIENTATION_PROTOCOL_V2: Human explicit reference overrides ignore policies
+    ql = req.query.lower()
+    override_ignore = req.override_ignore_globs or "failure event" in ql or "failure_event_log" in ql
+    if override_ignore:
+        _emit("repo_search.override_ignore", "Ignore globs overridden (explicit failure event reference)", level="INFO", data={"query": req.query[:100]})
+    if not override_ignore:
+        for g in REPO_SEARCH_IGNORE_GLOBS:
+            cmd.extend(["--glob", g])
     if req.glob:
         cmd.extend(["--glob", req.glob])
 
@@ -152,8 +201,58 @@ def repo_search(req: RepoSearchReq):
     except subprocess.TimeoutExpired:
         raise HTTPException(408, "Search timed out.")
 
-    hits = text.splitlines()[: req.max_hits]
+    raw_hits = text.splitlines()[: req.max_hits * 2]
+    # WO_DOC_HYGIENE_DEPRECATION_GATES_V2: Override only via explicit token (no heuristic)
+    override_deprecated = req.override_include_deprecated
+    if override_deprecated:
+        _emit("repo_search.override_deprecated", "Deprecated docs included (explicit override)", level="INFO", data={"query": req.query[:100]})
+    filtered: List[str] = []
+    for line in raw_hits:
+        if ":" in line:
+            path_part = line.split(":", 1)[0].replace("\\", "/")
+            full_path = (REPO_ROOT / path_part).resolve()
+            if full_path.suffix == ".md":
+                try:
+                    from calyx.kernel.doc_status import is_deprecated_or_archived
+                    if is_deprecated_or_archived(full_path, REPO_ROOT) and not override_deprecated:
+                        continue
+                except Exception:
+                    pass
+        filtered.append(line)
+        if len(filtered) >= req.max_hits:
+            break
+    hits = filtered[: req.max_hits]
     out_sha = _sha256_bytes(("\n".join(hits)).encode("utf-8", errors="ignore"))
+
+    # WO_DOC_HYGIENE_DEPRECATION_GATES_V1: audit.doc.read for each doc influencing output
+    seen_paths: set[str] = set()
+    for line in hits:
+        if ":" in line:
+            path_part = line.split(":", 1)[0].replace("\\", "/")
+            if path_part.endswith(".md") and path_part not in seen_paths:
+                seen_paths.add(path_part)
+                full_path = (REPO_ROOT / path_part).resolve()
+                try:
+                    from calyx.kernel.doc_status import get_doc_status
+                    st = get_doc_status(full_path, REPO_ROOT)
+                    doc_status = st.get("status") or "unknown"
+                    _emit("audit.doc.read", "Doc read as evidence (repo_search)", level="DEBUG", data={
+                        "path": path_part,
+                        "doc_status": doc_status,
+                        "sha256": (st.get("sha256") or "")[:16],
+                        "override_deprecated": override_deprecated,
+                        "override_source": req.override_source if hasattr(req, "override_source") else None,
+                    })
+                    if doc_status in ("deprecated", "archived") and not override_deprecated:
+                        _emit("budget.violation", "deprecated_doc_used", level="WARN", data={"path": path_part})
+                        _emit("governance.assertion.failed", "deprecated_doc_used", level="WARN", data={"path": path_part})
+                        try:
+                            from calyx.kernel.governance_budget import append_fe_candidate
+                            append_fe_candidate("deprecated_doc_used", "dev_harness", f"Deprecated doc used without override: {path_part}", component="dev_harness")
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
 
     _write_receipt({
         "ts_utc": _now_iso(),
@@ -179,6 +278,7 @@ class ApplyPatchResp(BaseModel):
 
 @app.post("/repo/apply_patch", response_model=ApplyPatchResp)
 def repo_apply_patch(req: ApplyPatchReq):
+    _emit("dev_harness.patch_apply", "POST /repo/apply_patch", data={"patch_len": len(req.patch_unified_diff)})
     patch_bytes = req.patch_unified_diff.encode("utf-8")
     patch_sha = _sha256_bytes(patch_bytes)
 

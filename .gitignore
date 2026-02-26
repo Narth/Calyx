@@ -12,6 +12,7 @@ build/
 # Virtual Environments
 .venv/
 .venv311/
+.venv_cbohub311/
 venvs/
 env/
 ENV/
@@ -126,6 +127,12 @@ local_backups/
 !telemetry/**/.gitkeep
 !docs/examples/**
 !samples/**
+
+# Private operator identity and credentials (real values; never commit)
+private/
+
+# Future patch artifacts (author metadata = PII; use patches_public/ for sanitized export if needed)
+patches_out/*.patch
 
 # Local workspace (not part of Calyx repo)
 workspaces/Helping-the-Help/
