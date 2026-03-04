@@ -1,0 +1,6 @@
+services:
+  # We won’t run a long-lived container yet; dev_harness will launch ephemeral runs.
+  placeholder:
+    build:
+      context: ./docker
+    command: ["bash", "-lc", "echo sandbox image built"]

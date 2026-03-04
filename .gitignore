@@ -12,6 +12,7 @@ build/
 # Virtual Environments
 .venv/
 .venv311/
+.venv_cbohub311/
 venvs/
 env/
 ENV/
@@ -64,6 +65,7 @@ runtime/mailbox/
 *.jsonl
 !tests/fixtures/*.jsonl
 !docs/examples/**/*.jsonl
+!benchmarks/suites/**/cases.jsonl
 *.log
 *.csv
 *.sqlite
@@ -125,3 +127,20 @@ local_backups/
 !telemetry/**/.gitkeep
 !docs/examples/**
 !samples/**
+
+# Private operator identity and credentials (real values; never commit)
+private/
+
+# Future patch artifacts (author metadata = PII; use patches_public/ for sanitized export if needed)
+patches_out/*.patch
+
+# Local workspace (not part of Calyx repo)
+workspaces/Helping-the-Help/
+
+
+# Local temp artifacts
+temp_*.json
+temp_*.txt
+=5.9
+tools/bin/
+

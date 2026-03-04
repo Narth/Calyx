@@ -15,6 +15,10 @@ jobs:
       - name: Verify no forbidden runtime artifacts are tracked
         run: bash tools/check_forbidden_tracked_paths.sh
 
+      - name: Spine invariants (forbidden imports, top-level dirs documented)
+        run: |
+          python tools/check_spine_invariants.py
+
       - name: Run gitleaks secret scan
         uses: gitleaks/gitleaks-action@v2
         env:
@@ -23,7 +27,7 @@ jobs:
 
       - name: Compile Python modules
         run: |
-          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' | tr '\n' ' ')
+          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' 'benchmarks/**/*.py' | tr '\n' ' ')
           if [ -n "$files" ]; then
             python -m py_compile $files
           else

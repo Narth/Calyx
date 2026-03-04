@@ -7,3 +7,7 @@ orjson>=3.10
 fastapi>=0.109
 uvicorn[standard]>=0.23
 pynacl>=1.5.0
+pyyaml>=6.0
+httpx>=0.27
+python-dotenv>=1.0
+rich>=13.0
