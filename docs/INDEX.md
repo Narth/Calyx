@@ -11,9 +11,16 @@ Compact map of live runtime (L1), design specs (L2), and lore (L3) to reduce amb
 One primary layer per artifact; optional secondary noted in parentheses.
 
 ## L1 — Runtime (implemented)
+- `calyx/`: Calyx package (cbo, core, mail, kernel, execution).
+- `runtime/`: Runtime state (cbo, receipts, manifests, mailbox, metrics); git-ignored where appropriate.
+- `telemetry/`: Telemetry and envelope schemas (outbox, envelopes).
+- `benchmarks/`: Benchmark harness and datasets.
+- `governance/`: Governance documents (HVD-1, PBS-1, DRP-1, DP-1, EG-1).
+- `station_calyx/`: Station API data and legacy state.
+- `archive/`: Archived/non-operational modules (do not import from active code).
 - `calyx/cbo/bridge_overseer.py`: CBO heartbeat (manual-run).
 - `calyx/cbo/api.py`: FastAPI bridge (manual-run).
-- `calyx/cbo/coordinator/`: Coordinator pulse + guarded domains.
+- `calyx/cbo/coordinator/`: Deprecated stub; legacy code in archive/legacy_cbo_coordinator. Use calyx/cbo/intent_pipeline for spine.
 - `calyx_core/intercept.py`: Interceptor (record-only by default; AGII advisory).
 - `calyx/core/policy.yaml`: Canonical policy.
 - `calyx/core/registry.jsonl`: Canonical registry.
@@ -34,7 +41,7 @@ One primary layer per artifact; optional secondary noted in parentheses.
 ## L2 — Specs (design intent)
 - `docs/`, `engineering/`, `compiled/`: Governance, safety, kernel, blueprint docs.
 - `core_bloom/` (opt L3): Bloom scaffolds, safety orders, reflection grammars.
-- `bloomos/`: Conceptual BloomOS specs; runtime files are Safe Mode placeholders.
+- `bloomos/`: Conceptual BloomOS specs; runtime files are Safe Mode placeholders. Spec-only materials in bloomos/specs/.
 - `data_contract/`: Advisory/telemetry schemas.
 - `plans/`, `PHASE2_UNIFIED_BLUEPRINT.md`: Integration and phase plans.
 - `bloomos/kernel_seed_v0.1.md`: Kernel seed spec (not wired or active).
