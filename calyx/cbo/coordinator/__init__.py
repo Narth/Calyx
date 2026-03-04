@@ -1,8 +1,11 @@
-"""Station Calyx Coordinator - Executive Layer for Autonomy"""
+"""
+Legacy coordinator moved to archive/legacy_cbo_coordinator.
+Do not import. Use calyx.cbo.intent_pipeline for the canonical spine.
+"""
+from __future__ import annotations
 
-from .coordinator import Coordinator
-from .schemas import EventEnvelope, Intent
-
-__version__ = "0.1.0"
-__all__ = ["Coordinator", "EventEnvelope", "Intent"]
-
+def __getattr__(name: str):
+    raise ImportError(
+        "calyx.cbo.coordinator is deprecated and moved to archive/legacy_cbo_coordinator. "
+        "Use calyx.cbo.intent_pipeline for the canonical intent pipeline."
+    )
