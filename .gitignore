@@ -125,3 +125,5 @@ local_backups/
 !telemetry/**/.gitkeep
 !docs/examples/**
 !samples/**
+vault/
+chronicles/.vault_pointer
