@@ -56,6 +56,6 @@ def resolve_perf_receipts_dir(repo_root: Path | None = None) -> Path:
     return resolve_receipts_dir(repo_root) / "perf"
 
 
-def resolve_perf_receipts_dir(repo_root: Path | None = None) -> Path:
-    """Performance receipts directory: runtime/receipts/perf/."""
-    return resolve_receipts_dir(repo_root) / "perf"
+def resolve_ledger_dir(repo_root: Path | None = None) -> Path:
+    """Canonical ledger directory: runtime/ledger/."""
+    return resolve_runtime_dir(repo_root) / "ledger"

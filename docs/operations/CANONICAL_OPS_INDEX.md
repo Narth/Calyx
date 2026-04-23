@@ -29,6 +29,19 @@ doctrine_scope: governed
 
 ---
 
+## Sunrise deployment sequence
+
+When you change any sunrise-wired component, run sunrise to deploy:
+
+1. **Sunset** — `Scripts\sunset_calyx.ps1` (stops loops, Bridge Overseer, CLI Avatar, core services)
+2. **Sunrise** — `Scripts\start_calyx_core_services.ps1` (or `Scripts\sunrise_calyx.ps1`)
+
+**Sunrise-wired components:** Dev Harness, CBO Core, Avatar Web, Telemetry Gateway, station_health_loop, navigator_triage_loop, energy_churn_cp9_loop, cp6_cp7_loop, bridge_overseer, **cli_avatar**, discord_gateway.
+
+Changes to CLI Avatar (e.g. `allow_second_opinion` wiring), CBO Core, Bridge Overseer, or loops require sunset → sunrise to take effect.
+
+---
+
 ## Config
 
 - `CALYX_HEARTBEAT_PUSH_ENABLED` — gate for heartbeat sender

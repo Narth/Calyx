@@ -15,9 +15,14 @@ import json
 import os
 import re
 import time
+import subprocess
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+
+from calyx.kernel.boot_evidence import assert_boot_evidence_or_fail
+from calyx.kernel.boot_context_budget import is_observe_mode_forced
+from calyx.kernel.event_ledger import clear_system_phase, set_system_phase
 
 try:
     import discord
@@ -56,6 +61,15 @@ def _heartbeat_push_destination() -> str:
     return "DM"
 
 
+def _correlation_log(component: str, event: str, duration_ms: int | None = None) -> None:
+    """Correlation log (correlation != causation). Never raises."""
+    try:
+        from calyx.kernel.correlation_log import log
+        log(component, event, duration_ms)
+    except Exception:
+        pass
+
+
 def _emit(event: str, msg: str, level: str = "INFO", data: dict | None = None, corr_id: str | None = None, task_corr_id: str | None = None, task_name: str | None = None, schedule_id: str | None = None, trigger_reason: str | None = None) -> None:
     """Emit to Station Event Ledger. WO_CAUSAL_ENVELOPE_AUDIT_CLARITY_V1: pass task context for task emits."""
     try:
@@ -84,11 +98,11 @@ def _parse_discord_ids_md(root: Path) -> tuple[list[str], list[str]]:
         for line in text.splitlines():
             line = line.strip()
             if "Station Health Channel ID" in line or ("channel" in line.lower() and "ID" in line):
-                m = re.search(r":\s*(\d{17,20})", line)
+                m = re.search(r"(\d{17,20})", line)
                 if m and m.group(1) not in channels:
                     channels.append(m.group(1))
             if "Authorized User ID" in line or "User ID" in line:
-                m = re.search(r":\s*(\d{17,20})", line)
+                m = re.search(r"(\d{17,20})", line)
                 if m and m.group(1) not in users:
                     users.append(m.group(1))
     except Exception:
@@ -155,6 +169,7 @@ class CalyxDiscordGateway:
     def _emit_identity(self) -> None:
         """WO: On boot, emit openclaw.service.identity + station.config.effective (WO_IDLE_ACTIVITY_GOVERNANCE_V3)."""
         try:
+            set_system_phase("boot")
             cwd = str(Path.cwd())
             pid = os.getpid()
             _emit(
@@ -208,6 +223,8 @@ class CalyxDiscordGateway:
                 )
         except Exception:
             pass
+        finally:
+            clear_system_phase()
 
     def _allowed_message(self, message: "discord.Message") -> bool:
         """WO_GATEWAY_DENY_BY_DEFAULT: channel_allowlist==[] ⇒ deny all guild channels; authorized_user_ids==[] ⇒ deny all DMs."""
@@ -233,6 +250,32 @@ class CalyxDiscordGateway:
         task_corr_id: str | None = None,
     ) -> bool:
         """WO_IDLE_ACTIVITY_GOVERNANCE_V3: Send only if corr_id or task_corr_id set. Else emit violation."""
+        forced, marker = is_observe_mode_forced()
+        if forced:
+            try:
+                from calyx.kernel.governance_budget import append_fe_candidate
+                _emit(
+                    "governance.assertion.failed",
+                    "outbound_blocked_observe_mode",
+                    level="ERROR",
+                    data={
+                        "reason": "boot_context_budget_exceeded",
+                        "observe_mode_forced": True,
+                        "marker_reason": marker.get("reason", ""),
+                    },
+                    corr_id=corr_id,
+                    task_corr_id=task_corr_id,
+                )
+                append_fe_candidate(
+                    "outbound_blocked_observe_mode",
+                    "gateway",
+                    "Outbound send blocked due to forced observe mode",
+                    component="calyx_gateway",
+                )
+            except Exception:
+                pass
+            return False
+
         if corr_id or task_corr_id:
             await channel.send(content[:2000])
             return True
@@ -245,6 +288,51 @@ class CalyxDiscordGateway:
             pass
         return False
 
+    def _load_heartbeat_emitted_ts(self) -> str:
+        """Load heartbeat_emitted_ts from runtime/station_heartbeat.json (if present)."""
+        try:
+            root = _resolve_repo_root()
+            hb_path = root / "runtime" / "station_heartbeat.json"
+            if not hb_path.exists():
+                return ""
+            text = hb_path.read_text(encoding="utf-8", errors="replace")
+            if text.startswith("\ufeff"):
+                text = text.lstrip("\ufeff")
+            data = json.loads(text)
+            ts = data.get("heartbeat_emitted_ts") or ""
+            return ts
+        except Exception:
+            return ""
+
+    def _load_heartbeat_snapshot(self) -> dict:
+        """Load heartbeat snapshot fields for ledger parity proof."""
+        try:
+            root = _resolve_repo_root()
+            hb_path = root / "runtime" / "station_heartbeat.json"
+            if not hb_path.exists():
+                return {}
+            text = hb_path.read_text(encoding="utf-8", errors="replace")
+            if text.startswith("\ufeff"):
+                text = text.lstrip("\ufeff")
+            data = json.loads(text)
+            return {
+                "heartbeat_emitted_ts": data.get("heartbeat_emitted_ts"),
+                "heartbeat_payload_sha256": data.get("heartbeat_payload_sha256"),
+            }
+        except Exception:
+            return {}
+
+    @staticmethod
+    def _format_ts_seconds(ts: str) -> str:
+        """Normalize ISO timestamp to seconds (YYYY-MM-DDTHH:MM:SSZ) for display."""
+        try:
+            if not ts:
+                return ""
+            dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+            return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except Exception:
+            return ts
+
     def _read_state_summary(self) -> str:
         """Read STATE.md and runtime/station_health.json; return compact summary for Discord."""
         try:
@@ -252,30 +340,106 @@ class CalyxDiscordGateway:
             state_path = root / "STATE.md"
             health_path = root / "runtime" / "station_health.json"
             lines = []
+            hb_emitted_ts = self._load_heartbeat_emitted_ts()
             if state_path.exists():
                 text = state_path.read_text(encoding="utf-8", errors="replace")
-                for key in ("Status:", "heartbeat_ts:", "health:", "checks:", "entropy_tier:"):
+                for key in ("Status:", "heartbeat_ts:", "health:", "checks:", "entropy_tier:", "navigator_interval:", "triage_status:", "cpu_target:"):
                     for line in text.splitlines():
                         if line.strip().startswith(key):
-                            lines.append(line.strip())
+                            if key == "heartbeat_ts:" and hb_emitted_ts:
+                                hb_display = self._format_ts_seconds(hb_emitted_ts)
+                                lines.append(f"heartbeat_ts: {hb_display}")
+                            else:
+                                lines.append(line.strip())
                             break
+                if hb_emitted_ts and not any(l.startswith("heartbeat_ts:") for l in lines):
+                    hb_display = self._format_ts_seconds(hb_emitted_ts)
+                    lines.append(f"heartbeat_ts: {hb_display}")
             if health_path.exists():
                 try:
                     data = json.loads(health_path.read_text(encoding="utf-8", errors="replace"))
                     cpu = data.get("cpu_pct")
                     ram = data.get("ram_pct")
-                    if cpu is not None or ram is not None:
+                    gpu = data.get("gpu")
+                    has_gpu = isinstance(gpu, dict) and (
+                        gpu.get("util_pct") is not None or gpu.get("vram_pct") is not None or gpu.get("temp_c") is not None
+                    )
+                    if cpu is not None or ram is not None or has_gpu:
                         parts = []
                         if cpu is not None:
-                            parts.append(f"CPU: {cpu}%")
+                            parts.append(f"CPU: {int(cpu)}%")
                         if ram is not None:
-                            parts.append(f"RAM: {ram}%")
+                            parts.append(f"RAM: {int(ram)}%")
+                        if has_gpu:
+                            gpu_parts = []
+                            if gpu.get("util_pct") is not None:
+                                gpu_parts.append(f"GPU: {int(gpu['util_pct'])}%")
+                            if gpu.get("vram_pct") is not None:
+                                gpu_parts.append(f"VRAM: {int(gpu['vram_pct'])}%")
+                            if gpu.get("temp_c") is not None:
+                                gpu_parts.append(f"{int(gpu['temp_c'])}°C")
+                            if gpu_parts:
+                                parts.append(" | ".join(gpu_parts))
                         lines.append(" | ".join(parts))
                 except Exception:
                     pass
             return "\n".join(lines) if lines else "STATE unavailable"
         except Exception:
             return "STATE read failed"
+
+    def _refresh_state(self) -> None:
+        """Best-effort refresh STATE.md and heartbeat artifacts before sending heartbeat."""
+        def _tail(value: str | None, limit: int = 300) -> str | None:
+            if not value:
+                return None
+            return value[-limit:] if len(value) > limit else value
+
+        result: dict[str, object | None] = {
+            "refresh_attempted": False,
+            "refresh_ok": False,
+            "rc": None,
+            "duration_ms": None,
+            "err": None,
+            "stderr_tail": None,
+            "stdout_tail": None,
+        }
+        start = time.perf_counter()
+        try:
+            root = _resolve_repo_root()
+            script = root / "Scripts" / "update_state_checks.ps1"
+            if not script.exists():
+                result["err"] = "missing_script"
+                return result
+            result["refresh_attempted"] = True
+            completed = subprocess.run(
+                ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(script)],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=20,
+            )
+            result["duration_ms"] = int((time.perf_counter() - start) * 1000)
+            result["rc"] = completed.returncode
+            result["stdout_tail"] = _tail(completed.stdout)
+            result["stderr_tail"] = _tail(completed.stderr)
+            if completed.returncode == 0:
+                result["refresh_ok"] = True
+                return result
+            result["err"] = "rc_nonzero"
+            return result
+        except subprocess.TimeoutExpired as exc:
+            result["refresh_attempted"] = True
+            result["duration_ms"] = int((time.perf_counter() - start) * 1000)
+            result["err"] = "timeout"
+            result["stdout_tail"] = _tail(getattr(exc, "stdout", None))
+            result["stderr_tail"] = _tail(getattr(exc, "stderr", None))
+            return result
+        except Exception as exc:
+            result["refresh_attempted"] = True
+            result["duration_ms"] = int((time.perf_counter() - start) * 1000)
+            result["err"] = "exec_error"
+            result["stderr_tail"] = _tail(str(exc))
+            return result
 
     async def _heartbeat_loop(self) -> None:
         """WO_IDLE_ACTIVITY_GOVERNANCE_V3: System task. Every N min, send STATE/HEALTH to DM. Fully suppressible."""
@@ -304,10 +468,9 @@ class CalyxDiscordGateway:
                     schedule_id=schedule_id,
                     trigger_reason="interval",
                 )
+                msg = self._prepare_heartbeat_message(task_corr_id, task_name, schedule_id)
                 user = await self.client.fetch_user(int(self._heartbeat_user_id))
                 channel = await user.create_dm()
-                summary = self._read_state_summary()
-                msg = f"**Station heartbeat**\n{summary}"
                 sent = await self._send_with_governance(channel, msg, task_corr_id=task_corr_id)
                 wall_time_ms = int((time.perf_counter() - t0) * 1000)
                 if sent:
@@ -334,6 +497,7 @@ class CalyxDiscordGateway:
                     )
                     _emit("system.task.completed", f"System task {task_name} completed", level="INFO", data={"task_corr_id": task_corr_id, "task_name": task_name}, task_corr_id=task_corr_id, task_name=task_name, schedule_id=schedule_id, trigger_reason="interval")
                     _emit("calyx_gateway.heartbeat", "Heartbeat sent to Discord DM", data={"user_id": self._heartbeat_user_id, "task_corr_id": task_corr_id}, task_corr_id=task_corr_id, task_name=task_name, schedule_id=schedule_id, trigger_reason="interval")
+                    _correlation_log("discord_gateway", "heartbeat_sent", wall_time_ms)
                 else:
                     _emit("system.task.failed", f"System task {task_name} failed (orphan send blocked)", level="WARN", data={"task_corr_id": task_corr_id, "task_name": task_name}, task_corr_id=task_corr_id, task_name=task_name, schedule_id=schedule_id, trigger_reason="interval")
             except Exception as e:
@@ -353,6 +517,79 @@ class CalyxDiscordGateway:
         """Placeholder. No-op to prevent AttributeError (WO_IDLE_ACTIVITY_GOVERNANCE_V3)."""
         while True:
             await asyncio.sleep(3600)
+
+    def _prepare_heartbeat_message(
+        self,
+        task_corr_id: str | None,
+        task_name: str | None,
+        schedule_id: str | None,
+    ) -> str:
+        refresh = self._refresh_state()
+        summary = self._read_state_summary()
+        hb_snapshot = self._load_heartbeat_snapshot()
+        hb_emitted_ts = hb_snapshot.get("heartbeat_emitted_ts") or ""
+        hb_display = self._format_ts_seconds(hb_emitted_ts) if hb_emitted_ts else None
+        if refresh.get("refresh_ok"):
+            duration_ms = refresh.get("duration_ms")
+            suffix = f" ({duration_ms}ms)" if isinstance(duration_ms, int) else ""
+            summary = f"{summary}\nheartbeat_refresh: ok{suffix}"
+        else:
+            err = refresh.get("err") or "unknown"
+            rc = refresh.get("rc")
+            rc_text = str(rc) if rc is not None else "null"
+            try:
+                from calyx.kernel.failure_event import write_failure_event
+                fe_result = write_failure_event(
+                    level="WARN",
+                    component="heartbeat",
+                    event="heartbeat.refresh.failed",
+                    msg="Heartbeat refresh failed",
+                    data={
+                        "refresh_attempted": refresh.get("refresh_attempted"),
+                        "refresh_ok": refresh.get("refresh_ok"),
+                        "rc": refresh.get("rc"),
+                        "duration_ms": refresh.get("duration_ms"),
+                        "err": refresh.get("err"),
+                        "stdout_tail": refresh.get("stdout_tail"),
+                        "stderr_tail": refresh.get("stderr_tail"),
+                    },
+                    task_corr_id=task_corr_id,
+                    task_name=task_name,
+                    schedule_id=schedule_id,
+                    trigger_reason="interval",
+                    cooldown_s=300,
+                )
+                if fe_result.get("suppressed"):
+                    suffix = " (suppressed)"
+                else:
+                    suffix = " (see ledger)"
+            except Exception as exc:
+                _emit("heartbeat.refresh.failed.log_error", str(exc)[:200], level="WARN")
+                suffix = " (not logged)"
+            summary = f"{summary}\nheartbeat_refresh: fail {err} rc={rc_text}{suffix}"
+        try:
+            from calyx.kernel.event_ledger import emit as ledger_emit
+            ledger_emit(
+                level="INFO",
+                component="discord_gateway",
+                event="discord.heartbeat.sent",
+                msg="Discord heartbeat sent",
+                data={
+                    "discord_heartbeat_ts": hb_display,
+                    "heartbeat_emitted_ts": hb_emitted_ts or None,
+                    "heartbeat_payload_sha256": hb_snapshot.get("heartbeat_payload_sha256"),
+                    "refresh_ok": bool(refresh.get("refresh_ok")),
+                    "refresh_err": refresh.get("err"),
+                    "refresh_rc": refresh.get("rc"),
+                },
+                task_corr_id=task_corr_id,
+                task_name=task_name,
+                schedule_id=schedule_id,
+                trigger_reason="interval",
+            )
+        except Exception as exc:
+            _emit("discord.heartbeat.sent.emit_failed", str(exc)[:200], level="WARN")
+        return f"**Station heartbeat**\n{summary}"
 
     async def _process_outbox(self) -> None:
         """Placeholder. No-op to prevent AttributeError (WO_IDLE_ACTIVITY_GOVERNANCE_V3)."""
@@ -414,6 +651,14 @@ class CalyxDiscordGateway:
             return "Station status: see DM for details. (Public channels do not receive raw state.)"
         return text
 
+    def _is_heartbeat_request(self, text: str) -> bool:
+        """Fast path: short requests for heartbeat (show/please/give/status) — return summary without CBO round-trip."""
+        lower = (text or "").strip().lower()
+        if "heartbeat" not in lower:
+            return False
+        triggers = ("show", "please", "give", "status", "state", "produce", "send", "display")
+        return any(t in lower for t in triggers) or lower in ("heartbeat", "show heartbeat", "heartbeat please")
+
     async def _on_message(self, message: "discord.Message") -> None:
         try:
             if not self._allowed_message(message):
@@ -425,10 +670,17 @@ class CalyxDiscordGateway:
             corr_id = str(uuid.uuid4())[:16]
             session_id = f"discord_{message.channel.id}"
             is_guild_channel = not isinstance(message.channel, discord.DMChannel) if discord else False
+            _correlation_log("discord_gateway", "message_received")
             import sys
             print(f"[gateway] Inbound: {text[:80]}...", file=sys.stderr, flush=True)
 
-            reply, err = await self._call_cbo(text, session_id, corr_id)
+            # Fast heartbeat repeater — return Station heartbeat with CPU/RAM/GPU without CBO round-trip
+            if self._is_heartbeat_request(text):
+                summary = self._read_state_summary()
+                reply = f"**Station heartbeat**\n{summary}"
+                err = None
+            else:
+                reply, err = await self._call_cbo(text, session_id, corr_id)
 
             if err:
                 print(f"[gateway] CBO error: {err}", file=sys.stderr, flush=True)
@@ -453,6 +705,12 @@ class CalyxDiscordGateway:
                 pass
 
     async def run(self) -> None:
+        # Boot Evidence Pre-Network Gate (V1): refuse outbound Discord connect if missing.
+        assert_boot_evidence_or_fail(
+            component="calyx_gateway",
+            required_session_id=(os.environ.get("CALYX_BOOT_SESSION_ID") or None),
+        )
+
         if discord is None:
             raise ImportError("discord.py not installed. pip install discord.py")
         if not httpx:

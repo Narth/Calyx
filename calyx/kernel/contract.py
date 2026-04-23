@@ -1,4 +1,8 @@
-"""Load CALYX_CONTRACT.yaml and validate Work Envelopes. Deny-by-default."""
+"""Load CALYX_CONTRACT.yaml and validate Work Envelopes. Deny-by-default.
+
+WO_GOVERNANCE_CONTRACT_INTAKE_PARITY_AND_LOOPBACK_HARDENING_V1: Contract integrity
+enforcement. If contract_sha256 is non-empty, it must match canonical hash or load fails.
+"""
 
 from __future__ import annotations
 
@@ -21,20 +25,50 @@ def _load_yaml(path: Path) -> dict:
         return yaml.safe_load(f)
 
 
+def _canonical_contract_hash(data: dict) -> str:
+    """Compute sha256 of contract dict excluding contract_sha256. Deterministic."""
+    excluded = {k: v for k, v in data.items() if k != "contract_sha256"}
+    canonical = yaml.dump(excluded, sort_keys=True, default_flow_style=False, allow_unicode=True)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _emit_audit(event: str, data: dict | None = None) -> None:
+    try:
+        from .event_ledger import emit
+        emit(level="WARN", component="contract", event=event, msg=event, data=data or {})
+    except Exception:
+        pass
+
+
 def load_contract(contract_path: Path | str) -> tuple[dict, str]:
     """
     Load CALYX_CONTRACT.yaml. Returns (contract_dict, contract_sha256).
-    Raises if file missing or invalid.
+    If contract_sha256 is non-empty in file, enforces integrity (fail closed on mismatch).
+    Raises if file missing, invalid, or integrity check fails.
     """
     path = Path(contract_path)
     if not path.exists():
         raise FileNotFoundError(f"Contract not found: {path}")
-    raw = path.read_bytes()
-    sha = hashlib.sha256(raw).hexdigest()
     data = _load_yaml(path)
     if not isinstance(data, dict):
         raise ValueError("Contract must be a YAML mapping")
-    return data, sha
+
+    declared_hash = (data.get("contract_sha256") or "").strip()
+    actual_hash = _canonical_contract_hash(data)
+
+    if declared_hash:
+        if declared_hash != actual_hash:
+            _emit_audit("audit.contract.integrity.failed", {
+                "declared": declared_hash[:16] + "...",
+                "actual": actual_hash[:16] + "...",
+                "path": str(path),
+            })
+            raise ValueError(
+                f"Contract integrity failed: declared hash does not match. "
+                f"Tampering or drift detected. Path: {path}"
+            )
+
+    return data, actual_hash
 
 
 def validate_work_envelope(
@@ -64,6 +98,10 @@ def validate_work_envelope(
     if envelope.risk_tier == "high":
         if not envelope.requires_human_approval or not envelope.approval_token:
             return False, "high_risk_without_approval_token"
+
+    swarm_valid, swarm_errors = envelope.validate_swarm_extensions()
+    if not swarm_valid:
+        return False, "invalid_swarm_extension: " + "; ".join(swarm_errors)
 
     return True, None
 

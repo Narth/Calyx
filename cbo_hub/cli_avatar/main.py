@@ -75,6 +75,7 @@ def main():
             user = f"Please search the repo for: {q}"
 
         try:
+            allow_second_opinion = model_role in ("second", "second_opinion")
             r = httpx.post(
                 CBO_CHAT,
                 json={
@@ -83,6 +84,7 @@ def main():
                     "mode": mode,
                     "allow_tools": allow_tools,
                     "model_role": model_role,
+                    "allow_second_opinion": allow_second_opinion,
                 },
                 timeout=60
             )

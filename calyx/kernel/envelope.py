@@ -24,10 +24,11 @@ class WorkEnvelope:
     requires_human_approval: bool
     approval_token: str | None
     risk_tier: str = "low"
+    critique_checkpoint: dict[str, Any] = field(default_factory=dict)
 
     def to_canonical_dict(self) -> dict[str, Any]:
         """Stable key order for deterministic serialization."""
-        return {
+        payload = {
             "envelope_id": self.envelope_id,
             "intent_id": self.intent_id,
             "task_type": self.task_type,
@@ -39,6 +40,9 @@ class WorkEnvelope:
             "approval_token": self.approval_token,
             "risk_tier": self.risk_tier,
         }
+        if self.critique_checkpoint:
+            payload["critique_checkpoint"] = self.critique_checkpoint
+        return payload
 
     def to_canonical_json(self) -> bytes:
         """Canonical JSON (sorted keys, no whitespace)."""
@@ -53,6 +57,16 @@ class WorkEnvelope:
         """SHA256 of canonical JSON. Same envelope -> same hash."""
         return hashlib.sha256(self.to_canonical_json()).hexdigest()
 
+    def has_swarm_extensions(self) -> bool:
+        """Return True when governed swarm extension fields are present."""
+        return "swarm" in (self.scope or {}) or "swarm" in (self.constraints or {})
+
+    def validate_swarm_extensions(self) -> tuple[bool, list[str]]:
+        """Validate governed swarm extension fields if present."""
+        from .swarm_work_envelope import validate_swarm_extensions
+
+        return validate_swarm_extensions(self.scope or {}, self.constraints or {})
+
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> WorkEnvelope:
         return cls(
@@ -66,4 +80,5 @@ class WorkEnvelope:
             requires_human_approval=d.get("requires_human_approval", False),
             approval_token=d.get("approval_token"),
             risk_tier=d.get("risk_tier", "low"),
+            critique_checkpoint=d.get("critique_checkpoint") or {},
         )

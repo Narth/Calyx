@@ -8,6 +8,8 @@ doctrine_scope: historical
 
 # OpenClaw + Station Calyx Integration
 
+**Historical note:** OpenClaw helped bring the Station Calyx dream to fruition. This doc preserves that integration path. It is not erased — it is remembered.
+
 > **⚠️ OpenClaw is deprecated and forbidden as an executor/sender.**
 > **If OpenClaw is running, Calyx may enter fail-closed mode.** See docs/operations/OPENCLAW_DECOMMISSION_PLAYBOOK.md.
 

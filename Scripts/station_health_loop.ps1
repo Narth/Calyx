@@ -17,12 +17,39 @@ $ErrorActionPreference = "Stop"
 $repoRoot = if ($PSScriptRoot) { (Resolve-Path (Join-Path $PSScriptRoot "..")).Path } else { (Get-Location).Path }
 if (-not (Test-Path "$repoRoot\cbo_hub")) { $repoRoot = (Get-Location).Path }
 
+$truthHelper = Join-Path $repoRoot "Scripts\runtime_truth_contract.ps1"
+if (-not (Test-Path $truthHelper)) {
+    throw "runtime_truth_contract.ps1 not found: $truthHelper"
+}
+. $truthHelper
+
 if (-not $StopFile) { $StopFile = Join-Path $repoRoot "runtime\station_health.stop" }
 $runtimeDir = Join-Path $repoRoot "runtime"
 $outPath = Join-Path $runtimeDir "station_health.json"
 $historyPath = Join-Path $runtimeDir "station_health_history.jsonl"
 $MaxHistoryLines = 1440   # 24h at 1/min
+$correlationLogPath = Join-Path $runtimeDir "correlation_activity.jsonl"
+$correlationLogDisabled = Join-Path $runtimeDir "correlation_log.disabled"
 if (-not (Test-Path $runtimeDir)) { New-Item -ItemType Directory -Path $runtimeDir -Force | Out-Null }
+
+function Write-CorrelationLog {
+    param([string]$Component, [string]$Event, [int]$DurationMs = -1)
+    if (Test-Path $correlationLogDisabled -PathType Leaf) { return }
+    if ($env:CALYX_CORRELATION_LOG_DISABLED -eq "1") { return }
+    try {
+        $ts = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+        $obj = @{ ts_utc = $ts; component = $Component; event = $Event }
+        if ($DurationMs -ge 0) { $obj.duration_ms = $DurationMs }
+        Add-Content -LiteralPath $correlationLogPath -Value ($obj | ConvertTo-Json -Compress) -Encoding UTF8 -ErrorAction SilentlyContinue
+    } catch { }
+}
+
+# Safe Travels: 50% CPU target. Preserve hardware; dance above/below the line.
+# Wider margins: 40-60% zone, hold back at 60%, pause at 75%.
+$SafeTravelsTarget = 50
+$SafeTravelsBand = 10  # 40-60% = safe_travels_zone (room to breathe)
+$SafeTravelsOver = 60  # Above = over target, hold back
+$SafeTravelsPause = 75 # Above = unacceptable, pause
 
 # CPU/RAM: match build_safety_check
 $WarnCpuPct = 75
@@ -125,7 +152,27 @@ while ($true) {
     $n = $sorted.Count
     $baselineCpu = if ($n -gt 0) { [int]$sorted[[Math]::Floor($n / 2)] } else { $null }
     $cadence70 = ($script:cpuHistory | Where-Object { $_ -ge 70 }).Count
-    $entropyTier = if ($null -eq $cpu) { "unknown" } elseif ($cpu -ge 70) { "unacceptable" } elseif ($cpu -ge 50) { "high" } else { "pass" }
+    $cadence55 = ($script:cpuHistory | Where-Object { $_ -ge $SafeTravelsOver }).Count
+    $entropyTier = if ($null -eq $cpu) { "unknown" } elseif ($cpu -ge $SafeTravelsPause) { "unacceptable" } elseif ($cpu -ge $SafeTravelsOver) { "high" } else { "pass" }
+    $safeTravelsZone = ($null -ne $cpu -and $cpu -ge ($SafeTravelsTarget - $SafeTravelsBand) -and $cpu -le ($SafeTravelsTarget + $SafeTravelsBand))
+    $cpuTarget = if ($null -eq $cpu) { "unknown" } elseif ($cpu -lt ($SafeTravelsTarget - $SafeTravelsBand)) { "under" } elseif ($cpu -le ($SafeTravelsTarget + $SafeTravelsBand)) { "safe_travels" } else { "over" }
+
+    $oomImminent = $false
+    try {
+        $oomFlag = $env:CALYX_OOM_IMMINENT
+        if ($null -eq $oomFlag) { $oomFlag = "" }
+        $oomFlag = $oomFlag.ToString().Trim().ToLower()
+        if ($oomFlag -in @("1", "true", "yes")) { $oomImminent = $true }
+    } catch { }
+    $memoryPressureTier = $null
+    if ($oomImminent) {
+        $memoryPressureTier = 4
+    } elseif ($null -ne $ram) {
+        if ($ram -lt 70) { $memoryPressureTier = 0 }
+        elseif ($ram -lt 85) { $memoryPressureTier = 1 }
+        elseif ($ram -le 95) { $memoryPressureTier = 2 }
+        else { $memoryPressureTier = 3 }
+    }
 
     $health = "pass"
     if ($null -ne $cpu -and $cpu -ge $FailCpuPct) { $health = "fail" }
@@ -139,23 +186,35 @@ while ($true) {
         elseif ($null -ne $ram -and $ram -ge $WarnRamPct) { $health = "warn" }
     }
 
-    $ts = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
-    $obj = @{
+    $nowUtc = [datetime]::UtcNow
+    $ts = $nowUtc.ToString("o")
+    $healthObj = [ordered]@{
         health     = $health
         health_ts  = $ts
+        schema     = "station.health.v2"
         cpu_pct    = $cpu
         ram_pct    = $ram
         gpu        = if ($gpu) { @{ util_pct = $gpu.util_pct; vram_pct = $gpu.vram_pct; temp_c = $gpu.temp_c } } else { $null }
         top        = $top
         entropy    = @{
-            tier         = $entropyTier
-            baseline_cpu = $baselineCpu
-            cadence_70   = $cadence70
-            entropy_sources = $entropySources
+            tier             = $entropyTier
+            baseline_cpu     = $baselineCpu
+            cadence_70       = $cadence70
+            cadence_55       = $cadence55
+            safe_travels_zone = $safeTravelsZone
+            cpu_target      = $cpuTarget
+            safe_travels_target = $SafeTravelsTarget
+            entropy_sources  = $entropySources
         }
+        memory_pressure_tier = $memoryPressureTier
+        oom_imminent = $oomImminent
         interval_s = $IntervalSec
-    } | ConvertTo-Json -Compress:$false -Depth 4
-    [System.IO.File]::WriteAllText($outPath, $obj, [System.Text.UTF8Encoding]::new($false))
+    }
+    Add-TruthMetadataToArtifact -Artifact $healthObj -ContractName "station_health" -EmittedAtUtc $nowUtc
+    Write-JsonArtifact -Path $outPath -Artifact $healthObj -Depth 6
+    try {
+        Invoke-DerivedTruthExpirySweep -RepoRoot $repoRoot -NowUtc $nowUtc | Out-Null
+    } catch { }
 
     # Append to history every HistoryIntervalSec (compact snapshot for trend analysis)
     $nowUtc = [DateTime]::UtcNow
@@ -168,6 +227,7 @@ while ($true) {
         $shouldWriteHistory = $true
     }
     if ($shouldWriteHistory) {
+        Write-CorrelationLog -Component "station_health" -Event "history_write"
         try {
             $snap = @{
                 ts = $ts
@@ -175,7 +235,12 @@ while ($true) {
                 cpu_pct = $cpu
                 ram_pct = $ram
                 entropy_tier = $entropyTier
+                memory_pressure_tier = $memoryPressureTier
+                oom_imminent = $oomImminent
                 cadence_70 = $cadence70
+                cadence_55 = $cadence55
+                safe_travels_zone = $safeTravelsZone
+                cpu_target = $cpuTarget
                 baseline_cpu = $baselineCpu
             }
             if ($gpu) { $snap.gpu_util_pct = $gpu.util_pct; $snap.gpu_vram_pct = $gpu.vram_pct; $snap.gpu_temp_c = $gpu.temp_c }

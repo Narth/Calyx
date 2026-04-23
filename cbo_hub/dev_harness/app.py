@@ -77,14 +77,18 @@ class RepoListResp(BaseModel):
 @app.on_event("startup")
 def _dev_harness_startup():
     try:
-        from calyx.kernel.event_ledger import emit as _le, get_ledger_dir
-        _le("INFO", "dev_harness", "station.boot", "Dev Harness started", data={})
-        _le("INFO", "dev_harness", "station.service.identity", "Dev Harness identity", data={
-            "service": "dev_harness",
-            "pid": os.getpid(),
-            "cwd": str(pathlib.Path.cwd()),
-            "ledger_dir": str(get_ledger_dir()),
-        })
+        from calyx.kernel.event_ledger import clear_system_phase, emit as _le, get_ledger_dir, set_system_phase
+        set_system_phase("boot")
+        try:
+            _le("INFO", "dev_harness", "station.boot", "Dev Harness started", data={})
+            _le("INFO", "dev_harness", "station.service.identity", "Dev Harness identity", data={
+                "service": "dev_harness",
+                "pid": os.getpid(),
+                "cwd": str(pathlib.Path.cwd()),
+                "ledger_dir": str(get_ledger_dir()),
+            })
+        finally:
+            clear_system_phase()
     except Exception:
         pass
 

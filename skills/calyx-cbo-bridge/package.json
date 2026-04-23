@@ -1,0 +1,6 @@
+{
+  "name": "calyx-cbo-bridge",
+  "version": "1.0.0",
+  "description": "OpenClaw skill: bridge to Station Calyx CBO and STATE",
+  "type": "module"
+}

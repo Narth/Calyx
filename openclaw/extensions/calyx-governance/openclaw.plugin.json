@@ -1,0 +1,10 @@
+{
+  "id": "calyx-governance",
+  "name": "Calyx Governance",
+  "description": "Shadow OpenClaw messages to CBO. For full governance, use start_station_governed.ps1.",
+  "version": "0.1.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false
+  }
+}

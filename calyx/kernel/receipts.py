@@ -57,3 +57,28 @@ def append_receipt_line(
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(payload, ensure_ascii=False) + "\n")
     return path
+
+
+def resolve_governance_receipts_dir(repo_root: Path | None = None) -> Path:
+    """Governance receipts directory: runtime/receipts/governance/."""
+    return resolve_receipts_dir(repo_root) / "governance"
+
+
+def write_governance_receipt(
+    payload: dict[str, Any],
+    wo_id: str,
+    repo_root: Path | None = None,
+) -> Path:
+    """
+    Write a governance receipt to runtime/receipts/governance/{wo_id}__{timestamp}.json.
+    Payload must include wo_id, commit_sha, files_changed, tests_passed, ledger_schema_hash,
+    policy_hashes, deny_reasons_count, relaxation_applied.
+    """
+    gov_dir = resolve_governance_receipts_dir(repo_root)
+    gov_dir.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    name = f"{wo_id}__{ts}.json"
+    path = gov_dir / name
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+    return path
