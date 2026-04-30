@@ -343,6 +343,21 @@ class DiscordResponseHandler:
 
             await channel.send(response_text)
 
+            try:
+                from calyx.kernel.event_ledger import emit
+                corr = envelope.get("envelope_id") or ""
+                size_kb = len(response_text) / 1024
+                emit(
+                    level="INFO",
+                    component="cbo",
+                    event="cbo.discord.outbound",
+                    msg=f"Outbound response to channel={cid}",
+                    data={"channel_id": cid, "size": f"{size_kb:.1f}kb", "envelope_id": (envelope.get("envelope_id") or "")[:12]},
+                    corr_id=corr,
+                )
+            except Exception:
+                pass
+
             eid = envelope.get("envelope_id")
             if eid:
                 self.response_cache[eid] = {
@@ -458,7 +473,7 @@ class DiscordResponseHandler:
         # Phase 2: Generate conversational response
         # Check if this is a bridge pulse/report request
         is_report_request = any(t in intent_lower for t in ("bridge pulse", "bridge pulse report", "station health", "report", "status", "situational awareness"))
-        
+
         # Build prompt with explicit instructions for report vs config requests
         is_config_request = config_ctx and any(t in intent_lower for t in ("configuration", "config", "align", "diverge", "expectation", "capability"))
         if is_report_request and report_ctx:
@@ -471,7 +486,7 @@ IMPORTANT: A PRE-COMPUTED configuration vs development comparison is in the syst
 """
         else:
             report_instruction = ""
-        
+
         conv_prompt = f"""You are CBO (Calyx Bridge Overseer), the central intelligence of Station Calyx. A human is speaking to you via Discord (Calyx Mail extension).
 
 System context: {system_ctx}

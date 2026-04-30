@@ -24,16 +24,31 @@ def check_tool_allowed(
     """
     if contract is None:
         if contract_path is None:
+            try:
+                from .event_ledger import emit
+                emit("WARN", "kernel", "toolcall.denied", "No contract", data={"tool": tool_name or "", "reason": "no_contract"})
+            except Exception:
+                pass
             return False, "no_contract"
         contract, _ = load_contract(contract_path)
     tool = (tool_name or "").strip()
     if not tool:
         return False, "empty_tool_name"
     if tool in FORBIDDEN_TOOLS:
+        try:
+            from .event_ledger import emit
+            emit("WARN", "kernel", "toolcall.denied", f"Forbidden tool: {tool}", data={"tool": tool, "reason": "forbidden_tool"})
+        except Exception:
+            pass
         return False, "forbidden_tool"
     allowed = get_tool_allowlist(contract, task_type)
     if tool in allowed:
         return True, "allowlisted"
+    try:
+        from .event_ledger import emit
+        emit("WARN", "kernel", "toolcall.denied", f"Deny by default: {tool}", data={"tool": tool, "task_type": task_type, "reason": "deny_by_default"})
+    except Exception:
+        pass
     return False, "deny_by_default"
 
 

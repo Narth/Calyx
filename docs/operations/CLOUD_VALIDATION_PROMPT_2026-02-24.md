@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Cloud CBO validation prompt — Deployment & Integration Harness v0.1
 
 **Purpose:** Run this in the Linux cloud environment to validate the pull and confirm new changes are live.

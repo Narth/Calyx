@@ -125,6 +125,7 @@ Stop-PowerShellProcessByPattern -Pattern "service_failure_watch\.ps1"
 Stop-PowerShellProcessByPattern -Pattern "navigator_triage_loop\.ps1"
 Stop-PowerShellProcessByPattern -Pattern "energy_churn_cp9_loop\.ps1"
 Stop-PowerShellProcessByPattern -Pattern "cp6_cp7_loop\.ps1"
+Stop-PowerShellProcessByPattern -Pattern "start_calyx_mcp_stdio\.ps1"
 
 # 1c. Stop CBO Bridge Overseer and CLI Avatar
 Get-Process python -ErrorAction SilentlyContinue | ForEach-Object {
@@ -136,6 +137,10 @@ Get-Process python -ErrorAction SilentlyContinue | ForEach-Object {
         }
         elseif ($cmd -match "cbo_hub\.cli_avatar\.main") {
             Write-Host "  Stopping CLI Avatar (PID $($_.Id))..."
+            taskkill /F /T /PID $_.Id 2>$null
+        }
+        elseif ($cmd -match "calyx\.mcp_server\.server") {
+            Write-Host "  Stopping Local MCP Server (PID $($_.Id))..."
             taskkill /F /T /PID $_.Id 2>$null
         }
     } catch { }

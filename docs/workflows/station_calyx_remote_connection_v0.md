@@ -8,13 +8,13 @@
 
 ## Options
 
-| Option | Description | Pros | Cons |
-|--------|-------------|------|-----|
-| **A. Ngrok to Avatar Web** | Expose Avatar Web (7780) via ngrok; use browser on laptop to hit the ngrok URL. | No new code; full UI. | No built-in auth; anyone with URL can use UI. |
-| **B. Ngrok to CBO Core** | Expose CBO Core (7778) via ngrok; laptop sends POST /chat to ngrok URL. | Direct API; scripts/CLI easy. | No UI; need to secure (e.g. secret query param or header). |
-| **C. Telemetry gateway** | Run a small gateway (e.g. port 7781) that checks a secret and proxies to CBO Core; expose gateway via ngrok. | Single place for auth; can add rate limit or audit later. | One more process. |
+| Option | Description | Status |
+|--------|-------------|--------|
+| **A. Ngrok to Avatar Web** | Expose Avatar Web (7780) via ngrok; use browser on laptop to hit the ngrok URL. | **Not allowed** until stack is complete and hardened (see `docs/STATION_STACK_POLICY.md`). Avatar Web stays localhost-only. |
+| **B. Ngrok to CBO Core** | Expose CBO Core (7778) via ngrok; laptop sends POST /chat to ngrok URL. | Not recommended; no single auth/audit point. |
+| **C. Telemetry gateway** | Gateway (7781): auth, client ID, audit; proxy to CBO Core; expose via ngrok. | **Use this only** for remote access. |
 
-Recommended for v0: **C** — run the telemetry gateway, expose it with ngrok, call it from the laptop with a shared secret.
+**Policy:** Finish and harden the Station Calyx stack before opening any browser-based API. Remote access is via **Telemetry Gateway (C)** only.
 
 ---
 

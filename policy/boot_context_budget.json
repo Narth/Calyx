@@ -1,0 +1,6 @@
+{
+  "schema": "policy.boot_context_budget.v1",
+  "boot_window_seconds": 60,
+  "total_budget": 0,
+  "allowed_components": {}
+}

@@ -29,6 +29,13 @@ except ImportError:
     Coordinator = None
 
 LOGGER = logging.getLogger("cbo.bridge_overseer")
+BRIDGE_OVERSEER_AUTHORITY_STATUS = "quarantined noncanonical"
+BRIDGE_OVERSEER_ALLOW_ENV = "CALYX_ALLOW_QUARANTINED_BRIDGE_OVERSEER"
+BRIDGE_OVERSEER_REFUSAL = (
+    "Bridge Overseer is quarantined noncanonical and is not the Station Calyx "
+    "canonical control plane. Set CALYX_ALLOW_QUARANTINED_BRIDGE_OVERSEER=1 "
+    "only for explicit historical/diagnostic use."
+)
 
 
 class ObjectiveSourceEmpty(Exception):
@@ -60,7 +67,7 @@ class CBOBridgeOverseer:
         self.tes_analyzer = TesAnalyzer(root)
         self.governance = GovernanceMonitor()
         self._loaded_objective_records: list[str] = []
-        
+
         # Initialize coordinator if available
         self.coordinator = None
         if COORDINATOR_AVAILABLE and Coordinator:
@@ -104,7 +111,7 @@ class CBOBridgeOverseer:
             tes_summary=tes_summary,
             governance=governance_result,
         )
-        
+
         # Execute coordinator pulse if available
         coordinator_report = None
         if self.coordinator:
@@ -113,7 +120,7 @@ class CBOBridgeOverseer:
                 observations["coordinator"] = coordinator_report
             except Exception as e:
                 LOGGER.warning(f"Coordinator pulse failed: {e}")
-        
+
         pulse_completed = datetime.utcnow()
         self._acknowledge_objectives(objectives)
 
@@ -283,6 +290,10 @@ def run_cli() -> None:
     """Entry point for manual launching."""
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+    import os
+
+    if os.environ.get(BRIDGE_OVERSEER_ALLOW_ENV) != "1":
+        raise SystemExit(BRIDGE_OVERSEER_REFUSAL)
     root = Path(__file__).resolve().parents[2]
     overseer = CBOBridgeOverseer(root)
     overseer.run_forever()

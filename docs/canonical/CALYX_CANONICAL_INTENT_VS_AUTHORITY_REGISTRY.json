@@ -1,0 +1,400 @@
+{
+  "schema": "station.canonical_intent_vs_authority_registry.v1",
+  "status": "canonical support",
+  "created_utc": "2026-04-25T23:57:00Z",
+  "last_reviewed_utc": "2026-04-25T23:57:00Z",
+  "purpose": "Track Station Calyx doctrine, Work Order, runtime, and historical families by original canonical intent versus current runtime authority.",
+  "governing_premise": "Canonical intent is not the same as current canonical authority.",
+  "authority_boundary": "This registry classifies and recommends. It does not promote inactive systems, restart services, ingest archives, delete artifacts, or grant runtime authority.",
+  "classification_vocabulary": [
+    "active_operational",
+    "active_support",
+    "completed_reduction_artifact",
+    "partial_or_confusing",
+    "quarantined_noncanonical",
+    "archived_or_historical",
+    "documented_not_operational"
+  ],
+  "authority_status_vocabulary": [
+    "current_authority",
+    "support_authority",
+    "historical_reference",
+    "superseded",
+    "planned_not_exercised",
+    "quarantined",
+    "unresolved"
+  ],
+  "confusion_level_vocabulary": [
+    "safe_to_infer",
+    "needs_receipt",
+    "needs_operator_confirmation",
+    "deny_until_clear"
+  ],
+  "evidence_baseline": {
+    "accepted_reconciliation_audit": "docs/canonical/CALYX_DOCTRINE_WO_RUNTIME_RECONCILIATION_2026-04-25.md",
+    "runtime_truth_refresh": "Scripts/update_state_checks.ps1",
+    "runtime_truth_state": "fresh",
+    "checks": "dev_harness=ok,cbo_core=ok,avatar_web=ok,telemetry_gateway=ok",
+    "runtime_topology_risk": "LOW",
+    "runtime_topology_duplicates": "none",
+    "active_objective_status": "active",
+    "source_authority_registry": "valid(5 roots)",
+    "confusion_policy": "classify_before_action: safe_to_infer,needs_receipt,needs_operator_confirmation,deny_until_clear"
+  },
+  "entries": [
+    {
+      "id": "family_doc_status_registry",
+      "title": "DOC_STATUS registry and stale active labels",
+      "family": "documentation_authority",
+      "representative_paths": [
+        "docs/DOC_STATUS_REGISTRY.json",
+        "docs/canonical/CALYX_DOCUMENT_STATUS_REGISTRY.md",
+        "docs/canonical/CALYX_DOCTRINE_WO_RUNTIME_RECONCILIATION_2026-04-25.md"
+      ],
+      "original_intent": "Provide a machine-readable status layer so documentation hygiene and deprecated-doc gates could distinguish active, archived, deprecated, and forbidden material.",
+      "current_runtime_evidence": "The registry exists and all listed files exist, but many entries still carry February or April active labels that conflict with the newer reduction authority model.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "unresolved",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "simplify",
+      "required_next_step": "Run a focused doc-status reconciliation pass that preserves historical traceability while demoting stale active labels to support, historical, superseded, quarantined, or planned_not_exercised.",
+      "receipt_refs": [
+        "runtime/receipts/governance/doc_path_canonicalization__20260423_170000.json",
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_canonical_ops_and_operational_doctrine",
+      "title": "Canonical Ops Index and Operational Doctrine stale wording",
+      "family": "operator_doctrine",
+      "representative_paths": [
+        "docs/operations/CANONICAL_OPS_INDEX.md",
+        "docs/operations/STATION_CALYX_OPERATIONAL_DOCTRINE.md",
+        "docs/canonical/CALYX_CANONICAL_CONTROL_PLANE.md",
+        "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md"
+      ],
+      "original_intent": "Give the operator a concise source of truth for governed operations, sunrise, audit discipline, and canonical control paths.",
+      "current_runtime_evidence": "Sunrise/sunset and governed runtime are real, but older wording still overstates Bridge Overseer residency and treats audit as a singular truth source instead of part of a distributed evidence model.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "unresolved",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "simplify",
+      "required_next_step": "After doc-status reconciliation, update operator-facing wording so current core, support, quarantine, and distributed truth boundaries are explicit.",
+      "receipt_refs": [
+        "runtime/receipts/sunrise_receipt__20260425_160701.json",
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_active_unknown_cp_loops",
+      "title": "Navigator/Triage, Energy Churn/CP9, and CP6/CP7 active loops",
+      "family": "runtime_loops",
+      "representative_paths": [
+        "Scripts/navigator_triage_loop.ps1",
+        "Scripts/energy_churn_cp9_loop.ps1",
+        "Scripts/cp6_cp7_loop.ps1",
+        "outgoing/navigator.lock",
+        "outgoing/triage.lock",
+        "outgoing/cp6.lock",
+        "outgoing/cp7.lock",
+        "outgoing/cp9.lock"
+      ],
+      "original_intent": "Provide cadence control, triage, energy/tuning advice, harmony, and drift signals to reduce Station entropy and guide CBO behavior.",
+      "current_runtime_evidence": "Topology reports the loop families running and STATE reports navigator/triage values, but authority labels remain unknown and current operator value has not been narrowed.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "unresolved",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "simplify",
+      "required_next_step": "Run a focused loop-authority pass to decide whether each loop is core, support, historical, or removable from sunrise.",
+      "receipt_refs": [
+        "runtime/receipts/governance/runtime_authority_labeling_alignment__20260423_180000.json",
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_runtime_singleton_multiplicity",
+      "title": "Runtime singleton/multiplicity doctrine versus enforcement",
+      "family": "runtime_governance",
+      "representative_paths": [
+        "docs/planning/WO_RUNTIME_MULTIPLICITY_DECLARATION_AND_LAUNCH_NOTICE_V1.md",
+        "docs/planning/WO_RUNTIME_MULTIPLICITY_ENFORCEMENT_AND_VALIDATION_V1.md",
+        "docs/planning/WO_RUNTIME_SINGLETON_AND_RECONCILIATION_ENFORCEMENT_V1.md",
+        "calyx/governance/runtime_topology.py",
+        "calyx/governance/reconciliation.py",
+        "runtime/runtime_topology_snapshot.json"
+      ],
+      "original_intent": "Prevent silent multi-runtime drift and reconcile duplicate or ambiguous Station processes.",
+      "current_runtime_evidence": "Topology observation and labeling are active; latest topology risk is LOW with no duplicates, but enforcement remains partial and not a complete singleton guarantee.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "unresolved",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "complete_or_simplify",
+      "required_next_step": "Decide whether singleton doctrine remains binding; if yes, complete enforcement, otherwise simplify doctrine to observation-only.",
+      "receipt_refs": [
+        "runtime/receipts/governance/runtime_topology_labeling_design__20260328_125214.json",
+        "runtime/receipts/governance/runtime_topology_normalization_wo_draft__20260328_133050.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_agent_ecology_compendium_cp_roles",
+      "title": "Agent ecology, COMPENDIUM, and CP role claims",
+      "family": "agent_doctrine",
+      "representative_paths": [
+        "COMPENDIUM.md",
+        "docs/AGENT_REPOSITORY.md",
+        "docs/CP6.md",
+        "tools/cp6_sociologist.py",
+        "tools/cp7_chronicler.py",
+        "tools/cp9_auto_tuner.py"
+      ],
+      "original_intent": "Represent the Station crew, role ecology, and BloomOS substrate as named agents, copilots, and overseers.",
+      "current_runtime_evidence": "Some loop roles are active; many named roles are historical, missing, conceptual, or advisory. Current docs can imply a larger operational crew than the runtime supports.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "unresolved",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "demote_or_simplify",
+      "required_next_step": "Classify each named role as active runtime, support doctrine, historical/cultural, missing, or quarantined.",
+      "receipt_refs": [
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_memory_doctrine",
+      "title": "Memory doctrine versus support-only continuity reality",
+      "family": "continuity_memory",
+      "representative_paths": [
+        "MEMORY.md",
+        "memory/2026-04-25.md",
+        "docs/canonical/CALYX_CANONICAL_CONTINUITY_MODEL.md",
+        "docs/MEMORY_ARCHITECTURE_v1.0.md",
+        "docs/MEMORY_MVP_IMPLEMENTATION_PROPOSAL.md",
+        "docs/doctrine/STATION_MEMORY_LIFECYCLE.md"
+      ],
+      "original_intent": "Preserve operator and Station continuity across sessions, daily logs, curated memory, and future hot/warm memory architecture.",
+      "current_runtime_evidence": "MEMORY.md and daily notes are support/reference surfaces. No evidence supports MEMORY.md as runtime continuity authority or automatic archive ingestion.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "support_authority",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "simplify",
+      "required_next_step": "Keep MEMORY.md support-only, decide whether daily memory discipline should be completed or demoted, and prevent archive ingestion claims without explicit receipts.",
+      "receipt_refs": [
+        "runtime/receipts/governance/approved_root_source_authority_clarification__20260425_153802.json",
+        "runtime/receipts/governance/confusion_reduction_substrate__20260425_154500.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_calyx_mail_intent_work_envelope",
+      "title": "Calyx Mail, intent pipeline, and work-envelope spine",
+      "family": "execution_spine",
+      "representative_paths": [
+        "calyx/mail",
+        "calyx/cbo/intent_pipeline",
+        "calyx/execution/hub_runner.py",
+        "calyx/execution/task_handlers",
+        "docs/calyx_mail_spec_v0.md",
+        "docs/calyx_mail_v0.1_architectural_plan.md",
+        "tests/test_mail_roundtrip.py"
+      ],
+      "original_intent": "Provide structured intent, message, and execution-envelope pathways for governed work beyond direct chat.",
+      "current_runtime_evidence": "Substantial code and tests exist, but the current operator path is governed /chat through CBO Core, Avatar Web, and Discord Gateway.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "planned_not_exercised",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "quarantine",
+      "required_next_step": "Keep as noncanonical research/support until a future pass decides whether to rehabilitate or archive it.",
+      "receipt_refs": [
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_swarm_worker_sandbox",
+      "title": "Swarm, worker lease, trace, and sandbox runtime claims",
+      "family": "autonomy_workers",
+      "representative_paths": [
+        "docs/planning/WO_SWARM_EXECUTION_ENVELOPE_AND_WORKER_LEASES_V1.md",
+        "docs/planning/WO_SWARM_TRACE_GRAPH_AND_RECEIPT_BUNDLE_V1.md",
+        "docs/planning/WO_SANDBOXED_WORKER_RUNTIME_V1.md",
+        "calyx/kernel/swarm_lease.py",
+        "calyx/kernel/swarm_trace.py",
+        "calyx/kernel/swarm_sandbox.py",
+        "tests/test_swarm_work_envelope.py",
+        "tests/test_swarm_sandbox.py"
+      ],
+      "original_intent": "Create governed worker execution with leases, traceability, sandbox containment, and receipt bundles.",
+      "current_runtime_evidence": "Code, tests, and phase receipts exist, but no current Station runtime execution path uses an active autonomous worker swarm.",
+      "current_classification": "partial_or_confusing",
+      "authority_status": "planned_not_exercised",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "quarantine",
+      "required_next_step": "Leave noncanonical until the current core is stable and a separate implementation authorization exists.",
+      "receipt_refs": [
+        "runtime/receipts/audit/wo_swarm_execution_envelope_and_worker_leases_v1_implementation_prep__20260416_160641.json",
+        "runtime/receipts/audit/wo_swarm_trace_graph_and_receipt_bundle_phase01__20260416_133527.json",
+        "runtime/receipts/audit/wo_sandboxed_worker_runtime_phase0__20260416_171720.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_openclaw_bridge_legacy_external",
+      "title": "OpenClaw, Bridge Overseer, legacy Discord intake, and external paths",
+      "family": "external_and_legacy_paths",
+      "representative_paths": [
+        "calyx/cbo/bridge_overseer.py",
+        "calyx/cbo/discord_intake.py",
+        "Scripts/start_station_calyx.ps1",
+        "Scripts/setup_openclaw_calyx.ps1",
+        "Scripts/openclaw_preflight.ps1",
+        "docs/OPENCLAW_CALYX_INTEGRATION.md",
+        "docs/operations/OPENCLAW_DECOMMISSION_PLAYBOOK.md"
+      ],
+      "original_intent": "Support orchestration, external gateway integration, and historical Discord/OpenClaw pathways that helped bootstrap Station Calyx.",
+      "current_runtime_evidence": "Bridge Overseer is not started by normal sunrise; legacy Discord and OpenClaw paths are refusal-gated or quarantined; external emitter gate is active.",
+      "current_classification": "quarantined_noncanonical",
+      "authority_status": "quarantined",
+      "confusion_level": "deny_until_clear",
+      "recommended_action": "quarantine",
+      "required_next_step": "Preserve historical value while preventing any noncanonical path from implying active authority.",
+      "receipt_refs": [
+        "runtime/receipts/governance/noncanonical_path_demotion_quarantine_enforcement__20260423_190000.json",
+        "runtime/receipts/governance/runtime_cleanup_mcp_readiness__20260424_215910.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_kalshi_weather_market",
+      "title": "Kalshi, weather, and market research layers",
+      "family": "market_research",
+      "representative_paths": [
+        "docs/planning/WO_KALSHI_AGENT_HARNESS_V1.md",
+        "docs/planning/WO_KALSHI_ARTIFACT_AND_RECEIPT_SCHEMA_V1.md",
+        "docs/planning/WO_KALSHI_SIGNAL_SCORING_PROFILE_V1.md",
+        "docs/planning/WO_WEATHER_MARKET_RESEARCH_LAYER_V1.md",
+        "docs/planning/WO_WEATHER_SIGNAL_INTERPRETATION_PROFILE_V1.md",
+        "tests/test_kalshi_artifact_models.py",
+        "tests/test_weather_research_models.py"
+      ],
+      "original_intent": "Explore market/weather research and decision-support artifacts under governed Station discipline.",
+      "current_runtime_evidence": "Docs and tests exist, but the family is outside the reduced active core and has no current runtime role.",
+      "current_classification": "archived_or_historical",
+      "authority_status": "historical_reference",
+      "confusion_level": "safe_to_infer",
+      "recommended_action": "demote",
+      "required_next_step": "Keep archived/historical until explicitly reauthorized; do not mix with core entropy-reduction work.",
+      "receipt_refs": [
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_core_runtime_control_plane",
+      "title": "Reduced core runtime and operator control plane",
+      "family": "core_runtime",
+      "representative_paths": [
+        "Scripts/sunrise_calyx.ps1",
+        "Scripts/start_calyx_core_services.ps1",
+        "Scripts/sunset_calyx.ps1",
+        "cbo_hub/cbo_core/app.py",
+        "cbo_hub/avatar_web/app.py",
+        "cbo_hub/dev_harness/app.py",
+        "calyx/cbo/discord_gateway.py",
+        "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md"
+      ],
+      "original_intent": "Provide the live Station workstation core: startup, shutdown, governed chat, local operator surfaces, and Discord transport.",
+      "current_runtime_evidence": "Latest runtime checks pass, sunrise receipt is ok, topology risk is LOW, and no duplicate services were observed.",
+      "current_classification": "active_operational",
+      "authority_status": "current_authority",
+      "confusion_level": "safe_to_infer",
+      "recommended_action": "preserve",
+      "required_next_step": "Keep as the baseline authority while reducing surrounding doctrine entropy.",
+      "receipt_refs": [
+        "runtime/receipts/sunrise_receipt__20260425_160701.json",
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_runtime_truth_clarity_substrate",
+      "title": "Runtime truth, source authority, and confusion policy substrate",
+      "family": "runtime_truth",
+      "representative_paths": [
+        "STATE.md",
+        "runtime/clarity_status.json",
+        "runtime/active_objective.json",
+        "docs/canonical/CALYX_CONFUSION_ESCALATION_PROTOCOL.md",
+        "docs/canonical/CALYX_SOURCE_AUTHORITY_REGISTRY.json",
+        "docs/canonical/CALYX_DECISION_LEDGER.md"
+      ],
+      "original_intent": "Make current objective, approved source roots, and uncertainty classification explicit so CBO does not guess silently.",
+      "current_runtime_evidence": "Clarity status passes, active objective is active, source registry validates all five roots, and STATE exposes the policy.",
+      "current_classification": "active_support",
+      "authority_status": "support_authority",
+      "confusion_level": "safe_to_infer",
+      "recommended_action": "preserve",
+      "required_next_step": "Use this registry and confusion policy as the governing reduction tool for subsequent family passes.",
+      "receipt_refs": [
+        "runtime/receipts/governance/confusion_reduction_substrate__20260425_154500.json",
+        "runtime/receipts/governance/active_runtime_confusion_policy_alignment__20260425_230800.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_local_mcp_support",
+      "title": "Local read-only MCP support",
+      "family": "mcp_support",
+      "representative_paths": [
+        "calyx/mcp_server/server.py",
+        "Scripts/start_calyx_mcp_stdio.ps1",
+        "docs/canonical/CALYX_LOCAL_MCP_SERVER.md",
+        "tests/test_calyx_mcp_server.py"
+      ],
+      "original_intent": "Provide bounded local read-only access to approved Station roots for operator-authorized analysis and context review.",
+      "current_runtime_evidence": "Sunrise validates MCP readiness; approved roots include C:\\Calyx_Terminal, C:\\Calyx_Test_Temp, C:\\Calyx_Parking, C:\\Calyx_Federation_Inbox, and D:\\Calyx_Data.",
+      "current_classification": "active_support",
+      "authority_status": "support_authority",
+      "confusion_level": "safe_to_infer",
+      "recommended_action": "preserve",
+      "required_next_step": "Keep read-only and support-only; do not treat MCP as continuity authority or ingestion authorization.",
+      "receipt_refs": [
+        "runtime/receipts/governance/local_mcp_server_enablement__20260424_220720.json",
+        "runtime/receipts/governance/local_mcp_scope_correction__20260424_222000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    },
+    {
+      "id": "family_bloomos_constellation_vault_doctrine",
+      "title": "BloomOS, Constellation, Vault, and ritual/cultural doctrine",
+      "family": "symbolic_doctrine",
+      "representative_paths": [
+        "docs/BLOOMOS_SPEC_v1.0.md",
+        "docs/BLOOM_ENGINE_SPEC_v1.0.md",
+        "docs/CONSTELLATION_CANON_v1.0.md",
+        "docs/CONSTELLATION_OF_POTENTIALS_SPEC_v1.0.md",
+        "docs/VAULT_INTEGRITY_SPEC_v1.0.md",
+        "docs/CEREMONY_BLOOM_v1.0.md"
+      ],
+      "original_intent": "Define the symbolic, cultural, pedagogical, and long-horizon identity substrate around Station Calyx and BloomOS.",
+      "current_runtime_evidence": "The documents exist and may preserve meaning, but no current runtime implementation makes this family operational authority.",
+      "current_classification": "archived_or_historical",
+      "authority_status": "historical_reference",
+      "confusion_level": "needs_receipt",
+      "recommended_action": "demote",
+      "required_next_step": "Preserve as doctrine/culture unless a later pass maps a narrow subset into active runtime evidence.",
+      "receipt_refs": [
+        "runtime/receipts/governance/doctrine_wo_runtime_reconciliation__20260425_232000.json"
+      ],
+      "last_reviewed_utc": "2026-04-25T23:57:00Z"
+    }
+  ],
+  "focused_first_family": {
+    "id": "family_doc_status_registry",
+    "reason": "It is the highest-confusion family because it can make stale or superseded docs appear active before the operator even reaches the newer canonical reduction artifacts.",
+    "recommended_first_pass": "Reconcile docs/DOC_STATUS_REGISTRY.json against docs/canonical/CALYX_DOCUMENT_STATUS_REGISTRY.md and the 2026-04-25 reconciliation audit, then emit a receipt. Do not rewrite every doc body in the same pass."
+  }
+}

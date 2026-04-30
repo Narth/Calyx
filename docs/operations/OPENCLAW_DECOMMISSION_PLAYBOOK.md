@@ -9,6 +9,8 @@ doctrine_scope: governed
 
 **WO_OPENCLAW_DECOMMISSION_GATING_V2** — Canonical disable steps. Goal: **provably inert**.
 
+**Historical note:** OpenClaw helped bring Station Calyx to fruition. It is remembered. This playbook gates it; we do not erase it. Significant work remains before testing can be considered again.
+
 ---
 
 ## Prerequisites

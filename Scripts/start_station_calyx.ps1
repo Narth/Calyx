@@ -29,6 +29,10 @@ if (-not $env:DISCORD_BOT_TOKEN) {
 
 # OpenClaw mode: stop discord_intake, run OpenClaw gateway (full assistant)
 if ($UseOpenClaw) {
+    if ($env:CALYX_ALLOW_QUARANTINED_OPENCLAW -ne "1") {
+        Write-Error "Refusing OpenClaw launch: OpenClaw is quarantined noncanonical and must not present as Station Calyx authority. Set CALYX_ALLOW_QUARANTINED_OPENCLAW=1 only for explicit historical/diagnostic use."
+        exit 1
+    }
     $intakeProcs = Get-CalyxProcesses | Where-Object { $_.CommandLine -match "calyx\.cbo\.discord_intake.*--run" }
     if ($intakeProcs) {
         $intakeProcs | ForEach-Object { Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue }
@@ -41,6 +45,10 @@ if ($UseOpenClaw) {
 
 # Ensure single discord_intake: stop any existing before starting
 if ($StartDiscord) {
+    if ($env:CALYX_ALLOW_LEGACY_DISCORD_INTAKE -ne "1") {
+        Write-Error "Refusing legacy discord_intake launch: canonical Discord transport is calyx.cbo.discord_gateway via governed sunrise. Set CALYX_ALLOW_LEGACY_DISCORD_INTAKE=1 only for explicit historical/diagnostic use."
+        exit 1
+    }
     if (-not $env:DISCORD_BOT_TOKEN) {
         Write-Warning "DISCORD_BOT_TOKEN not set. Set it first: [System.Environment]::SetEnvironmentVariable('DISCORD_BOT_TOKEN','your_token','User')"
         $StartDiscord = $false

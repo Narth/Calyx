@@ -214,9 +214,19 @@ def create_app() -> FastAPI:
 
 
 def run() -> None:  # pragma: no cover - runtime helper
+    """WO_GOVERNANCE: Loopback by default. Use CALYX_API_BIND_HOST=0.0.0.0 to override."""
+    import os
     import uvicorn
-
-    uvicorn.run("calyx.cbo.api:APP", host="0.0.0.0", port=8080, reload=False)
+    host = os.environ.get("CALYX_API_BIND_HOST", "127.0.0.1")
+    port = int(os.environ.get("CALYX_API_BIND_PORT", "8080"))
+    if host != "127.0.0.1":
+        try:
+            from calyx.kernel.event_ledger import emit
+            emit(level="INFO", component="api", event="audit.runtime.network.bind_override",
+                 msg=f"API binding to {host}:{port} (CALYX_API_BIND_HOST override)", data={"host": host, "port": port})
+        except Exception:
+            pass
+    uvicorn.run("calyx.cbo.api:APP", host=host, port=port, reload=False)
 
 
 if __name__ == "__main__":  # pragma: no cover

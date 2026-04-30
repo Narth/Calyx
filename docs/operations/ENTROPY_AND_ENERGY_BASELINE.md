@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Entropy and Energy Baseline — Station Calyx
 
 **Purpose:** Report how much entropy (hardware load) an action commits; establish a baseline for safe energy transfer. Maxing entropy burns energy; we throttle.

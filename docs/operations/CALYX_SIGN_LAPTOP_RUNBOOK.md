@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Calyx Sign — Laptop node runbook
 
 Use this when the **desktop** cannot complete the sign (e.g. ssh-keygen cannot see V:). Perform the ceremony on the **laptop**, then bring the signed artifacts back into the desktop repo for validation.
@@ -32,7 +39,7 @@ The receipt to sign must exist under the laptop repo:
 If your laptop repo (`C:\Calyx`) is a separate clone or not in sync with the desktop:
 
 - Copy from desktop to laptop:
-  - **Receipt:** `C:\Calyx_Terminal\governance\approvals\cbo_sponsorship_research_test_improve.approval.json`  
+  - **Receipt:** `C:\Calyx_Terminal\governance\approvals\cbo_sponsorship_research_test_improve.approval.json`
     → `C:\Calyx\governance\approvals\`
   - **Policy (optional):** `cbo_sponsorship_research_test_improve.policy.md` → same `governance\approvals\` folder
 

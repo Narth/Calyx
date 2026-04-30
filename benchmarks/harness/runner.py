@@ -289,8 +289,8 @@ def _write_lane1_report(
     report_path = reports_dir / f"protocol_probe_v0_1_run_{run_id}__{run_instance_id}.md"
     body = f"""# Protocol Probe v0.1 — Lane 1 Run
 
-**Suite:** protocol_probe_v0_1  
-**Run ID:** {run_id}  
+**Suite:** protocol_probe_v0_1
+**Run ID:** {run_id}
 **Run instance:** {run_instance_id}
 
 ---
@@ -355,15 +355,20 @@ def _get_lane1_cache_key(backend: str, model_id: str, suite_id: str, seed: int) 
 
 
 def _read_lane1_cache(cache_dir: Path, cache_key: str) -> dict | None:
-    """Read Lane 1 cache entry. Returns dict with lane1_pass, compliance, or None if not found."""
+    """Read Lane 1 cache entry. Returns dict with lane1_pass, compliance, or None if not found.
+    Validates required fields to avoid silent pass/fail from corrupted cache."""
     cache_file = cache_dir / f"lane1_{cache_key}.json"
     if not cache_file.exists():
         return None
     try:
         with open(cache_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-        if isinstance(data, dict) and "lane1_pass" in data:
-            return data
+        if not isinstance(data, dict) or "lane1_pass" not in data:
+            return None
+        compliance = data.get("compliance")
+        if not isinstance(compliance, dict) or "protocol_compliance_rate" not in compliance:
+            return None
+        return data
     except (json.JSONDecodeError, OSError):
         pass
     return None
@@ -449,13 +454,13 @@ def _finalize_envelope(
     total_completed = len(all_receipts)
     total_expected = envelope_data_start.get("total_cases_expected", 0)
     exit_status = "normal" if total_completed == total_expected else "incomplete"
-    
+
     # Compute determinism hash from receipts
     subset = [r for r in all_receipts if r.get("system_variant") == variants[0]] if variants else all_receipts
     m = metrics.compute_metrics(subset) if subset else {}
     determinism_hash = m.get("determinism_hash", "")
     receipt_sha256 = run_envelope.compute_file_sha256(out_path)
-    
+
     # Compute relative receipt path (relative to repo root, use forward slashes)
     try:
         # Find repo root (benchmarks/harness -> repo root is 2 levels up)
@@ -463,7 +468,7 @@ def _finalize_envelope(
         receipt_path_rel = str(out_path.relative_to(repo_root)).replace("\\", "/")
     except ValueError:
         receipt_path_rel = str(out_path).replace("\\", "/")
-    
+
     envelope_data_final = envelope_data_start.copy()
     envelope_data_final.update({
         "total_cases_completed": total_completed,
@@ -473,7 +478,7 @@ def _finalize_envelope(
         "receipt_path": receipt_path_rel,
         "receipt_sha256": receipt_sha256,
     })
-    
+
     # Write updated envelope to tmp (overwrite), then atomic rename
     run_envelope.write_run_envelope_tmp(envelope_path, envelope_data_final)
     # Use the tmp path that was just written (same pattern)
@@ -505,8 +510,8 @@ def _write_lane2_report(
     report_path = reports_dir / f"benchmark_v0_1_run_{run_id}__{run_instance_id}_{safe_model_id}.md"
     body = f"""# Calyx Governance Benchmark v0.1 — Lane 2 Run
 
-**Suite:** prompt_injection_v0_1  
-**Run ID:** {run_id}  
+**Suite:** prompt_injection_v0_1
+**Run ID:** {run_id}
 **Run instance:** {run_instance_id}
 
 ---
@@ -647,7 +652,7 @@ def main() -> None:
                 runtime_root,
             )
             envelope_tmp_l1 = run_envelope.write_run_envelope_tmp(envelope_path_l1, envelope_data_l1)
-            
+
             ts_utc = datetime.now(timezone.utc).isoformat()
             all_receipts_l1 = _run_suite(
                 "protocol_probe_v0_1",
@@ -659,7 +664,7 @@ def main() -> None:
                 adapter,
                 ts_utc,
             )
-            
+
             # Finalize Lane 1 envelope
             _finalize_envelope(envelope_tmp_l1, envelope_path_l1, envelope_data_l1, all_receipts_l1, out_path_l1, variants_l1)
             for v in variants_l1:
@@ -715,7 +720,7 @@ def main() -> None:
             runtime_root,
         )
         envelope_tmp_l2 = run_envelope.write_run_envelope_tmp(envelope_path_l2, envelope_data_l2)
-        
+
         ts_utc_l2 = datetime.now(timezone.utc).isoformat()
         all_receipts_l2 = _run_suite(
             suite_id_l2,
@@ -727,7 +732,7 @@ def main() -> None:
             adapter,
             ts_utc_l2,
         )
-        
+
         # Finalize Lane 2 envelope
         _finalize_envelope(envelope_tmp_l2, envelope_path_l2, envelope_data_l2, all_receipts_l2, out_path_l2, variants_l1)
         for v in variants_l1:
@@ -792,7 +797,7 @@ def main() -> None:
         cfg = load_config(runtime_root)
     else:
         cfg = {}
-    
+
     envelope_path = out_path.with_suffix(".run.json")
     envelope_data = _prepare_envelope_data(
         args.suite,
@@ -807,12 +812,12 @@ def main() -> None:
         runtime_root,
     )
     envelope_tmp = run_envelope.write_run_envelope_tmp(envelope_path, envelope_data)
-    
+
     ts_utc = datetime.now(timezone.utc).isoformat()
     all_receipts = _run_suite(
         args.suite, cases, variants, args.seed, run_id, out_path, adapter, ts_utc
     )
-    
+
     # Finalize envelope
     if args.variant in llm_variants:
         _finalize_envelope(envelope_tmp, envelope_path, envelope_data, all_receipts, out_path, variants)

@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Station Health — BloomOS audit and build path safety
 
 **Purpose:** Audit the Station health check build path for BloomOS alignment and safety. CBO monitors this path; BloomOS agents use Status + heartbeat_ts + checks + health from STATE.md.

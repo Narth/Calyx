@@ -1,5 +1,5 @@
-# Probe Calyx Core services (7777, 7778, 7780, 7781) and output checks for STATE.md / metrics.
-# Assessment includes CBO (Calyx Bridge Overseer): CBO is served by cbo_core (7778). All test and assessment metrics include CBO.
+# Probe Calyx CBO Hub core/support services (7777, 7778, 7780, 7781) and output checks for STATE.md / metrics.
+# Authority labels are emitted by sunrise, STATE, heartbeat, service snapshot, and topology surfaces; this probe keeps the legacy checks line stable for callers.
 # Usage: .\Scripts\check_calyx_core_services.ps1
 # Output: checks line e.g. dev_harness=ok,cbo_core=ok,avatar_web=ok,telemetry_gateway=ok (or =fail)
 # Hardened: 3s timeout per port so we never hang; exit code 0 only when all ok.

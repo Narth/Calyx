@@ -13,7 +13,8 @@ param(
     [string] $SearchDrives = "D,E,F,G,H,I,J,K,L,M",
     [string] $ParentCorrelationId = "",
     [switch] $Force,
-    [switch] $NoConfirm
+    [switch] $NoConfirm,
+    [switch] $FromKeyDir
 )
 
 $ErrorActionPreference = "Stop"
@@ -100,9 +101,22 @@ if (-not $NoConfirm) {
 }
 
 Write-Host ""
-Write-Host "Insert USB key (VHDX with Architect identity), then press Enter."
-$null = Read-Host
+if (-not $FromKeyDir) {
+    Write-Host "Insert USB key (VHDX with Architect identity), then press Enter."
+    $null = Read-Host
+}
 
+# FromKeyDir: current directory must be the key dir (e.g. V:\calyx_identity); skip attach/scan
+if ($FromKeyDir) {
+    $keyDirFromCwd = (Get-Location).Path
+    $mountedKeyPathFromCwd = Join-Path $keyDirFromCwd "architect_ed25519"
+    if (-not (Test-Path -LiteralPath $mountedKeyPathFromCwd -PathType Leaf)) {
+        Write-Error "FromKeyDir: architect_ed25519 not found in current directory. Run: cd V:\calyx_identity (or wherever the key is), then run this script with -FromKeyDir."
+    }
+    $weAttached = $false
+    $mountedKeyPath = $mountedKeyPathFromCwd
+    Write-Host "Using key at $mountedKeyPath (current directory)."
+} else {
 # Find VHDX on removable drives
 $drives = $SearchDrives -split ',' | ForEach-Object { $_.Trim() }
 $vhdxPath = $null
@@ -156,8 +170,27 @@ try {
             }
         } else {
             Write-Host $attachResultText
-            $code = if ($null -ne $LASTEXITCODE) { $LASTEXITCODE } else { "unknown (e.g. elevated subprocess)" }
-            throw "diskpart attach failed with exit code $code. If you see an elevation prompt, diskpart may run in a different session; try running PowerShell as Administrator from the start, or pre-mount the VHD in Explorer and run the script again."
+            Write-Host ""
+            Write-Host "Automatic attach failed (diskpart may run in a different session when you're in normal PowerShell). Mount the VHD manually instead:" -ForegroundColor Yellow
+            Write-Host "  1. In Explorer, open: $vhdxPath" -ForegroundColor Yellow
+            Write-Host "  2. Double-click architect_identity.vhdx to mount it." -ForegroundColor Yellow
+            Write-Host "  3. Press Enter here to continue." -ForegroundColor Yellow
+            Write-Host ""
+            $null = Read-Host "Press Enter after you have mounted the VHD"
+            $weAttached = $false
+            $mountedKeyPath = $null
+            $driveLetters = 67..90 | ForEach-Object { [char]$_ }
+            foreach ($letter in $driveLetters) {
+                $candidate = "${letter}:\calyx_identity\architect_ed25519"
+                if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+                    $mountedKeyPath = $candidate
+                    Write-Host "Using key at $mountedKeyPath"
+                    break
+                }
+            }
+            if (-not $mountedKeyPath) {
+                Write-Error "Key file \calyx_identity\architect_ed25519 not found on any drive (C-Z). Mount the VHD in Explorer (double-click the .vhdx), then run this script again."
+            }
         }
     } else {
         $weAttached = $true
@@ -167,9 +200,9 @@ try {
     Remove-Item -LiteralPath $attachScript -Force -ErrorAction SilentlyContinue
 }
 
-# If we attached, wait for mounted volume to be readable (V: can lag for child processes)
+# If we attached, wait for mounted volume to be readable (V: can lag after diskpart)
 if ($weAttached) {
-    $maxWaitSeconds = 15
+    $maxWaitSeconds = 30
     $waited = 0
     $keyReady = $false
     while ($waited -lt $maxWaitSeconds) {
@@ -182,8 +215,8 @@ if ($weAttached) {
                 # File exists but not yet readable (e.g. volume still mounting)
             }
         }
-        Start-Sleep -Seconds 2
-        $waited += 2
+        Start-Sleep -Seconds 1
+        $waited += 1
     }
     if (-not $keyReady) {
         $detachScript = [System.IO.Path]::GetTempFileName()
@@ -191,28 +224,45 @@ if ($weAttached) {
         [System.IO.File]::WriteAllLines($detachScript, $detachLines, [System.Text.Encoding]::ASCII)
         & diskpart /s $detachScript 2>&1 | Out-Null
         Remove-Item -LiteralPath $detachScript -Force -ErrorAction SilentlyContinue
-        Write-Error "Key file at $mountedKeyPath was not readable after ${maxWaitSeconds}s (V: may not have mounted). Detached VHDX."
+        Write-Error "Key file at $mountedKeyPath was not readable after ${maxWaitSeconds}s (V: may not have mounted). Detached VHDX. Try pre-mounting the VHD in Explorer (double-click the .vhdx), then run this script again so it uses the already-attached path."
     }
 }
 
-# Run ssh-keygen from cmd; start cmd with WorkingDirectory = key dir so it (and the pipeline) see the key drive
-$keyDir = (Get-Item -LiteralPath $mountedKeyPath).DirectoryName
-$sigPathAbs = [System.IO.Path]::GetFullPath($sigPath)
-$keyFileName = (Get-Item -LiteralPath $mountedKeyPath).Name
+}  # end else (not FromKeyDir)
 
-# Pre-check: ensure this process can read the key (if you mounted VHD in Explorer, run script from non-Admin PowerShell)
-try {
-    $null = [System.IO.File]::OpenRead($mountedKeyPath).ReadByte()
-} catch {
-    Write-Error "Cannot read key at $mountedKeyPath from this process. If you mounted the VHD manually, run this script from a normal (non-Administrator) PowerShell window so the drive is visible."
+# Run ssh-keygen
+$keyDir = [System.IO.Path]::GetDirectoryName($mountedKeyPath)
+$keyFileName = [System.IO.Path]::GetFileName($mountedKeyPath)
+$sigPathAbs = [System.IO.Path]::GetFullPath($sigPath)
+
+# Pre-check only when we attached via diskpart (this process saw the attach). When key was found by scan (manual or already-attached), this process may not be able to OpenRead even in normal PowerShell (e.g. Cursor terminal vs Explorer session); skip pre-check and let ssh-keygen try.
+if ($weAttached) {
+    try {
+        $null = [System.IO.File]::OpenRead($mountedKeyPath).ReadByte()
+    } catch {
+        Write-Host ""
+        Write-Host "The key drive (V:) is not visible in this process. If you are in Administrator PowerShell, use a normal window; or pre-mount the VHD in Explorer and run again." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Error "Cannot read key at $mountedKeyPath from this process."
+    }
+} else {
+    Write-Host "Key found by scan (manual or already-attached). Proceeding to sign; if ssh-keygen cannot see the key, it will report an error." -ForegroundColor Gray
 }
 
 try {
-    # Start cmd with -WorkingDirectory $keyDir so the key drive is current; then run pipeline
-    $pipeCmd = "type `"$receiptPath`" | ssh-keygen -Y sign -f `"$keyFileName`" -n $Namespace -I $Identity -s `"$sigPathAbs`""
-    $p = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $pipeCmd -WorkingDirectory $keyDir -Wait -NoNewWindow -PassThru
-    if ($p.ExitCode -ne 0) {
-        throw "ssh-keygen -Y sign failed with exit code $($p.ExitCode). If you pre-mounted the VHD, try running this script from a non-Administrator PowerShell so the key drive is visible."
+    if ($FromKeyDir) {
+        # This process started with cwd = key dir (user did cd V:\calyx_identity first), so child may inherit it
+        $p = Start-Process -FilePath "ssh-keygen" -ArgumentList "-Y sign -f `"$keyFileName`" -n $Namespace -I $Identity -s `"$sigPathAbs`"" -WorkingDirectory $keyDir -RedirectStandardInput $receiptPath -Wait -NoNewWindow -PassThru
+        if ($p.ExitCode -ne 0) { throw "ssh-keygen -Y sign failed with exit code $($p.ExitCode)." }
+    } else {
+        # Run signing inside cmd with explicit drive switch
+        $keyDrive = [System.IO.Path]::GetPathRoot($mountedKeyPath).TrimEnd('\').TrimEnd(':')
+        $keyPathForCd = [System.IO.Path]::GetDirectoryName($mountedKeyPath) -replace '^[A-Z]:', ''
+        $pipeCmd = "${keyDrive}: && cd $keyPathForCd && type `"$receiptPath`" | ssh-keygen -Y sign -f `"$keyFileName`" -n $Namespace -I $Identity -s `"$sigPathAbs`""
+        & cmd /c $pipeCmd
+        if ($LASTEXITCODE -ne 0) {
+            throw "ssh-keygen -Y sign failed with exit code $LASTEXITCODE. Try -FromKeyDir: open PowerShell, run 'cd V:\calyx_identity', then run this script with -FromKeyDir -Receipt ..."
+        }
     }
 
     if (-not (Test-Path -LiteralPath $sigPath -PathType Leaf)) {

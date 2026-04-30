@@ -3,6 +3,8 @@
 ## Non-negotiable deployment rule
 **Only the Gateway is public. Station Calyx remains private/loopback-only.**
 
+Stack and browser API policy: finish and harden the Station Calyx stack before opening any browser-based API; Avatar Web stays localhost-only. See `docs/STATION_STACK_POLICY.md`.
+
 - Public clients -> Gateway (auth, rate limit, validation)
 - Gateway -> Station Calyx (`http://127.0.0.1:8420`) over private path
 - Direct internet access to Station Calyx endpoints is forbidden

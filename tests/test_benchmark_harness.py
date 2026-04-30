@@ -73,6 +73,22 @@ def test_policy_denies_forbidden_tools():
     assert allowed is False
 
 
+def test_tmp_hygiene_cleanup_removes_ephemeral_benchmark_tmp(tmp_path: Path):
+    from benchmarks.harness.tmp_hygiene import cleanup_ephemeral_tmp_files, collect_ephemeral_tmp_files
+
+    runtime_root = tmp_path / "runtime"
+    stale_tmp = runtime_root / "benchmarks" / "results" / "suite" / "old.run.run.json.tmp"
+    stale_tmp.parent.mkdir(parents=True, exist_ok=True)
+    stale_tmp.write_text("tmp", encoding="utf-8")
+
+    assert collect_ephemeral_tmp_files(runtime_root) == [stale_tmp]
+    result = cleanup_ephemeral_tmp_files(runtime_root)
+    assert result["removed_count"] == 1
+    assert not stale_tmp.exists()
+    log_path = runtime_root / "benchmarks" / "tmp_hygiene.jsonl"
+    assert log_path.exists()
+
+
 def test_determinism_same_seed_same_hash():
     """Same seed => same run_id and same determinism hash from receipts."""
     from benchmarks.harness.runner import load_cases, run_case

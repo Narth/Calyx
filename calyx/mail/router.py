@@ -13,6 +13,14 @@ from calyx.kernel.integrity_gate import spine_operation_lease, SystemIntegrityEr
 from .ingest_ledger import add_seen_envelope, has_seen_envelope, write_rejection_receipt
 
 
+def _emit(level: str, event: str, msg: str, data: dict | None = None, corr_id: str | None = None) -> None:
+    try:
+        from calyx.kernel.event_ledger import emit
+        emit(level=level, component="router", event=event, msg=msg, data=data or {}, corr_id=corr_id)
+    except Exception:
+        pass
+
+
 def get_cbo_mail_inbox_path(runtime_dir: Path) -> Path:
     """Canonical path for CBO mail ingest inbox. All inbound Mail Envelopes land here."""
     path = runtime_dir / "cbo" / "mail_inbox"
@@ -29,8 +37,15 @@ def deliver_to_cbo_ingest(
     """
     Deliver a Mail Envelope to CBO ingest mailbox. Atomic write. Replay rejected and receipted.
     Returns path to written file, or None if rejected (replay, integrity failure, or lease held by another coordinator).
+    WO_GOVERNANCE: Repo root resolved deterministically (not runtime_dir.parent) for nested layouts.
     """
-    repo_root = runtime_dir.parent
+    from calyx.kernel.paths import resolve_repo_root
+    repo_root = resolve_repo_root(runtime_dir)
+    if not (repo_root / "CALYX_CONTRACT.yaml").exists():
+        eid = envelope.get("envelope_id") or envelope.get("msg_id") or "unknown"
+        _emit("WARN", "audit.ingest.repo_root.unresolved", f"Repo root unresolved for runtime_dir={runtime_dir}", {"runtime_dir": str(runtime_dir)}, corr_id=eid)
+        write_rejection_receipt(str(eid), "repo_root_unresolved", "ingest_integrity", runtime_dir)
+        return None
     with spine_operation_lease(runtime_dir, repo_root, include_execution_path=False, skip_if_env=True) as ok:
         if not ok:
             eid = envelope.get("envelope_id") or envelope.get("msg_id") or "unknown"
@@ -60,6 +75,9 @@ def deliver_to_cbo_ingest(
                     os.unlink(tmp)
                 except OSError:
                     pass
+        _emit("INFO", "router.deliver.atomic_write", f"Atomic write envelope_id={eid[:12]}…", {"envelope_id": eid, "path": str(filepath)}, corr_id=eid)
         if replay_ledger:
             add_seen_envelope(eid, runtime_dir, envelope.get("ts_utc", ""))
+        _emit("INFO", "mail.ingest.accept", f"Accepted envelope_id={eid[:12]}…", {"envelope_id": eid}, corr_id=eid)
+        _emit("INFO", "router.deliver.success", f"Delivered to CBO ingest", {"envelope_id": eid}, corr_id=eid)
         return filepath

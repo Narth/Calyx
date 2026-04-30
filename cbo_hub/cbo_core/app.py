@@ -1037,6 +1037,16 @@ def _extract_heartbeat_from_state(state_md: str) -> dict:
             out["triage_status"] = line.split(":", 1)[1].strip()
         elif line.startswith("cpu_target:"):
             out["cpu_target"] = line.split(":", 1)[1].strip()
+        elif line.startswith("signal_level:"):
+            out["signal_level"] = line.split(":", 1)[1].strip()
+        elif line.startswith("signal_top:"):
+            out["signal_top"] = line.split(":", 1)[1].strip()
+        elif line.startswith("signal_count:"):
+            out["signal_count"] = line.split(":", 1)[1].strip()
+        elif line.startswith("signal_requires_operator_confirmation:"):
+            out["signal_requires_operator_confirmation"] = line.split(":", 1)[1].strip()
+        elif line.startswith("signal_operator_brief:"):
+            out["signal_operator_brief"] = line.split(":", 1)[1].strip()
     return out
 
 
@@ -1097,6 +1107,17 @@ def _format_heartbeat_for_discord(hb: dict, cpu: str | None, ram: str | None, gp
         lines.append(f"triage_status: {hb['triage_status']}")
     if hb.get("cpu_target"):
         lines.append(f"cpu_target: {hb['cpu_target']}")
+    if hb.get("signal_level"):
+        signal_line = f"signals: {hb['signal_level']}"
+        if hb.get("signal_top"):
+            signal_line += f" top={hb['signal_top']}"
+        if hb.get("signal_count"):
+            signal_line += f" count={hb['signal_count']}"
+        if hb.get("signal_requires_operator_confirmation") == "true":
+            signal_line += " confirmation_required=true"
+        lines.append(signal_line)
+    if hb.get("signal_operator_brief"):
+        lines.append(f"signal_brief: {hb['signal_operator_brief']}")
     if cpu is not None or ram is not None or gpu:
         parts = []
         if cpu is not None:

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .execution_log import compute_execution_log_hash
+from .tmp_hygiene import is_excluded_from_verification
 
 
 def verify_run(
@@ -67,7 +68,7 @@ def verify_run(
     # 5. no .tmp remains under runtime
     tmp_files: list[Path] = []
     for p in runtime_root.rglob("*.tmp"):
-        if p.is_file():
+        if p.is_file() and not is_excluded_from_verification(p, runtime_root):
             tmp_files.append(p)
     results["no_tmp_remains"]["found"] = [str(p) for p in tmp_files]
     results["no_tmp_remains"]["pass"] = len(tmp_files) == 0

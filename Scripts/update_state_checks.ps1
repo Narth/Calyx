@@ -25,7 +25,9 @@ if (-not (Test-Path $truthHelper)) {
 $statePath = Join-Path $repoRoot "STATE.md"
 $checkScript = Join-Path $repoRoot "Scripts\check_calyx_core_services.ps1"
 $topologyScript = Join-Path $repoRoot "Scripts\runtime_topology_snapshot.py"
+$signalScript = Join-Path $repoRoot "tools\signal_examiner.py"
 $topologySnapshotPath = Join-Path $repoRoot "runtime\runtime_topology_snapshot.json"
+$signalDigestPath = Join-Path $repoRoot "runtime\signals\current_signal_digest.json"
 $venvPython = Join-Path $repoRoot ".venv_cbohub311\Scripts\python.exe"
 $pythonRuntime = if (Test-Path $venvPython) { $venvPython } else { "python" }
 $healthPath = Join-Path $repoRoot "runtime\station_health.json"
@@ -150,6 +152,120 @@ function Get-ServiceFailureOverlay {
     return $overlay
 }
 
+function Limit-Text {
+    param(
+        [string]$Text,
+        [int]$Max = 180
+    )
+    if ([string]::IsNullOrWhiteSpace($Text)) { return "" }
+    $normalized = ($Text -replace "\s+", " ").Trim()
+    if ($normalized.Length -le $Max) { return $normalized }
+    return ($normalized.Substring(0, [math]::Max(0, $Max - 3)) + "...")
+}
+
+function Get-ClarityRuntimeStatus {
+    param([string]$RepoRoot)
+    $requiredClasses = @("safe_to_infer", "needs_receipt", "needs_operator_confirmation", "deny_until_clear")
+    $activeObjectivePath = Join-Path $RepoRoot "runtime\active_objective.json"
+    $sourceRegistryPath = Join-Path $RepoRoot "docs\canonical\CALYX_SOURCE_AUTHORITY_REGISTRY.json"
+    $confusionProtocolPath = Join-Path $RepoRoot "docs\canonical\CALYX_CONFUSION_ESCALATION_PROTOCOL.md"
+    $decisionLedgerPath = Join-Path $RepoRoot "docs\canonical\CALYX_DECISION_LEDGER.md"
+    $errors = @()
+    $warnings = @()
+    $activeObjective = $null
+    $sourceRegistry = $null
+    $rootStatuses = @()
+
+    if (Test-Path -LiteralPath $activeObjectivePath -PathType Leaf) {
+        try {
+            $activeObjective = Get-Content -LiteralPath $activeObjectivePath -Raw -Encoding UTF8 | ConvertFrom-Json
+        } catch {
+            $errors += "active_objective_invalid_json"
+        }
+    } else {
+        $errors += "active_objective_missing"
+    }
+
+    if (Test-Path -LiteralPath $sourceRegistryPath -PathType Leaf) {
+        try {
+            $sourceRegistry = Get-Content -LiteralPath $sourceRegistryPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        } catch {
+            $errors += "source_authority_registry_invalid_json"
+        }
+    } else {
+        $errors += "source_authority_registry_missing"
+    }
+
+    if (-not (Test-Path -LiteralPath $confusionProtocolPath -PathType Leaf)) {
+        $errors += "confusion_protocol_missing"
+    }
+    if (-not (Test-Path -LiteralPath $decisionLedgerPath -PathType Leaf)) {
+        $errors += "decision_ledger_missing"
+    }
+
+    $objectiveStatus = "missing"
+    $objectiveSummary = ""
+    $confusionPolicy = "missing"
+    if ($activeObjective) {
+        $objectiveStatus = if ($activeObjective.status) { [string]$activeObjective.status } else { "unknown" }
+        $objectiveSummary = Limit-Text -Text ([string]$activeObjective.objective) -Max 180
+        try {
+            $classes = @($activeObjective.confusion_policy.classifications | ForEach-Object { [string]$_ })
+            foreach ($required in $requiredClasses) {
+                if ($required -notin $classes) { $errors += "confusion_class_missing:$required" }
+            }
+            $defaultPolicy = if ($activeObjective.confusion_policy.default) { [string]$activeObjective.confusion_policy.default } else { "unknown" }
+            $confusionPolicy = "{0}: {1}" -f $defaultPolicy, ($classes -join ",")
+        } catch {
+            $errors += "confusion_policy_invalid"
+            $confusionPolicy = "invalid"
+        }
+    }
+
+    $sourceRegistryStatus = "missing"
+    if ($sourceRegistry) {
+        $roots = @($sourceRegistry.roots)
+        foreach ($root in $roots) {
+            $pathValue = [string]$root.path
+            $exists = if ($pathValue) { Test-Path -LiteralPath $pathValue } else { $false }
+            if ($root.exists_required -eq $true -and -not $exists) {
+                $errors += "required_source_root_missing:$($root.id)"
+            }
+            $rootStatuses += [ordered]@{
+                id = [string]$root.id
+                path = $pathValue
+                authority_class = [string]$root.authority_class
+                exists_required = [bool]$root.exists_required
+                exists = [bool]$exists
+            }
+        }
+        $sourceRegistryStatus = if ($errors | Where-Object { $_ -like "required_source_root_missing:*" }) { "invalid($($roots.Count) roots)" } else { "valid($($roots.Count) roots)" }
+        if ($sourceRegistry.global_boundaries -and $sourceRegistry.global_boundaries.canonical_runtime_truth_by_presence_alone -ne $false) {
+            $warnings += "registry_boundary_runtime_truth_by_presence_not_false"
+        }
+    }
+
+    $status = if ($errors.Count -eq 0) { "pass" } else { "fail" }
+    return [ordered]@{
+        schema = "station.clarity_status.v1"
+        authority_status = "canonical support"
+        authority_note = "Clarity status validates active objective, source authority registry, confusion protocol, and decision ledger; it is support truth, not sole runtime authority."
+        emitted_ts_utc = ([datetime]::UtcNow).ToString("o")
+        status = $status
+        active_objective_status = $objectiveStatus
+        active_objective_summary = $objectiveSummary
+        confusion_policy = $confusionPolicy
+        source_authority_registry = $sourceRegistryStatus
+        active_objective_path = "runtime/active_objective.json"
+        source_authority_registry_path = "docs/canonical/CALYX_SOURCE_AUTHORITY_REGISTRY.json"
+        confusion_protocol_path = "docs/canonical/CALYX_CONFUSION_ESCALATION_PROTOCOL.md"
+        decision_ledger_path = "docs/canonical/CALYX_DECISION_LEDGER.md"
+        roots = $rootStatuses
+        errors = $errors
+        warnings = $warnings
+    }
+}
+
 function Get-ServiceInfo {
     param([int]$Port)
     $info = [ordered]@{
@@ -201,6 +317,17 @@ function Get-ServiceInfo {
         } catch { }
     }
     return $info
+}
+
+function Get-AuthorityStatusForService {
+    param([string]$Name)
+    switch ($Name) {
+        "dev_harness" { return "canonical core" }
+        "cbo_core" { return "canonical core" }
+        "avatar_web" { return "canonical core" }
+        "telemetry_gateway" { return "canonical support" }
+        default { return "unknown" }
+    }
 }
 
 function Test-HiddenRestartSuspected {
@@ -314,6 +441,9 @@ $failureFlagsActive = [string]$serviceFailureOverlay.active_count
 $failureChangeLane = [string]$serviceFailureOverlay.change_lane
 $failureRiskLane = [string]$serviceFailureOverlay.risk_lane
 $failureFlagServices = (($serviceFailureOverlay.services | Where-Object { $_ }) -join ",")
+$clarityStatus = Get-ClarityRuntimeStatus -RepoRoot $repoRoot
+$clarityStatusPath = Join-Path $repoRoot "runtime\clarity_status.json"
+Write-JsonArtifact -Path $clarityStatusPath -Artifact $clarityStatus
 
 # Navigator + Triage (ship's wheel + medical unit)
 $navigatorInterval = "unknown"
@@ -347,7 +477,13 @@ $stateRuntimeValues = @{
     runtime_truth_state = $stateTruthMetadata.truth_state
     runtime_truth_expires_ts = $stateTruthMetadata.expires_ts_utc
     runtime_truth_label = if ($ForceStale) { $stateTruthMetadata.stale_label } else { "DERIVED_FRESH" }
-    runtime_truth_canonical = if ($ForceStale) { "live_probes ($StaleReason)" } else { "live_probes" }
+    runtime_truth_canonical = if ($ForceStale) { "advisory digest from live_probes ($StaleReason)" } else { "advisory digest from live_probes" }
+    state_authority_status = "canonical support"
+    state_authority_note = "STATE.md is advisory generated support; not sole authoritative truth"
+    active_objective_status = [string]$clarityStatus.active_objective_status
+    active_objective_summary = [string]$clarityStatus.active_objective_summary
+    confusion_policy = [string]$clarityStatus.confusion_policy
+    source_authority_registry = [string]$clarityStatus.source_authority_registry
     checks = $checksOutput
     failure_flags_active = $failureFlagsActive
     failure_change_lane = $failureChangeLane
@@ -357,9 +493,15 @@ $stateRuntimeValues = @{
     runtime_topology_truth_state = if ($ForceStale) { "stale" } else { "unknown" }
     runtime_topology_risk = "unknown"
     runtime_topology_active_services = "none"
+    runtime_topology_authority_summary = "none"
     runtime_topology_duplicates = "none"
     runtime_topology_authority_ambiguous = "none"
     runtime_topology_flagged_services = "none"
+    signal_level = "unknown"
+    signal_top = "unknown"
+    signal_count = "0"
+    signal_operator_brief = ""
+    signal_requires_operator_confirmation = "false"
 }
 Update-StateRuntimeBlock -StatePath $statePath -Values $stateRuntimeValues
 
@@ -380,17 +522,20 @@ $services = [ordered]@{}
 $snapshotServices = [ordered]@{}
 foreach ($name in $servicePorts.Keys) {
     $info = Get-ServiceInfo -Port $servicePorts[$name]
+    $authorityStatus = Get-AuthorityStatusForService -Name $name
     $services[$name] = [ordered]@{
         pid = $info.pid
         uptime_s = $info.uptime_s
         rss_mb = $info.rss_mb
         status = $info.status
+        authority_status = $authorityStatus
     }
     $snapshotServices[$name] = [ordered]@{
         pid = $info.pid
         start_ts = $info.start_ts
         uptime_s = $info.uptime_s
         status = $info.status
+        authority_status = $authorityStatus
     }
 }
 
@@ -423,6 +568,9 @@ if ($restartDetected) {
 
 $snapshotPayload = [ordered]@{
     schema = "station.service_runtime_snapshot.v1"
+    authority_model_source = "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md"
+    authority_boundary_note = "Service runtime snapshot is generated support evidence, not sole liveness authority."
+    clarity_status = $clarityStatus
     heartbeat_emitted_ts = $heartbeatEmittedTs
     station_boot_ts = $stationBootTs
     boot_session_id = $bootSessionId
@@ -448,6 +596,9 @@ Write-JsonArtifact -Path $snapshotPath -Artifact $snapshotPayload
 
 $heartbeatPayload = [ordered]@{
     schema = "station.heartbeat.v1"
+    authority_model_source = "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md"
+    authority_boundary_note = "Station heartbeat is generated support evidence, not sole liveness authority."
+    clarity_status = $clarityStatus
     heartbeat_emitted_ts = $heartbeatEmittedTs
     heartbeat_state_ts = $heartbeatTs
     station_boot_ts = $stationBootTs
@@ -500,9 +651,33 @@ if ($topologySummary) {
     $stateRuntimeValues.runtime_topology_truth_state = [string]$topologySummary.runtime_topology_truth_state
     $stateRuntimeValues.runtime_topology_risk = [string]$topologySummary.runtime_topology_risk
     $stateRuntimeValues.runtime_topology_active_services = [string]$topologySummary.runtime_topology_active_services
+    if ($topologySummary.runtime_topology_authority_summary) {
+        $stateRuntimeValues.runtime_topology_authority_summary = [string]$topologySummary.runtime_topology_authority_summary
+    }
     $stateRuntimeValues.runtime_topology_duplicates = [string]$topologySummary.runtime_topology_duplicates
     $stateRuntimeValues.runtime_topology_authority_ambiguous = [string]$topologySummary.runtime_topology_authority_ambiguous
     $stateRuntimeValues.runtime_topology_flagged_services = [string]$topologySummary.runtime_topology_flagged_services
+    Update-StateRuntimeBlock -StatePath $statePath -Values $stateRuntimeValues
+}
+
+$signalSummary = $null
+if (Test-Path -LiteralPath $signalScript -PathType Leaf) {
+    try {
+        & $pythonRuntime $signalScript "--repo-root" $repoRoot 2>$null | Out-Null
+        if (Test-Path -LiteralPath $signalDigestPath -PathType Leaf) {
+            $signalDigest = Read-JsonArtifact -Path $signalDigestPath
+            if ($signalDigest) {
+                $signalSummary = $signalDigest
+            }
+        }
+    } catch { }
+}
+if ($signalSummary) {
+    $stateRuntimeValues.signal_level = if ($signalSummary.signal_level) { [string]$signalSummary.signal_level } else { "unknown" }
+    $stateRuntimeValues.signal_top = if ($signalSummary.top_signal) { [string]$signalSummary.top_signal } else { "unknown" }
+    $stateRuntimeValues.signal_count = if ($null -ne $signalSummary.signal_count) { [string]$signalSummary.signal_count } else { "0" }
+    $stateRuntimeValues.signal_requires_operator_confirmation = if ($signalSummary.requires_operator_confirmation -eq $true) { "true" } else { "false" }
+    $stateRuntimeValues.signal_operator_brief = Limit-Text -Text ([string]$signalSummary.operator_brief) -Max 220
     Update-StateRuntimeBlock -StatePath $statePath -Values $stateRuntimeValues
 }
 
@@ -592,4 +767,4 @@ if (-not $ForceStale -and (Test-Path $emitScript)) {
     } catch { }
 }
 
-Write-Output "STATE.md updated: checks=$checksOutput heartbeat_ts=$heartbeatTs health=$($stateRuntimeValues.health) entropy_tier=$($stateRuntimeValues.entropy_tier) navigator_interval=$($stateRuntimeValues.navigator_interval) triage_status=$($stateRuntimeValues.triage_status) cpu_target=$($stateRuntimeValues.cpu_target) runtime_truth_state=$($stateRuntimeValues.runtime_truth_state) failure_flags_active=$failureFlagsActive failure_risk_lane=$failureRiskLane runtime_topology_risk=$($stateRuntimeValues.runtime_topology_risk) runtime_topology_duplicates=$($stateRuntimeValues.runtime_topology_duplicates)"
+Write-Output "STATE.md updated: checks=$checksOutput heartbeat_ts=$heartbeatTs health=$($stateRuntimeValues.health) entropy_tier=$($stateRuntimeValues.entropy_tier) navigator_interval=$($stateRuntimeValues.navigator_interval) triage_status=$($stateRuntimeValues.triage_status) cpu_target=$($stateRuntimeValues.cpu_target) runtime_truth_state=$($stateRuntimeValues.runtime_truth_state) active_objective_status=$($stateRuntimeValues.active_objective_status) confusion_policy=$($stateRuntimeValues.confusion_policy) source_authority_registry=$($stateRuntimeValues.source_authority_registry) failure_flags_active=$failureFlagsActive failure_risk_lane=$failureRiskLane runtime_topology_risk=$($stateRuntimeValues.runtime_topology_risk) runtime_topology_duplicates=$($stateRuntimeValues.runtime_topology_duplicates) signal_level=$($stateRuntimeValues.signal_level) signal_top=$($stateRuntimeValues.signal_top)"

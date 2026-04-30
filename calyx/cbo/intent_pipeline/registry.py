@@ -69,6 +69,15 @@ def save_plan(intent_id: str, runtime_dir: Path, data: dict[str, Any]) -> Path:
     return path
 
 
+def save_critique_checkpoint(intent_id: str, runtime_dir: Path, data: dict[str, Any]) -> Path:
+    """Write critique_checkpoint.json for one intent."""
+    d = get_intent_dir(intent_id, runtime_dir)
+    path = d / "critique_checkpoint.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    return path
+
+
 def append_clarification(intent_id: str, runtime_dir: Path, entry: dict[str, Any]) -> Path:
     """Append one line to clarifications.jsonl."""
     d = get_intent_dir(intent_id, runtime_dir)

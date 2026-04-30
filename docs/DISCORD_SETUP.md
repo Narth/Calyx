@@ -53,15 +53,15 @@ echo $DISCORD_BOT_TOKEN
 
 Current configuration in `runtime/discord_config.json`:
 
-- **Station Health Channel:** `1465903939659632807`
-- **Authorized User ID:** `315642751419023371` (for DM processing)
+- **Station Health Channel:** `<STATION_HEALTH_CHANNEL_ID>` — set from your Discord channel (right-click channel → Copy Channel ID).
+- **Authorized User ID:** `<AUTHORIZED_DISCORD_USER_ID>` — Discord user ID allowed for DM processing.
+
+*Store real IDs in a local, non-committed file (e.g. `private/DISCORD_IDS.md`).*
 
 ### Supported Message Types
 
-1. **Channel Messages:** Messages in the Station Health channel (`1465903939659632807`) are processed automatically
-2. **Direct Messages (DMs):** DMs from the authorized user (`315642751419023371`) are processed automatically
-   - DMs from other users are ignored
-   - The bot will respond with confirmation when messages are processed
+1. **Channel Messages:** Messages in the Station Health channel are processed automatically when its ID is in `channel_allowlist`.
+2. **Direct Messages (DMs):** DMs from the authorized user ID are processed automatically; DMs from other users are ignored. The bot will respond with confirmation when messages are processed.
 
 ### Adding More Channels
 
@@ -70,8 +70,8 @@ To add more channels to the allowlist, edit `runtime/discord_config.json`:
 ```json
 {
   "channel_allowlist": [
-    "1465903939659632807",
-    "new_channel_id_here"
+    "<STATION_HEALTH_CHANNEL_ID>",
+    "<OTHER_CHANNEL_ID_IF_NEEDED>"
   ]
 }
 ```

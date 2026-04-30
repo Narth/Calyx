@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Energy Churn Analysis — Planning
 
 **Purpose:** Flush out planning for energy churn analysis and ensuring we maximize every bit of life and data we are given, without blowing a gasket. Development proceeds after this plan is approved.
@@ -111,7 +118,7 @@
 
 ### 5.1 Energy churn analyzer (script or small service)
 
-**Inputs:** `station_health.json`, `station_health_history.jsonl`  
+**Inputs:** `station_health.json`, `station_health_history.jsonl`
 **Outputs:** Structured report (JSON + human-readable summary)
 
 **Responsibilities:**

@@ -72,6 +72,14 @@ _WORKSPACE_META_FILE = _DATA_DIR / "workspace_meta.json"
 _WORKSPACE_UNDO_FILE = _DATA_DIR / "workspace_undo_state.json"
 _WORKSPACE_HTML_FILE = Path(__file__).resolve().with_name("workspace_v0.html")
 _WORKSPACE_SESSION_ID = "workspace-v0"
+_WORKSPACE_AUTHORITY = {
+    "authority_status": "quarantined noncanonical",
+    "authority_note": (
+        "Workspace planning surface is quarantined noncanonical and is not the "
+        "canonical operator path or current Station authority."
+    ),
+    "authority_model_source": "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md",
+}
 _CBO_CORE_RECEIPTS_FILE = Path(__file__).resolve().parent.parent / "receipts" / "cbo_core.jsonl"
 _STATION_PROCESS_CACHE: dict[str, object] = {"expires_at": None, "rows": []}
 
@@ -1093,6 +1101,7 @@ def _workspace_record_failure(
 def _workspace_current_state() -> dict:
     return {
         "session_id": _WORKSPACE_SESSION_ID,
+        "authority": _WORKSPACE_AUTHORITY,
         "board_state": _workspace_load_board_state(),
         "proposal_state": _workspace_load_proposal_state(),
         "discussion_state": _workspace_load_discussion_state(),

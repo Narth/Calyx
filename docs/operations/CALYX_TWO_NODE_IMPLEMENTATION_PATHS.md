@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Calyx two-node implementation paths — Laptop vs Desktop
 
 **Purpose:** Canonical implementation paths for the **laptop node** (Calyx repo at `C:\Calyx`, exposed on this PC as `Z:\` when shared) and the **desktop node** (Calyx_Terminal at `C:\Calyx_Terminal`), and how to assess both from this PC.

@@ -343,7 +343,21 @@ class CalyxDiscordGateway:
             hb_emitted_ts = self._load_heartbeat_emitted_ts()
             if state_path.exists():
                 text = state_path.read_text(encoding="utf-8", errors="replace")
-                for key in ("Status:", "heartbeat_ts:", "health:", "checks:", "entropy_tier:", "navigator_interval:", "triage_status:", "cpu_target:"):
+                for key in (
+                    "Status:",
+                    "heartbeat_ts:",
+                    "health:",
+                    "checks:",
+                    "entropy_tier:",
+                    "navigator_interval:",
+                    "triage_status:",
+                    "cpu_target:",
+                    "signal_level:",
+                    "signal_top:",
+                    "signal_count:",
+                    "signal_requires_operator_confirmation:",
+                    "signal_operator_brief:",
+                ):
                     for line in text.splitlines():
                         if line.strip().startswith(key):
                             if key == "heartbeat_ts:" and hb_emitted_ts:

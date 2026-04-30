@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Sharing C:\Calyx (laptop) to this PC for read/write access
 
 You can share the laptop’s **C:\Calyx** repo to this computer so both codebases are usable from here (and, if you want, from the laptop).

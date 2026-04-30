@@ -99,22 +99,24 @@ def _get_netstat_11434() -> list[dict]:
 
 
 def _pid_to_process(pid: int) -> dict:
-    """Map PID to {pid, name, cmdline?}."""
-    out, _, _ = _run(["powershell", "-NoProfile", "-Command", f"""
+    """Map PID to {pid, name, cmdline?} or {pid, error} if resolution fails."""
+    out, err, _ = _run(["powershell", "-NoProfile", "-Command", f"""
         $p = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId={pid}" -ErrorAction SilentlyContinue
         if (-not $p) {{ Write-Output "||"; return }}
         $n = $p.Name
-        $c = $p.CommandLine
-        if (-not $c) {{ $c = "" }}
+        $c = if ($p.CommandLine) {{ $p.CommandLine.Substring(0, [Math]::Min(500, $p.CommandLine.Length)) }} else {{ "" }}
         Write-Output "$n|$c"
     """], timeout=5)
     line = (out or "").strip().split("\n")[-1] if out else "||"
     parts = line.split("|", 2)
-    name = parts[0] if parts else ""
-    cmdline = parts[1] if len(parts) > 1 else ""
+    name = (parts[0] or "").strip() if parts else ""
+    cmdline = (parts[1] or "").strip() if len(parts) > 1 else ""
     if len(parts) > 2:
-        cmdline = parts[1] + "|" + parts[2]
-    return {"pid": pid, "name": name or "unknown", "cmdline": cmdline[:500] if cmdline else None}
+        cmdline = (parts[1] or "") + "|" + (parts[2] or "")
+    cmdline = cmdline[:500] if cmdline else None
+    if not name or name == "||":
+        return {"pid": pid, "name": "unknown", "cmdline": None, "error": err or "resolution_failed"}
+    return {"pid": pid, "name": name, "cmdline": cmdline}
 
 
 def _classify(ollama_cpu: float | None, rss_mb: float | None, caller_processes: list) -> str:
@@ -200,6 +202,11 @@ def run_probe(duration_s: int = 30, max_samples: int = MAX_SAMPLES) -> dict:
 
     top_callers = sorted(caller_freq.items(), key=lambda x: -x[1])[:5]
 
+    netstat_clients = []
+    for c in conns_final:
+        if c.get("pid") and c["pid"] != last.get("ollama_pid"):
+            netstat_clients.append(_pid_to_process(c["pid"]))
+
     receipt = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "node_id": node_id,
@@ -208,6 +215,7 @@ def run_probe(duration_s: int = 30, max_samples: int = MAX_SAMPLES) -> dict:
         "ollama_rss_mb": last.get("ollama_rss_mb"),
         "ollama_models_active": _get_ollama_models_active(),
         "net_11434_connections": [{"local": c["local"], "remote": c["remote"], "state": c["state"], "pid": c.get("pid")} for c in conns_final],
+        "netstat_clients": netstat_clients,
         "caller_processes": caller_processes_final,
         "classification": classification,
         "evidence": {
@@ -226,6 +234,109 @@ def run_probe(duration_s: int = 30, max_samples: int = MAX_SAMPLES) -> dict:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(receipt, f, indent=2, ensure_ascii=False, sort_keys=True)
     return receipt
+
+
+def write_snapshot() -> dict:
+    """Write post_sunrise_snapshot receipt with cpu_pct, ram_pct, ollama_ps, netstat_clients."""
+    perf_dir = REPO_ROOT / "runtime" / "receipts" / "perf"
+    perf_dir.mkdir(parents=True, exist_ok=True)
+
+    # Read station_health.json if available
+    sh_path = REPO_ROOT / "runtime" / "station_health.json"
+    cpu_pct = None
+    ram_pct = None
+    if sh_path.exists():
+        try:
+            data = json.loads(sh_path.read_text(encoding="utf-8"))
+            cpu_pct = data.get("cpu_pct")
+            ram_pct = data.get("ram_pct")
+        except Exception:
+            pass
+
+    ollama_ps = None
+    out, _, code = _run(["ollama", "ps"], timeout=5)
+    if code == 0 and out:
+        lines = [l.strip() for l in out.split("\n") if l.strip()][1:]
+        ollama_ps = " ".join(lines[0].split()[:4]) if lines else None
+
+    conns = _get_netstat_11434()
+    ollama_pid = _find_ollama_pid()
+    netstat_clients = []
+    for c in conns:
+        if c.get("pid") and c["pid"] != ollama_pid:
+            netstat_clients.append(_pid_to_process(c["pid"]))
+
+    rec = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "cpu_pct": cpu_pct,
+        "ram_pct": ram_pct,
+        "ollama_ps": ollama_ps,
+        "netstat_clients": netstat_clients,
+    }
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    path = perf_dir / f"post_sunrise_snapshot__{ts}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=2, ensure_ascii=False, sort_keys=True)
+    return rec
+
+
+def write_usage_summary() -> dict:
+    """Read gate receipts, compute summary, write ollama_usage_summary__{ts}.json."""
+    perf_dir = REPO_ROOT / "runtime" / "receipts" / "perf"
+    perf_dir.mkdir(parents=True, exist_ok=True)
+
+    allow_count = 0
+    deny_count = 0
+    deny_reasons: dict[str, int] = {}
+    caller_attempts_peak: dict[str, int] = {}
+    service_duration: dict[str, float] = {}
+    max_inflight_observed = 0
+
+    for p in sorted(perf_dir.glob("ollama_gate__*.jsonl")):
+        try:
+            for line in p.read_text(encoding="utf-8").strip().split("\n"):
+                if not line:
+                    continue
+                rec = json.loads(line)
+                decision = rec.get("decision", "")
+                if decision == "ALLOW":
+                    allow_count += 1
+                elif decision == "ALLOW_COMPLETE":
+                    svc = rec.get("service_name") or "unknown"
+                    service_duration[svc] = service_duration.get(svc, 0) + rec.get("allow_duration_ms", 0)
+                elif decision == "DENY":
+                    deny_count += 1
+                    r = rec.get("reason", "unknown")
+                    deny_reasons[r] = deny_reasons.get(r, 0) + 1
+
+                inflight = rec.get("inflight_now", 0)
+                if isinstance(inflight, (int, float)):
+                    max_inflight_observed = max(max_inflight_observed, int(inflight))
+
+                key = rec.get("caller_key", "")
+                if key:
+                    attempts = rec.get("attempts_last_10s", 0)
+                    caller_attempts_peak[key] = max(caller_attempts_peak.get(key, 0), attempts)
+        except Exception:
+            pass
+
+    top_callers = sorted(caller_attempts_peak.items(), key=lambda x: -x[1])[:10]
+    top_services = sorted(service_duration.items(), key=lambda x: -x[1])[:10]
+
+    summary = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "allow_count": allow_count,
+        "deny_count": deny_count,
+        "deny_reasons": deny_reasons,
+        "top_caller_keys_by_attempts_peak": top_callers,
+        "top_services_by_allow_duration_ms_total": top_services,
+        "max_inflight_observed": max_inflight_observed,
+    }
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    path = perf_dir / f"ollama_usage_summary__{ts}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2, ensure_ascii=False, sort_keys=True)
+    return summary
 
 
 def main() -> int:

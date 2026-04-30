@@ -1,6 +1,6 @@
 # Agent Onboarding Guide - SVF v2.0
-**Date:** October 26, 2025  
-**Version:** 2.0  
+**Date:** October 26, 2025
+**Version:** 2.0
 **Status:** ✅ Active
 
 ---
@@ -313,7 +313,7 @@ SVF v2.0 works alongside existing Station Calyx systems:
 
 - `docs/AGENT_ONBOARDING.md` - Full onboarding guide
 - `docs/CBO_AGENT_ONBOARDING.md` - CBO integration
-- `docs/COMPENDIUM.md` - Agent roster
+- `COMPENDIUM.md` - Agent roster
 - `Codex/COMM_PROTOCOL_SHARED_VOICE.md` - SVF v1.0 protocol
 - `reports/svf_phase1_implementation_2025-10-26.md` - Phase 1 docs
 - `reports/svf_phase2_implementation_2025-10-26.md` - Phase 2 docs
@@ -329,7 +329,6 @@ You're now ready to participate in Station Calyx's active neural collaboration s
 
 ---
 
-**Document Version:** 2.0  
-**Last Updated:** 2025-10-26  
+**Document Version:** 2.0
+**Last Updated:** 2025-10-26
 **Status:** Active
-

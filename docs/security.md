@@ -29,6 +29,10 @@ git reset --hard origin/main
 
 See `reports/security/secret_history_purge_force_push_completion_2026-02-12.md` for details.
 
+## Codex public-facing audit (2026-02-22)
+
+A two-pass Codex audit for secrecy and privacy found no direct secret-value exposure; it reported PII in patch metadata and identity docs, Discord IDs in setup docs, and denylist/repo mismatches. Consolidated response, reconciled denylist exceptions, and optional remediations: **`docs/CODEX_AUDIT_RESPONSE_2026-02-22.md`**. Denylist policy updated in `docs/public_repo_denylist.md` (intentional exceptions for `reports/security/*.md` and `*.jsonl`).
+
 ## Local usage
 
 ### Option 1: Docker

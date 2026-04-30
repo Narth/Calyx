@@ -9,6 +9,8 @@ from typing import Any
 
 from calyx.kernel.integrity_gate import spine_operation_lease
 
+from .intake_card import merge_intake_card, validate_intake_card
+from .routing_proof import normalize_routing_proof
 from .registry import get_intent_dir, save_intent_artifact, save_status
 
 
@@ -42,11 +44,22 @@ def ingest_mail_envelope(mail_path: Path, runtime_dir: Path) -> str | None:
             return None
         intent_id = envelope.get("envelope_id") or envelope.get("msg_id") or mail_path.stem
         dir_path = get_intent_dir(intent_id, runtime_dir)
-        save_intent_artifact(intent_id, runtime_dir, envelope)
+        normalized = merge_intake_card(envelope)
+        normalized["routing_proof"] = normalize_routing_proof(normalized)
+        intake_valid, missing = validate_intake_card(normalized.get("intake_card") or {})
+        normalized["intake_card_status"] = "complete" if intake_valid else "needs_clarification"
+        normalized["missing_intake_fields"] = missing
+        save_intent_artifact(intent_id, runtime_dir, normalized)
         save_status(
             intent_id,
             runtime_dir,
-            {"status": "pending_clarification", "ingested_at": envelope.get("ts_utc", "")},
+            {
+                "status": "pending_clarification",
+                "ingested_at": envelope.get("ts_utc", ""),
+                "intake_card_status": normalized["intake_card_status"],
+                "missing_intake_fields": missing,
+                "routing_proof_status": "complete",
+            },
         )
         receipt_dest = dir_path / "receipts" / f"mail_{mail_path.name}"
         receipt_dest.parent.mkdir(parents=True, exist_ok=True)

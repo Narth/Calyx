@@ -19,6 +19,43 @@ CORE_LISTENER_PORTS = {
 }
 RUNTIME_TOPOLOGY_FRESHNESS_WINDOW_SEC = 120
 TOPLOGY_SNAPSHOT_SCHEMA = "station.runtime_topology_snapshot.v2"
+AUTHORITY_STATUS_VOCABULARY = (
+    "canonical core",
+    "canonical support",
+    "quarantined noncanonical",
+    "deprecated",
+    "historical",
+    "unknown",
+)
+
+AUTHORITY_STATUS_BY_SERVICE = {
+    "dev_harness": "canonical core",
+    "cbo_core": "canonical core",
+    "avatar_web": "canonical core",
+    "discord_gateway": "canonical core",
+    "station_health_loop": "canonical core",
+    "service_failure_watch": "canonical core",
+    "telemetry_gateway": "canonical support",
+    "cli_avatar": "canonical support",
+    "bridge_overseer": "quarantined noncanonical",
+    "navigator_triage_loop": "unknown",
+    "energy_churn_cp9_loop": "unknown",
+    "cp6_cp7_loop": "unknown",
+}
+
+AUTHORITY_NOTE_BY_SERVICE = {
+    "telemetry_gateway": "Remote-support ingress only; not normal operator path or core reasoning authority.",
+    "cli_avatar": "Optional local client to governed /chat; no independent operator/control authority.",
+    "bridge_overseer": "Quarantined noncanonical; not canonical control plane or orchestration authority.",
+    "navigator_triage_loop": "Active support loop under simplification review; not granted core authority by labeling.",
+    "energy_churn_cp9_loop": "Active support/tuning loop under simplification review; not granted core authority by labeling.",
+    "cp6_cp7_loop": "Active support loop under simplification review; not granted core authority by labeling.",
+}
+
+AUTHORITY_STATUS_BY_AUXILIARY = {
+    "station_patch_window": "canonical support",
+    "runtime_truth_observer": "canonical support",
+}
 
 SERVICE_DISPLAY_NAMES = {
     "dev_harness": "Dev Harness",
@@ -36,6 +73,34 @@ SERVICE_DISPLAY_NAMES = {
 }
 
 IDENTITY_CONFIDENCE_RANK = {"low": 1, "medium": 2, "high": 3}
+
+
+def _authority_status_for_service(service_name: str | None) -> str:
+    if not service_name:
+        return "unknown"
+    return AUTHORITY_STATUS_BY_SERVICE.get(service_name, "unknown")
+
+
+def _authority_note_for_service(service_name: str | None) -> str:
+    if not service_name:
+        return ""
+    return AUTHORITY_NOTE_BY_SERVICE.get(service_name, "")
+
+
+def _authority_status_for_auxiliary(family_name: str | None) -> str:
+    if not family_name:
+        return "unknown"
+    return AUTHORITY_STATUS_BY_AUXILIARY.get(family_name, "unknown")
+
+
+def _authority_counts_for_services(service_results: dict[str, Any]) -> dict[str, int]:
+    counts = {status: 0 for status in AUTHORITY_STATUS_VOCABULARY}
+    for service_name, result in service_results.items():
+        if result.get("observed_instance_count", 0) <= 0:
+            continue
+        status = result.get("authority_status") or _authority_status_for_service(service_name)
+        counts[status if status in counts else "unknown"] += 1
+    return {key: value for key, value in counts.items() if value}
 
 
 @dataclass(frozen=True)
@@ -349,6 +414,8 @@ def build_runtime_topology_snapshot(
             "auxiliary_family": auxiliary_family,
             "runtime_class": governance["runtime_class"],
             "authority_posture": governance["authority_posture"],
+            "authority_status": governance["authority_status"],
+            "authority_note": governance["authority_note"],
             "declared_status": governance["declared_status"],
             "multiplicity_state": governance["multiplicity_state"],
             "risk_level": row_risk,
@@ -373,6 +440,7 @@ def build_runtime_topology_snapshot(
                 "identity_confidence": identity["identity_confidence"],
                 "service_family": governance["service_family"],
                 "authority_posture": governance["authority_posture"],
+                "authority_status": governance["authority_status"],
                 "declared_status": governance["declared_status"],
                 "risk_level": row_risk,
             }
@@ -393,6 +461,7 @@ def build_runtime_topology_snapshot(
             continue
         auxiliary_runtime_families[family_name] = {
             "category": declaration.category,
+            "authority_status": _authority_status_for_auxiliary(family_name),
             "notes": declaration.notes,
             "observed_process_ids": member_ids,
             "observed_process_count": len(member_ids),
@@ -401,11 +470,16 @@ def build_runtime_topology_snapshot(
     active_service_counts = {
         name: result["observed_instance_count"] for name, result in service_results.items() if result["observed_instance_count"] > 0
     }
+    active_authority_counts = _authority_counts_for_services(service_results)
     state_summary = {
         "runtime_topology_ts": _iso(now_utc),
         "runtime_topology_truth_state": "stale" if force_stale else "fresh",
         "runtime_topology_risk": highest_risk_level,
         "runtime_topology_active_services": ",".join(f"{name}({count})" for name, count in sorted(active_service_counts.items())) or "none",
+        "runtime_topology_authority_summary": ",".join(
+            f"{status}({count})" for status, count in sorted(active_authority_counts.items())
+        )
+        or "none",
         "runtime_topology_duplicates": ",".join(
             f"{name}({service_results[name]['observed_instance_count']})" for name in sorted(duplicate_services)
         )
@@ -429,6 +503,9 @@ def build_runtime_topology_snapshot(
         "freshness_window_sec": RUNTIME_TOPOLOGY_FRESHNESS_WINDOW_SEC,
         "expires_ts_utc": _iso(now_utc if force_stale else now_utc + timedelta(seconds=RUNTIME_TOPOLOGY_FRESHNESS_WINDOW_SEC)),
         "authoritative_for_liveness": False,
+        "authority_status_vocabulary": list(AUTHORITY_STATUS_VOCABULARY),
+        "authority_model_source": "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md",
+        "authority_boundary_note": "Runtime topology is an observed truth surface, not sole liveness authority.",
         "capture_mode": capture.capture_mode,
         "classification_status": "partial" if classification_gaps else "complete",
         "identity_disclosure_status": "partial" if uncertain_runtime_pids or unknown_runtime_pids else "complete",
@@ -443,6 +520,7 @@ def build_runtime_topology_snapshot(
         "flagged_services": sorted(flagged_services),
         "duplicate_services": sorted(duplicate_services),
         "ambiguous_services": sorted(ambiguous_services),
+        "active_authority_status_counts": active_authority_counts,
         "auxiliary_runtime_families": auxiliary_runtime_families,
         "named_identities": dict(sorted(named_identity_counts.items())),
         "named_external_identities": dict(sorted(named_external_identities.items())),
@@ -579,6 +657,8 @@ def _baseline_runtime_governance(
             "service_family": service_name,
             "runtime_class": runtime_class,
             "authority_posture": _service_member_authority_posture(row.pid, service_result, runtime_class),
+            "authority_status": service_result.get("authority_status", _authority_status_for_service(service_name)),
+            "authority_note": service_result.get("authority_note", _authority_note_for_service(service_name)),
             "declared_status": "declared_service",
             "multiplicity_state": service_result["multiplicity_state"],
             "risk_level": service_result["risk_level"],
@@ -588,6 +668,8 @@ def _baseline_runtime_governance(
             "service_family": auxiliary_family,
             "runtime_class": "auxiliary_runtime",
             "authority_posture": _auxiliary_authority_posture(),
+            "authority_status": _authority_status_for_auxiliary(auxiliary_family),
+            "authority_note": "Auxiliary runtime truth or maintenance helper; not a resident service authority.",
             "declared_status": "declared_auxiliary",
             "multiplicity_state": "auxiliary_observed",
             "risk_level": "LOW",
@@ -597,6 +679,8 @@ def _baseline_runtime_governance(
             "service_family": "",
             "runtime_class": runtime_class,
             "authority_posture": "indeterminate",
+            "authority_status": "unknown",
+            "authority_note": "Station-related runtime observed without a declared authority classification.",
             "declared_status": "undeclared_station_related",
             "multiplicity_state": "undeclared_multiplicity",
             "risk_level": "RISK",
@@ -605,6 +689,8 @@ def _baseline_runtime_governance(
         "service_family": "",
         "runtime_class": runtime_class,
         "authority_posture": "external_non_authoritative",
+        "authority_status": "unknown",
+        "authority_note": "External or unrelated runtime; no Station authority granted.",
         "declared_status": "not_declared",
         "multiplicity_state": "not_assessed",
         "risk_level": "LOW",
@@ -995,8 +1081,12 @@ def _build_service_result(
     risk_level = "LOW"
     multiplicity_state = "singleton_expected"
     if observed_count == 0:
-        risk_level = "ELEVATED"
-        anomaly_flags.append("not_observed")
+        if _authority_status_for_service(service_name) == "quarantined noncanonical":
+            multiplicity_state = "quarantined_absent_expected"
+            anomaly_flags.append("quarantined_absent_expected")
+        else:
+            risk_level = "ELEVATED"
+            anomaly_flags.append("not_observed")
         authoritative_runtime = None
     else:
         authoritative_unique = sorted({pid for pid in authoritative_candidates if pid is not None})
@@ -1042,6 +1132,8 @@ def _build_service_result(
                 risk_level = "ELEVATED"
 
     return {
+        "authority_status": _authority_status_for_service(service_name),
+        "authority_note": _authority_note_for_service(service_name),
         "declared_multiplicity_posture": declaration.multiplicity_posture,
         "declared_topology_kind": declaration.topology_kind,
         "declared_ports": list(declaration.declared_ports),

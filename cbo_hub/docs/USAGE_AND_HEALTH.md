@@ -2,6 +2,11 @@
 
 Receipts in `cbo_hub/receipts/cbo_core.jsonl` now capture usage and health metrics for auditing and Station Calyx health.
 
+## Avatar (CLI and Web)
+
+- **Terminal:** `python -m cbo_hub.cli_avatar.main` — Rich TUI; requires CBO Core (7778) and Dev Harness (7777).
+- **Browser (Avatar Web):** Start CBO Core, then run `uvicorn cbo_hub.avatar_web.app:app --host 127.0.0.1 --port 7780`. Open **http://127.0.0.1:7780/** in your browser for a chat UI with model-role and tools controls. The web app proxies `/api/chat` to CBO Core; no CORS needed.
+
 ## Usage (token) capture
 
 **Receipt field:** `usage` (object, optional). Present when at least one provider returned token/usage data.

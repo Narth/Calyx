@@ -1,0 +1,9 @@
+# Tripwire policy levels. Validator rejects missing required keys (deny-by-default).
+# current_level: 1=allow, 2=warn, 3=deny
+# last_decision: allow | warn | deny
+# reason: required string explaining the decision
+
+tripwire_levels:
+  current_level: 1
+  last_decision: "allow"
+  reason: "No deviations detected"

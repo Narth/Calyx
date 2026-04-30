@@ -192,6 +192,8 @@ while ($true) {
         health     = $health
         health_ts  = $ts
         schema     = "station.health.v2"
+        authority_status = "canonical core"
+        authority_boundary_note = "Station health is core health evidence, but not sole Station runtime authority."
         cpu_pct    = $cpu
         ram_pct    = $ram
         gpu        = if ($gpu) { @{ util_pct = $gpu.util_pct; vram_pct = $gpu.vram_pct; temp_c = $gpu.temp_c } } else { $null }

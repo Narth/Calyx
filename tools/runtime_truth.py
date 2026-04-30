@@ -37,6 +37,11 @@ CONTRACTS: dict[str, dict[str, Any]] = {
         "stale_label": "STALE_TUNING",
         "timestamp_fields": ("emitted_ts_utc", "ts_utc", "ts"),
     },
+    "signal_digest": {
+        "freshness_window_sec": 180,
+        "stale_label": "STALE_SIGNAL_DIGEST",
+        "timestamp_fields": ("emitted_ts_utc", "ts_utc", "ts"),
+    },
 }
 
 

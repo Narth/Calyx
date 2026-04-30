@@ -1,0 +1,68 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Sunrise Station Calyx",
+      "type": "shell",
+      "command": "Scripts\\sunrise_calyx.ps1",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Sunset Station Calyx",
+      "type": "shell",
+      "command": "Scripts\\sunset_calyx.ps1",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Check Calyx Core Services",
+      "type": "shell",
+      "command": "Scripts\\check_calyx_core_services.ps1",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Update State Checks",
+      "type": "shell",
+      "command": "Scripts\\update_state_checks.ps1",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Navigator (Traffic Navigator)",
+      "type": "shell",
+      "command": "Scripts\\navigator.ps1",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Triage Orchestrator",
+      "type": "shell",
+      "command": "Scripts\\triage_orchestrator.ps1",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Station Health Check",
+      "type": "shell",
+      "command": "Scripts\\station_health_check.ps1",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Energy Churn Analyzer",
+      "type": "shell",
+      "command": "Scripts\\energy_churn_analyzer.ps1",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Smoke Test",
+      "type": "shell",
+      "command": "python tools/smoke_test.py",
+      "group": "test",
+      "presentation": { "reveal": "always" }
+    }
+  ]
+}

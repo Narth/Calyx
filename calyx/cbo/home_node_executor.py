@@ -82,6 +82,14 @@ def _repo_grep_real(pattern: str, repo_root: Path, file_ext: Optional[list] = No
         return {"error": str(e), "matches": [], "count": 0}
 
 
+def _emit(event: str, msg: str, level: str = "INFO", data: dict | None = None) -> None:
+    try:
+        from calyx.kernel.event_ledger import emit
+        emit(level=level, component="cbo", event=event, msg=msg, data=data or {})
+    except Exception:
+        pass
+
+
 def execute_tool(
     tool_name: str,
     args: dict | None,
@@ -92,22 +100,30 @@ def execute_tool(
     Returns (success, result_dict). Only allowlisted tools execute.
     """
     args = args or {}
+    _emit("toolcall.requested", f"Tool requested: {tool_name}", data={"tool": tool_name, "args_keys": list((args or {}).keys())})
     allowed, reason = check_tool(tool_name, args)
     if not allowed:
+        _emit("toolcall.denied", f"Tool denied: {tool_name} reason={reason}", level="WARN", data={"tool": tool_name, "reason": reason})
         return False, {"error": f"denied: {reason}", "tool": tool_name}
 
-    if tool_name == "fs_read":
-        path = args.get("path", "")
-        if not path or not isinstance(path, str):
-            return False, {"error": "fs_read requires path (string)", "tool": tool_name}
-        return True, _fs_read_real(path, repo_root)
-    if tool_name == "fs_list":
-        path = args.get("path", ".")
-        max_items = args.get("max_items")
-        return True, _fs_list_real(path, repo_root, max_items)
-    if tool_name == "repo_grep":
-        pattern = args.get("pattern", "")
-        file_ext = args.get("file_ext")
-        return True, _repo_grep_real(pattern, repo_root, file_ext)
+    _emit("toolcall.allowed", f"Tool allowed: {tool_name}", data={"tool": tool_name})
+    try:
+        if tool_name == "fs_read":
+            path = args.get("path", "")
+            if not path or not isinstance(path, str):
+                return False, {"error": "fs_read requires path (string)", "tool": tool_name}
+            return True, _fs_read_real(path, repo_root)
+        if tool_name == "fs_list":
+            path = args.get("path", ".")
+            max_items = args.get("max_items")
+            return True, _fs_list_real(path, repo_root, max_items)
+        if tool_name == "repo_grep":
+            pattern = args.get("pattern", "")
+            file_ext = args.get("file_ext")
+            return True, _repo_grep_real(pattern, repo_root, file_ext)
 
-    return False, {"error": "unknown_tool", "tool": tool_name}
+        _emit("toolcall.denied", f"Unknown tool: {tool_name}", level="WARN", data={"tool": tool_name})
+        return False, {"error": "unknown_tool", "tool": tool_name}
+    except Exception as e:
+        _emit("toolcall.error", f"Tool error: {tool_name} {e}", level="ERROR", data={"tool": tool_name, "error": str(e)[:200]})
+        return False, {"error": str(e), "tool": tool_name}

@@ -52,6 +52,11 @@ $script:RuntimeTruthContracts = [ordered]@{
         stale_label = "STALE_TUNING"
         timestamp_fields = @("emitted_ts_utc", "ts_utc", "ts")
     }
+    signal_digest = [ordered]@{
+        freshness_window_sec = 180
+        stale_label = "STALE_SIGNAL_DIGEST"
+        timestamp_fields = @("emitted_ts_utc", "ts_utc", "ts")
+    }
 }
 
 function Get-RuntimeTruthContract {
@@ -170,6 +175,12 @@ function Read-StateRuntimeBlock {
         "runtime_truth_expires_ts",
         "runtime_truth_label",
         "runtime_truth_canonical",
+        "state_authority_status",
+        "state_authority_note",
+        "active_objective_status",
+        "active_objective_summary",
+        "confusion_policy",
+        "source_authority_registry",
         "checks",
         "failure_flags_active",
         "failure_change_lane",
@@ -179,9 +190,15 @@ function Read-StateRuntimeBlock {
         "runtime_topology_truth_state",
         "runtime_topology_risk",
         "runtime_topology_active_services",
+        "runtime_topology_authority_summary",
         "runtime_topology_duplicates",
         "runtime_topology_authority_ambiguous",
-        "runtime_topology_flagged_services"
+        "runtime_topology_flagged_services",
+        "signal_level",
+        "signal_top",
+        "signal_count",
+        "signal_operator_brief",
+        "signal_requires_operator_confirmation"
     )
     $values = [ordered]@{}
     foreach ($key in $keys) {
@@ -853,6 +870,18 @@ function Update-StateRuntimeBlock {
     foreach ($line in (Get-Content -LiteralPath $StatePath -Encoding UTF8)) {
         [void]$lines.Add([string]$line)
     }
+    if (-not $Values.ContainsKey("state_authority_status")) { $Values.state_authority_status = "canonical support" }
+    if (-not $Values.ContainsKey("state_authority_note")) { $Values.state_authority_note = "STATE.md is advisory generated support; not sole authoritative truth" }
+    if (-not $Values.ContainsKey("active_objective_status")) { $Values.active_objective_status = "unknown" }
+    if (-not $Values.ContainsKey("active_objective_summary")) { $Values.active_objective_summary = "" }
+    if (-not $Values.ContainsKey("confusion_policy")) { $Values.confusion_policy = "unknown" }
+    if (-not $Values.ContainsKey("source_authority_registry")) { $Values.source_authority_registry = "unknown" }
+    if (-not $Values.ContainsKey("runtime_topology_authority_summary")) { $Values.runtime_topology_authority_summary = "none" }
+    if (-not $Values.ContainsKey("signal_level")) { $Values.signal_level = "unknown" }
+    if (-not $Values.ContainsKey("signal_top")) { $Values.signal_top = "unknown" }
+    if (-not $Values.ContainsKey("signal_count")) { $Values.signal_count = "0" }
+    if (-not $Values.ContainsKey("signal_operator_brief")) { $Values.signal_operator_brief = "" }
+    if (-not $Values.ContainsKey("signal_requires_operator_confirmation")) { $Values.signal_requires_operator_confirmation = "false" }
     Set-StateKeyValue -Lines $lines -Key "heartbeat_ts" -Value $Values.heartbeat_ts -InsertAfterKey "Status"
     Set-StateKeyValue -Lines $lines -Key "health" -Value $Values.health -InsertAfterKey "heartbeat_ts"
     Set-StateKeyValue -Lines $lines -Key "health_ts" -Value $Values.health_ts -InsertAfterKey "health"
@@ -864,6 +893,12 @@ function Update-StateRuntimeBlock {
     Set-StateKeyValue -Lines $lines -Key "runtime_truth_expires_ts" -Value $Values.runtime_truth_expires_ts -InsertAfterKey "runtime_truth_state"
     Set-StateKeyValue -Lines $lines -Key "runtime_truth_label" -Value $Values.runtime_truth_label -InsertAfterKey "runtime_truth_expires_ts"
     Set-StateKeyValue -Lines $lines -Key "runtime_truth_canonical" -Value $Values.runtime_truth_canonical -InsertAfterKey "runtime_truth_label"
+    Set-StateKeyValue -Lines $lines -Key "state_authority_status" -Value $Values.state_authority_status -InsertAfterKey "runtime_truth_canonical"
+    Set-StateKeyValue -Lines $lines -Key "state_authority_note" -Value $Values.state_authority_note -InsertAfterKey "state_authority_status"
+    Set-StateKeyValue -Lines $lines -Key "active_objective_status" -Value $Values.active_objective_status -InsertAfterKey "state_authority_note"
+    Set-StateKeyValue -Lines $lines -Key "active_objective_summary" -Value $Values.active_objective_summary -InsertAfterKey "active_objective_status"
+    Set-StateKeyValue -Lines $lines -Key "confusion_policy" -Value $Values.confusion_policy -InsertAfterKey "active_objective_summary"
+    Set-StateKeyValue -Lines $lines -Key "source_authority_registry" -Value $Values.source_authority_registry -InsertAfterKey "confusion_policy"
     Set-StateKeyValue -Lines $lines -Key "checks" -Value $Values.checks -InsertAfterKey "lock"
     Set-StateKeyValue -Lines $lines -Key "failure_flags_active" -Value $Values.failure_flags_active -InsertAfterKey "checks"
     Set-StateKeyValue -Lines $lines -Key "failure_change_lane" -Value $Values.failure_change_lane -InsertAfterKey "failure_flags_active"
@@ -873,9 +908,15 @@ function Update-StateRuntimeBlock {
     Set-StateKeyValue -Lines $lines -Key "runtime_topology_truth_state" -Value $Values.runtime_topology_truth_state -InsertAfterKey "runtime_topology_ts"
     Set-StateKeyValue -Lines $lines -Key "runtime_topology_risk" -Value $Values.runtime_topology_risk -InsertAfterKey "runtime_topology_truth_state"
     Set-StateKeyValue -Lines $lines -Key "runtime_topology_active_services" -Value $Values.runtime_topology_active_services -InsertAfterKey "runtime_topology_risk"
-    Set-StateKeyValue -Lines $lines -Key "runtime_topology_duplicates" -Value $Values.runtime_topology_duplicates -InsertAfterKey "runtime_topology_active_services"
+    Set-StateKeyValue -Lines $lines -Key "runtime_topology_authority_summary" -Value $Values.runtime_topology_authority_summary -InsertAfterKey "runtime_topology_active_services"
+    Set-StateKeyValue -Lines $lines -Key "runtime_topology_duplicates" -Value $Values.runtime_topology_duplicates -InsertAfterKey "runtime_topology_authority_summary"
     Set-StateKeyValue -Lines $lines -Key "runtime_topology_authority_ambiguous" -Value $Values.runtime_topology_authority_ambiguous -InsertAfterKey "runtime_topology_duplicates"
     Set-StateKeyValue -Lines $lines -Key "runtime_topology_flagged_services" -Value $Values.runtime_topology_flagged_services -InsertAfterKey "runtime_topology_authority_ambiguous"
+    Set-StateKeyValue -Lines $lines -Key "signal_level" -Value $Values.signal_level -InsertAfterKey "runtime_topology_flagged_services"
+    Set-StateKeyValue -Lines $lines -Key "signal_top" -Value $Values.signal_top -InsertAfterKey "signal_level"
+    Set-StateKeyValue -Lines $lines -Key "signal_count" -Value $Values.signal_count -InsertAfterKey "signal_top"
+    Set-StateKeyValue -Lines $lines -Key "signal_requires_operator_confirmation" -Value $Values.signal_requires_operator_confirmation -InsertAfterKey "signal_count"
+    Set-StateKeyValue -Lines $lines -Key "signal_operator_brief" -Value $Values.signal_operator_brief -InsertAfterKey "signal_requires_operator_confirmation"
     $payload = [string[]]$lines.ToArray()
     for ($attempt = 1; $attempt -le 6; $attempt++) {
         try {
@@ -925,7 +966,13 @@ function Set-StateRuntimeObservedStale {
         runtime_truth_state = "stale"
         runtime_truth_expires_ts = $ObservedAtUtc.ToString("o")
         runtime_truth_label = $contract.stale_label
-        runtime_truth_canonical = ("live_probes ({0})" -f $Reason)
+        runtime_truth_canonical = ("advisory digest from live_probes ({0})" -f $Reason)
+        state_authority_status = "canonical support"
+        state_authority_note = "STATE.md is advisory generated support; not sole authoritative truth"
+        active_objective_status = if ($stateArtifact.active_objective_status) { [string]$stateArtifact.active_objective_status } else { "unknown" }
+        active_objective_summary = if ($stateArtifact.active_objective_summary) { [string]$stateArtifact.active_objective_summary } else { "" }
+        confusion_policy = if ($stateArtifact.confusion_policy) { [string]$stateArtifact.confusion_policy } else { "unknown" }
+        source_authority_registry = if ($stateArtifact.source_authority_registry) { [string]$stateArtifact.source_authority_registry } else { "unknown" }
         checks = if ($stateArtifact.checks) { [string]$stateArtifact.checks } else { "dev_harness=fail,cbo_core=fail,avatar_web=fail,telemetry_gateway=fail" }
         failure_flags_active = if ($stateArtifact.failure_flags_active) { [string]$stateArtifact.failure_flags_active } else { "0" }
         failure_change_lane = if ($stateArtifact.failure_change_lane) { [string]$stateArtifact.failure_change_lane } else { "clear" }
@@ -935,6 +982,7 @@ function Set-StateRuntimeObservedStale {
         runtime_topology_truth_state = "stale"
         runtime_topology_risk = if ($stateArtifact.runtime_topology_risk) { [string]$stateArtifact.runtime_topology_risk } else { "unknown" }
         runtime_topology_active_services = if ($stateArtifact.runtime_topology_active_services) { [string]$stateArtifact.runtime_topology_active_services } else { "none" }
+        runtime_topology_authority_summary = if ($stateArtifact.runtime_topology_authority_summary) { [string]$stateArtifact.runtime_topology_authority_summary } else { "none" }
         runtime_topology_duplicates = if ($stateArtifact.runtime_topology_duplicates) { [string]$stateArtifact.runtime_topology_duplicates } else { "none" }
         runtime_topology_authority_ambiguous = if ($stateArtifact.runtime_topology_authority_ambiguous) { [string]$stateArtifact.runtime_topology_authority_ambiguous } else { "none" }
         runtime_topology_flagged_services = if ($stateArtifact.runtime_topology_flagged_services) { [string]$stateArtifact.runtime_topology_flagged_services } else { "none" }
@@ -976,7 +1024,13 @@ function Set-StateRuntimeStale {
         runtime_truth_state = "stale"
         runtime_truth_expires_ts = $nowUtc.ToString("o")
         runtime_truth_label = $contract.stale_label
-        runtime_truth_canonical = ("live_probes ({0})" -f $Reason)
+        runtime_truth_canonical = ("advisory digest from live_probes ({0})" -f $Reason)
+        state_authority_status = "canonical support"
+        state_authority_note = "STATE.md is advisory generated support; not sole authoritative truth"
+        active_objective_status = "unknown"
+        active_objective_summary = ""
+        confusion_policy = "unknown"
+        source_authority_registry = "unknown"
         checks = $Checks
         failure_flags_active = "0"
         failure_change_lane = "clear"
@@ -986,6 +1040,7 @@ function Set-StateRuntimeStale {
         runtime_topology_truth_state = "stale"
         runtime_topology_risk = "unknown"
         runtime_topology_active_services = "none"
+        runtime_topology_authority_summary = "none"
         runtime_topology_duplicates = "none"
         runtime_topology_authority_ambiguous = "none"
         runtime_topology_flagged_services = "none"
@@ -998,7 +1053,8 @@ function Get-DerivedTruthSurfaceTable {
         @{ path = (Join-Path $RepoRoot "STATE.md"); contract = "state_runtime"; surface = "STATE.md"; kind = "state" },
         @{ path = (Join-Path $RepoRoot "runtime\station_heartbeat.json"); contract = "station_heartbeat"; surface = "station_heartbeat.json"; kind = "json" },
         @{ path = (Join-Path $RepoRoot "runtime\service_runtime_snapshot.json"); contract = "service_runtime_snapshot"; surface = "service_runtime_snapshot.json"; kind = "json" },
-        @{ path = (Join-Path $RepoRoot "runtime\runtime_topology_snapshot.json"); contract = "runtime_topology_snapshot"; surface = "runtime_topology_snapshot.json"; kind = "json" }
+        @{ path = (Join-Path $RepoRoot "runtime\runtime_topology_snapshot.json"); contract = "runtime_topology_snapshot"; surface = "runtime_topology_snapshot.json"; kind = "json" },
+        @{ path = (Join-Path $RepoRoot "runtime\signals\current_signal_digest.json"); contract = "signal_digest"; surface = "current_signal_digest.json"; kind = "json" }
     )
 }
 
@@ -1076,7 +1132,8 @@ function Get-AdvisoryArtifactTable {
         @{ path = (Join-Path $RepoRoot "outgoing\triage.lock"); contract = "triage"; surface = "triage.lock" },
         @{ path = (Join-Path $RepoRoot "outgoing\cp6.lock"); contract = "cp6"; surface = "cp6.lock" },
         @{ path = (Join-Path $RepoRoot "outgoing\cp7.lock"); contract = "cp7"; surface = "cp7.lock" },
-        @{ path = (Join-Path $RepoRoot "outgoing\cp9.lock"); contract = "cp9"; surface = "cp9.lock" }
+        @{ path = (Join-Path $RepoRoot "outgoing\cp9.lock"); contract = "cp9"; surface = "cp9.lock" },
+        @{ path = (Join-Path $RepoRoot "outgoing\signal_examiner.lock"); contract = "signal_digest"; surface = "signal_examiner.lock" }
     )
 }
 

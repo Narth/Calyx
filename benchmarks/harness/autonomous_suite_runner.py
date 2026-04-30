@@ -12,6 +12,7 @@ from pathlib import Path
 from . import run_envelope
 from .autonomous_metrics import compute_metrics
 from .autonomous_run import run_single_case
+from .tmp_hygiene import cleanup_ephemeral_tmp_files
 from .autonomous_verifier import verify_run
 from .execution_adapter import compute_sandbox_state_hash
 from .execution_log import compute_execution_log_hash
@@ -141,6 +142,7 @@ def run_suite(
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2, ensure_ascii=False)
 
+    cleanup_summary = cleanup_ephemeral_tmp_files(runtime_root)
     verification = verify_run(
         envelope_data=envelope_data,
         log_path=log_path,
@@ -201,6 +203,7 @@ def run_suite(
         f.write("\n".join(report_lines))
 
     envelope_data["verification"] = verification
+    envelope_data["tmp_hygiene"] = cleanup_summary
     envelope_data["report_path"] = str(report_path)
 
     return envelope_data

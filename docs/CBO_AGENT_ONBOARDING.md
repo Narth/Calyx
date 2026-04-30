@@ -1,7 +1,7 @@
 # CBO-Agent Onboarding Integration
 
-**Date:** 2025-10-24  
-**Status:** ✅ Design Complete  
+**Date:** 2025-10-24
+**Status:** ✅ Design Complete
 **Integration:** CBO becomes first point of contact for new agents
 
 ---
@@ -319,7 +319,7 @@ onboarding:
 - `docs/AGENT_ONBOARDING.md` - Comprehensive agent onboarding guide
 - `calyx/cbo/CBO_CHARTER.md` - CBO mission and capabilities
 - `calyx/cbo/README.md` - CBO operational documentation
-- `docs/COMPENDIUM.md` - Agent roster and roles
+- `COMPENDIUM.md` - Agent roster and roles
 - `Scripts/agent_onboarding.py` - Onboarding verification tool
 
 ---
@@ -331,4 +331,3 @@ onboarding:
 - Defined capability matrix
 - Established success metrics
 - Created monitoring framework
-

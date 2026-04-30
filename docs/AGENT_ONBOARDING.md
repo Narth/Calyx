@@ -31,7 +31,7 @@ Read these documents to build context:
    - Agent management and watcher UI
    - SVF protocol basics
 
-4. **Compendium** → `docs/COMPENDIUM.md` (10 min)
+4. **Compendium** → `COMPENDIUM.md` (10 min)
    - All agents, copilots, and overseers
    - Their roles, artifacts, and tone
 
@@ -118,7 +118,7 @@ Follow CP6 Social Protocol v0.1 (see `outgoing/field_notes/calyx_social_protocol
 
 ### Step 4: Choose Your Domain
 
-Select a domain aligned with existing agents (see `docs/COMPENDIUM.md`):
+Select a domain aligned with existing agents (see `COMPENDIUM.md`):
 
 - **Orchestration**: Agent1, Scheduler, CBO
 - **Monitoring**: Triage, Navigator, Manifest, Systems Integrator
@@ -426,4 +426,3 @@ python -u .\Scripts\agent_onboarding.py --verify
 5. Celebrate stability with `[HARMONY]` tags
 
 Welcome aboard — let's make Station Calyx thrive.
-

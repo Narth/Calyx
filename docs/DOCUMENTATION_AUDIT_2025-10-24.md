@@ -1,7 +1,7 @@
 # Documentation Audit Report — Station Calyx
 
-**Date:** 2025-10-24  
-**Auditor:** Assisting Agent  
+**Date:** 2025-10-24
+**Auditor:** Assisting Agent
 **Status:** ✅ Complete
 
 ---
@@ -26,7 +26,7 @@ Comprehensive documentation audit completed. All key documentation files verifie
 **Agent Documentation:**
 - ✅ `docs/AGENT_ONBOARDING.md` - Updated with CBO integration
 - ✅ `docs/QUICK_REFERENCE.md` - Current quick reference
-- ✅ `docs/COMPENDIUM.md` - Complete agent roster
+- ✅ `COMPENDIUM.md` - Complete agent roster
 - ✅ `docs/CBO.md` - Updated with onboarding capabilities
 - ✅ `docs/TRIAGE.md` - Change workflow documented
 
@@ -256,7 +256,7 @@ Test-Path calyx\cbo\bridge_overseer.py
 - `docs/CBO.md` - Added onboarding capabilities
 
 ### Related Documentation
-- `docs/COMPENDIUM.md` - Agent roster
+- `COMPENDIUM.md` - Agent roster
 - `docs/TRIAGE.md` - Change workflow
 - `docs/COPILOTS.md` - Copilot guidance
 - `OPERATIONS.md` - Operational procedures
@@ -264,6 +264,5 @@ Test-Path calyx\cbo\bridge_overseer.py
 
 ---
 
-**Audit Complete:** 2025-10-24  
+**Audit Complete:** 2025-10-24
 **Next Review:** After CBO onboarding field test
-

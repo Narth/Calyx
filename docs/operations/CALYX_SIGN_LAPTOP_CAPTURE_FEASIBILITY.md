@@ -1,3 +1,10 @@
+---
+status: active
+owner: station
+last_reviewed_utc: "2026-02-27"
+doctrine_scope: governed
+---
+
 # Calyx Sign — Laptop-side capture: feasibility (before attempt)
 
 **Question:** Can we capture the sign from the laptop via an automated prompt on the laptop?

@@ -3,6 +3,7 @@
 # Usage: .\Scripts\start_calyx_core_services.ps1 [-StopFirst] [-SkipGateway]
 # -StopFirst: stop any process on core ports before starting.
 # -SkipGateway: core services only (debug); Discord Gateway not started.
+# Authority labels: Dev Harness/CBO Core/Avatar Web/Discord Gateway/station health are canonical core; Telemetry Gateway and CLI Avatar are canonical support; Bridge Overseer is quarantined noncanonical.
 
 param(
     [switch]$StopFirst = $false,
@@ -77,6 +78,69 @@ function Test-FreshStationHealth {
 }
 
 # WO_VERIFIED_CLAIMS_LEDGER_V1: Sunrise preflight — verify required dirs exist
+function Test-ClaritySubstrate {
+    param([string]$RepoRoot)
+    $requiredClasses = @("safe_to_infer", "needs_receipt", "needs_operator_confirmation", "deny_until_clear")
+    $activeObjectivePath = Join-Path $RepoRoot "runtime\active_objective.json"
+    $sourceRegistryPath = Join-Path $RepoRoot "docs\canonical\CALYX_SOURCE_AUTHORITY_REGISTRY.json"
+    $confusionProtocolPath = Join-Path $RepoRoot "docs\canonical\CALYX_CONFUSION_ESCALATION_PROTOCOL.md"
+    $decisionLedgerPath = Join-Path $RepoRoot "docs\canonical\CALYX_DECISION_LEDGER.md"
+    $errors = @()
+    $activeObjective = $null
+    $sourceRegistry = $null
+
+    if (Test-Path -LiteralPath $activeObjectivePath -PathType Leaf) {
+        try { $activeObjective = Get-Content -LiteralPath $activeObjectivePath -Raw -Encoding UTF8 | ConvertFrom-Json } catch { $errors += "active_objective_invalid_json" }
+    } else {
+        $errors += "active_objective_missing"
+    }
+    if (Test-Path -LiteralPath $sourceRegistryPath -PathType Leaf) {
+        try { $sourceRegistry = Get-Content -LiteralPath $sourceRegistryPath -Raw -Encoding UTF8 | ConvertFrom-Json } catch { $errors += "source_authority_registry_invalid_json" }
+    } else {
+        $errors += "source_authority_registry_missing"
+    }
+    if (-not (Test-Path -LiteralPath $confusionProtocolPath -PathType Leaf)) { $errors += "confusion_protocol_missing" }
+    if (-not (Test-Path -LiteralPath $decisionLedgerPath -PathType Leaf)) { $errors += "decision_ledger_missing" }
+
+    $objectiveStatus = "missing"
+    $confusionPolicy = "missing"
+    if ($activeObjective) {
+        $objectiveStatus = if ($activeObjective.status) { [string]$activeObjective.status } else { "unknown" }
+        try {
+            $classes = @($activeObjective.confusion_policy.classifications | ForEach-Object { [string]$_ })
+            foreach ($required in $requiredClasses) {
+                if ($required -notin $classes) { $errors += "confusion_class_missing:$required" }
+            }
+            $defaultPolicy = if ($activeObjective.confusion_policy.default) { [string]$activeObjective.confusion_policy.default } else { "unknown" }
+            $confusionPolicy = "{0}: {1}" -f $defaultPolicy, ($classes -join ",")
+        } catch {
+            $errors += "confusion_policy_invalid"
+            $confusionPolicy = "invalid"
+        }
+    }
+
+    $sourceRegistryStatus = "missing"
+    if ($sourceRegistry) {
+        $roots = @($sourceRegistry.roots)
+        foreach ($root in $roots) {
+            $pathValue = [string]$root.path
+            if ($root.exists_required -eq $true -and (-not $pathValue -or -not (Test-Path -LiteralPath $pathValue))) {
+                $errors += "required_source_root_missing:$($root.id)"
+            }
+        }
+        $missingRoots = @($errors | Where-Object { $_ -like "required_source_root_missing:*" })
+        $sourceRegistryStatus = if ($missingRoots.Count -gt 0) { "invalid($($roots.Count) roots)" } else { "valid($($roots.Count) roots)" }
+    }
+
+    return [ordered]@{
+        passed = ($errors.Count -eq 0)
+        errors = $errors
+        active_objective_status = $objectiveStatus
+        confusion_policy = $confusionPolicy
+        source_authority_registry = $sourceRegistryStatus
+    }
+}
+
 $preflightDirs = @(
     (Join-Path $repoRoot "runtime\ledger"),
     (Join-Path $repoRoot "runtime\receipts"),
@@ -94,6 +158,14 @@ foreach ($d in $preflightDirs) {
     }
 }
 Write-Host "Preflight OK: runtime/ledger, runtime/receipts, runtime/receipts/canonical, runtime/receipts/security, runtime/receipts/budget"
+
+# Clarity substrate gate: active runtime must not proceed if authority boundaries are unreadable.
+$clarityValidation = Test-ClaritySubstrate -RepoRoot $repoRoot
+if (-not $clarityValidation.passed) {
+    Write-Error "Clarity substrate validation failed: $($clarityValidation.errors -join ', ')"
+    exit 1
+}
+Write-Host "[Clarity substrate] Validation passed. active_objective=$($clarityValidation.active_objective_status) source_registry=$($clarityValidation.source_authority_registry)"
 
 # Boot Evidence Pre-Network Gate (V1): commit bundle before any service bind/connect.
 $bootSessionId = "boot-$([guid]::NewGuid().ToString())"
@@ -136,25 +208,25 @@ if ($StopFirst) {
 
 # Host: 127.0.0.1 for local-only; 0.0.0.0 for Telemetry Gateway (reachable via tunnel)
 $services = @(
-    @{ Name = "Dev Harness";       Port = 7777; Host = "127.0.0.1"; Module = "cbo_hub.dev_harness.app:app" },
-    @{ Name = "CBO Core";         Port = 7778; Host = "127.0.0.1"; Module = "cbo_hub.cbo_core.app:app" },
-    @{ Name = "Avatar Web";       Port = 7780; Host = "127.0.0.1"; Module = "cbo_hub.avatar_web.app:app" },
-    @{ Name = "Telemetry Gateway"; Port = 7781; Host = "0.0.0.0";   Module = "cbo_hub.telemetry_gateway.app:app" }
+    @{ Name = "Dev Harness";       Port = 7777; Host = "127.0.0.1"; Module = "cbo_hub.dev_harness.app:app"; AuthorityStatus = "canonical core" },
+    @{ Name = "CBO Core";         Port = 7778; Host = "127.0.0.1"; Module = "cbo_hub.cbo_core.app:app"; AuthorityStatus = "canonical core" },
+    @{ Name = "Avatar Web";       Port = 7780; Host = "127.0.0.1"; Module = "cbo_hub.avatar_web.app:app"; AuthorityStatus = "canonical core" },
+    @{ Name = "Telemetry Gateway"; Port = 7781; Host = "0.0.0.0";   Module = "cbo_hub.telemetry_gateway.app:app"; AuthorityStatus = "canonical support" }
 )
 
 foreach ($svc in $services) {
     $hostBind = if ($svc.Host) { $svc.Host } else { "127.0.0.1" }
     if (Test-PortInUse -Port $svc.Port) {
-        Write-Host "[$($svc.Name)] Port $($svc.Port) already in use; skipping start."
+        Write-Host "[$($svc.Name)] [$($svc.AuthorityStatus)] Port $($svc.Port) already in use; skipping start."
         continue
     }
-    Write-Host "[$($svc.Name)] Starting on $hostBind`:$($svc.Port)..."
+    Write-Host "[$($svc.Name)] [$($svc.AuthorityStatus)] Starting on $hostBind`:$($svc.Port)..."
     Start-Process -FilePath $venvPython -ArgumentList "-B", "-m", "uvicorn", $svc.Module, "--host", $hostBind, "--port", $svc.Port `
         -WorkingDirectory $repoRoot -WindowStyle Normal
     Start-Sleep -Seconds 2
 }
 
-Write-Host "Done. Dev Harness: http://127.0.0.1:7777 | CBO Core: http://127.0.0.1:7778 | Avatar Web: http://127.0.0.1:7780 | Telemetry Gateway: http://0.0.0.0:7781"
+Write-Host "Done. Core: Dev Harness http://127.0.0.1:7777 | CBO Core http://127.0.0.1:7778 | Avatar Web http://127.0.0.1:7780 | Support: Telemetry Gateway http://0.0.0.0:7781"
 
 # Ollama CPU affinity — 4 cores to llamas (4-7), 4 to Station Calyx (0-3). Run if Ollama is up.
 $affinityScript = Join-Path $repoRoot "Scripts\set_ollama_affinity.ps1"
@@ -223,15 +295,40 @@ if (Test-Path $cp67Script) {
 }
 
 # CBO Bridge Overseer — Reflect → Plan → Act → Critique loop (4-min heartbeat). Background.
+$bridgeOverseerStarted = $false
 $bridgeOverseerModule = "calyx.cbo.bridge_overseer"
-Start-Process -FilePath $venvPython -ArgumentList "-B", "-m", $bridgeOverseerModule -WorkingDirectory $repoRoot -WindowStyle Hidden
-Write-Host "[CBO Bridge Overseer] Started (background). Sunset will stop it."
+if ($env:CALYX_ALLOW_QUARANTINED_BRIDGE_OVERSEER -eq "1") {
+    Start-Process -FilePath $venvPython -ArgumentList "-B", "-m", $bridgeOverseerModule -WorkingDirectory $repoRoot -WindowStyle Hidden
+    $bridgeOverseerStarted = $true
+    Write-Host "[CBO Bridge Overseer] [quarantined noncanonical] Started by explicit override. Sunset will stop it."
+} else {
+    Write-Host "[CBO Bridge Overseer] [quarantined noncanonical] Not started. Set CALYX_ALLOW_QUARANTINED_BRIDGE_OVERSEER=1 only for explicit historical/diagnostic use."
+}
 
 # CLI Avatar — interactive terminal chat. Opens in new window for operator use.
 # Changes to cli_avatar require sunset → sunrise to deploy (see docs/operations/CANONICAL_OPS_INDEX.md).
 $cliAvatarModule = "cbo_hub.cli_avatar.main"
 Start-Process -FilePath $venvPython -ArgumentList "-B", "-m", $cliAvatarModule -WorkingDirectory $repoRoot -WindowStyle Normal
-Write-Host "[CLI Avatar] Started (new window). Close when done; sunset will stop it if still running."
+Write-Host "[CLI Avatar] [canonical support] Started (new window). Close when done; sunset will stop it if still running."
+
+# Local MCP server — canonical support. Validate scope/readiness during sunrise.
+# Stdio MCP itself is client-launched; keeping a detached resident stdio process would not expose a useful client session.
+$mcpValidationPassed = $false
+$mcpScript = Join-Path $repoRoot "Scripts\start_calyx_mcp_stdio.ps1"
+if (Test-Path $mcpScript) {
+    Write-Host "[Local MCP server] [canonical support] Validating read-only scoped stdio server..."
+    $mcpOutput = & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpScript -Validate 2>&1
+    $mcpValidationPassed = ($LASTEXITCODE -eq 0)
+    if ($mcpValidationPassed) {
+        Write-Host "[Local MCP server] Validation passed. Client command: Scripts\start_calyx_mcp_stdio.ps1"
+    } else {
+        Write-Error "[Local MCP server] Validation failed. $mcpOutput"
+        exit 1
+    }
+} else {
+    Write-Error "[Local MCP server] Launcher missing: $mcpScript"
+    exit 1
+}
 
 # R1/R2: Start Discord Gateway (canonical boot path). No hardcoded IDs (governance hygiene).
 $gatewayStarted = $false
@@ -382,13 +479,36 @@ $receipt = @{
     ts_utc = (Get-Date).ToUniversalTime().ToString("o")
     wo = "WO_SUNRISE_CANONICAL_BOOTPATH_DISCORD_GATEWAY_V1"
     status = if ($gatewayStarted -or $SkipGateway) { "ok" } else { "degraded" }
-    services = @("dev_harness", "cbo_core", "avatar_web", "telemetry_gateway", "station_health_loop", "navigator_triage_loop", "energy_churn_cp9_loop", "cp6_cp7_loop", "bridge_overseer", "cli_avatar", "discord_gateway")
+    services = @("dev_harness", "cbo_core", "avatar_web", "telemetry_gateway", "station_health_loop", "navigator_triage_loop", "energy_churn_cp9_loop", "cp6_cp7_loop", "bridge_overseer", "cli_avatar", "local_mcp_server", "discord_gateway")
+    bridge_overseer_started = $bridgeOverseerStarted
+    service_authority_status = @{
+        dev_harness = "canonical core"
+        cbo_core = "canonical core"
+        avatar_web = "canonical core"
+        telemetry_gateway = "canonical support"
+        station_health_loop = "canonical core"
+        navigator_triage_loop = "unknown"
+        energy_churn_cp9_loop = "unknown"
+        cp6_cp7_loop = "unknown"
+        bridge_overseer = "quarantined noncanonical"
+        cli_avatar = "canonical support"
+        local_mcp_server = "canonical support"
+        discord_gateway = "canonical core"
+    }
+    authority_model_source = "docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md"
     discord_gateway_started = $gatewayStarted
     discord_gateway_pid = $gatewayPid
     external_emitter_gate = "passed"
     openclaw_gateway_task_state = $openclawTaskState
     audit_health_passed = $auditHealthPassed
     checks = $checkResult
+    local_mcp_server_validation_passed = $mcpValidationPassed
+    local_mcp_server_mode = "stdio_client_launched_read_only"
+    local_mcp_server_launcher = "Scripts\start_calyx_mcp_stdio.ps1"
+    clarity_substrate_validation_passed = $clarityValidation.passed
+    active_objective_status = $clarityValidation.active_objective_status
+    confusion_policy = $clarityValidation.confusion_policy
+    source_authority_registry = $clarityValidation.source_authority_registry
     boot_context_missing_total = $bootContextTotal
     boot_context_missing_by_component = $bootBudget.boot_context_missing_by_component
     boot_context_budget_pass = $bootBudgetPass

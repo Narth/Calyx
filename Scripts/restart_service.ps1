@@ -83,6 +83,10 @@ if (-not $svc) {
     Write-Error "Unsupported service: $Service"
     exit 1
 }
+if ($Service -eq "bridge_overseer" -and $env:CALYX_ALLOW_QUARANTINED_BRIDGE_OVERSEER -ne "1") {
+    Write-Error "Refusing restart: bridge_overseer is quarantined noncanonical and not canonical Station authority. Set CALYX_ALLOW_QUARANTINED_BRIDGE_OVERSEER=1 only for explicit historical/diagnostic use."
+    exit 1
+}
 
 $restartBeginReceipt = Write-RuntimeTruthTransition -RepoRoot $repoRoot -Transition "scoped_restart_begin" -Reason $Service -Surfaces @($Service)
 Write-Host "Runtime truth transition receipt: $restartBeginReceipt"

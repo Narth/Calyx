@@ -4,6 +4,21 @@ Chronological recap of development, integrations, doctrines, and Station Calyx l
 
 ---
 
+## Key Actors — Station Calyx, CBO, BloomOS, Calyx Agents
+
+- **Station Calyx** — The home. The workspace; the governed runtime; the flag we fly. AI-assisted workspace with Calyx spine, contract gate, intent pipeline, Discord Gateway.
+- **CBO (Calyx Bridge Overseer)** — Steward of Station Calyx. Primary interface between humans and Calyx operations. Monitors core services, station health loop, build path, Discord Gateway. Integrity, clarification, assurance.
+- **BloomOS** — Conceptual layer; agents consume STATUS, heartbeat_ts, checks, health from STATE.md. No reverse dependency; Calyx produces, BloomOS consumes.
+- **Calyx Agents** — Agents that operate within Station Calyx (CBO, CP6–CP12, Triage, Navigator, etc.). See `COMPENDIUM.md`.
+
+---
+
+## Historical Note: OpenClaw
+
+OpenClaw helped bring the Station Calyx dream to fruition. Multi-channel assistant, voice, skills, tools — it contributed to the architecture and governance we have today. It is now **gated** (decommission playbook; external emitter gate); significant work remains before testing can be considered again. See `docs/operations/OPENCLAW_DECOMMISSION_PLAYBOOK.md`, `docs/OPENCLAW_CALYX_INTEGRATION.md`. OpenClaw is remembered, not erased.
+
+---
+
 ## Scope of This Recap
 
 - **C:\\Calyx_Terminal:** Primary source. Timeline below is derived from this repo’s `git log` and from dated docs under `docs/`, `docs/governance/`, and root.
@@ -131,7 +146,7 @@ Chronological recap of development, integrations, doctrines, and Station Calyx l
 - **Events (from prior HISTORY.md):**
   - Core files created: RESPONSIBILITIES.md, IDENTITY.md, USER.md, SOUL.md; CBO role and responsibilities; workspace structure per AGENTS.md.
   - Identity & user configuration: CBO digital persona (IDENTITY.md), user profile (USER.md), SOUL.md boundaries, hardware constraints (USER.md).
-  - System optimization: OpenClaw default timeout 300s; HISTORY.md enabled; config for hardware-constrained environments.
+  - System optimization: HISTORY.md enabled; config for hardware-constrained environments.
   - Documentation: HISTORY.md chronicle started; system optimized for operator hardware constraints.
 
 ---
@@ -168,7 +183,7 @@ So Federation_Inbox holds federated-run artifacts (laptop proofs, ladder summari
 ## Key Doctrines & References (by topic)
 
 - **Spine & contract:** `docs/SPINE.md`, `CALYX_CONTRACT.yaml`, `docs/ARCHITECTURE_DECISIONS/ADR-0001-canonical-spine.md`, `docs/SYSTEM_INTEGRITY_VALIDATION.md`.
-- **Federated / Discord / OpenClaw:** `docs/FEDERATED_OPS_ROADMAP_v0.md`, `docs/DISCORD_CALYX_MAIL_INTEGRATION.md`, `docs/OPENCLAW_CALYX_INTEGRATION.md`, `docs/CODE_FACTORY_LOOP_DELIVERABLES.md`, `docs/PR_PROTOCOL.md`.
+- **Federated / Discord / Calyx Gateway:** `docs/FEDERATED_OPS_ROADMAP_v0.md`, `docs/DISCORD_CALYX_MAIL_INTEGRATION.md`, `docs/CODE_FACTORY_LOOP_DELIVERABLES.md`, `docs/PR_PROTOCOL.md`. OpenClaw (historical): `docs/OPENCLAW_CALYX_INTEGRATION.md`.
 - **Governance & determinism:** `docs/governance/DETERMINISM_POLICY_v0.1.md`, `docs/governance/LANE2_TOOL_MORATORIUM_v0.1.md`.
 - **Security & public repo:** `docs/security.md` (history rewrite 2026-02-12), `docs/public_repo_denylist.md`, `docs/public_repo_safe_open_plan.md`.
 - **Index:** `docs/INDEX.md` (L1/L2/L3 map of runtime, specs, lore).
