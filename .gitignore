@@ -98,6 +98,7 @@ compiled/
 .codex_cache/
 .claude_cache/
 .firecrawl_cache/
+rust/**/target/
 
 # OS files
 .DS_Store

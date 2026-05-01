@@ -130,6 +130,7 @@ function Get-BaselineClass {
         "docs/",
         "tests/",
         "tools/",
+        "rust/",
         "benchmarks/",
         "policy/",
         "governance/",

@@ -19,12 +19,13 @@ The Git baseline is the origin of truth for rebuilding the Station body across l
 
 Commit and synchronize these intentionally:
 
-- source code under `calyx/`, `cbo_hub/`, `Scripts/`, `tools/`, `benchmarks/`, and `tests/`
+- source code under `calyx/`, `cbo_hub/`, `Scripts/`, `tools/`, `rust/`, `benchmarks/`, and `tests/`
 - doctrine and operator-readable governance files such as `AGENTS.md`, `SOUL.md`, `USER.md`, `IDENTITY.md`, `README.md`, `HEARTBEAT.md`, `CALYX_CONTRACT.yaml`, and `COMPENDIUM.md`
 - canonical docs under `docs/canonical/`, `docs/doctrine/`, selected `docs/operations/`, and selected `docs/planning/`
 - policy and governance definitions under `policy/` and `governance/`
 - templates, examples, fixtures, and schemas required to rebuild or validate the Station
 - `docs/canonical/STATE_TEMPLATE.md` as the canonical shape for the live generated `STATE.md` digest
+- local-only Rust observers under `rust/` when they emit bounded telemetry and do not perform outbound network behavior
 
 Canonical baseline material must be reviewable, portable, and free of workstation-specific secrets or telemetry.
 
