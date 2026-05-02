@@ -189,3 +189,28 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## Cursor Cloud specific instructions
+
+### Project overview
+
+Station Calyx is a local-first governance/coordination stack for AI agents. Two main subsystems:
+- **CBO (Calyx Bridge Overseer)**: FastAPI server on port 8080 with coordination endpoints (`/heartbeat`, `/objective`, `/status`, `/claim`, `/policy`, `/report`)
+- **Calyx Mail**: E2E encrypted local messaging CLI (`tools/calyx_mail.py`)
+
+No external databases or services required. All persistence is file-based (JSONL/CSV/JSON) or SQLite (stdlib).
+
+### Common commands
+
+- **Tests**: `pytest -q` (40 tests in `tests/`)
+- **Lint/compile check**: `python -m py_compile $(git ls-files 'calyx/**/*.py' 'tools/*.py')`
+- **CI hygiene check**: `bash tools/check_forbidden_tracked_paths.sh`
+- **Start CBO API**: `python -c "from calyx.cbo.api import run; run()"` (binds 0.0.0.0:8080)
+- **Mail CLI**: `python tools/calyx_mail.py --runtime-dir <dir> keygen|send|open|inbox|receipt`
+
+### Gotchas
+
+- The system requires `python` to be available (not just `python3`). The CLI E2E test (`test_mail_cli_e2e.py`) invokes `python` directly. If missing, create a symlink: `ln -sf /usr/bin/python3 /usr/bin/python`.
+- `pytest.ini` sets `pythonpath = .` so no manual `PYTHONPATH` is needed.
+- Runtime state is written to `runtime/` (gitignored). The CBO API auto-creates `runtime/cbo/` on startup.
+- The `faster-whisper` and `soundfile` dependencies are for optional speech experiments, not core functionality.
