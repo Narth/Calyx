@@ -1,0 +1,606 @@
+{
+  "$defs": {
+    "DecisionHorizonInput": {
+      "additionalProperties": false,
+      "properties": {
+        "horizon_hours": {
+          "exclusiveMinimum": 0.0,
+          "title": "Horizon Hours",
+          "type": "number"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "thesis_valid_until_utc": {
+          "format": "date-time",
+          "title": "Thesis Valid Until Utc",
+          "type": "string"
+        }
+      },
+      "required": [
+        "horizon_hours",
+        "thesis_valid_until_utc",
+        "rationale"
+      ],
+      "title": "DecisionHorizonInput",
+      "type": "object"
+    },
+    "MarketObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "best_ask": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Best Ask"
+        },
+        "best_bid": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Best Bid"
+        },
+        "market_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Market Note"
+        },
+        "observed_price": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Observed Price",
+          "type": "number"
+        },
+        "price_unit": {
+          "default": "probability",
+          "enum": [
+            "probability",
+            "cents"
+          ],
+          "title": "Price Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observed_price"
+      ],
+      "title": "MarketObservation",
+      "type": "object"
+    },
+    "ReviewPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "abstention_counterfactual": {
+          "minLength": 1,
+          "title": "Abstention Counterfactual",
+          "type": "string"
+        },
+        "attention_cost_estimate": {
+          "minLength": 1,
+          "title": "Attention Cost Estimate",
+          "type": "string"
+        },
+        "decision_quality_classification": {
+          "enum": [
+            "decision_quality.strong",
+            "decision_quality.acceptable",
+            "decision_quality.weak",
+            "decision_quality.unsound"
+          ],
+          "title": "Decision Quality Classification",
+          "type": "string"
+        },
+        "governance_quality_assessment": {
+          "minLength": 1,
+          "title": "Governance Quality Assessment",
+          "type": "string"
+        },
+        "outcome_interpretation_classification": {
+          "enum": [
+            "outcome.validated_edge",
+            "outcome.partial_validation",
+            "outcome.variance_assist",
+            "outcome.variance_penalty",
+            "outcome.false_positive_signal",
+            "outcome.correct_abstention",
+            "outcome.missed_opportunity_but_valid_abstention"
+          ],
+          "title": "Outcome Interpretation Classification",
+          "type": "string"
+        },
+        "policy_alignment_classification": {
+          "enum": [
+            "policy.aligned",
+            "policy.minor_drift_observed",
+            "policy.review_gap_observed",
+            "policy.misaligned"
+          ],
+          "title": "Policy Alignment Classification",
+          "type": "string"
+        },
+        "profit_loss_amount": {
+          "title": "Profit Loss Amount",
+          "type": "number"
+        },
+        "profit_loss_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Profit Loss Note"
+        },
+        "recommended_followup": {
+          "enum": [
+            "none",
+            "watch_for_pattern",
+            "review_signal_thresholds",
+            "review_market_selection",
+            "review_timing_logic",
+            "review_confidence_calibration",
+            "review_artifact_completeness"
+          ],
+          "title": "Recommended Followup",
+          "type": "string"
+        },
+        "review_notes": {
+          "minLength": 1,
+          "title": "Review Notes",
+          "type": "string"
+        },
+        "score_quality_assessment": {
+          "minLength": 1,
+          "title": "Score Quality Assessment",
+          "type": "string"
+        },
+        "thesis_quality_assessment": {
+          "minLength": 1,
+          "title": "Thesis Quality Assessment",
+          "type": "string"
+        },
+        "timing_quality_assessment": {
+          "minLength": 1,
+          "title": "Timing Quality Assessment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "thesis_quality_assessment",
+        "score_quality_assessment",
+        "timing_quality_assessment",
+        "governance_quality_assessment",
+        "decision_quality_classification",
+        "outcome_interpretation_classification",
+        "policy_alignment_classification",
+        "profit_loss_amount",
+        "attention_cost_estimate",
+        "abstention_counterfactual",
+        "review_notes",
+        "recommended_followup"
+      ],
+      "title": "ReviewPlan",
+      "type": "object"
+    },
+    "ScoreDimensions": {
+      "additionalProperties": false,
+      "properties": {
+        "decision_horizon_fit": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Decision Horizon Fit",
+          "type": "number"
+        },
+        "evidence_strength": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Evidence Strength",
+          "type": "number"
+        },
+        "liquidity_tradability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Liquidity Tradability",
+          "type": "number"
+        },
+        "mispricing_potential": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Mispricing Potential",
+          "type": "number"
+        },
+        "resolution_clarity": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Resolution Clarity",
+          "type": "number"
+        },
+        "risk_clarity": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Risk Clarity",
+          "type": "number"
+        },
+        "timing_quality": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Timing Quality",
+          "type": "number"
+        }
+      },
+      "required": [
+        "evidence_strength",
+        "mispricing_potential",
+        "timing_quality",
+        "resolution_clarity",
+        "liquidity_tradability",
+        "decision_horizon_fit",
+        "risk_clarity"
+      ],
+      "title": "ScoreDimensions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "abstention_alternative": {
+      "minLength": 1,
+      "title": "Abstention Alternative",
+      "type": "string"
+    },
+    "artifact_schema_version": {
+      "const": "1.0.0",
+      "title": "Artifact Schema Version",
+      "type": "string"
+    },
+    "case_id": {
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "classification_band": {
+      "enum": [
+        "abstain.insufficient_edge",
+        "abstain.low_quality_candidate",
+        "recommend.research_only",
+        "recommend.execution_ready_low_confidence",
+        "recommend.execution_ready"
+      ],
+      "title": "Classification Band",
+      "type": "string"
+    },
+    "confidence_signal": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence Signal",
+      "type": "number"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "decay_state": {
+      "default": "fresh",
+      "enum": [
+        "fresh",
+        "decayed",
+        "revalidated"
+      ],
+      "title": "Decay State",
+      "type": "string"
+    },
+    "decision_horizon": {
+      "$ref": "#/$defs/DecisionHorizonInput"
+    },
+    "description": {
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "downgrade_flags": {
+      "items": {
+        "enum": [
+          "weak_evidence_relative_to_confidence",
+          "ambiguous_resolution",
+          "unclear_risk",
+          "poor_timing_stability",
+          "signal_decay_applied"
+        ],
+        "type": "string"
+      },
+      "title": "Downgrade Flags",
+      "type": "array"
+    },
+    "entry_rationale": {
+      "minLength": 1,
+      "title": "Entry Rationale",
+      "type": "string"
+    },
+    "evidence_signal": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Evidence Signal",
+      "type": "number"
+    },
+    "evidence_summary": {
+      "minLength": 1,
+      "title": "Evidence Summary",
+      "type": "string"
+    },
+    "execution_status": {
+      "anyOf": [
+        {
+          "enum": [
+            "attempted",
+            "success",
+            "failed"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Execution Status"
+    },
+    "execution_timestamp_utc": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Execution Timestamp Utc"
+    },
+    "expected_edge_source": {
+      "enum": [
+        "weather_forecast_divergence",
+        "event_probability_mismatch",
+        "stale_retail_pricing",
+        "lagging_reaction_to_public_information",
+        "overreaction_underreaction",
+        "none"
+      ],
+      "title": "Expected Edge Source",
+      "type": "string"
+    },
+    "gate_outcome": {
+      "enum": [
+        "abstain.insufficient_evidence",
+        "abstain.low_confidence",
+        "abstain.poor_timing",
+        "abstain.market_not_suitable",
+        "recommend.research_only",
+        "recommend.execution_ready_low_confidence",
+        "recommend.execution_ready"
+      ],
+      "title": "Gate Outcome",
+      "type": "string"
+    },
+    "gate_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Gate Reasons",
+      "type": "array"
+    },
+    "gate_timestamp_utc": {
+      "format": "date-time",
+      "title": "Gate Timestamp Utc",
+      "type": "string"
+    },
+    "initial_timestamp_utc": {
+      "format": "date-time",
+      "title": "Initial Timestamp Utc",
+      "type": "string"
+    },
+    "invalidation_condition": {
+      "minLength": 1,
+      "title": "Invalidation Condition",
+      "type": "string"
+    },
+    "market_id": {
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "market_observation": {
+      "$ref": "#/$defs/MarketObservation"
+    },
+    "market_title": {
+      "minLength": 1,
+      "title": "Market Title",
+      "type": "string"
+    },
+    "operator_engagement_state": {
+      "enum": [
+        "operator_absent",
+        "operator_present",
+        "operator_reviewing",
+        "operator_directing"
+      ],
+      "title": "Operator Engagement State",
+      "type": "string"
+    },
+    "operator_legibility_status": {
+      "enum": [
+        "legible",
+        "needs_review",
+        "not_legible"
+      ],
+      "title": "Operator Legibility Status",
+      "type": "string"
+    },
+    "position_taken": {
+      "enum": [
+        "yes",
+        "no",
+        "none"
+      ],
+      "title": "Position Taken",
+      "type": "string"
+    },
+    "proposed_side": {
+      "enum": [
+        "yes",
+        "no",
+        "none"
+      ],
+      "title": "Proposed Side",
+      "type": "string"
+    },
+    "readiness_timestamp_utc": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Readiness Timestamp Utc"
+    },
+    "resolution_rule_summary": {
+      "minLength": 1,
+      "title": "Resolution Rule Summary",
+      "type": "string"
+    },
+    "resolution_timestamp_utc": {
+      "format": "date-time",
+      "title": "Resolution Timestamp Utc",
+      "type": "string"
+    },
+    "resolved_outcome": {
+      "enum": [
+        "yes",
+        "no",
+        "void",
+        "unresolved"
+      ],
+      "title": "Resolved Outcome",
+      "type": "string"
+    },
+    "review_plan": {
+      "$ref": "#/$defs/ReviewPlan"
+    },
+    "scenario_name": {
+      "minLength": 1,
+      "title": "Scenario Name",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.mock_candidate_market_case",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_dimensions": {
+      "$ref": "#/$defs/ScoreDimensions"
+    },
+    "score_timestamp_utc": {
+      "format": "date-time",
+      "title": "Score Timestamp Utc",
+      "type": "string"
+    },
+    "scoring_notes": {
+      "minLength": 1,
+      "title": "Scoring Notes",
+      "type": "string"
+    },
+    "trade_executed": {
+      "title": "Trade Executed",
+      "type": "boolean"
+    },
+    "wallet_policy_fit": {
+      "enum": [
+        "fit",
+        "borderline",
+        "not_fit"
+      ],
+      "title": "Wallet Policy Fit",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_schema_version",
+    "case_id",
+    "scenario_name",
+    "description",
+    "corr_id",
+    "market_id",
+    "market_title",
+    "resolution_rule_summary",
+    "initial_timestamp_utc",
+    "score_timestamp_utc",
+    "gate_timestamp_utc",
+    "resolution_timestamp_utc",
+    "proposed_side",
+    "expected_edge_source",
+    "operator_engagement_state",
+    "market_observation",
+    "entry_rationale",
+    "decision_horizon",
+    "invalidation_condition",
+    "abstention_alternative",
+    "evidence_summary",
+    "evidence_signal",
+    "confidence_signal",
+    "score_dimensions",
+    "scoring_notes",
+    "classification_band",
+    "gate_outcome",
+    "gate_reasons",
+    "operator_legibility_status",
+    "wallet_policy_fit",
+    "resolved_outcome",
+    "trade_executed",
+    "position_taken",
+    "review_plan"
+  ],
+  "title": "SimulatedKalshiCase",
+  "type": "object"
+}

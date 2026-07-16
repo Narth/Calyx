@@ -1,0 +1,237 @@
+{
+  "source_snapshots": [
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.story.snow.nws",
+      "market_id": "KX-SNOW-NYC-1IN-2026-04-10",
+      "weather_market_type": "measurable_snowfall",
+      "source_name": "NWS New York",
+      "captured_at_utc": "2026-03-30T18:00:00Z",
+      "location_basis": "Central Park official station",
+      "forecast_target_window": "2026-04-10 local day",
+      "forecast_value_summary": "Trace to 0.3 inches possible in an unusual late-season setup.",
+      "raw_reference": "manual://weather/nws/nyc/2026-03-30T18:00:00Z",
+      "values": [
+        {
+          "metric": "snow_accumulation_in",
+          "value": 0.3,
+          "unit": "in",
+          "threshold_relation": "below_threshold",
+          "forecast_probability": 0.18,
+          "qualitative_note": "Interesting but weak late-season signal."
+        }
+      ]
+    },
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.story.snow.accu",
+      "market_id": "KX-SNOW-NYC-1IN-2026-04-10",
+      "weather_market_type": "measurable_snowfall",
+      "source_name": "AccuWeather New York",
+      "captured_at_utc": "2026-03-30T18:04:00Z",
+      "location_basis": "Central Park official station",
+      "forecast_target_window": "2026-04-10 local day",
+      "forecast_value_summary": "No measurable accumulation expected.",
+      "raw_reference": "manual://weather/accuweather/nyc/2026-03-30T18:04:00Z",
+      "values": [
+        {
+          "metric": "snow_accumulation_in",
+          "value": 0.0,
+          "unit": "in",
+          "threshold_relation": "below_threshold",
+          "forecast_probability": 0.08
+        }
+      ]
+    }
+  ],
+  "forecast_bundle": {
+    "schema_name": "weather.weather_forecast_bundle",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_forecast_bundle",
+    "bundle_id": "wx.bundle.snow.story",
+    "market_id": "KX-SNOW-NYC-1IN-2026-04-10",
+    "weather_market_type": "measurable_snowfall",
+    "target_location": "Central Park official station",
+    "target_resolution_window": "2026-04-10 local day",
+    "relevant_weather_metric": "snow_accumulation_in",
+    "source_values": [
+      {
+        "source_snapshot_ref": "wx.story.snow.nws",
+        "source_name": "NWS New York",
+        "captured_at_utc": "2026-03-30T18:00:00Z",
+        "value_summary": "0.3 inches possible",
+        "primary_metric": "snow_accumulation_in",
+        "primary_value": 0.3,
+        "primary_unit": "in",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.18
+      },
+      {
+        "source_snapshot_ref": "wx.story.snow.accu",
+        "source_name": "AccuWeather New York",
+        "captured_at_utc": "2026-03-30T18:04:00Z",
+        "value_summary": "0.0 inches expected",
+        "primary_metric": "snow_accumulation_in",
+        "primary_value": 0.0,
+        "primary_unit": "in",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.08
+      }
+    ],
+    "forecast_spread_value": 0.3,
+    "forecast_spread_summary": "Late-season snow narrative exists, but all current source values remain below the 1-inch strike.",
+    "freshness_state": "current",
+    "freshness_window_hours": 6.0,
+    "resolution_fit_assessment": "aligned",
+    "uncertainty_note": "The story is attention-grabbing, but the measured values remain far below the market threshold.",
+    "raw_snapshot_refs": [
+      "wx.story.snow.nws",
+      "wx.story.snow.accu"
+    ]
+  },
+  "weather_divergence_assessment": {
+    "schema_name": "weather.weather_divergence_assessment",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_divergence_assessment",
+    "assessment_id": "wx.div.snow.story",
+    "market_id": "KX-SNOW-NYC-1IN-2026-04-10",
+    "bundle_ref": "wx.bundle.snow.story",
+    "market_implied_probability": 0.14,
+    "forecast_implied_probability": 0.09,
+    "divergence_magnitude": 0.05,
+    "divergence_note": "Interesting narrative exists, but source values do not support a meaningful threshold edge.",
+    "source_value_trace": [
+      {
+        "source_snapshot_ref": "wx.story.snow.nws",
+        "source_name": "NWS New York",
+        "captured_at_utc": "2026-03-30T18:00:00Z",
+        "value_summary": "0.3 inches possible",
+        "primary_metric": "snow_accumulation_in",
+        "primary_value": 0.3,
+        "primary_unit": "in",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.18
+      },
+      {
+        "source_snapshot_ref": "wx.story.snow.accu",
+        "source_name": "AccuWeather New York",
+        "captured_at_utc": "2026-03-30T18:04:00Z",
+        "value_summary": "0.0 inches expected",
+        "primary_metric": "snow_accumulation_in",
+        "primary_value": 0.0,
+        "primary_unit": "in",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.08
+      }
+    ],
+    "tradability_note": "Tradability is irrelevant because the measured weather support is weak.",
+    "preliminary_suitability_outcome": "weather_research.unsuitable",
+    "uncertainty_note": "Late-season drama should not be mistaken for threshold evidence."
+  },
+  "weather_research_summary": {
+    "schema_name": "weather.weather_research_summary",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_research_summary",
+    "summary_id": "wx.summary.snow.story",
+    "market_id": "KX-SNOW-NYC-1IN-2026-04-10",
+    "weather_market_type": "measurable_snowfall",
+    "research_timestamp_utc": "2026-03-30T18:06:00Z",
+    "forecast_bundle_ref": "wx.bundle.snow.story",
+    "divergence_assessment_ref": "wx.div.snow.story",
+    "source_summary_table": [
+      {
+        "source_snapshot_ref": "wx.story.snow.nws",
+        "source_name": "NWS New York",
+        "captured_at_utc": "2026-03-30T18:00:00Z",
+        "value_summary": "0.3 inches possible",
+        "primary_metric": "snow_accumulation_in",
+        "primary_value": 0.3,
+        "primary_unit": "in",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.18
+      },
+      {
+        "source_snapshot_ref": "wx.story.snow.accu",
+        "source_name": "AccuWeather New York",
+        "captured_at_utc": "2026-03-30T18:04:00Z",
+        "value_summary": "0.0 inches expected",
+        "primary_metric": "snow_accumulation_in",
+        "primary_value": 0.0,
+        "primary_unit": "in",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.08
+      }
+    ],
+    "divergence_note": "The market may attract attention, but the current weather measurements do not justify a threshold thesis.",
+    "freshness_note": "Bundle is current and still non-supportive.",
+    "uncertainty_note": "Interesting narrative does not erase weak measured support.",
+    "preliminary_suitability_note": "Non-actionable weather case despite the late-season snow story.",
+    "preliminary_suitability_outcome": "weather_research.unsuitable",
+    "evidence_summary": "Attributable current weather values remain well below the 1-inch market threshold despite an unusual seasonal storyline.",
+    "invalidation_cues": [
+      "A later forecast materially increases expected accumulation toward the 1-inch strike"
+    ],
+    "expected_edge_source": "weather_forecast_divergence",
+    "review_reference_snapshot_ids": [
+      "wx.story.snow.nws",
+      "wx.story.snow.accu"
+    ]
+  },
+  "kalshi_input": {
+    "case_id": "weather_non_actionable_story",
+    "scenario_name": "weather_non_actionable_story",
+    "description": "Interesting late-season snow narrative that remains non-actionable on the measured threshold.",
+    "corr_id": "weather-sim-snow-story",
+    "market_id": "KX-SNOW-NYC-1IN-2026-04-10",
+    "market_title": "Will New York record at least 1 inch of snow on April 10, 2026?",
+    "resolution_rule_summary": "Resolves YES if the official Central Park station records at least 1 inch of snowfall.",
+    "initial_timestamp_utc": "2026-03-30T18:07:00Z",
+    "score_timestamp_utc": "2026-03-30T18:08:00Z",
+    "gate_timestamp_utc": "2026-03-30T18:09:00Z",
+    "resolution_timestamp_utc": "2026-04-10T23:59:00Z",
+    "proposed_side": "none",
+    "operator_engagement_state": "operator_reviewing",
+    "market_observation": {
+      "observed_price": 0.14,
+      "best_bid": 0.13,
+      "best_ask": 0.15,
+      "market_note": "The story is noisy, but the measured weather edge is weak."
+    },
+    "entry_rationale": "No directional trade thesis should be formed from an interesting narrative without threshold-level support.",
+    "decision_horizon": {
+      "horizon_hours": 12.0,
+      "thesis_valid_until_utc": "2026-03-31T06:00:00Z",
+      "rationale": "Further forecast cycles are needed before the setup could become relevant."
+    },
+    "confidence_signal": 0.05,
+    "gate_outcome": "abstain.market_not_suitable",
+    "gate_reasons": [
+      "Measured weather support remains below the market threshold.",
+      "Narrative interest does not justify strategy escalation."
+    ],
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "resolved_outcome": "no",
+    "trade_executed": false,
+    "position_taken": "none",
+    "review_plan": {
+      "thesis_quality_assessment": "The no-trade decision stayed anchored to measured support rather than narrative excitement.",
+      "score_quality_assessment": "The score correctly suppressed a story-driven false positive.",
+      "timing_quality_assessment": "Timing remained irrelevant because the weather evidence never became actionable.",
+      "governance_quality_assessment": "The research layer remained bounded and non-authorizing.",
+      "decision_quality_classification": "decision_quality.strong",
+      "outcome_interpretation_classification": "outcome.correct_abstention",
+      "policy_alignment_classification": "policy.aligned",
+      "profit_loss_amount": 0.0,
+      "profit_loss_note": "No trade was taken in staging.",
+      "attention_cost_estimate": "Low operator attention.",
+      "abstention_counterfactual": "Chasing the storyline would have degraded decision quality.",
+      "review_notes": "Useful non-actionable weather narrative example.",
+      "recommended_followup": "review_market_selection"
+    }
+  }
+}

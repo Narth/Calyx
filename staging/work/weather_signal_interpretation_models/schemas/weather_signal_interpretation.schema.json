@@ -1,0 +1,142 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "weather_signal_interpretation",
+      "default": "weather_signal_interpretation",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "downstream_signal_effects": {
+      "items": {
+        "enum": [
+          "reduce_evidence_strength",
+          "reduce_mispricing_potential",
+          "reduce_timing_quality",
+          "reduce_decision_horizon_fit",
+          "force_research_only_ceiling",
+          "force_abstention_review"
+        ],
+        "type": "string"
+      },
+      "title": "Downstream Signal Effects",
+      "type": "array"
+    },
+    "freshness_assessment": {
+      "enum": [
+        "fresh",
+        "aging",
+        "stale"
+      ],
+      "title": "Freshness Assessment",
+      "type": "string"
+    },
+    "interpretation_notes": {
+      "minLength": 1,
+      "title": "Interpretation Notes",
+      "type": "string"
+    },
+    "market_id": {
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "weather.weather_signal_interpretation",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_agreement_assessment": {
+      "enum": [
+        "high_agreement",
+        "mixed_agreement",
+        "high_disagreement"
+      ],
+      "title": "Source Agreement Assessment",
+      "type": "string"
+    },
+    "source_bundle_ref": {
+      "minLength": 3,
+      "title": "Source Bundle Ref",
+      "type": "string"
+    },
+    "threshold_proximity_assessment": {
+      "enum": [
+        "clear_separation",
+        "near_threshold",
+        "threshold_overlapping"
+      ],
+      "title": "Threshold Proximity Assessment",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "weather_downgrade_flags": {
+      "items": {
+        "enum": [
+          "temperature.threshold_ambiguity",
+          "temperature.high_source_spread",
+          "temperature.stale_bundle",
+          "temperature.marginal_edge",
+          "precipitation.high_disagreement",
+          "precipitation.accumulation_uncertain",
+          "precipitation.window_mismatch",
+          "precipitation.stale_bundle",
+          "snow.threshold_ambiguity"
+        ],
+        "type": "string"
+      },
+      "title": "Weather Downgrade Flags",
+      "type": "array"
+    },
+    "weather_market_type": {
+      "enum": [
+        "daily_high_temperature",
+        "daily_low_temperature",
+        "measurable_precipitation",
+        "measurable_snowfall",
+        "weather_threshold_event"
+      ],
+      "title": "Weather Market Type",
+      "type": "string"
+    },
+    "weather_support_band": {
+      "enum": [
+        "weak",
+        "moderate",
+        "strong"
+      ],
+      "title": "Weather Support Band",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "corr_id",
+    "timestamp_utc",
+    "market_id",
+    "weather_market_type",
+    "source_bundle_ref",
+    "weather_support_band",
+    "threshold_proximity_assessment",
+    "source_agreement_assessment",
+    "freshness_assessment",
+    "interpretation_notes"
+  ],
+  "title": "WeatherSignalInterpretation",
+  "type": "object"
+}

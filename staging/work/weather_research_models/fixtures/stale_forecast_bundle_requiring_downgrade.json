@@ -1,0 +1,236 @@
+{
+  "source_snapshots": [
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.stale.temp.nws",
+      "market_id": "KX-TEMP-LAS-92-2026-04-03",
+      "weather_market_type": "daily_high_temperature",
+      "source_name": "NWS Las Vegas",
+      "captured_at_utc": "2026-03-29T05:00:00Z",
+      "location_basis": "Las Vegas official station",
+      "forecast_target_window": "2026-04-03 local day",
+      "forecast_value_summary": "Older forecast high 94F, above threshold.",
+      "raw_reference": "manual://weather/nws/vegas/2026-03-29T05:00:00Z",
+      "values": [
+        {
+          "metric": "temperature_high_f",
+          "value": 94.0,
+          "unit": "F",
+          "threshold_relation": "above_threshold",
+          "forecast_probability": 0.68
+        }
+      ]
+    },
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.stale.temp.weather",
+      "market_id": "KX-TEMP-LAS-92-2026-04-03",
+      "weather_market_type": "daily_high_temperature",
+      "source_name": "Weather.com Las Vegas",
+      "captured_at_utc": "2026-03-29T05:04:00Z",
+      "location_basis": "Las Vegas official station",
+      "forecast_target_window": "2026-04-03 local day",
+      "forecast_value_summary": "Older forecast high 93F, above threshold.",
+      "raw_reference": "manual://weather/weatherdotcom/vegas/2026-03-29T05:04:00Z",
+      "values": [
+        {
+          "metric": "temperature_high_f",
+          "value": 93.0,
+          "unit": "F",
+          "threshold_relation": "above_threshold",
+          "forecast_probability": 0.64
+        }
+      ]
+    }
+  ],
+  "forecast_bundle": {
+    "schema_name": "weather.weather_forecast_bundle",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_forecast_bundle",
+    "bundle_id": "wx.bundle.temp.stale",
+    "market_id": "KX-TEMP-LAS-92-2026-04-03",
+    "weather_market_type": "daily_high_temperature",
+    "target_location": "Las Vegas official station",
+    "target_resolution_window": "2026-04-03 local day",
+    "relevant_weather_metric": "temperature_high_f",
+    "source_values": [
+      {
+        "source_snapshot_ref": "wx.stale.temp.nws",
+        "source_name": "NWS Las Vegas",
+        "captured_at_utc": "2026-03-29T05:00:00Z",
+        "value_summary": "94F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 94.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.68
+      },
+      {
+        "source_snapshot_ref": "wx.stale.temp.weather",
+        "source_name": "Weather.com Las Vegas",
+        "captured_at_utc": "2026-03-29T05:04:00Z",
+        "value_summary": "93F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 93.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.64
+      }
+    ],
+    "forecast_spread_value": 1.0,
+    "forecast_spread_summary": "Older sources agree, but the bundle is stale relative to the decision moment.",
+    "freshness_state": "stale",
+    "freshness_window_hours": 6.0,
+    "resolution_fit_assessment": "aligned",
+    "uncertainty_note": "Staleness dominates even though the directional lean is consistent.",
+    "raw_snapshot_refs": [
+      "wx.stale.temp.nws",
+      "wx.stale.temp.weather"
+    ]
+  },
+  "weather_divergence_assessment": {
+    "schema_name": "weather.weather_divergence_assessment",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_divergence_assessment",
+    "assessment_id": "wx.div.temp.stale",
+    "market_id": "KX-TEMP-LAS-92-2026-04-03",
+    "bundle_ref": "wx.bundle.temp.stale",
+    "market_implied_probability": 0.50,
+    "forecast_implied_probability": 0.66,
+    "divergence_magnitude": 0.16,
+    "divergence_note": "Older forecast bundle leans above threshold, but the edge is stale and unfit for direct reliance.",
+    "source_value_trace": [
+      {
+        "source_snapshot_ref": "wx.stale.temp.nws",
+        "source_name": "NWS Las Vegas",
+        "captured_at_utc": "2026-03-29T05:00:00Z",
+        "value_summary": "94F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 94.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.68
+      },
+      {
+        "source_snapshot_ref": "wx.stale.temp.weather",
+        "source_name": "Weather.com Las Vegas",
+        "captured_at_utc": "2026-03-29T05:04:00Z",
+        "value_summary": "93F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 93.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.64
+      }
+    ],
+    "tradability_note": "Market quotes exist, but stale weather support should trigger downgrade.",
+    "preliminary_suitability_outcome": "weather_research.supportive_but_uncertain",
+    "uncertainty_note": "Fresh forecast capture is required before any stronger classification."
+  },
+  "weather_research_summary": {
+    "schema_name": "weather.weather_research_summary",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_research_summary",
+    "summary_id": "wx.summary.temp.stale",
+    "market_id": "KX-TEMP-LAS-92-2026-04-03",
+    "weather_market_type": "daily_high_temperature",
+    "research_timestamp_utc": "2026-03-30T17:00:00Z",
+    "forecast_bundle_ref": "wx.bundle.temp.stale",
+    "divergence_assessment_ref": "wx.div.temp.stale",
+    "source_summary_table": [
+      {
+        "source_snapshot_ref": "wx.stale.temp.nws",
+        "source_name": "NWS Las Vegas",
+        "captured_at_utc": "2026-03-29T05:00:00Z",
+        "value_summary": "94F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 94.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.68
+      },
+      {
+        "source_snapshot_ref": "wx.stale.temp.weather",
+        "source_name": "Weather.com Las Vegas",
+        "captured_at_utc": "2026-03-29T05:04:00Z",
+        "value_summary": "93F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 93.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.64
+      }
+    ],
+    "divergence_note": "The older bundle suggests a warm bias, but freshness failure dominates suitability.",
+    "freshness_note": "Bundle is stale and must be downgraded before downstream scoring.",
+    "uncertainty_note": "Forecast age, not just spread, is the main risk.",
+    "preliminary_suitability_note": "Current weather support is too stale for anything beyond inconclusive monitoring.",
+    "preliminary_suitability_outcome": "weather_research.supportive_but_uncertain",
+    "evidence_summary": "Older attributable forecasts agree directionally but are outside the declared freshness window.",
+    "invalidation_cues": [
+      "A refreshed current forecast bundle diverges from the stale readings"
+    ],
+    "expected_edge_source": "weather_forecast_divergence",
+    "review_reference_snapshot_ids": [
+      "wx.stale.temp.nws",
+      "wx.stale.temp.weather"
+    ]
+  },
+  "kalshi_input": {
+    "case_id": "weather_stale_bundle_downgrade",
+    "scenario_name": "weather_stale_bundle_downgrade",
+    "description": "Weather case where stale forecasts require explicit downgrade before strategy scoring.",
+    "corr_id": "weather-sim-stale-temp",
+    "market_id": "KX-TEMP-LAS-92-2026-04-03",
+    "market_title": "Will Las Vegas hit 92F or higher on April 3, 2026?",
+    "resolution_rule_summary": "Resolves YES if the official Las Vegas daily high is 92F or higher.",
+    "initial_timestamp_utc": "2026-03-30T17:01:00Z",
+    "score_timestamp_utc": "2026-03-30T17:02:00Z",
+    "gate_timestamp_utc": "2026-03-30T17:03:00Z",
+    "resolution_timestamp_utc": "2026-04-03T23:59:00Z",
+    "proposed_side": "none",
+    "operator_engagement_state": "operator_reviewing",
+    "market_observation": {
+      "observed_price": 0.50,
+      "best_bid": 0.49,
+      "best_ask": 0.51,
+      "market_note": "Quotes exist, but weather support is stale."
+    },
+    "entry_rationale": "No entry is justified until current weather support replaces the stale bundle.",
+    "decision_horizon": {
+      "horizon_hours": 2.0,
+      "thesis_valid_until_utc": "2026-03-30T19:00:00Z",
+      "rationale": "A fresh bundle is needed immediately or the candidate should expire."
+    },
+    "confidence_signal": 0.0,
+    "gate_outcome": "abstain.poor_timing",
+    "gate_reasons": [
+      "Forecast freshness has decayed below usable decision quality.",
+      "A fresh bundle is required before any directional weather thesis can stand."
+    ],
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "resolved_outcome": "yes",
+    "trade_executed": false,
+    "position_taken": "none",
+    "review_plan": {
+      "thesis_quality_assessment": "The no-trade posture was appropriately tied to stale inputs.",
+      "score_quality_assessment": "The score correctly applied decay and avoided synthetic certainty.",
+      "timing_quality_assessment": "Timing was poor because the supporting bundle was too old.",
+      "governance_quality_assessment": "Freshness discipline remained visible and bounded.",
+      "decision_quality_classification": "decision_quality.strong",
+      "outcome_interpretation_classification": "outcome.correct_abstention",
+      "policy_alignment_classification": "policy.aligned",
+      "profit_loss_amount": 0.0,
+      "profit_loss_note": "No trade was taken in staging.",
+      "attention_cost_estimate": "Low operator attention.",
+      "abstention_counterfactual": "Using stale forecasts would have been governance drift even if the market later resolved yes.",
+      "review_notes": "Useful freshness downgrade case.",
+      "recommended_followup": "review_confidence_calibration"
+    }
+  }
+}

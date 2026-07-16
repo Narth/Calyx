@@ -1,0 +1,242 @@
+{
+  "$defs": {
+    "DecisionHorizon": {
+      "additionalProperties": false,
+      "properties": {
+        "horizon_hours": {
+          "exclusiveMinimum": 0.0,
+          "title": "Horizon Hours",
+          "type": "number"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "thesis_valid_until_utc": {
+          "format": "date-time",
+          "title": "Thesis Valid Until Utc",
+          "type": "string"
+        }
+      },
+      "required": [
+        "horizon_hours",
+        "thesis_valid_until_utc",
+        "rationale"
+      ],
+      "title": "DecisionHorizon",
+      "type": "object"
+    },
+    "PriceContext": {
+      "additionalProperties": false,
+      "properties": {
+        "best_ask": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Best Ask"
+        },
+        "best_bid": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Best Bid"
+        },
+        "market_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Market Note"
+        },
+        "observed_price": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Observed Price",
+          "type": "number"
+        },
+        "price_unit": {
+          "enum": [
+            "probability",
+            "cents"
+          ],
+          "title": "Price Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observed_price",
+        "price_unit"
+      ],
+      "title": "PriceContext",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "abstention_alternative": {
+      "minLength": 1,
+      "title": "Abstention Alternative",
+      "type": "string"
+    },
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "trade_thesis_artifact",
+      "default": "trade_thesis_artifact",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "confidence_signal": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence Signal",
+      "type": "number"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "decision_horizon": {
+      "$ref": "#/$defs/DecisionHorizon"
+    },
+    "entry_rationale": {
+      "minLength": 1,
+      "title": "Entry Rationale",
+      "type": "string"
+    },
+    "evidence_signal": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Evidence Signal",
+      "type": "number"
+    },
+    "evidence_summary": {
+      "minLength": 1,
+      "title": "Evidence Summary",
+      "type": "string"
+    },
+    "expected_edge_source": {
+      "enum": [
+        "weather_forecast_divergence",
+        "event_probability_mismatch",
+        "stale_retail_pricing",
+        "lagging_reaction_to_public_information",
+        "overreaction_underreaction",
+        "none"
+      ],
+      "title": "Expected Edge Source",
+      "type": "string"
+    },
+    "invalidation_condition": {
+      "minLength": 1,
+      "title": "Invalidation Condition",
+      "type": "string"
+    },
+    "market_id": {
+      "maxLength": 128,
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "market_title": {
+      "minLength": 1,
+      "title": "Market Title",
+      "type": "string"
+    },
+    "operator_engagement_state": {
+      "enum": [
+        "operator_absent",
+        "operator_present",
+        "operator_reviewing",
+        "operator_directing"
+      ],
+      "title": "Operator Engagement State",
+      "type": "string"
+    },
+    "price_context": {
+      "$ref": "#/$defs/PriceContext"
+    },
+    "proposed_side": {
+      "enum": [
+        "yes",
+        "no",
+        "none"
+      ],
+      "title": "Proposed Side",
+      "type": "string"
+    },
+    "resolution_rule_summary": {
+      "minLength": 1,
+      "title": "Resolution Rule Summary",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.trade_thesis_artifact",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "market_id",
+    "market_title",
+    "resolution_rule_summary",
+    "proposed_side",
+    "price_context",
+    "entry_rationale",
+    "expected_edge_source",
+    "decision_horizon",
+    "invalidation_condition",
+    "abstention_alternative",
+    "evidence_summary",
+    "confidence_signal",
+    "evidence_signal",
+    "operator_engagement_state"
+  ],
+  "title": "TradeThesisArtifact",
+  "type": "object"
+}

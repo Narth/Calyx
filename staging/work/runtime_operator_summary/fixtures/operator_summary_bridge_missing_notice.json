@@ -1,0 +1,155 @@
+{
+  "ambiguities": [],
+  "artifact_type": "runtime_operator_summary",
+  "attribution_gaps": [
+    {
+      "affected_process_ids": [
+        35056,
+        35192
+      ],
+      "evidence_refs": [
+        "capture.bridge.missing_notice.bridge.validation",
+        "capture.bridge.missing_notice.bridge.noncompliance"
+      ],
+      "gap_type": "missing_launch_notice",
+      "reasoning": "Wrapper-child topology was foreseeable but required launch notice was missing.",
+      "service_name": "bridge_overseer",
+      "severity": "warn"
+    }
+  ],
+  "capture_id": "capture.bridge.missing_notice",
+  "corr_id": "capture.bridge.missing_notice",
+  "expectation_signals": [
+    {
+      "reasoning": "bridge_overseer does not fully match its declared multiplicity contract.",
+      "service_name": "bridge_overseer",
+      "severity": "warn",
+      "signal_type": "multiplicity_noncompliance"
+    },
+    {
+      "reasoning": "Bridge overseer is idle with reason=empty_objectives_file; this is visible, not hidden.",
+      "service_name": "bridge_overseer",
+      "severity": "info",
+      "signal_type": "idle_bridge_visible"
+    }
+  ],
+  "generated_at_utc": "2026-04-04T01:58:16.166059Z",
+  "governance_compliance_condition": "noncompliant",
+  "governance_posture": [
+    {
+      "authoritative_runtime_role": "bridge_cycle_owner",
+      "freshness_state": null,
+      "health_state": null,
+      "idle_reason": "empty_objectives_file",
+      "multiplicity_posture": "wrapper_child_expected",
+      "noncompliance_severity": "moderate",
+      "noncompliance_type": "missing_launch_notice",
+      "notes": [
+        "Observed wrapper-child overseer pair matches declared topology but lacks compliant launch notice attribution.",
+        "Wrapper-child topology was foreseeable but required launch notice was missing.",
+        "Bridge pulse is idle with work_state=objectives_empty."
+      ],
+      "observed_process_count": 2,
+      "posture_consequence": "warning_posture",
+      "pulse_class": "idle",
+      "service_name": "bridge_overseer",
+      "topology_class": "wrapper_child_runtime_pair",
+      "validation_outcome": "multiplicity_declared_but_noncompliant"
+    }
+  ],
+  "notes": "Operator summary is a staging-only visibility surface derived from capture and governance artifacts without runtime mutation.",
+  "operator_risk_reasoning": [
+    "System load condition: UNKNOWN.",
+    "Primary load source is unresolved because no top-process sample was available.",
+    "Governance compliance condition: NONCOMPLIANT.",
+    "Wrapper-child topology was foreseeable but required launch notice was missing."
+  ],
+  "operator_risk_signal": "UNEXPECTED",
+  "schema_name": "runtime.operator.summary",
+  "schema_version": "1.1.0",
+  "source_capture_mode": "offline_replay",
+  "station_runtime_view": {
+    "governance_posture": [
+      {
+        "authoritative_runtime_role": "bridge_cycle_owner",
+        "freshness_state": null,
+        "health_state": null,
+        "idle_reason": "empty_objectives_file",
+        "multiplicity_posture": "wrapper_child_expected",
+        "noncompliance_severity": "moderate",
+        "noncompliance_type": "missing_launch_notice",
+        "notes": [
+          "Observed wrapper-child overseer pair matches declared topology but lacks compliant launch notice attribution.",
+          "Wrapper-child topology was foreseeable but required launch notice was missing.",
+          "Bridge pulse is idle with work_state=objectives_empty."
+        ],
+        "observed_process_count": 2,
+        "posture_consequence": "warning_posture",
+        "pulse_class": "idle",
+        "service_name": "bridge_overseer",
+        "topology_class": "wrapper_child_runtime_pair",
+        "validation_outcome": "multiplicity_declared_but_noncompliant"
+      }
+    ],
+    "notes": [
+      "Station runtime view is a strict evidence-backed subset of the workstation process capture.",
+      "Known governed processes come from runtime multiplicity validation artifacts.",
+      "Candidate or ambiguous Station membership is shown only when command-line or executable-path evidence points at Calyx surfaces."
+    ],
+    "processes": [
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "evidence_notes": [
+          "Observed in governance validation artifact capture.bridge.missing_notice.bridge.validation."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 35056,
+        "service_name": "bridge_overseer",
+        "station_membership": "known_governed_service"
+      },
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "evidence_notes": [
+          "Observed in governance validation artifact capture.bridge.missing_notice.bridge.validation."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 35192,
+        "service_name": "bridge_overseer",
+        "station_membership": "known_governed_service"
+      }
+    ]
+  },
+  "summary_id": "capture.bridge.missing_notice.operator_summary",
+  "system_load_condition": "unknown",
+  "system_load_snapshot": {
+    "cpu_pct": null,
+    "freshness_state": null,
+    "gpu_metrics_present": null,
+    "health_state": null,
+    "memory_pressure_tier": null,
+    "notes": "System load was unavailable in the capture input; summary preserves that absence explicitly.",
+    "ram_pct": null,
+    "source_surface": "runtime.capture.input",
+    "vram_metrics_available": false
+  },
+  "top_processes": [],
+  "workstation_load_view": {
+    "notes": [
+      "Whole-workstation view is unfiltered and reflects captured machine state, not just Station-governed runtime.",
+      "Top processes are sourced from health enrichment or captured station health when available."
+    ],
+    "observed_process_count": 2,
+    "system_load_snapshot": {
+      "cpu_pct": null,
+      "freshness_state": null,
+      "gpu_metrics_present": null,
+      "health_state": null,
+      "memory_pressure_tier": null,
+      "notes": "System load was unavailable in the capture input; summary preserves that absence explicitly.",
+      "ram_pct": null,
+      "source_surface": "runtime.capture.input",
+      "vram_metrics_available": false
+    },
+    "top_processes": []
+  }
+}

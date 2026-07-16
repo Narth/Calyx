@@ -1,0 +1,80 @@
+{
+  "schema_name": "kalshi.mock_candidate_market_case",
+  "schema_version": "1.0.0",
+  "artifact_schema_version": "1.0.0",
+  "case_id": "obvious_abstention",
+  "scenario_name": "obvious_abstention",
+  "description": "Thin, rumor-driven market that should never leave abstention territory.",
+  "corr_id": "kalshi-sim-obvious-abstention",
+  "market_id": "SIM-CELEB-RUMOR-2026-04-01",
+  "market_title": "Will a celebrity file for office by April 1, 2026?",
+  "resolution_rule_summary": "Resolves YES if the public filing occurs by the deadline.",
+  "initial_timestamp_utc": "2026-03-28T10:00:00Z",
+  "score_timestamp_utc": "2026-03-28T10:01:00Z",
+  "gate_timestamp_utc": "2026-03-28T10:02:00Z",
+  "readiness_timestamp_utc": null,
+  "execution_timestamp_utc": null,
+  "resolution_timestamp_utc": "2026-04-01T18:00:00Z",
+  "proposed_side": "none",
+  "expected_edge_source": "none",
+  "operator_engagement_state": "operator_reviewing",
+  "market_observation": {
+    "observed_price": 0.57,
+    "best_bid": 0.55,
+    "best_ask": 0.59,
+    "market_note": "Price is active enough to tempt action, but evidence is mostly rumor."
+  },
+  "entry_rationale": "No entry is justified because the market is rumor-led rather than evidence-led.",
+  "decision_horizon": {
+    "horizon_hours": 8.0,
+    "thesis_valid_until_utc": "2026-03-28T18:00:00Z",
+    "rationale": "Only credible sourced reporting would justify reassessment."
+  },
+  "invalidation_condition": "Re-evaluate only if verified public filing signals emerge.",
+  "abstention_alternative": "Preserve capital and ignore rumor-driven noise.",
+  "evidence_summary": "The candidate lacks credible public evidence and clear downside framing.",
+  "evidence_signal": 0.1,
+  "confidence_signal": 0.0,
+  "score_dimensions": {
+    "evidence_strength": 0.0,
+    "mispricing_potential": 0.5,
+    "timing_quality": 0.0,
+    "resolution_clarity": 0.5,
+    "liquidity_tradability": 0.5,
+    "decision_horizon_fit": 0.5,
+    "risk_clarity": 0.0
+  },
+  "downgrade_flags": [
+    "weak_evidence_relative_to_confidence",
+    "unclear_risk"
+  ],
+  "decay_state": "fresh",
+  "scoring_notes": "This is an easy abstention: poor evidence and poor risk clarity.",
+  "classification_band": "abstain.insufficient_edge",
+  "gate_outcome": "abstain.market_not_suitable",
+  "gate_reasons": [
+    "The candidate is rumor-led and not suitable for a thesis-driven v1 posture.",
+    "Abstention is a positive governed outcome here."
+  ],
+  "operator_legibility_status": "legible",
+  "wallet_policy_fit": "fit",
+  "resolved_outcome": "no",
+  "trade_executed": false,
+  "execution_status": null,
+  "position_taken": "none",
+  "review_plan": {
+    "thesis_quality_assessment": "The abstention thesis was simple and correct: rumor is not evidence.",
+    "score_quality_assessment": "The score accurately crushed a weak candidate before it could drift upward.",
+    "timing_quality_assessment": "No entry timing existed that would have improved the candidate.",
+    "governance_quality_assessment": "Governance posture remained properly abstention-first.",
+    "decision_quality_classification": "decision_quality.strong",
+    "outcome_interpretation_classification": "outcome.correct_abstention",
+    "policy_alignment_classification": "policy.aligned",
+    "profit_loss_amount": 0.0,
+    "profit_loss_note": "No trade was taken.",
+    "attention_cost_estimate": "Minimal operator attention was consumed.",
+    "abstention_counterfactual": "Taking a trade here would have converted noise into avoidable risk.",
+    "review_notes": "Keep this case as the cleanest abstention example in the corpus.",
+    "recommended_followup": "none"
+  }
+}

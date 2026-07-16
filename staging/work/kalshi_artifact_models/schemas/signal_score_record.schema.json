@@ -1,0 +1,182 @@
+{
+  "$defs": {
+    "ScoreDimensions": {
+      "additionalProperties": false,
+      "properties": {
+        "decision_horizon_fit": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Decision Horizon Fit",
+          "type": "number"
+        },
+        "evidence_strength": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Evidence Strength",
+          "type": "number"
+        },
+        "liquidity_tradability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Liquidity Tradability",
+          "type": "number"
+        },
+        "mispricing_potential": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Mispricing Potential",
+          "type": "number"
+        },
+        "resolution_clarity": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Resolution Clarity",
+          "type": "number"
+        },
+        "risk_clarity": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Risk Clarity",
+          "type": "number"
+        },
+        "timing_quality": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Timing Quality",
+          "type": "number"
+        }
+      },
+      "required": [
+        "evidence_strength",
+        "mispricing_potential",
+        "timing_quality",
+        "resolution_clarity",
+        "liquidity_tradability",
+        "decision_horizon_fit",
+        "risk_clarity"
+      ],
+      "title": "ScoreDimensions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "signal_score_record",
+      "default": "signal_score_record",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "classification_band": {
+      "enum": [
+        "abstain.insufficient_edge",
+        "abstain.low_quality_candidate",
+        "recommend.research_only",
+        "recommend.execution_ready_low_confidence",
+        "recommend.execution_ready"
+      ],
+      "title": "Classification Band",
+      "type": "string"
+    },
+    "composite_score": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Composite Score",
+      "type": "number"
+    },
+    "confidence_signal": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence Signal",
+      "type": "number"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "decay_state": {
+      "enum": [
+        "fresh",
+        "decayed",
+        "revalidated"
+      ],
+      "title": "Decay State",
+      "type": "string"
+    },
+    "downgrade_flags": {
+      "items": {
+        "enum": [
+          "weak_evidence_relative_to_confidence",
+          "ambiguous_resolution",
+          "unclear_risk",
+          "poor_timing_stability",
+          "signal_decay_applied"
+        ],
+        "type": "string"
+      },
+      "title": "Downgrade Flags",
+      "type": "array"
+    },
+    "evidence_summary": {
+      "minLength": 1,
+      "title": "Evidence Summary",
+      "type": "string"
+    },
+    "market_id": {
+      "maxLength": 128,
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.signal_score_record",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_dimensions": {
+      "$ref": "#/$defs/ScoreDimensions"
+    },
+    "scoring_notes": {
+      "minLength": 1,
+      "title": "Scoring Notes",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "market_id",
+    "score_dimensions",
+    "composite_score",
+    "classification_band",
+    "confidence_signal",
+    "decay_state",
+    "evidence_summary",
+    "scoring_notes"
+  ],
+  "title": "SignalScoreRecord",
+  "type": "object"
+}

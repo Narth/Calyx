@@ -1,0 +1,121 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ambiguity_conditions": {
+      "items": {
+        "enum": [
+          "missing_command_line",
+          "missing_executable_path",
+          "host_process_ambiguous",
+          "insufficient_identity_evidence",
+          "topology_ambiguous",
+          "unclassified_service_target"
+        ],
+        "type": "string"
+      },
+      "title": "Ambiguity Conditions",
+      "type": "array"
+    },
+    "artifact_id": {
+      "minLength": 3,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "runtime_reconciliation_operator_view",
+      "default": "runtime_reconciliation_operator_view",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "evidence_support": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Evidence Support",
+      "type": "array"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "request_ref": {
+      "minLength": 3,
+      "title": "Request Ref",
+      "type": "string"
+    },
+    "requested_disposition": {
+      "enum": [
+        "permit_new_launch",
+        "refuse_duplicate_launch",
+        "attach_to_existing_runtime",
+        "permit_declared_multiplicity",
+        "ambiguous_runtime_blocked"
+      ],
+      "title": "Requested Disposition",
+      "type": "string"
+    },
+    "resident_count": {
+      "minimum": 0,
+      "title": "Resident Count",
+      "type": "integer"
+    },
+    "resident_process_ids": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Resident Process Ids",
+      "type": "array"
+    },
+    "result_ref": {
+      "minLength": 3,
+      "title": "Result Ref",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.reconciliation.operator_view",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer",
+        "navigator_triage_loop",
+        "cp6_cp7_loop",
+        "energy_churn_cp9_loop",
+        "service_failure_watch",
+        "cli_avatar",
+        "test_bounded_worker"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "request_ref",
+    "result_ref",
+    "service_name",
+    "requested_disposition",
+    "resident_count",
+    "evidence_support",
+    "notes"
+  ],
+  "title": "RuntimeReconciliationOperatorView",
+  "type": "object"
+}

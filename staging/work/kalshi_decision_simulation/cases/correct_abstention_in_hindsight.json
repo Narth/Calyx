@@ -1,0 +1,79 @@
+{
+  "schema_name": "kalshi.mock_candidate_market_case",
+  "schema_version": "1.0.0",
+  "artifact_schema_version": "1.0.0",
+  "case_id": "correct_abstention_in_hindsight",
+  "scenario_name": "correct_abstention_in_hindsight",
+  "description": "Meaningful abstention that remains clearly correct after the market resolves.",
+  "corr_id": "kalshi-sim-correct-abstention-hindsight",
+  "market_id": "SIM-RAIN-PHX-2026-04-02",
+  "market_title": "Will Phoenix receive measurable rain by April 2, 2026?",
+  "resolution_rule_summary": "Resolves YES if measurable rain is recorded by the stated deadline.",
+  "initial_timestamp_utc": "2026-03-28T16:00:00Z",
+  "score_timestamp_utc": "2026-03-28T16:01:00Z",
+  "gate_timestamp_utc": "2026-03-28T16:02:00Z",
+  "readiness_timestamp_utc": null,
+  "execution_timestamp_utc": null,
+  "resolution_timestamp_utc": "2026-04-02T18:00:00Z",
+  "proposed_side": "none",
+  "expected_edge_source": "none",
+  "operator_engagement_state": "operator_reviewing",
+  "market_observation": {
+    "observed_price": 0.44,
+    "best_bid": 0.42,
+    "best_ask": 0.46,
+    "market_note": "Forecast inputs conflict and no clean edge is visible."
+  },
+  "entry_rationale": "No entry is justified because the forecast disagreement is too weak to support a disciplined thesis.",
+  "decision_horizon": {
+    "horizon_hours": 10.0,
+    "thesis_valid_until_utc": "2026-03-29T02:00:00Z",
+    "rationale": "A usable edge would require stronger weather evidence before overnight."
+  },
+  "invalidation_condition": "Revisit only if materially stronger weather evidence appears.",
+  "abstention_alternative": "Maintain no-trade posture and avoid forcing a weak setup into action.",
+  "evidence_summary": "Forecast inputs conflict and none of them justify a strong directional trade.",
+  "evidence_signal": 0.25,
+  "confidence_signal": 0.0,
+  "score_dimensions": {
+    "evidence_strength": 0.0,
+    "mispricing_potential": 0.5,
+    "timing_quality": 0.5,
+    "resolution_clarity": 1.0,
+    "liquidity_tradability": 0.5,
+    "decision_horizon_fit": 0.5,
+    "risk_clarity": 0.5
+  },
+  "downgrade_flags": [
+    "weak_evidence_relative_to_confidence"
+  ],
+  "decay_state": "fresh",
+  "scoring_notes": "Critical-dimension weakness keeps this candidate firmly in abstention.",
+  "classification_band": "abstain.low_quality_candidate",
+  "gate_outcome": "abstain.insufficient_evidence",
+  "gate_reasons": [
+    "Evidence did not justify a strong enough thesis.",
+    "Abstention preserved bounded downside against a noisy setup."
+  ],
+  "operator_legibility_status": "legible",
+  "wallet_policy_fit": "fit",
+  "resolved_outcome": "no",
+  "trade_executed": false,
+  "execution_status": null,
+  "position_taken": "none",
+  "review_plan": {
+    "thesis_quality_assessment": "The abstention thesis correctly explained why the setup was noisy and weak.",
+    "score_quality_assessment": "The score properly penalized weak evidence without hiding behind average quality.",
+    "timing_quality_assessment": "No timing edge emerged that would have justified upgrading the case.",
+    "governance_quality_assessment": "The system stayed within a healthy abstention-positive posture.",
+    "decision_quality_classification": "decision_quality.strong",
+    "outcome_interpretation_classification": "outcome.correct_abstention",
+    "policy_alignment_classification": "policy.aligned",
+    "profit_loss_amount": 0.0,
+    "profit_loss_note": "No trade was taken.",
+    "attention_cost_estimate": "Low operator attention cost and strong capital preservation.",
+    "abstention_counterfactual": "Taking a position here would have converted weak evidence into unnecessary risk.",
+    "review_notes": "This is the non-trivial abstention example that stays correct in hindsight.",
+    "recommended_followup": "watch_for_pattern"
+  }
+}

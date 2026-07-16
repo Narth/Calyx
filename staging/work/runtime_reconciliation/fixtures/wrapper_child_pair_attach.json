@@ -1,0 +1,193 @@
+{
+  "snapshot": {
+    "schema_name": "runtime.observer.process_snapshot",
+    "schema_version": "1.0.0",
+    "artifact_type": "runtime_observer_process_snapshot",
+    "snapshot_id": "snapshot.bridge.attach",
+    "corr_id": "snapshot.bridge.attach",
+    "captured_at_utc": "2026-04-04T19:00:00Z",
+    "observer_mode": "staging_only",
+    "processes": [
+      {
+        "pid": 6001,
+        "parent_pid": 1,
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "started_at_utc": "2026-04-04T18:57:00Z"
+      },
+      {
+        "pid": 6002,
+        "parent_pid": 6001,
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "started_at_utc": "2026-04-04T18:57:01Z"
+      }
+    ],
+    "health_context": null,
+    "bridge_context": null,
+    "capture_notes": "Runtime reconciliation staging fixture."
+  },
+  "request": {
+    "schema_name": "runtime.reconciliation.request",
+    "schema_version": "1.0.0",
+    "artifact_type": "runtime_reconciliation_request",
+    "request_id": "reconcile.bridge.attach",
+    "corr_id": "reconcile.bridge.attach",
+    "requested_at_utc": "2026-04-04T19:00:05Z",
+    "declared_service_target": "bridge_overseer",
+    "launch_origin": "launcher",
+    "initiating_surface": "staging.generate_fixtures",
+    "requested_command_line": "python -B -m calyx.cbo.bridge_overseer",
+    "requested_executable_path": null,
+    "snapshot_ref": "reconcile.bridge.attach",
+    "capture_context": "fixture_replay",
+    "notes": "Generated staging reconciliation request."
+  },
+  "bundle": {
+    "scenario_name": "reconcile.bridge.attach",
+    "description": "Runtime reconciliation for bridge_overseer.",
+    "snapshot": {
+      "schema_name": "runtime.observer.process_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_observer_process_snapshot",
+      "snapshot_id": "snapshot.bridge.attach",
+      "corr_id": "snapshot.bridge.attach",
+      "captured_at_utc": "2026-04-04T19:00:00Z",
+      "observer_mode": "staging_only",
+      "processes": [
+        {
+          "pid": 6001,
+          "parent_pid": 1,
+          "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+          "command_line": "python -B -m calyx.cbo.bridge_overseer",
+          "started_at_utc": "2026-04-04T18:57:00Z"
+        },
+        {
+          "pid": 6002,
+          "parent_pid": 6001,
+          "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "command_line": "python -B -m calyx.cbo.bridge_overseer",
+          "started_at_utc": "2026-04-04T18:57:01Z"
+        }
+      ],
+      "health_context": null,
+      "bridge_context": null,
+      "capture_notes": "Runtime reconciliation staging fixture."
+    },
+    "declaration": {
+      "schema_name": "runtime.service_declaration.reconciliation",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_service_declaration_reconciliation",
+      "declaration_id": "runtime.decl.bridge_overseer",
+      "service_name": "bridge_overseer",
+      "expected_topology_class": "wrapper_child_runtime_pair",
+      "multiplicity_posture": "single_wrapper_child_pair_only",
+      "permitted_multiplicity_count": 1,
+      "equivalence_matchers": [
+        {
+          "matching_kind": "python_module",
+          "required_tokens": [
+            "-m calyx.cbo.bridge_overseer"
+          ],
+          "match_against": "command_line",
+          "notes": null
+        }
+      ],
+      "manual_override_allowed": true,
+      "expected_identity_markers": [
+        {
+          "schema_name": "runtime.runtime_identity_marker",
+          "schema_version": "1.0.0",
+          "artifact_type": "runtime_runtime_identity_marker",
+          "marker_id": "runtime.marker.bridge_overseer.module",
+          "service_name": "bridge_overseer",
+          "marker_kind": "python_module",
+          "marker_value": "calyx.cbo.bridge_overseer",
+          "notes": "Python module identifies overseer runtime."
+        }
+      ],
+      "notes": "One logical wrapper-child overseer pair allowed in steady state."
+    },
+    "request": {
+      "schema_name": "runtime.reconciliation.request",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_request",
+      "request_id": "reconcile.bridge.attach",
+      "corr_id": "reconcile.bridge.attach",
+      "requested_at_utc": "2026-04-04T19:00:05Z",
+      "declared_service_target": "bridge_overseer",
+      "launch_origin": "launcher",
+      "initiating_surface": "staging.generate_fixtures",
+      "requested_command_line": "python -B -m calyx.cbo.bridge_overseer",
+      "requested_executable_path": null,
+      "snapshot_ref": "reconcile.bridge.attach",
+      "capture_context": "fixture_replay",
+      "notes": "Generated staging reconciliation request."
+    },
+    "result": {
+      "schema_name": "runtime.reconciliation.result",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_result",
+      "result_id": "reconcile.bridge.attach.result",
+      "corr_id": "reconcile.bridge.attach",
+      "request_ref": "reconcile.bridge.attach",
+      "declaration_ref": "runtime.decl.bridge_overseer",
+      "snapshot_ref": "snapshot.bridge.attach",
+      "evaluated_at_utc": "2026-04-04T19:52:13.143601Z",
+      "matching_posture_used": "single_wrapper_child_pair_only",
+      "permitted_multiplicity_count": 1,
+      "equivalent_residents": [
+        {
+          "resident_id": "bridge_overseer.resident.6001",
+          "service_name": "bridge_overseer",
+          "member_process_ids": [
+            6001,
+            6002
+          ],
+          "topology_class": "wrapper_child_runtime_pair",
+          "evidence_fields": [
+            "command_line",
+            "parent_pid"
+          ],
+          "matched_tokens": [
+            "-m calyx.cbo.bridge_overseer"
+          ],
+          "notes": "Resident grouped by wrapper-child lineage."
+        }
+      ],
+      "resident_count": 1,
+      "topology_match_state": "matches_expected",
+      "ambiguity_conditions": [],
+      "disposition": "attach_to_existing_runtime",
+      "resulting_reasoning": [
+        "Equivalent resident already exists within singleton posture; attach or reuse instead of duplicating."
+      ]
+    },
+    "duplicate_detected": null,
+    "launch_refused": null,
+    "operator_view": {
+      "schema_name": "runtime.reconciliation.operator_view",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_operator_view",
+      "artifact_id": "reconcile.bridge.attach.operator_view",
+      "corr_id": "reconcile.bridge.attach",
+      "request_ref": "reconcile.bridge.attach",
+      "result_ref": "reconcile.bridge.attach.result",
+      "service_name": "bridge_overseer",
+      "requested_disposition": "attach_to_existing_runtime",
+      "resident_count": 1,
+      "resident_process_ids": [
+        6001,
+        6002
+      ],
+      "evidence_support": [
+        "service=bridge_overseer",
+        "expected_topology=wrapper_child_runtime_pair",
+        "equivalent_residents=1",
+        "resident:bridge_overseer.resident.6001:pids=6001,6002"
+      ],
+      "ambiguity_conditions": [],
+      "notes": "Operator-readable explanation of reconciliation result."
+    }
+  }
+}

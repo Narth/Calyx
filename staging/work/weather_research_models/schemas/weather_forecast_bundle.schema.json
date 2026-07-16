@@ -1,0 +1,230 @@
+{
+  "$defs": {
+    "ForecastSourceValue": {
+      "additionalProperties": false,
+      "properties": {
+        "captured_at_utc": {
+          "format": "date-time",
+          "title": "Captured At Utc",
+          "type": "string"
+        },
+        "forecast_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast Probability"
+        },
+        "primary_metric": {
+          "enum": [
+            "temperature_high_f",
+            "temperature_low_f",
+            "precip_probability",
+            "precip_accumulation_in",
+            "snow_accumulation_in",
+            "threshold_event_probability"
+          ],
+          "title": "Primary Metric",
+          "type": "string"
+        },
+        "primary_unit": {
+          "minLength": 1,
+          "title": "Primary Unit",
+          "type": "string"
+        },
+        "primary_value": {
+          "title": "Primary Value",
+          "type": "number"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "source_snapshot_ref": {
+          "minLength": 3,
+          "title": "Source Snapshot Ref",
+          "type": "string"
+        },
+        "threshold_relation": {
+          "minLength": 1,
+          "title": "Threshold Relation",
+          "type": "string"
+        },
+        "value_summary": {
+          "minLength": 1,
+          "title": "Value Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_snapshot_ref",
+        "source_name",
+        "captured_at_utc",
+        "value_summary",
+        "primary_metric",
+        "primary_value",
+        "primary_unit",
+        "threshold_relation"
+      ],
+      "title": "ForecastSourceValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "weather_forecast_bundle",
+      "default": "weather_forecast_bundle",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "bundle_id": {
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "forecast_spread_summary": {
+      "minLength": 1,
+      "title": "Forecast Spread Summary",
+      "type": "string"
+    },
+    "forecast_spread_value": {
+      "minimum": 0.0,
+      "title": "Forecast Spread Value",
+      "type": "number"
+    },
+    "freshness_state": {
+      "enum": [
+        "current",
+        "aging",
+        "stale"
+      ],
+      "title": "Freshness State",
+      "type": "string"
+    },
+    "freshness_window_hours": {
+      "exclusiveMinimum": 0.0,
+      "title": "Freshness Window Hours",
+      "type": "number"
+    },
+    "latest_observation_summary": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Latest Observation Summary"
+    },
+    "market_id": {
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "raw_snapshot_refs": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Raw Snapshot Refs",
+      "type": "array"
+    },
+    "relevant_weather_metric": {
+      "enum": [
+        "temperature_high_f",
+        "temperature_low_f",
+        "precip_probability",
+        "precip_accumulation_in",
+        "snow_accumulation_in",
+        "threshold_event_probability"
+      ],
+      "title": "Relevant Weather Metric",
+      "type": "string"
+    },
+    "resolution_fit_assessment": {
+      "enum": [
+        "aligned",
+        "partial_fit",
+        "misaligned"
+      ],
+      "title": "Resolution Fit Assessment",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "weather.weather_forecast_bundle",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_values": {
+      "items": {
+        "$ref": "#/$defs/ForecastSourceValue"
+      },
+      "minItems": 1,
+      "title": "Source Values",
+      "type": "array"
+    },
+    "target_location": {
+      "minLength": 1,
+      "title": "Target Location",
+      "type": "string"
+    },
+    "target_resolution_window": {
+      "minLength": 1,
+      "title": "Target Resolution Window",
+      "type": "string"
+    },
+    "uncertainty_note": {
+      "minLength": 1,
+      "title": "Uncertainty Note",
+      "type": "string"
+    },
+    "weather_market_type": {
+      "enum": [
+        "daily_high_temperature",
+        "daily_low_temperature",
+        "measurable_precipitation",
+        "measurable_snowfall",
+        "weather_threshold_event"
+      ],
+      "title": "Weather Market Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "bundle_id",
+    "market_id",
+    "weather_market_type",
+    "target_location",
+    "target_resolution_window",
+    "relevant_weather_metric",
+    "source_values",
+    "forecast_spread_value",
+    "forecast_spread_summary",
+    "freshness_state",
+    "freshness_window_hours",
+    "resolution_fit_assessment",
+    "uncertainty_note",
+    "raw_snapshot_refs"
+  ],
+  "title": "WeatherForecastBundle",
+  "type": "object"
+}

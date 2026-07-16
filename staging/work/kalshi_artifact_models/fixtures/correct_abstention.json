@@ -1,0 +1,89 @@
+{
+  "scenario_name": "correct_abstention",
+  "description": "Materially considered market that correctly stayed abstained before any execution-ready handoff.",
+  "trade_thesis_artifact": {
+    "schema_name": "kalshi.trade_thesis_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "trade_thesis_artifact",
+    "artifact_id": "thesis.correct_abstention",
+    "corr_id": "kalshi-corr-correct-abstention",
+    "timestamp_utc": "2026-03-28T18:00:00Z",
+    "market_id": "KXWEATHER-RAIN-PHX-2026-04-02",
+    "market_title": "Will Phoenix receive measurable rain by April 2, 2026?",
+    "resolution_rule_summary": "Resolves YES if Kalshi's stated measurable-rain threshold is met by the deadline.",
+    "proposed_side": "none",
+    "price_context": {
+      "observed_price": 0.44,
+      "price_unit": "probability",
+      "best_bid": 0.42,
+      "best_ask": 0.46,
+      "market_note": "Spread is moderate but evidence remains contradictory."
+    },
+    "entry_rationale": "No entry is justified because the available forecast disagreement is too thin to support a disciplined thesis.",
+    "expected_edge_source": "none",
+    "decision_horizon": {
+      "horizon_hours": 10.0,
+      "thesis_valid_until_utc": "2026-03-29T04:00:00Z",
+      "rationale": "Any usable edge would need a stronger forecast update before overnight."
+    },
+    "invalidation_condition": "Stand down unless materially stronger weather evidence emerges.",
+    "abstention_alternative": "Maintain no-trade posture and revisit only if evidence quality improves.",
+    "evidence_summary": "Forecast inputs conflict and no single source is strong enough to justify entry.",
+    "confidence_signal": 0.2,
+    "evidence_signal": 0.25,
+    "operator_engagement_state": "operator_reviewing"
+  },
+  "signal_score_record": {
+    "schema_name": "kalshi.signal_score_record",
+    "schema_version": "1.0.0",
+    "artifact_type": "signal_score_record",
+    "artifact_id": "score.correct_abstention",
+    "corr_id": "kalshi-corr-correct-abstention",
+    "timestamp_utc": "2026-03-28T18:02:00Z",
+    "market_id": "KXWEATHER-RAIN-PHX-2026-04-02",
+    "score_dimensions": {
+      "evidence_strength": 0.0,
+      "mispricing_potential": 0.5,
+      "timing_quality": 0.5,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 0.5,
+      "decision_horizon_fit": 0.5,
+      "risk_clarity": 0.5
+    },
+    "composite_score": 0.5,
+    "classification_band": "abstain.low_quality_candidate",
+    "confidence_signal": 0.0,
+    "downgrade_flags": [
+      "weak_evidence_relative_to_confidence"
+    ],
+    "decay_state": "fresh",
+    "evidence_summary": "Weak evidence actively penalizes the candidate despite otherwise manageable market structure.",
+    "scoring_notes": "Critical-dimension override kept this in abstention territory."
+  },
+  "strategy_gate_result": {
+    "schema_name": "kalshi.strategy_gate_result",
+    "schema_version": "1.0.0",
+    "artifact_type": "strategy_gate_result",
+    "artifact_id": "gate.correct_abstention",
+    "corr_id": "kalshi-corr-correct-abstention",
+    "timestamp_utc": "2026-03-28T18:03:00Z",
+    "market_id": "KXWEATHER-RAIN-PHX-2026-04-02",
+    "gate_outcome": "abstain.insufficient_evidence",
+    "gate_reasons": [
+      "Evidence did not justify a trade thesis strong enough for operator review.",
+      "Abstention preserved capital against a weak setup."
+    ],
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.correct_abstention"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.correct_abstention"
+    },
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "presence_requirement": "not_required",
+    "next_allowed_action": "abstain"
+  }
+}

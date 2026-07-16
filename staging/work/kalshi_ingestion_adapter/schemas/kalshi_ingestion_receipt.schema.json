@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_path": {
+      "minLength": 1,
+      "title": "Artifact Path",
+      "type": "string"
+    },
+    "case_id": {
+      "minLength": 3,
+      "title": "Case Id",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "market_id": {
+      "minLength": 1,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "note": {
+      "minLength": 1,
+      "title": "Note",
+      "type": "string"
+    },
+    "receipt_type": {
+      "enum": [
+        "kalshi.market.snapshot.captured",
+        "kalshi.market.resolution.fetched",
+        "kalshi.market.normalization.completed",
+        "kalshi.market.decision_pipeline.invoked"
+      ],
+      "title": "Receipt Type",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.ingestion.receipt",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "ts_utc": {
+      "format": "date-time",
+      "title": "Ts Utc",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "receipt_type",
+    "corr_id",
+    "case_id",
+    "market_id",
+    "ts_utc",
+    "artifact_path",
+    "note"
+  ],
+  "title": "AdapterReceipt",
+  "type": "object"
+}

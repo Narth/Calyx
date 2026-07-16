@@ -7,7 +7,8 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from staging.work.runtime_capture_adapter.models import RuntimeCaptureClassificationResult
+from staging.work.runtime_capture_adapter.mapper import classify_capture
+from staging.work.runtime_capture_adapter.models import RuntimeCaptureClassificationResult, RuntimeCaptureInput
 from staging.work.runtime_operator_intervention.models import RuntimeOperatorIntervention
 from staging.work.runtime_operator_intervention.protocol import (
     build_intervention_receipt,
@@ -19,7 +20,7 @@ from staging.work.runtime_operator_summary.models import RuntimeOperatorSummary
 FIXTURE_DIR = Path("staging/work/runtime_operator_intervention/fixtures")
 SCHEMA_DIR = Path("staging/work/runtime_operator_intervention/schemas")
 SUMMARY_FIXTURE_DIR = Path("staging/work/runtime_operator_summary/fixtures")
-CAPTURE_ARTIFACT_DIR = Path("staging/work/runtime_capture_adapter/artifacts/runtime_capture.live.operator_smoke.20260402t193500z/classification")
+CAPTURE_FIXTURE_DIR = Path("staging/work/runtime_capture_adapter/fixtures")
 
 
 def _load_json(path: Path) -> dict:
@@ -31,7 +32,8 @@ def _load_summary() -> RuntimeOperatorSummary:
 
 
 def _load_classification() -> RuntimeCaptureClassificationResult:
-    return RuntimeCaptureClassificationResult.model_validate(_load_json(CAPTURE_ARTIFACT_DIR / "runtime.capture.classification_result.json"))
+    payload = _load_json(CAPTURE_FIXTURE_DIR / "capture_bridge_duplicate.json")
+    return classify_capture(RuntimeCaptureInput.model_validate(payload["capture_input"]))
 
 
 def test_fixtures_validate() -> None:

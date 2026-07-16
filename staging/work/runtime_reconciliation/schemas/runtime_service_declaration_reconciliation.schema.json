@@ -1,0 +1,231 @@
+{
+  "$defs": {
+    "RuntimeEquivalenceMatcher": {
+      "additionalProperties": false,
+      "properties": {
+        "match_against": {
+          "default": "command_line",
+          "enum": [
+            "command_line",
+            "executable_path",
+            "either"
+          ],
+          "title": "Match Against",
+          "type": "string"
+        },
+        "matching_kind": {
+          "enum": [
+            "powershell_script_path",
+            "python_module",
+            "command_token"
+          ],
+          "title": "Matching Kind",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "required_tokens": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Required Tokens",
+          "type": "array"
+        }
+      },
+      "required": [
+        "matching_kind",
+        "required_tokens"
+      ],
+      "title": "RuntimeEquivalenceMatcher",
+      "type": "object"
+    },
+    "RuntimeIdentityMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type": {
+          "const": "runtime_runtime_identity_marker",
+          "default": "runtime_runtime_identity_marker",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "marker_id": {
+          "minLength": 3,
+          "title": "Marker Id",
+          "type": "string"
+        },
+        "marker_kind": {
+          "enum": [
+            "powershell_script_path",
+            "python_module",
+            "command_token"
+          ],
+          "title": "Marker Kind",
+          "type": "string"
+        },
+        "marker_value": {
+          "minLength": 1,
+          "title": "Marker Value",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "schema_name": {
+          "const": "runtime.runtime_identity_marker",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer",
+            "navigator_triage_loop",
+            "cp6_cp7_loop",
+            "energy_churn_cp9_loop",
+            "service_failure_watch",
+            "cli_avatar",
+            "test_bounded_worker"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "marker_id",
+        "service_name",
+        "marker_kind",
+        "marker_value"
+      ],
+      "title": "RuntimeIdentityMarker",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_service_declaration_reconciliation",
+      "default": "runtime_service_declaration_reconciliation",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "declaration_id": {
+      "minLength": 3,
+      "title": "Declaration Id",
+      "type": "string"
+    },
+    "equivalence_matchers": {
+      "items": {
+        "$ref": "#/$defs/RuntimeEquivalenceMatcher"
+      },
+      "minItems": 1,
+      "title": "Equivalence Matchers",
+      "type": "array"
+    },
+    "expected_identity_markers": {
+      "items": {
+        "$ref": "#/$defs/RuntimeIdentityMarker"
+      },
+      "title": "Expected Identity Markers",
+      "type": "array"
+    },
+    "expected_topology_class": {
+      "enum": [
+        "single_process",
+        "wrapper_child_runtime_pair",
+        "bounded_multi_surface_runtime"
+      ],
+      "title": "Expected Topology Class",
+      "type": "string"
+    },
+    "manual_override_allowed": {
+      "default": false,
+      "title": "Manual Override Allowed",
+      "type": "boolean"
+    },
+    "multiplicity_posture": {
+      "enum": [
+        "single_instance_only",
+        "single_wrapper_child_pair_only",
+        "bounded_multi_instance",
+        "bounded_multi_pair",
+        "unclassified_no_launch_without_review"
+      ],
+      "title": "Multiplicity Posture",
+      "type": "string"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "permitted_multiplicity_count": {
+      "minimum": 0,
+      "title": "Permitted Multiplicity Count",
+      "type": "integer"
+    },
+    "schema_name": {
+      "const": "runtime.service_declaration.reconciliation",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer",
+        "navigator_triage_loop",
+        "cp6_cp7_loop",
+        "energy_churn_cp9_loop",
+        "service_failure_watch",
+        "cli_avatar",
+        "test_bounded_worker"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "declaration_id",
+    "service_name",
+    "expected_topology_class",
+    "multiplicity_posture",
+    "permitted_multiplicity_count",
+    "equivalence_matchers",
+    "notes"
+  ],
+  "title": "RuntimeServiceDeclaration",
+  "type": "object"
+}

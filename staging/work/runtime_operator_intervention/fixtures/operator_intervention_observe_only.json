@@ -1,0 +1,68 @@
+{
+  "schema_name": "runtime.operator.intervention",
+  "schema_version": "1.0.0",
+  "artifact_type": "runtime_operator_intervention",
+  "intervention_id": "runtime.intervention.observe.live_smoke",
+  "corr_id": "runtime_capture.live.operator_smoke.20260402t193500z",
+  "capture_id": "runtime_capture.live.operator_smoke.20260402t193500z",
+  "summary_id": "runtime_capture.live.operator_smoke.20260402t193500z.operator_summary",
+  "timestamp_utc": "2026-04-04T19:04:57.780073Z",
+  "initiated_by": "operator",
+  "automated": false,
+  "intervention_tier": "tier_0_observe",
+  "triggering_conditions": {
+    "system_load_condition": "normal",
+    "governance_compliance_condition": "noncompliant",
+    "operator_signal": "UNEXPECTED",
+    "load_attributable_to_station": "yes",
+    "behavior_expected": "no"
+  },
+  "decision_framework": {
+    "load_elevated": "no",
+    "station_attribution_clear": "no",
+    "governance_compliant": "no",
+    "behavior_expected": "no",
+    "action_threshold_met": true,
+    "notes": "Derived from runtime.operator.summary without introducing new authority."
+  },
+  "observed_evidence": [
+    {
+      "artifact_type": "runtime.operator.summary",
+      "artifact_ref": "runtime_capture.live.operator_smoke.20260402t193500z.operator_summary",
+      "notes": "Operator summary reviewed before intervention."
+    },
+    {
+      "artifact_type": "runtime.capture.classification_result",
+      "artifact_ref": "runtime_capture.live.operator_smoke.20260402t193500z",
+      "notes": "Classification result reviewed before intervention."
+    },
+    {
+      "artifact_type": "runtime.capture.input",
+      "artifact_ref": "runtime_capture.live.operator_smoke.20260402t193500z",
+      "notes": "Raw capture associated with the reviewed summary."
+    }
+  ],
+  "observed_processes": [],
+  "action_taken": {
+    "action_type": "observe_only",
+    "relevant_process_ids": [],
+    "relevant_process_names": [],
+    "commands_executed": [],
+    "command_execution_performed": false,
+    "notes": "Observation-only receipt."
+  },
+  "operator_reasoning": "Observed noncompliant governance posture but deferred action pending further attribution review.",
+  "safety_constraints": {
+    "protected_process_targets_present": false,
+    "protected_process_names": [],
+    "protected_process_override_acknowledged": false,
+    "protected_process_override_reason": null,
+    "broad_kill_pattern_detected": false,
+    "broad_kill_pattern_blocked": false,
+    "safety_notes": [
+      "Manual-only protocol. No runtime action is initiated by the system.",
+      "Blind kill patterns are blocked at schema-validation time."
+    ]
+  },
+  "notes": "Observation-only receipt."
+}

@@ -1,0 +1,174 @@
+{
+  "snapshot": {
+    "schema_name": "runtime.observer.process_snapshot",
+    "schema_version": "1.0.0",
+    "artifact_type": "runtime_observer_process_snapshot",
+    "snapshot_id": "snapshot.ambiguous.powershell",
+    "corr_id": "snapshot.ambiguous.powershell",
+    "captured_at_utc": "2026-04-04T19:00:00Z",
+    "observer_mode": "staging_only",
+    "processes": [
+      {
+        "pid": 7001,
+        "parent_pid": 1,
+        "executable_path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "command_line": "unknown-command://pid/7001",
+        "started_at_utc": "2026-04-04T18:59:00Z"
+      }
+    ],
+    "health_context": null,
+    "bridge_context": null,
+    "capture_notes": "Runtime reconciliation staging fixture."
+  },
+  "request": {
+    "schema_name": "runtime.reconciliation.request",
+    "schema_version": "1.0.0",
+    "artifact_type": "runtime_reconciliation_request",
+    "request_id": "reconcile.navigator.ambiguous",
+    "corr_id": "reconcile.navigator.ambiguous",
+    "requested_at_utc": "2026-04-04T19:00:05Z",
+    "declared_service_target": "navigator_triage_loop",
+    "launch_origin": "launcher",
+    "initiating_surface": "staging.generate_fixtures",
+    "requested_command_line": "powershell -File C:\\Calyx_Terminal\\Scripts\\navigator_triage_loop.ps1",
+    "requested_executable_path": null,
+    "snapshot_ref": "reconcile.navigator.ambiguous",
+    "capture_context": "fixture_replay",
+    "notes": "Generated staging reconciliation request."
+  },
+  "bundle": {
+    "scenario_name": "reconcile.navigator.ambiguous",
+    "description": "Runtime reconciliation for navigator_triage_loop.",
+    "snapshot": {
+      "schema_name": "runtime.observer.process_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_observer_process_snapshot",
+      "snapshot_id": "snapshot.ambiguous.powershell",
+      "corr_id": "snapshot.ambiguous.powershell",
+      "captured_at_utc": "2026-04-04T19:00:00Z",
+      "observer_mode": "staging_only",
+      "processes": [
+        {
+          "pid": 7001,
+          "parent_pid": 1,
+          "executable_path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "command_line": "unknown-command://pid/7001",
+          "started_at_utc": "2026-04-04T18:59:00Z"
+        }
+      ],
+      "health_context": null,
+      "bridge_context": null,
+      "capture_notes": "Runtime reconciliation staging fixture."
+    },
+    "declaration": {
+      "schema_name": "runtime.service_declaration.reconciliation",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_service_declaration_reconciliation",
+      "declaration_id": "runtime.decl.navigator_triage_loop",
+      "service_name": "navigator_triage_loop",
+      "expected_topology_class": "single_process",
+      "multiplicity_posture": "single_instance_only",
+      "permitted_multiplicity_count": 1,
+      "equivalence_matchers": [
+        {
+          "matching_kind": "powershell_script_path",
+          "required_tokens": [
+            "navigator_triage_loop.ps1"
+          ],
+          "match_against": "command_line",
+          "notes": null
+        }
+      ],
+      "manual_override_allowed": true,
+      "expected_identity_markers": [
+        {
+          "schema_name": "runtime.runtime_identity_marker",
+          "schema_version": "1.0.0",
+          "artifact_type": "runtime_runtime_identity_marker",
+          "marker_id": "runtime.marker.navigator_triage_loop.script",
+          "service_name": "navigator_triage_loop",
+          "marker_kind": "powershell_script_path",
+          "marker_value": "navigator_triage_loop.ps1",
+          "notes": "PowerShell-hosted loop should be attributable by script path."
+        }
+      ],
+      "notes": "Single resident navigator_triage_loop loop expected."
+    },
+    "request": {
+      "schema_name": "runtime.reconciliation.request",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_request",
+      "request_id": "reconcile.navigator.ambiguous",
+      "corr_id": "reconcile.navigator.ambiguous",
+      "requested_at_utc": "2026-04-04T19:00:05Z",
+      "declared_service_target": "navigator_triage_loop",
+      "launch_origin": "launcher",
+      "initiating_surface": "staging.generate_fixtures",
+      "requested_command_line": "powershell -File C:\\Calyx_Terminal\\Scripts\\navigator_triage_loop.ps1",
+      "requested_executable_path": null,
+      "snapshot_ref": "reconcile.navigator.ambiguous",
+      "capture_context": "fixture_replay",
+      "notes": "Generated staging reconciliation request."
+    },
+    "result": {
+      "schema_name": "runtime.reconciliation.result",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_result",
+      "result_id": "reconcile.navigator.ambiguous.result",
+      "corr_id": "reconcile.navigator.ambiguous",
+      "request_ref": "reconcile.navigator.ambiguous",
+      "declaration_ref": "runtime.decl.navigator_triage_loop",
+      "snapshot_ref": "snapshot.ambiguous.powershell",
+      "evaluated_at_utc": "2026-04-04T19:52:13.144440Z",
+      "matching_posture_used": "single_instance_only",
+      "permitted_multiplicity_count": 1,
+      "equivalent_residents": [],
+      "resident_count": 0,
+      "topology_match_state": "ambiguous_host",
+      "ambiguity_conditions": [
+        "host_process_ambiguous",
+        "insufficient_identity_evidence"
+      ],
+      "disposition": "ambiguous_runtime_blocked",
+      "resulting_reasoning": [
+        "Potential host processes exist but identity evidence is insufficient to trust equivalence."
+      ]
+    },
+    "duplicate_detected": null,
+    "launch_refused": {
+      "schema_name": "runtime.launch.refused",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_launch_refused",
+      "artifact_id": "reconcile.navigator.ambiguous.launch_refused",
+      "corr_id": "reconcile.navigator.ambiguous",
+      "request_ref": "reconcile.navigator.ambiguous",
+      "result_ref": "reconcile.navigator.ambiguous.result",
+      "service_name": "navigator_triage_loop",
+      "refusal_reason": "ambiguous_runtime",
+      "notes": "Governed staging reconciliation refused the requested launch."
+    },
+    "operator_view": {
+      "schema_name": "runtime.reconciliation.operator_view",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_operator_view",
+      "artifact_id": "reconcile.navigator.ambiguous.operator_view",
+      "corr_id": "reconcile.navigator.ambiguous",
+      "request_ref": "reconcile.navigator.ambiguous",
+      "result_ref": "reconcile.navigator.ambiguous.result",
+      "service_name": "navigator_triage_loop",
+      "requested_disposition": "ambiguous_runtime_blocked",
+      "resident_count": 0,
+      "resident_process_ids": [],
+      "evidence_support": [
+        "service=navigator_triage_loop",
+        "expected_topology=single_process",
+        "ambiguous_candidates=1"
+      ],
+      "ambiguity_conditions": [
+        "host_process_ambiguous",
+        "insufficient_identity_evidence"
+      ],
+      "notes": "Operator-readable explanation of reconciliation result."
+    }
+  }
+}

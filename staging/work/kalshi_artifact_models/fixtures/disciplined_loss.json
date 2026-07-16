@@ -1,0 +1,174 @@
+{
+  "scenario_name": "disciplined_loss",
+  "description": "Executed trade lost, but the review preserves that the process was disciplined and legible.",
+  "trade_thesis_artifact": {
+    "schema_name": "kalshi.trade_thesis_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "trade_thesis_artifact",
+    "artifact_id": "thesis.disciplined_loss",
+    "corr_id": "kalshi-corr-disciplined-loss",
+    "timestamp_utc": "2026-03-28T23:00:00Z",
+    "market_id": "KXEVENT-CPI-HOT-2026-04",
+    "market_title": "Will the April 2026 CPI report print above consensus?",
+    "resolution_rule_summary": "Resolves YES if the stated CPI print exceeds published consensus.",
+    "proposed_side": "yes",
+    "price_context": {
+      "observed_price": 0.41,
+      "price_unit": "probability",
+      "best_bid": 0.4,
+      "best_ask": 0.42,
+      "market_note": "Price stayed cheap versus a basket of inflation signals."
+    },
+    "entry_rationale": "Several public inflation indicators implied the market was underpricing a hot print.",
+    "expected_edge_source": "event_probability_mismatch",
+    "decision_horizon": {
+      "horizon_hours": 20.0,
+      "thesis_valid_until_utc": "2026-03-29T19:00:00Z",
+      "rationale": "The setup should remain valid until the next large macro surprise."
+    },
+    "invalidation_condition": "Stand down if intervening data points sharply weaken the inflation read-through.",
+    "abstention_alternative": "Skip the trade if consensus reprices before operator review.",
+    "evidence_summary": "Evidence was coherent, current, and legible.",
+    "confidence_signal": 0.8,
+    "evidence_signal": 0.85,
+    "operator_engagement_state": "operator_directing"
+  },
+  "signal_score_record": {
+    "schema_name": "kalshi.signal_score_record",
+    "schema_version": "1.0.0",
+    "artifact_type": "signal_score_record",
+    "artifact_id": "score.disciplined_loss",
+    "corr_id": "kalshi-corr-disciplined-loss",
+    "timestamp_utc": "2026-03-28T23:02:00Z",
+    "market_id": "KXEVENT-CPI-HOT-2026-04",
+    "score_dimensions": {
+      "evidence_strength": 1.0,
+      "mispricing_potential": 1.0,
+      "timing_quality": 0.5,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 1.0,
+      "decision_horizon_fit": 1.0,
+      "risk_clarity": 1.0
+    },
+    "composite_score": 0.9285714285714286,
+    "classification_band": "recommend.execution_ready",
+    "confidence_signal": 0.8,
+    "downgrade_flags": [],
+    "decay_state": "fresh",
+    "evidence_summary": "This was a high-quality setup even though the outcome later went against it.",
+    "scoring_notes": "Strong score should remain intact in review."
+  },
+  "strategy_gate_result": {
+    "schema_name": "kalshi.strategy_gate_result",
+    "schema_version": "1.0.0",
+    "artifact_type": "strategy_gate_result",
+    "artifact_id": "gate.disciplined_loss",
+    "corr_id": "kalshi-corr-disciplined-loss",
+    "timestamp_utc": "2026-03-28T23:03:00Z",
+    "market_id": "KXEVENT-CPI-HOT-2026-04",
+    "gate_outcome": "recommend.execution_ready",
+    "gate_reasons": [
+      "Evidence and market structure were both strong.",
+      "Recommendation was execution-ready but still pending operator intent."
+    ],
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.disciplined_loss"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.disciplined_loss"
+    },
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "presence_requirement": "required_for_execution",
+    "next_allowed_action": "operator_intent_required"
+  },
+  "execution_readiness_receipt": {
+    "schema_name": "kalshi.execution_readiness_receipt",
+    "schema_version": "1.0.0",
+    "artifact_type": "execution_readiness_receipt",
+    "artifact_id": "ready.disciplined_loss",
+    "corr_id": "kalshi-corr-disciplined-loss",
+    "timestamp_utc": "2026-03-28T23:04:00Z",
+    "market_id": "KXEVENT-CPI-HOT-2026-04",
+    "execution_readiness_class": "recommend.execution_ready",
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.disciplined_loss"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.disciplined_loss"
+    },
+    "gate_result_ref": {
+      "artifact_type": "strategy_gate_result",
+      "artifact_id": "gate.disciplined_loss"
+    },
+    "presence_gate_required": true,
+    "wallet_policy_required": true,
+    "execution_authorized": false,
+    "operator_action_required": true
+  },
+  "execution_support_receipt": {
+    "schema_name": "kalshi.execution_support_receipt",
+    "schema_version": "1.0.0",
+    "artifact_type": "execution_support_receipt",
+    "artifact_id": "exec.disciplined_loss",
+    "corr_id": "kalshi-corr-disciplined-loss",
+    "timestamp_utc": "2026-03-28T23:05:00Z",
+    "market_id": "KXEVENT-CPI-HOT-2026-04",
+    "execution_status": "success",
+    "execution_mode": "staging_only",
+    "requested_side": "yes",
+    "operator_action_recorded": true,
+    "note": "Staging-only placeholder for a governed execution receipt."
+  },
+  "post_resolution_review_artifact": {
+    "schema_name": "kalshi.post_resolution_review_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "post_resolution_review_artifact",
+    "artifact_id": "review.disciplined_loss",
+    "corr_id": "kalshi-corr-disciplined-loss",
+    "timestamp_utc": "2026-04-12T18:00:00Z",
+    "market_id": "KXEVENT-CPI-HOT-2026-04",
+    "market_title": "Will the April 2026 CPI report print above consensus?",
+    "resolved_outcome": "no",
+    "position_taken": "yes",
+    "trade_executed": true,
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.disciplined_loss"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.disciplined_loss"
+    },
+    "gate_result_ref": {
+      "artifact_type": "strategy_gate_result",
+      "artifact_id": "gate.disciplined_loss"
+    },
+    "execution_ref": {
+      "artifact_type": "execution_support_receipt",
+      "artifact_id": "exec.disciplined_loss"
+    },
+    "original_composite_score": 0.9285714285714286,
+    "original_gate_outcome": "recommend.execution_ready",
+    "thesis_quality_assessment": "The thesis remained coherent, evidence-backed, and easy to review.",
+    "score_quality_assessment": "The score accurately reflected a strong setup despite the losing outcome.",
+    "timing_quality_assessment": "Timing was acceptable and did not obviously distort the result.",
+    "governance_quality_assessment": "All presence, authority, and policy boundaries were respected.",
+    "decision_quality_classification": "decision_quality.strong",
+    "outcome_interpretation_classification": "outcome.variance_penalty",
+    "policy_alignment_classification": "policy.aligned",
+    "profit_loss_result": {
+      "currency": "USD",
+      "amount": -1.15,
+      "note": "Loss does not erase that the process was disciplined."
+    },
+    "attention_cost_estimate": "Moderate operator attention for a fully reviewed, bounded trade.",
+    "abstention_counterfactual": "Abstention would have avoided the loss, but the original reasoning still remains worth reusing.",
+    "review_notes": "This is a disciplined loss, not proof that the thesis class was unsound.",
+    "recommended_followup": "none"
+  }
+}

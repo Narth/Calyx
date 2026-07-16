@@ -1,0 +1,3326 @@
+{
+  "ambiguities": [
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 72 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 72 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 148 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 148 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 540 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 540 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 840 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 840 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 960 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 960 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 964 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 964 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 736 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 736 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 768 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 768 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 792 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 792 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1040 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1040 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1068 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1068 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1168 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1168 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1188 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1188 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1236 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1236 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1268 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1268 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1332 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1332 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1552 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1552 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1560 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1560 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1568 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1568 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1576 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1576 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1704 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1704 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1760 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1760 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1768 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1768 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1796 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1796 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1892 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1892 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1920 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1920 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1940 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1940 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2008 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2008 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2088 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2088 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2100 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2100 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2128 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2128 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2224 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2224 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2316 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2316 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2336 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2336 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2448 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2448 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2520 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2520 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2576 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2576 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2604 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2604 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2764 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2764 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2796 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2796 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2804 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2804 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2860 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2860 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2868 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2868 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2876 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2876 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2944 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2944 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2952 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2952 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3012 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3012 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2004 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2004 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3116 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3116 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3188 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3188 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3336 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3336 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3480 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3480 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3508 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3508 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3524 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3524 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3528 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3528 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3560 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3560 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3676 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3676 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3704 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3704 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3836 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3836 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3888 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3888 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3596 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3596 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4176 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4176 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4248 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4248 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4624 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4624 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4736 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4736 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4780 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4780 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5048 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5048 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4268 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4268 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5100 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5100 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5192 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5192 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5196 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5196 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5332 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5332 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5396 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5396 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5440 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5440 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5768 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5768 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5776 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5776 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5840 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5840 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5940 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5940 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6004 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6004 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6020 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6020 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6028 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6028 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6048 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6048 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6056 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6056 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6104 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6104 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6132 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6132 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5144 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5144 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4220 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4220 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5800 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5800 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6176 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6176 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6192 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6192 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6276 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6276 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6340 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6340 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6372 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6372 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6388 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6388 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6400 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6400 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6412 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6412 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6420 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6420 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6436 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6436 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6460 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6460 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6476 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6476 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6488 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6488 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6496 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6496 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6528 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6528 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6540 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6540 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6548 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6548 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6656 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6656 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6680 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6680 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6696 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6696 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6708 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6708 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7004 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7004 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7036 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7036 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7224 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7224 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7340 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7340 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7348 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7348 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7568 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7568 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7576 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7576 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7588 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7588 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7612 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7612 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7620 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7620 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7628 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7628 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7636 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7636 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7648 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7648 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7724 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7724 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7768 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7768 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7800 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7800 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7832 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7832 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7840 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7840 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7852 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7852 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7932 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7932 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7968 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7968 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7976 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7976 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 8028 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 8028 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 8436 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 8436 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 8576 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 8576 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 8932 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 8932 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 8952 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 8952 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10100 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10100 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10156 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10156 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10352 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10352 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10384 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10384 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10736 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10736 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10848 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10848 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 10588 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 10588 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 752 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 752 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5980 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5980 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5888 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5888 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 11128 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 11128 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 8068 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 8068 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1636 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1636 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2712 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2712 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3588 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3588 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4636 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4636 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1660 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1660 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4552 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4552 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 5404 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 5404 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6676 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6676 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 2752 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 2752 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1484 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1484 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 4840 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 4840 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 9108 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 9108 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 7420 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 7420 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 3176 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 3176 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 6756 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 6756 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 16348 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 16348 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 16812 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 16812 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 18240 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 18240 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 18296 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 18296 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 17492 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 17492 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 17648 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 17648 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 20672 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 20672 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 20772 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 20772 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 21028 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 21028 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 1140 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 1140 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 21292 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 21292 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 23648 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 23648 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 24568 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 24568 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 15632 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 15632 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 15936 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 15936 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 28944 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 28944 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 36028 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 36028 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_command_line",
+      "notes": "Process PID 40636 missing command line; service matching may be incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "missing_executable_path",
+      "notes": "Process PID 40636 missing executable path; path fidelity is incomplete.",
+      "service_name": "capture_layer"
+    },
+    {
+      "ambiguity_type": "health_cadence_unresolved",
+      "notes": "Live capture did not provide loop elapsed/sleep timing; cadence fields were derived from declared interval for snapshot compatibility.",
+      "service_name": "station_health_loop"
+    },
+    {
+      "ambiguity_type": "health_expiry_sweep_unresolved",
+      "notes": "Live capture did not provide expiry sweep evidence; set false without claiming invocation.",
+      "service_name": "station_health_loop"
+    },
+    {
+      "ambiguity_type": "bridge_work_state_unresolved",
+      "notes": "Bridge work_state hint absent; mapped deterministically from pulse counts.",
+      "service_name": "bridge_overseer"
+    },
+    {
+      "ambiguity_type": "bridge_idle_reason_unresolved",
+      "notes": "Bridge idle reason hint absent; mapped deterministically from work_state.",
+      "service_name": "bridge_overseer"
+    }
+  ],
+  "artifact_type": "runtime_operator_summary",
+  "attribution_gaps": [
+    {
+      "affected_process_ids": [
+        9604,
+        8200
+      ],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.bridge.validation",
+        "runtime_capture.live.operator_smoke.20260402t193500z.bridge.noncompliance"
+      ],
+      "gap_type": "missing_launch_notice",
+      "reasoning": "Wrapper-child topology was foreseeable but required launch notice was missing.",
+      "service_name": "bridge_overseer",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [
+        4,
+        72,
+        148,
+        540,
+        736,
+        752,
+        768,
+        792,
+        840,
+        960,
+        964,
+        1040,
+        1068,
+        1140,
+        1168,
+        1188,
+        1236,
+        1268,
+        1332,
+        1484,
+        1552,
+        1560,
+        1568,
+        1576,
+        1636,
+        1660,
+        1704,
+        1760,
+        1768,
+        1796,
+        1892,
+        1920,
+        1940,
+        2004,
+        2008,
+        2088,
+        2100,
+        2128,
+        2224,
+        2316,
+        2336,
+        2448,
+        2520,
+        2576,
+        2604,
+        2712,
+        2752,
+        2764,
+        2796,
+        2804,
+        2860,
+        2868,
+        2876,
+        2944,
+        2952,
+        3012,
+        3116,
+        3176,
+        3188,
+        3336,
+        3480,
+        3508,
+        3524,
+        3528,
+        3560,
+        3588,
+        3596,
+        3676,
+        3704,
+        3836,
+        3888,
+        4176,
+        4220,
+        4248,
+        4268,
+        4552,
+        4624,
+        4636,
+        4736,
+        4780,
+        4840,
+        5048,
+        5100,
+        5144,
+        5192,
+        5196,
+        5332,
+        5396,
+        5404,
+        5440,
+        5768,
+        5776,
+        5800,
+        5840,
+        5888,
+        5940,
+        5980,
+        6004,
+        6020,
+        6028,
+        6048,
+        6056,
+        6104,
+        6132,
+        6176,
+        6192,
+        6276,
+        6340,
+        6372,
+        6388,
+        6400,
+        6412,
+        6420,
+        6436,
+        6460,
+        6476,
+        6488,
+        6496,
+        6528,
+        6540,
+        6548,
+        6656,
+        6676,
+        6680,
+        6696,
+        6708,
+        6756,
+        7004,
+        7036,
+        7224,
+        7340,
+        7348,
+        7420,
+        7568,
+        7576,
+        7588,
+        7612,
+        7620,
+        7628,
+        7636,
+        7648,
+        7724,
+        7768,
+        7800,
+        7832,
+        7840,
+        7852,
+        7932,
+        7968,
+        7976,
+        8028,
+        8068,
+        8436,
+        8576,
+        8932,
+        8952,
+        9108,
+        10100,
+        10156,
+        10352,
+        10384,
+        10588,
+        10736,
+        10848,
+        11128,
+        15632,
+        15936,
+        16348,
+        16812,
+        17492,
+        17648,
+        18240,
+        18296,
+        20672,
+        20772,
+        21028,
+        21292,
+        23648,
+        24568,
+        28944,
+        36028,
+        40636
+      ],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.72",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.148",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.540",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.960",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.964",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.736",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.792",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1040",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1068",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1168",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1188",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1236",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1268",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1332",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1552",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1560",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1568",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1704",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1760",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1796",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1892",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1920",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1940",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2008",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2088",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2100",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2128",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2224",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2316",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2336",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2448",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2520",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2604",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2764",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2796",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2804",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2860",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2868",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2876",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2944",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2952",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3012",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2004",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3116",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3188",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3336",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3480",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3508",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3524",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3528",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3560",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3676",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3704",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3836",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3888",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3596",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4176",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4248",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4624",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4736",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4780",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5048",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4268",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5100",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5192",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5196",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5332",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5396",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5440",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5776",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5940",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6004",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6020",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6048",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6056",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6104",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6132",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5144",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4220",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5800",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6176",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6192",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6276",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6340",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6372",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6388",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6400",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6412",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6420",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6436",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6460",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6476",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6488",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6496",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6528",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6540",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6548",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6656",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6680",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6696",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6708",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7004",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7036",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7224",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7340",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7348",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7568",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7588",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7612",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7620",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7628",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7636",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7648",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7724",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7800",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7832",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7852",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7932",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7968",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7976",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.8028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.8436",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.8576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.8932",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.8952",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10100",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10156",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10352",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10384",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10736",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10848",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.10588",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.752",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5980",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5888",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.11128",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.8068",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1636",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2712",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3588",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4636",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1660",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4552",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.5404",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6676",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.2752",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1484",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.4840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.9108",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.7420",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.3176",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.6756",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.16348",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.16812",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.18240",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.18296",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.17492",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.17648",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.20672",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.20772",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.21028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.1140",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.21292",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.23648",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.24568",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.15632",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.15936",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.28944",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.36028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_command_line.40636"
+      ],
+      "gap_type": "missing_command_line_data",
+      "reasoning": "182 captured processes are missing command-line data.",
+      "service_name": "capture_layer",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [
+        4,
+        72,
+        148,
+        540,
+        736,
+        752,
+        768,
+        792,
+        840,
+        960,
+        964,
+        1040,
+        1068,
+        1140,
+        1168,
+        1188,
+        1236,
+        1268,
+        1332,
+        1484,
+        1552,
+        1560,
+        1568,
+        1576,
+        1636,
+        1660,
+        1704,
+        1760,
+        1768,
+        1796,
+        1892,
+        1920,
+        1940,
+        2004,
+        2008,
+        2088,
+        2100,
+        2128,
+        2224,
+        2316,
+        2336,
+        2448,
+        2520,
+        2576,
+        2604,
+        2712,
+        2752,
+        2764,
+        2796,
+        2804,
+        2860,
+        2868,
+        2876,
+        2944,
+        2952,
+        3012,
+        3116,
+        3176,
+        3188,
+        3336,
+        3480,
+        3508,
+        3524,
+        3528,
+        3560,
+        3588,
+        3596,
+        3676,
+        3704,
+        3836,
+        3888,
+        4176,
+        4220,
+        4248,
+        4268,
+        4552,
+        4624,
+        4636,
+        4736,
+        4780,
+        4840,
+        5048,
+        5100,
+        5144,
+        5192,
+        5196,
+        5332,
+        5396,
+        5404,
+        5440,
+        5768,
+        5776,
+        5800,
+        5840,
+        5888,
+        5940,
+        5980,
+        6004,
+        6020,
+        6028,
+        6048,
+        6056,
+        6104,
+        6132,
+        6176,
+        6192,
+        6276,
+        6340,
+        6372,
+        6388,
+        6400,
+        6412,
+        6420,
+        6436,
+        6460,
+        6476,
+        6488,
+        6496,
+        6528,
+        6540,
+        6548,
+        6656,
+        6676,
+        6680,
+        6696,
+        6708,
+        6756,
+        7004,
+        7036,
+        7224,
+        7340,
+        7348,
+        7420,
+        7568,
+        7576,
+        7588,
+        7612,
+        7620,
+        7628,
+        7636,
+        7648,
+        7724,
+        7768,
+        7800,
+        7832,
+        7840,
+        7852,
+        7932,
+        7968,
+        7976,
+        8028,
+        8068,
+        8436,
+        8576,
+        8932,
+        8952,
+        9108,
+        10100,
+        10156,
+        10352,
+        10384,
+        10588,
+        10736,
+        10848,
+        11128,
+        15632,
+        15936,
+        16348,
+        16812,
+        17492,
+        17648,
+        18240,
+        18296,
+        20672,
+        20772,
+        21028,
+        21292,
+        23648,
+        24568,
+        28944,
+        36028,
+        40636
+      ],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.72",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.148",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.540",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.960",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.964",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.736",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.792",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1040",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1068",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1168",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1188",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1236",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1268",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1332",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1552",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1560",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1568",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1704",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1760",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1796",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1892",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1920",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1940",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2008",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2088",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2100",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2128",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2224",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2316",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2336",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2448",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2520",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2604",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2764",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2796",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2804",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2860",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2868",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2876",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2944",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2952",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3012",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2004",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3116",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3188",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3336",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3480",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3508",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3524",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3528",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3560",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3676",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3704",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3836",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3888",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3596",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4176",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4248",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4624",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4736",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4780",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5048",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4268",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5100",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5192",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5196",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5332",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5396",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5440",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5776",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5940",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6004",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6020",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6048",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6056",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6104",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6132",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5144",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4220",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5800",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6176",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6192",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6276",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6340",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6372",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6388",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6400",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6412",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6420",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6436",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6460",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6476",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6488",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6496",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6528",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6540",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6548",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6656",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6680",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6696",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6708",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7004",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7036",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7224",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7340",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7348",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7568",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7588",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7612",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7620",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7628",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7636",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7648",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7724",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7768",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7800",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7832",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7852",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7932",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7968",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7976",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.8028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.8436",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.8576",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.8932",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.8952",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10100",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10156",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10352",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10384",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10736",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10848",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.10588",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.752",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5980",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5888",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.11128",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.8068",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1636",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2712",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3588",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4636",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1660",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4552",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.5404",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6676",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.2752",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1484",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.4840",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.9108",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.7420",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.3176",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.6756",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.16348",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.16812",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.18240",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.18296",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.17492",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.17648",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.20672",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.20772",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.21028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.1140",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.21292",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.23648",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.24568",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.15632",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.15936",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.28944",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.36028",
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.missing_executable_path.40636"
+      ],
+      "gap_type": "missing_executable_path_data",
+      "reasoning": "182 captured processes are missing executable-path data.",
+      "service_name": "capture_layer",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.bridge_idle_reason_unresolved"
+      ],
+      "gap_type": "bridge_idle_reason_unresolved",
+      "reasoning": "bridge_overseer has unresolved capture evidence for bridge_idle_reason_unresolved.",
+      "service_name": "bridge_overseer",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.bridge_work_state_unresolved"
+      ],
+      "gap_type": "bridge_work_state_unresolved",
+      "reasoning": "bridge_overseer has unresolved capture evidence for bridge_work_state_unresolved.",
+      "service_name": "bridge_overseer",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.health_cadence_unresolved"
+      ],
+      "gap_type": "health_cadence_unresolved",
+      "reasoning": "station_health_loop has unresolved capture evidence for health_cadence_unresolved.",
+      "service_name": "station_health_loop",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [],
+      "evidence_refs": [
+        "runtime_capture.live.operator_smoke.20260402t193500z.marker.health_expiry_sweep_unresolved"
+      ],
+      "gap_type": "health_expiry_sweep_unresolved",
+      "reasoning": "station_health_loop has unresolved capture evidence for health_expiry_sweep_unresolved.",
+      "service_name": "station_health_loop",
+      "severity": "warn"
+    },
+    {
+      "affected_process_ids": [
+        20084
+      ],
+      "evidence_refs": [
+        "process_row:20084"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 20084 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        21020
+      ],
+      "evidence_refs": [
+        "process_row:21020"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 21020 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        12860
+      ],
+      "evidence_refs": [
+        "process_row:12860"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 12860 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        23500
+      ],
+      "evidence_refs": [
+        "process_row:23500"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 23500 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        22604
+      ],
+      "evidence_refs": [
+        "process_row:22604"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 22604 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        4580
+      ],
+      "evidence_refs": [
+        "process_row:4580"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 4580 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        17344
+      ],
+      "evidence_refs": [
+        "process_row:17344"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 17344 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        6836
+      ],
+      "evidence_refs": [
+        "process_row:6836"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 6836 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        22844
+      ],
+      "evidence_refs": [
+        "process_row:22844"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 22844 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        22732
+      ],
+      "evidence_refs": [
+        "process_row:22732"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 22732 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        23216
+      ],
+      "evidence_refs": [
+        "process_row:23216"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 23216 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        8964
+      ],
+      "evidence_refs": [
+        "process_row:8964"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 8964 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        7212
+      ],
+      "evidence_refs": [
+        "process_row:7212"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 7212 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        24628
+      ],
+      "evidence_refs": [
+        "process_row:24628"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 24628 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        24864
+      ],
+      "evidence_refs": [
+        "process_row:24864"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 24864 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        24928
+      ],
+      "evidence_refs": [
+        "process_row:24928"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 24928 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        25016
+      ],
+      "evidence_refs": [
+        "process_row:25016"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 25016 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    },
+    {
+      "affected_process_ids": [
+        38992
+      ],
+      "evidence_refs": [
+        "process_row:38992"
+      ],
+      "gap_type": "undeclared_runtime_process",
+      "reasoning": "Process PID 38992 shows Station-related evidence but is not mapped to a declared governed service.",
+      "service_name": "capture_layer",
+      "severity": "info"
+    }
+  ],
+  "capture_id": "runtime_capture.live.operator_smoke.20260402t193500z",
+  "corr_id": "runtime_capture.live.operator_smoke.20260402t193500z",
+  "expectation_signals": [
+    {
+      "reasoning": "bridge_overseer does not fully match its declared multiplicity contract.",
+      "service_name": "bridge_overseer",
+      "severity": "warn",
+      "signal_type": "multiplicity_noncompliance"
+    },
+    {
+      "reasoning": "Bridge overseer is idle with reason=empty_objectives_file; this is visible, not hidden.",
+      "service_name": "bridge_overseer",
+      "severity": "info",
+      "signal_type": "idle_bridge_visible"
+    },
+    {
+      "reasoning": "station_health_loop captured ambiguity: health_cadence_unresolved.",
+      "service_name": "station_health_loop",
+      "severity": "warn",
+      "signal_type": "governed_ambiguity_present"
+    },
+    {
+      "reasoning": "station_health_loop captured ambiguity: health_expiry_sweep_unresolved.",
+      "service_name": "station_health_loop",
+      "severity": "warn",
+      "signal_type": "governed_ambiguity_present"
+    },
+    {
+      "reasoning": "bridge_overseer captured ambiguity: bridge_work_state_unresolved.",
+      "service_name": "bridge_overseer",
+      "severity": "warn",
+      "signal_type": "governed_ambiguity_present"
+    },
+    {
+      "reasoning": "bridge_overseer captured ambiguity: bridge_idle_reason_unresolved.",
+      "service_name": "bridge_overseer",
+      "severity": "warn",
+      "signal_type": "governed_ambiguity_present"
+    }
+  ],
+  "generated_at_utc": "2026-04-02T20:18:51.542871Z",
+  "governance_compliance_condition": "noncompliant",
+  "governance_posture": [
+    {
+      "authoritative_runtime_role": "authoritative_writer",
+      "freshness_state": "fresh",
+      "health_state": "pass",
+      "idle_reason": null,
+      "multiplicity_posture": "single_instance_only",
+      "noncompliance_severity": null,
+      "noncompliance_type": null,
+      "notes": [
+        "Single authoritative writer observed.",
+        "Health is pass with fresh freshness."
+      ],
+      "observed_process_count": 1,
+      "posture_consequence": "none",
+      "pulse_class": null,
+      "service_name": "station_health_loop",
+      "topology_class": "single_process",
+      "validation_outcome": "topology_valid"
+    },
+    {
+      "authoritative_runtime_role": "bridge_cycle_owner",
+      "freshness_state": null,
+      "health_state": null,
+      "idle_reason": "empty_objectives_file",
+      "multiplicity_posture": "wrapper_child_expected",
+      "noncompliance_severity": "moderate",
+      "noncompliance_type": "missing_launch_notice",
+      "notes": [
+        "Observed wrapper-child overseer pair matches declared topology but lacks compliant launch notice attribution.",
+        "Wrapper-child topology was foreseeable but required launch notice was missing.",
+        "Bridge pulse is idle with work_state=objectives_empty."
+      ],
+      "observed_process_count": 2,
+      "posture_consequence": "warning_posture",
+      "pulse_class": "idle",
+      "service_name": "bridge_overseer",
+      "topology_class": "wrapper_child_runtime_pair",
+      "validation_outcome": "multiplicity_declared_but_noncompliant"
+    }
+  ],
+  "notes": "Operator summary is a staging-only visibility surface derived from capture and governance artifacts without runtime mutation.",
+  "operator_risk_reasoning": [
+    "System load condition: NORMAL (CPU 30% / RAM 50%).",
+    "Primary sampled load is mixed between governed Station processes and non-governed processes.",
+    "Governance compliance condition: NONCOMPLIANT.",
+    "Wrapper-child topology was foreseeable but required launch notice was missing.",
+    "182 captured processes are missing command-line data.",
+    "182 captured processes are missing executable-path data."
+  ],
+  "operator_risk_signal": "UNEXPECTED",
+  "schema_name": "runtime.operator.summary",
+  "schema_version": "1.1.0",
+  "source_capture_mode": "live_read_only",
+  "station_runtime_view": {
+    "governance_posture": [
+      {
+        "authoritative_runtime_role": "authoritative_writer",
+        "freshness_state": "fresh",
+        "health_state": "pass",
+        "idle_reason": null,
+        "multiplicity_posture": "single_instance_only",
+        "noncompliance_severity": null,
+        "noncompliance_type": null,
+        "notes": [
+          "Single authoritative writer observed.",
+          "Health is pass with fresh freshness."
+        ],
+        "observed_process_count": 1,
+        "posture_consequence": "none",
+        "pulse_class": null,
+        "service_name": "station_health_loop",
+        "topology_class": "single_process",
+        "validation_outcome": "topology_valid"
+      },
+      {
+        "authoritative_runtime_role": "bridge_cycle_owner",
+        "freshness_state": null,
+        "health_state": null,
+        "idle_reason": "empty_objectives_file",
+        "multiplicity_posture": "wrapper_child_expected",
+        "noncompliance_severity": "moderate",
+        "noncompliance_type": "missing_launch_notice",
+        "notes": [
+          "Observed wrapper-child overseer pair matches declared topology but lacks compliant launch notice attribution.",
+          "Wrapper-child topology was foreseeable but required launch notice was missing.",
+          "Bridge pulse is idle with work_state=objectives_empty."
+        ],
+        "observed_process_count": 2,
+        "posture_consequence": "warning_posture",
+        "pulse_class": "idle",
+        "service_name": "bridge_overseer",
+        "topology_class": "wrapper_child_runtime_pair",
+        "validation_outcome": "multiplicity_declared_but_noncompliant"
+      }
+    ],
+    "notes": [
+      "Station runtime view is a strict evidence-backed subset of the workstation process capture.",
+      "Known governed processes come from runtime multiplicity validation artifacts.",
+      "Candidate or ambiguous Station membership is shown only when command-line or executable-path evidence points at Calyx surfaces."
+    ],
+    "processes": [
+      {
+        "command_line": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noexit -command \"try { . \\\"c:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\cfbea10c5f\\resources\\app\\out\\vs\\workbench\\contrib\\terminal\\common\\scripts\\shellIntegration.ps1\\\" } catch {}\"",
+        "evidence_notes": [
+          "Process shows partial Station-related evidence."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 20084,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -noexit -command \"try { . \\\"c:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\cfbea10c5f\\resources\\app\\out\\vs\\workbench\\contrib\\terminal\\common\\scripts\\shellIntegration.ps1\\\" } catch {}\"",
+        "evidence_notes": [
+          "Process shows partial Station-related evidence."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 21020,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe\" -B -m uvicorn cbo_hub.dev_harness.app:app --host 127.0.0.1 --port 7777 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path.",
+          "Executable path references a Calyx-local runtime path.",
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 12860,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" -B -m uvicorn cbo_hub.dev_harness.app:app --host 127.0.0.1 --port 7777 ",
+        "evidence_notes": [
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 23500,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe\" -B -m uvicorn cbo_hub.avatar_web.app:app --host 127.0.0.1 --port 7780 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path.",
+          "Executable path references a Calyx-local runtime path.",
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 22604,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" -B -m uvicorn cbo_hub.avatar_web.app:app --host 127.0.0.1 --port 7780 ",
+        "evidence_notes": [
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 4580,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe\" -B -m uvicorn cbo_hub.telemetry_gateway.app:app --host 0.0.0.0 --port 7781 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path.",
+          "Executable path references a Calyx-local runtime path.",
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 17344,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" -B -m uvicorn cbo_hub.telemetry_gateway.app:app --host 0.0.0.0 --port 7781 ",
+        "evidence_notes": [
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 6836,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1 ",
+        "evidence_notes": [
+          "Observed in governance validation artifact runtime_capture.live.operator_smoke.20260402t193500z.station_health.validation."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 14152,
+        "service_name": "station_health_loop",
+        "station_membership": "known_governed_service"
+      },
+      {
+        "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\service_failure_watch.ps1 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 22844,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\navigator_triage_loop.ps1 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 22732,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\energy_churn_cp9_loop.ps1 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 23216,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\cp6_cp7_loop.ps1 ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 8964,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe\" -B -m calyx.cbo.bridge_overseer ",
+        "evidence_notes": [
+          "Observed in governance validation artifact runtime_capture.live.operator_smoke.20260402t193500z.bridge.validation."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 9604,
+        "service_name": "bridge_overseer",
+        "station_membership": "known_governed_service"
+      },
+      {
+        "command_line": "\"C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe\" -B -m cbo_hub.cli_avatar.main ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path.",
+          "Executable path references a Calyx-local runtime path.",
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 7212,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" -B -m calyx.cbo.bridge_overseer ",
+        "evidence_notes": [
+          "Observed in governance validation artifact runtime_capture.live.operator_smoke.20260402t193500z.bridge.validation."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 8200,
+        "service_name": "bridge_overseer",
+        "station_membership": "known_governed_service"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" -B -m cbo_hub.cli_avatar.main ",
+        "evidence_notes": [
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 24628,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe\" -m calyx.cbo.discord_gateway ",
+        "evidence_notes": [
+          "Command line references the Calyx repository path.",
+          "Executable path references a Calyx-local runtime path.",
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 24864,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" -m calyx.cbo.discord_gateway ",
+        "evidence_notes": [
+          "Command line references a Calyx Python module."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 24928,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python314\\Scripts\\pytest.exe\" tests/test_runtime_capture_command.py tests/test_runtime_capture_adapter.py",
+        "evidence_notes": [
+          "Process shows partial Station-related evidence."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python314\\Scripts\\pytest.exe",
+        "pid": 25016,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python314\\python.exe\"  \"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python314\\Scripts\\pytest.exe\" tests/test_runtime_capture_command.py tests/test_runtime_capture_adapter.py",
+        "evidence_notes": [
+          "Process shows partial Station-related evidence."
+        ],
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "pid": 38992,
+        "service_name": null,
+        "station_membership": "candidate_unattributed"
+      }
+    ]
+  },
+  "summary_id": "runtime_capture.live.operator_smoke.20260402t193500z.operator_summary",
+  "system_load_condition": "normal",
+  "system_load_snapshot": {
+    "cpu_pct": 30,
+    "freshness_state": "fresh",
+    "gpu_metrics_present": true,
+    "health_state": "pass",
+    "memory_pressure_tier": 0,
+    "notes": "System load derived from the authoritative health snapshot; GPU presence reflects enrichment or captured station health when available.",
+    "ram_pct": 50,
+    "source_surface": "runtime/station_health.json",
+    "vram_metrics_available": false
+  },
+  "top_processes": [
+    {
+      "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --type=renderer --user-data-dir=\"C:\\Users\\jncr0\\AppData\\Roaming\\Code\" --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --app-user-model-id=Microsoft.VisualStudioCode --app-path=\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\cfbea10c5f\\resources\\app\" --enable-sandbox --enable-blink-features=HighlightAPI --max-active-webgl-contexts=32 --disable-blink-features=FontMatchingCTMigration,StandardizedBrowserZoom, --video-capture-use-gpu-memory-buffer --lang=en-US --device-scale-factor=1 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1775041901594219 --launch-time-ticks=30208406626 --field-trial-handle=1832,i,1048780720663030304,13208205616243572712,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EnableTransparentHwndEnlargement,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708991934122588 --mojo-platform-channel-handle=4324 --vscode-window-config=vscode:53f8d59e-2801-42a6-8cf4-1cb4a3e2d7ea /prefetch:1",
+      "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+      "governed_surface": null,
+      "notes": null,
+      "pid": 21520,
+      "process_label": "Code#21520",
+      "rank": 1,
+      "source": "health_enrichment_snapshot"
+    },
+    {
+      "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1 ",
+      "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "governed_surface": "station_health_loop",
+      "notes": null,
+      "pid": 14152,
+      "process_label": "powershell#14152",
+      "rank": 2,
+      "source": "health_enrichment_snapshot"
+    },
+    {
+      "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --type=renderer --user-data-dir=\"C:\\Users\\jncr0\\AppData\\Roaming\\Code\" --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --app-user-model-id=Microsoft.VisualStudioCode --app-path=\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\cfbea10c5f\\resources\\app\" --enable-sandbox --enable-blink-features=HighlightAPI --max-active-webgl-contexts=32 --disable-blink-features=FontMatchingCTMigration,StandardizedBrowserZoom, --video-capture-use-gpu-memory-buffer --lang=en-US --device-scale-factor=1 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=4 --time-ticks-at-unix-epoch=-1775041901594219 --launch-time-ticks=30206671647 --field-trial-handle=1832,i,1048780720663030304,13208205616243572712,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EnableTransparentHwndEnlargement,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708990060038890 --mojo-platform-channel-handle=3372 --vscode-window-config=vscode:53f8d59e-2801-42a6-8cf4-1cb4a3e2d7ea /prefetch:1",
+      "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+      "governed_surface": null,
+      "notes": null,
+      "pid": 7608,
+      "process_label": "Code#7608",
+      "rank": 3,
+      "source": "health_enrichment_snapshot"
+    }
+  ],
+  "workstation_load_view": {
+    "notes": [
+      "Whole-workstation view is unfiltered and reflects captured machine state, not just Station-governed runtime.",
+      "Top processes are sourced from health enrichment or captured station health when available."
+    ],
+    "observed_process_count": 367,
+    "system_load_snapshot": {
+      "cpu_pct": 30,
+      "freshness_state": "fresh",
+      "gpu_metrics_present": true,
+      "health_state": "pass",
+      "memory_pressure_tier": 0,
+      "notes": "System load derived from the authoritative health snapshot; GPU presence reflects enrichment or captured station health when available.",
+      "ram_pct": 50,
+      "source_surface": "runtime/station_health.json",
+      "vram_metrics_available": false
+    },
+    "top_processes": [
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --type=renderer --user-data-dir=\"C:\\Users\\jncr0\\AppData\\Roaming\\Code\" --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --app-user-model-id=Microsoft.VisualStudioCode --app-path=\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\cfbea10c5f\\resources\\app\" --enable-sandbox --enable-blink-features=HighlightAPI --max-active-webgl-contexts=32 --disable-blink-features=FontMatchingCTMigration,StandardizedBrowserZoom, --video-capture-use-gpu-memory-buffer --lang=en-US --device-scale-factor=1 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=6 --time-ticks-at-unix-epoch=-1775041901594219 --launch-time-ticks=30208406626 --field-trial-handle=1832,i,1048780720663030304,13208205616243572712,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EnableTransparentHwndEnlargement,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708991934122588 --mojo-platform-channel-handle=4324 --vscode-window-config=vscode:53f8d59e-2801-42a6-8cf4-1cb4a3e2d7ea /prefetch:1",
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+        "governed_surface": null,
+        "notes": null,
+        "pid": 21520,
+        "process_label": "Code#21520",
+        "rank": 1,
+        "source": "health_enrichment_snapshot"
+      },
+      {
+        "command_line": "\"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1 ",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "governed_surface": "station_health_loop",
+        "notes": null,
+        "pid": 14152,
+        "process_label": "powershell#14152",
+        "rank": 2,
+        "source": "health_enrichment_snapshot"
+      },
+      {
+        "command_line": "\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --type=renderer --user-data-dir=\"C:\\Users\\jncr0\\AppData\\Roaming\\Code\" --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --app-user-model-id=Microsoft.VisualStudioCode --app-path=\"C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\cfbea10c5f\\resources\\app\" --enable-sandbox --enable-blink-features=HighlightAPI --max-active-webgl-contexts=32 --disable-blink-features=FontMatchingCTMigration,StandardizedBrowserZoom, --video-capture-use-gpu-memory-buffer --lang=en-US --device-scale-factor=1 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=4 --time-ticks-at-unix-epoch=-1775041901594219 --launch-time-ticks=30206671647 --field-trial-handle=1832,i,1048780720663030304,13208205616243572712,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EnableTransparentHwndEnlargement,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708990060038890 --mojo-platform-channel-handle=3372 --vscode-window-config=vscode:53f8d59e-2801-42a6-8cf4-1cb4a3e2d7ea /prefetch:1",
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+        "governed_surface": null,
+        "notes": null,
+        "pid": 7608,
+        "process_label": "Code#7608",
+        "rank": 3,
+        "source": "health_enrichment_snapshot"
+      }
+    ]
+  }
+}

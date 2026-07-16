@@ -1,0 +1,79 @@
+{
+  "schema_name": "kalshi.mock_candidate_market_case",
+  "schema_version": "1.0.0",
+  "artifact_schema_version": "1.0.0",
+  "case_id": "execution_ready_low_confidence",
+  "scenario_name": "execution_ready_low_confidence",
+  "description": "Coherent candidate that is eligible for operator review but remains explicitly low-confidence.",
+  "corr_id": "kalshi-sim-exec-ready-low-conf",
+  "market_id": "SIM-PHX-HIGH-2026-04-05",
+  "market_title": "Will Phoenix exceed 95F by April 5, 2026?",
+  "resolution_rule_summary": "Resolves YES if the stated high temperature threshold is met by the deadline.",
+  "initial_timestamp_utc": "2026-03-28T12:00:00Z",
+  "score_timestamp_utc": "2026-03-28T12:01:00Z",
+  "gate_timestamp_utc": "2026-03-28T12:02:00Z",
+  "readiness_timestamp_utc": "2026-03-28T12:03:00Z",
+  "execution_timestamp_utc": null,
+  "resolution_timestamp_utc": "2026-04-05T18:00:00Z",
+  "proposed_side": "yes",
+  "expected_edge_source": "weather_forecast_divergence",
+  "operator_engagement_state": "operator_reviewing",
+  "market_observation": {
+    "observed_price": 0.68,
+    "best_bid": 0.67,
+    "best_ask": 0.69,
+    "market_note": "Recent forecast warmth may not be fully reflected yet."
+  },
+  "entry_rationale": "The market may be modestly underpricing updated forecast warmth, but timing remains fragile.",
+  "decision_horizon": {
+    "horizon_hours": 12.0,
+    "thesis_valid_until_utc": "2026-03-29T00:00:00Z",
+    "rationale": "The edge likely expires quickly if the next forecast cycle shifts."
+  },
+  "invalidation_condition": "Stand down if the next forecast cycle cools materially or price catches up.",
+  "abstention_alternative": "Skip entry if timing stability weakens further.",
+  "evidence_summary": "Forecast divergence exists, but timing stability is only moderate.",
+  "evidence_signal": 0.75,
+  "confidence_signal": 0.5,
+  "score_dimensions": {
+    "evidence_strength": 0.5,
+    "mispricing_potential": 1.0,
+    "timing_quality": 0.5,
+    "resolution_clarity": 1.0,
+    "liquidity_tradability": 1.0,
+    "decision_horizon_fit": 0.5,
+    "risk_clarity": 0.5
+  },
+  "downgrade_flags": [
+    "poor_timing_stability"
+  ],
+  "decay_state": "fresh",
+  "scoring_notes": "The candidate earns operator review only because the thesis is clear and bounded.",
+  "classification_band": "recommend.research_only",
+  "gate_outcome": "recommend.execution_ready_low_confidence",
+  "gate_reasons": [
+    "The setup is legible and bounded enough for operator review.",
+    "Timing instability keeps the recommendation explicitly low-confidence."
+  ],
+  "operator_legibility_status": "legible",
+  "wallet_policy_fit": "fit",
+  "resolved_outcome": "yes",
+  "trade_executed": false,
+  "execution_status": null,
+  "position_taken": "none",
+  "review_plan": {
+    "thesis_quality_assessment": "The thesis was coherent and modest about its uncertainty.",
+    "score_quality_assessment": "The score and downgrade flag correctly signaled timing fragility.",
+    "timing_quality_assessment": "Timing remained the main weakness and justified caution.",
+    "governance_quality_assessment": "Readiness never bypassed the need for explicit operator intent.",
+    "decision_quality_classification": "decision_quality.acceptable",
+    "outcome_interpretation_classification": "outcome.missed_opportunity_but_valid_abstention",
+    "policy_alignment_classification": "policy.aligned",
+    "profit_loss_amount": 0.0,
+    "profit_loss_note": "No trade was taken despite a later favorable resolution.",
+    "attention_cost_estimate": "Moderate operator attention for a low-confidence review.",
+    "abstention_counterfactual": "Not trading remained valid because the setup never became strongly trustworthy.",
+    "review_notes": "This case should not be used to justify promoting fragile timing setups.",
+    "recommended_followup": "review_timing_logic"
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "snapshot": {
+    "schema_name": "runtime.observer.process_snapshot",
+    "schema_version": "1.0.0",
+    "artifact_type": "runtime_observer_process_snapshot",
+    "snapshot_id": "snapshot.bounded.refuse",
+    "corr_id": "snapshot.bounded.refuse",
+    "captured_at_utc": "2026-04-04T19:00:00Z",
+    "observer_mode": "staging_only",
+    "processes": [
+      {
+        "pid": 5101,
+        "parent_pid": 1,
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "command_line": "python -m test_bounded_worker --slot 1",
+        "started_at_utc": "2026-04-04T18:58:00Z"
+      },
+      {
+        "pid": 5102,
+        "parent_pid": 1,
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "command_line": "python -m test_bounded_worker --slot 2",
+        "started_at_utc": "2026-04-04T18:59:00Z"
+      }
+    ],
+    "health_context": null,
+    "bridge_context": null,
+    "capture_notes": "Runtime reconciliation staging fixture."
+  },
+  "request": {
+    "schema_name": "runtime.reconciliation.request",
+    "schema_version": "1.0.0",
+    "artifact_type": "runtime_reconciliation_request",
+    "request_id": "reconcile.bounded.refuse",
+    "corr_id": "reconcile.bounded.refuse",
+    "requested_at_utc": "2026-04-04T19:00:05Z",
+    "declared_service_target": "test_bounded_worker",
+    "launch_origin": "launcher",
+    "initiating_surface": "staging.generate_fixtures",
+    "requested_command_line": "python -m test_bounded_worker --slot 3",
+    "requested_executable_path": null,
+    "snapshot_ref": "reconcile.bounded.refuse",
+    "capture_context": "fixture_replay",
+    "notes": "Generated staging reconciliation request."
+  },
+  "bundle": {
+    "scenario_name": "reconcile.bounded.refuse",
+    "description": "Runtime reconciliation for test_bounded_worker.",
+    "snapshot": {
+      "schema_name": "runtime.observer.process_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_observer_process_snapshot",
+      "snapshot_id": "snapshot.bounded.refuse",
+      "corr_id": "snapshot.bounded.refuse",
+      "captured_at_utc": "2026-04-04T19:00:00Z",
+      "observer_mode": "staging_only",
+      "processes": [
+        {
+          "pid": 5101,
+          "parent_pid": 1,
+          "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "command_line": "python -m test_bounded_worker --slot 1",
+          "started_at_utc": "2026-04-04T18:58:00Z"
+        },
+        {
+          "pid": 5102,
+          "parent_pid": 1,
+          "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "command_line": "python -m test_bounded_worker --slot 2",
+          "started_at_utc": "2026-04-04T18:59:00Z"
+        }
+      ],
+      "health_context": null,
+      "bridge_context": null,
+      "capture_notes": "Runtime reconciliation staging fixture."
+    },
+    "declaration": {
+      "schema_name": "runtime.service_declaration.reconciliation",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_service_declaration_reconciliation",
+      "declaration_id": "runtime.decl.test_bounded_worker",
+      "service_name": "test_bounded_worker",
+      "expected_topology_class": "single_process",
+      "multiplicity_posture": "bounded_multi_instance",
+      "permitted_multiplicity_count": 2,
+      "equivalence_matchers": [
+        {
+          "matching_kind": "command_token",
+          "required_tokens": [
+            "test_bounded_worker"
+          ],
+          "match_against": "command_line",
+          "notes": null
+        }
+      ],
+      "manual_override_allowed": false,
+      "expected_identity_markers": [],
+      "notes": "Test-only bounded multiplicity declaration for staging coverage."
+    },
+    "request": {
+      "schema_name": "runtime.reconciliation.request",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_request",
+      "request_id": "reconcile.bounded.refuse",
+      "corr_id": "reconcile.bounded.refuse",
+      "requested_at_utc": "2026-04-04T19:00:05Z",
+      "declared_service_target": "test_bounded_worker",
+      "launch_origin": "launcher",
+      "initiating_surface": "staging.generate_fixtures",
+      "requested_command_line": "python -m test_bounded_worker --slot 3",
+      "requested_executable_path": null,
+      "snapshot_ref": "reconcile.bounded.refuse",
+      "capture_context": "fixture_replay",
+      "notes": "Generated staging reconciliation request."
+    },
+    "result": {
+      "schema_name": "runtime.reconciliation.result",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_result",
+      "result_id": "reconcile.bounded.refuse.result",
+      "corr_id": "reconcile.bounded.refuse",
+      "request_ref": "reconcile.bounded.refuse",
+      "declaration_ref": "runtime.decl.test_bounded_worker",
+      "snapshot_ref": "snapshot.bounded.refuse",
+      "evaluated_at_utc": "2026-04-04T19:52:13.142675Z",
+      "matching_posture_used": "bounded_multi_instance",
+      "permitted_multiplicity_count": 2,
+      "equivalent_residents": [
+        {
+          "resident_id": "test_bounded_worker.resident.5101",
+          "service_name": "test_bounded_worker",
+          "member_process_ids": [
+            5101
+          ],
+          "topology_class": "single_process",
+          "evidence_fields": [
+            "command_line",
+            "executable_path"
+          ],
+          "matched_tokens": [
+            "test_bounded_worker"
+          ],
+          "notes": "Single-process resident matched by declaration markers."
+        },
+        {
+          "resident_id": "test_bounded_worker.resident.5102",
+          "service_name": "test_bounded_worker",
+          "member_process_ids": [
+            5102
+          ],
+          "topology_class": "single_process",
+          "evidence_fields": [
+            "command_line",
+            "executable_path"
+          ],
+          "matched_tokens": [
+            "test_bounded_worker"
+          ],
+          "notes": "Single-process resident matched by declaration markers."
+        }
+      ],
+      "resident_count": 2,
+      "topology_match_state": "duplicate_peer_detected",
+      "ambiguity_conditions": [],
+      "disposition": "refuse_duplicate_launch",
+      "resulting_reasoning": [
+        "Equivalent residents meet or exceed declared multiplicity bound; new residency must be refused."
+      ]
+    },
+    "duplicate_detected": {
+      "schema_name": "runtime.duplicate.runtime_detected",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_duplicate_runtime_detected",
+      "artifact_id": "reconcile.bounded.refuse.duplicate_detected",
+      "corr_id": "reconcile.bounded.refuse",
+      "request_ref": "reconcile.bounded.refuse",
+      "result_ref": "reconcile.bounded.refuse.result",
+      "service_name": "test_bounded_worker",
+      "failure_class": "undeclared_multiplicity",
+      "equivalent_resident_count": 2,
+      "notes": "Undeclared or excess equivalent residents detected during staging reconciliation."
+    },
+    "launch_refused": {
+      "schema_name": "runtime.launch.refused",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_launch_refused",
+      "artifact_id": "reconcile.bounded.refuse.launch_refused",
+      "corr_id": "reconcile.bounded.refuse",
+      "request_ref": "reconcile.bounded.refuse",
+      "result_ref": "reconcile.bounded.refuse.result",
+      "service_name": "test_bounded_worker",
+      "refusal_reason": "duplicate_runtime",
+      "notes": "Governed staging reconciliation refused the requested launch."
+    },
+    "operator_view": {
+      "schema_name": "runtime.reconciliation.operator_view",
+      "schema_version": "1.0.0",
+      "artifact_type": "runtime_reconciliation_operator_view",
+      "artifact_id": "reconcile.bounded.refuse.operator_view",
+      "corr_id": "reconcile.bounded.refuse",
+      "request_ref": "reconcile.bounded.refuse",
+      "result_ref": "reconcile.bounded.refuse.result",
+      "service_name": "test_bounded_worker",
+      "requested_disposition": "refuse_duplicate_launch",
+      "resident_count": 2,
+      "resident_process_ids": [
+        5101,
+        5102
+      ],
+      "evidence_support": [
+        "service=test_bounded_worker",
+        "expected_topology=single_process",
+        "equivalent_residents=2",
+        "resident:test_bounded_worker.resident.5101:pids=5101",
+        "resident:test_bounded_worker.resident.5102:pids=5102"
+      ],
+      "ambiguity_conditions": [],
+      "notes": "Operator-readable explanation of reconciliation result."
+    }
+  }
+}

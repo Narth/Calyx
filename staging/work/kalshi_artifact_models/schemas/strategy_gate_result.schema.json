@@ -1,0 +1,160 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "trade_thesis_artifact",
+            "signal_score_record",
+            "strategy_gate_result",
+            "execution_readiness_receipt",
+            "execution_support_receipt",
+            "post_resolution_review_artifact"
+          ],
+          "title": "Artifact Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_type",
+        "artifact_id"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "strategy_gate_result",
+      "default": "strategy_gate_result",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "gate_outcome": {
+      "enum": [
+        "abstain.insufficient_evidence",
+        "abstain.low_confidence",
+        "abstain.poor_timing",
+        "abstain.market_not_suitable",
+        "recommend.research_only",
+        "recommend.execution_ready_low_confidence",
+        "recommend.execution_ready"
+      ],
+      "title": "Gate Outcome",
+      "type": "string"
+    },
+    "gate_reasons": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Gate Reasons",
+      "type": "array"
+    },
+    "market_id": {
+      "maxLength": 128,
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "next_allowed_action": {
+      "enum": [
+        "abstain",
+        "continue_research",
+        "operator_review",
+        "operator_intent_required"
+      ],
+      "title": "Next Allowed Action",
+      "type": "string"
+    },
+    "operator_legibility_status": {
+      "enum": [
+        "legible",
+        "needs_review",
+        "not_legible"
+      ],
+      "title": "Operator Legibility Status",
+      "type": "string"
+    },
+    "presence_requirement": {
+      "enum": [
+        "not_required",
+        "required_for_execution"
+      ],
+      "title": "Presence Requirement",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.strategy_gate_result",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_ref": {
+      "$ref": "#/$defs/ArtifactRef"
+    },
+    "thesis_ref": {
+      "$ref": "#/$defs/ArtifactRef"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "wallet_policy_fit": {
+      "enum": [
+        "fit",
+        "borderline",
+        "not_fit"
+      ],
+      "title": "Wallet Policy Fit",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "market_id",
+    "gate_outcome",
+    "gate_reasons",
+    "thesis_ref",
+    "score_ref",
+    "operator_legibility_status",
+    "wallet_policy_fit",
+    "presence_requirement",
+    "next_allowed_action"
+  ],
+  "title": "StrategyGateResult",
+  "type": "object"
+}

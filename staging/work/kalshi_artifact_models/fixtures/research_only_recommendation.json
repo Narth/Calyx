@@ -1,0 +1,87 @@
+{
+  "scenario_name": "research_only_recommendation",
+  "description": "Candidate passes minimum coherence but remains below execution readiness.",
+  "trade_thesis_artifact": {
+    "schema_name": "kalshi.trade_thesis_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "trade_thesis_artifact",
+    "artifact_id": "thesis.research_only",
+    "corr_id": "kalshi-corr-research-only",
+    "timestamp_utc": "2026-03-28T19:00:00Z",
+    "market_id": "KXEVENT-FED-HIKE-2026-05",
+    "market_title": "Will the Fed hike rates in May 2026?",
+    "resolution_rule_summary": "Resolves YES if the target rate is increased at the stated meeting.",
+    "proposed_side": "yes",
+    "price_context": {
+      "observed_price": 0.61,
+      "price_unit": "probability",
+      "best_bid": 0.6,
+      "best_ask": 0.62,
+      "market_note": "Market is fairly liquid but the edge is not yet strong."
+    },
+    "entry_rationale": "There may be a mild mismatch between public commentary and current pricing, but further confirmation is needed.",
+    "expected_edge_source": "lagging_reaction_to_public_information",
+    "decision_horizon": {
+      "horizon_hours": 24.0,
+      "thesis_valid_until_utc": "2026-03-29T19:00:00Z",
+      "rationale": "Fresh commentary over the next day will likely confirm or invalidate the setup."
+    },
+    "invalidation_condition": "Stand down if the next policy commentary removes the apparent mismatch.",
+    "abstention_alternative": "Keep researching without entering until evidence becomes cleaner.",
+    "evidence_summary": "Evidence is directionally supportive but still partial.",
+    "confidence_signal": 0.5,
+    "evidence_signal": 0.6,
+    "operator_engagement_state": "operator_reviewing"
+  },
+  "signal_score_record": {
+    "schema_name": "kalshi.signal_score_record",
+    "schema_version": "1.0.0",
+    "artifact_type": "signal_score_record",
+    "artifact_id": "score.research_only",
+    "corr_id": "kalshi-corr-research-only",
+    "timestamp_utc": "2026-03-28T19:02:00Z",
+    "market_id": "KXEVENT-FED-HIKE-2026-05",
+    "score_dimensions": {
+      "evidence_strength": 0.5,
+      "mispricing_potential": 0.5,
+      "timing_quality": 0.5,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 1.0,
+      "decision_horizon_fit": 0.5,
+      "risk_clarity": 0.5
+    },
+    "composite_score": 0.6428571428571429,
+    "classification_band": "recommend.research_only",
+    "confidence_signal": 0.5,
+    "downgrade_flags": [],
+    "decay_state": "fresh",
+    "evidence_summary": "Market structure is acceptable, but evidence remains only moderate.",
+    "scoring_notes": "Research continues before any execution-ready posture."
+  },
+  "strategy_gate_result": {
+    "schema_name": "kalshi.strategy_gate_result",
+    "schema_version": "1.0.0",
+    "artifact_type": "strategy_gate_result",
+    "artifact_id": "gate.research_only",
+    "corr_id": "kalshi-corr-research-only",
+    "timestamp_utc": "2026-03-28T19:03:00Z",
+    "market_id": "KXEVENT-FED-HIKE-2026-05",
+    "gate_outcome": "recommend.research_only",
+    "gate_reasons": [
+      "Thesis is legible but evidence quality is not strong enough for execution readiness.",
+      "Research-only preserves discipline while the market remains interesting."
+    ],
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.research_only"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.research_only"
+    },
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "presence_requirement": "not_required",
+    "next_allowed_action": "continue_research"
+  }
+}
