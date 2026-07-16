@@ -53,7 +53,8 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt || true
+          python -m pip install -r requirements.txt
+          python -m pip install pytest flake8 pylint
       
       - name: Lint
         run: |
@@ -86,7 +87,8 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt || true
+          python -m pip install -r requirements.txt
+          python -m pip install pytest flake8 pylint
       
       - name: Lint
         run: |
@@ -137,7 +139,8 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt || true
+          python -m pip install -r requirements.txt
+          python -m pip install pytest flake8 pylint
       
       - name: Lint
         run: |
