@@ -7,6 +7,7 @@ Spine invariant checks for CI.
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -63,9 +64,29 @@ def documented_top_level_dirs(root: Path) -> set[str]:
 
 
 def actual_top_level_dirs(root: Path) -> list[str]:
-    """List top-level directories in repo (excluding hidden and standard)."""
+    """List Git-tracked top-level directories, with a filesystem fallback."""
     allowed_skip = {".git", ".github", ".venv", "venv", "node_modules", "__pycache__"}
-    dirs = []
+    result = subprocess.run(
+        ["git", "ls-files", "-z"],
+        cwd=root,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode == 0:
+        tracked_dirs = {
+            path.split("/", 1)[0]
+            for raw_path in result.stdout.split(b"\0")
+            if raw_path
+            for path in [raw_path.decode("utf-8", errors="surrogateescape").replace("\\", "/")]
+            if "/" in path
+        }
+        return sorted(
+            directory
+            for directory in tracked_dirs
+            if directory not in allowed_skip and not directory.startswith(".")
+        )
+
+    dirs: list[str] = []
     for p in root.iterdir():
         if p.is_dir() and p.name not in allowed_skip and not p.name.startswith("."):
             dirs.append(p.name)

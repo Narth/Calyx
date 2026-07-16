@@ -125,7 +125,7 @@ def _overlapping_swarm_envelope(*, overlap_declared: bool) -> WorkEnvelope:
                             "write_paths": [shared_path],
                             "deny_paths": ["runtime/**"],
                         },
-                        "allowed_tool_classes": ["read_files"],
+                        "allowed_tool_classes": ["read_files", "write_files"],
                         "network_scope": {"mode": "deny", "allowlist": []},
                         "success_criteria": ["Conflict surfaced"],
                     },
@@ -179,7 +179,7 @@ def test_worker_lease_exceeding_envelope_scope_is_rejected() -> None:
 
 def test_worker_lease_tool_scope_violation_is_rejected() -> None:
     lease = _valid_worker_lease()
-    lease["allowed_tool_classes"] = ["run_shell"]
+    lease["allowed_tool_classes"] = ["read_files", "write_files", "run_shell"]
     valid, errors = validate_worker_lease(lease, envelope_scope_swarm=_envelope_scope_swarm())
 
     assert valid is False

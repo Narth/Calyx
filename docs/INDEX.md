@@ -20,6 +20,10 @@ One primary layer per artifact; optional secondary noted in parentheses.
 - `telemetry/`: Telemetry and envelope schemas (outbox, envelopes).
 - `benchmarks/`: Benchmark harness and datasets.
 - `governance/`: Governance documents (HVD-1, PBS-1, DRP-1, DP-1, EG-1).
+- `policy/`: Active Station policy definitions; policy text does not imply execution without an authorized runtime path.
+- `spec/`: Machine-readable protocol schemas and compatibility specifications.
+- `tests/`: Validation suite for code, governance models, and staged surfaces; tests are evidence, not runtime authority.
+- `rust/`: Local-only advisory observers. They report bounded Station facts and hold no control or network authority.
 - `station_calyx/`: Deprecated; not in current tree. Legacy Station API data was gitignored; use `runtime/`, `cbo_hub/` for active paths.
 - `archive/`: Archived/non-operational modules (do not import from active code).
 - `calyx/cbo/bridge_overseer.py`: CBO heartbeat (manual-run).
@@ -49,6 +53,10 @@ One primary layer per artifact; optional secondary noted in parentheses.
 - `bloomos/`: Conceptual BloomOS specs; runtime files are Safe Mode placeholders. Spec-only materials in bloomos/specs/.
 - `data_contract/`: Advisory/telemetry schemas.
 - `plans/`, `PHASE2_UNIFIED_BLUEPRINT.md`: Integration and phase plans.
+- `proposals/`: Draft proposals awaiting separate review or authorization; presence is not approval.
+- `patches_out/`: Historical and staged patch/runbook artifacts; not an active control plane.
+- `skills/`: Capability-bearing integration wrappers. Each remains noncanonical unless separately classified and authorized.
+- `openclaw/`: Quarantined external-integration snapshot; not part of the canonical Station operator path.
 - `bloomos/kernel_seed_v0.1.md`: Kernel seed spec (not wired or active).
 - `docs/architect_activation_ritual_v1.0.md`: Human-only activation ritual (spec only).
 - `outgoing/CGPT/unified_governance_framework_v1.1.md`: Governance spine for TES/CAS/AGII; advisory-only, non-gating.

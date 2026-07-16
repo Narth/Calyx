@@ -5,6 +5,7 @@ Assert that importing from archive or station_calyx in active code is caught.
 from __future__ import annotations
 
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -32,3 +33,24 @@ def test_bloomos_not_imported_in_kernel_or_execution():
             assert "bloomos" not in text and "from bloomos" not in text and "import bloomos" not in text, (
                 f"{py.relative_to(REPO_ROOT)} must not import bloomos"
             )
+
+
+def test_spine_invariant_documents_all_tracked_top_level_dirs():
+    from tools.check_spine_invariants import check_top_level_documented
+
+    assert check_top_level_documented(REPO_ROOT) == []
+
+
+def test_top_level_inventory_ignores_untracked_workspace_dirs(tmp_path, monkeypatch):
+    from tools import check_spine_invariants
+
+    (tmp_path / "local_only").mkdir()
+    completed = subprocess.CompletedProcess(
+        args=["git", "ls-files", "-z"],
+        returncode=0,
+        stdout=b"calyx/kernel/example.py\0docs/INDEX.md\0.github/workflows/ci.yml\0",
+        stderr=b"",
+    )
+    monkeypatch.setattr(check_spine_invariants.subprocess, "run", lambda *args, **kwargs: completed)
+
+    assert check_spine_invariants.actual_top_level_dirs(tmp_path) == ["calyx", "docs"]

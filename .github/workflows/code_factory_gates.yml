@@ -16,8 +16,8 @@ jobs:
   risk_tier_determination:
     runs-on: ubuntu-latest
     outputs:
-      risk_tier: ${{ steps.determine.outputs.risk_tier }}
-      requires_approval: ${{ steps.determine.outputs.requires_approval }}
+      risk_tier: ${{ steps.set_outputs.outputs.risk_tier }}
+      requires_approval: ${{ steps.set_outputs.outputs.requires_approval }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -191,6 +191,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Gitleaks compares commits from the PR event and must have their
+          # parent history available; a depth-1 checkout produces a partial scan.
+          fetch-depth: 0
       
       - name: Run gitleaks
         uses: gitleaks/gitleaks-action@v2

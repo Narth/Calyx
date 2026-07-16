@@ -67,7 +67,7 @@ def _invalid_overlap_swarm_envelope():
                 "write_paths": ["calyx/kernel/swarm_work_envelope.py"],
                 "deny_paths": ["runtime/**"],
             },
-            "allowed_tool_classes": ["read_files"],
+            "allowed_tool_classes": ["read_files", "write_files"],
             "network_scope": {"mode": "deny", "allowlist": []},
             "success_criteria": ["Conflict surfaced"],
         }
