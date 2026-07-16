@@ -145,8 +145,9 @@ def _recent_health_pattern(history: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def examine(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
+def examine(repo_root: Path | None = None) -> dict[str, Any]:
     global REPO_ROOT, RUNTIME, OUTGOING, SIGNALS_DIR, STATE_PATH
+    repo_root = repo_root or REPO_ROOT
     REPO_ROOT = repo_root
     RUNTIME = repo_root / "runtime"
     OUTGOING = repo_root / "outgoing"

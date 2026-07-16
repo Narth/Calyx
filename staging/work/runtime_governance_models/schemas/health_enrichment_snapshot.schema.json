@@ -1,0 +1,106 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "health_enrichment_snapshot",
+      "default": "health_enrichment_snapshot",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "authoritative_snapshot_ref": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Authoritative Snapshot Ref",
+      "type": "string"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "enrichment_interval_seconds": {
+      "exclusiveMinimum": 0,
+      "title": "Enrichment Interval Seconds",
+      "type": "number"
+    },
+    "enrichment_sample_age_ms": {
+      "minimum": 0,
+      "title": "Enrichment Sample Age Ms",
+      "type": "integer"
+    },
+    "entropy_sources": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Entropy Sources",
+      "type": "array"
+    },
+    "gpu_metrics_present": {
+      "title": "Gpu Metrics Present",
+      "type": "boolean"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "sampling_lane": {
+      "const": "enrichment_path",
+      "default": "enrichment_path",
+      "title": "Sampling Lane",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.health.enrichment_snapshot",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "const": "station_health_loop",
+      "default": "station_health_loop",
+      "title": "Service Name",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "top_processes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Top Processes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "authoritative_snapshot_ref",
+    "enrichment_interval_seconds",
+    "enrichment_sample_age_ms",
+    "gpu_metrics_present",
+    "notes"
+  ],
+  "title": "HealthEnrichmentSnapshot",
+  "type": "object"
+}

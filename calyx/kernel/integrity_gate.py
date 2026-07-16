@@ -45,14 +45,14 @@ def acquire_coordinator_lease(runtime_dir: Path):
     try:
         fd = os.open(str(lease_path), os.O_RDWR | os.O_CREAT, 0o600)
         if sys.platform == "win32":
-            import msvcrt
+            import msvcrt  # pylint: disable=import-error
             try:
                 msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
             except OSError:
                 yield False
                 return
         else:
-            import fcntl
+            import fcntl  # pylint: disable=import-error
             try:
                 fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except (OSError, BlockingIOError):
@@ -66,10 +66,10 @@ def acquire_coordinator_lease(runtime_dir: Path):
         if fd is not None and acquired:
             try:
                 if sys.platform == "win32":
-                    import msvcrt
+                    import msvcrt  # pylint: disable=import-error
                     msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
                 else:
-                    import fcntl
+                    import fcntl  # pylint: disable=import-error
                     fcntl.flock(fd, fcntl.LOCK_UN)
             except Exception:
                 pass

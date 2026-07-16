@@ -1,0 +1,1825 @@
+{
+  "$defs": {
+    "BridgeObserverContext": {
+      "additionalProperties": false,
+      "properties": {
+        "backoff_active": {
+          "default": false,
+          "title": "Backoff Active",
+          "type": "boolean"
+        },
+        "backoff_seconds": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Backoff Seconds",
+          "type": "integer"
+        },
+        "dispatched_count": {
+          "minimum": 0,
+          "title": "Dispatched Count",
+          "type": "integer"
+        },
+        "idle_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "no_objectives_file",
+                "empty_objectives_file",
+                "no_dispatchable_work"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idle Reason"
+        },
+        "launch_notice_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "prelaunch_declared",
+                "launch_adjacent_declared",
+                "retroactive_classification_only"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Launch Notice Status"
+        },
+        "objectives_count": {
+          "minimum": 0,
+          "title": "Objectives Count",
+          "type": "integer"
+        },
+        "planned_tasks_count": {
+          "minimum": 0,
+          "title": "Planned Tasks Count",
+          "type": "integer"
+        },
+        "truthful_visibility_preserved": {
+          "default": true,
+          "title": "Truthful Visibility Preserved",
+          "type": "boolean"
+        },
+        "work_state": {
+          "enum": [
+            "objectives_present",
+            "objectives_absent",
+            "objectives_empty"
+          ],
+          "title": "Work State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "objectives_count",
+        "planned_tasks_count",
+        "dispatched_count",
+        "work_state"
+      ],
+      "title": "BridgeObserverContext",
+      "type": "object"
+    },
+    "BridgePulseClassification": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "bridge_pulse_classification",
+          "default": "bridge_pulse_classification",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "backoff_active": {
+          "title": "Backoff Active",
+          "type": "boolean"
+        },
+        "backoff_seconds": {
+          "minimum": 0,
+          "title": "Backoff Seconds",
+          "type": "integer"
+        },
+        "corr_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "dispatched_count": {
+          "minimum": 0,
+          "title": "Dispatched Count",
+          "type": "integer"
+        },
+        "idle_mode_active": {
+          "title": "Idle Mode Active",
+          "type": "boolean"
+        },
+        "idle_reason": {
+          "enum": [
+            "none",
+            "no_objectives_file",
+            "empty_objectives_file",
+            "no_dispatchable_work"
+          ],
+          "title": "Idle Reason",
+          "type": "string"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "objectives_count": {
+          "minimum": 0,
+          "title": "Objectives Count",
+          "type": "integer"
+        },
+        "planned_tasks_count": {
+          "minimum": 0,
+          "title": "Planned Tasks Count",
+          "type": "integer"
+        },
+        "pulse_class": {
+          "enum": [
+            "active",
+            "idle"
+          ],
+          "title": "Pulse Class",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.bridge.pulse_classification",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "const": "bridge_overseer",
+          "default": "bridge_overseer",
+          "title": "Service Name",
+          "type": "string"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "truthful_visibility_preserved": {
+          "title": "Truthful Visibility Preserved",
+          "type": "boolean"
+        },
+        "work_state": {
+          "enum": [
+            "objectives_present",
+            "objectives_absent",
+            "objectives_empty"
+          ],
+          "title": "Work State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "corr_id",
+        "timestamp_utc",
+        "pulse_class",
+        "work_state",
+        "idle_reason",
+        "idle_mode_active",
+        "backoff_active",
+        "backoff_seconds",
+        "objectives_count",
+        "planned_tasks_count",
+        "dispatched_count",
+        "truthful_visibility_preserved",
+        "notes"
+      ],
+      "title": "BridgePulseClassification",
+      "type": "object"
+    },
+    "HealthAuthoritativeSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "health_authoritative_snapshot",
+          "default": "health_authoritative_snapshot",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "cadence_compliant": {
+          "title": "Cadence Compliant",
+          "type": "boolean"
+        },
+        "corr_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "cpu_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Pct"
+        },
+        "declared_interval_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Declared Interval Seconds",
+          "type": "number"
+        },
+        "expiry_sweep_invoked": {
+          "title": "Expiry Sweep Invoked",
+          "type": "boolean"
+        },
+        "freshness_state": {
+          "enum": [
+            "fresh",
+            "aging",
+            "stale",
+            "unknown"
+          ],
+          "title": "Freshness State",
+          "type": "string"
+        },
+        "health_state": {
+          "enum": [
+            "pass",
+            "warn",
+            "fail",
+            "unknown"
+          ],
+          "title": "Health State",
+          "type": "string"
+        },
+        "memory_pressure_tier": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Pressure Tier"
+        },
+        "observed_loop_elapsed_ms": {
+          "minimum": 0,
+          "title": "Observed Loop Elapsed Ms",
+          "type": "integer"
+        },
+        "observed_sleep_ms": {
+          "minimum": 0,
+          "title": "Observed Sleep Ms",
+          "type": "integer"
+        },
+        "ram_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Pct"
+        },
+        "sampling_lane": {
+          "const": "fast_path",
+          "default": "fast_path",
+          "title": "Sampling Lane",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.health.authoritative_snapshot",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "const": "station_health_loop",
+          "default": "station_health_loop",
+          "title": "Service Name",
+          "type": "string"
+        },
+        "stale_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stale Reason"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "truth_contract_surface": {
+          "const": "runtime/station_health.json",
+          "default": "runtime/station_health.json",
+          "title": "Truth Contract Surface",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "corr_id",
+        "timestamp_utc",
+        "declared_interval_seconds",
+        "observed_loop_elapsed_ms",
+        "observed_sleep_ms",
+        "cadence_compliant",
+        "health_state",
+        "freshness_state",
+        "expiry_sweep_invoked"
+      ],
+      "title": "HealthAuthoritativeSnapshot",
+      "type": "object"
+    },
+    "HealthEnrichmentSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "health_enrichment_snapshot",
+          "default": "health_enrichment_snapshot",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "authoritative_snapshot_ref": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Authoritative Snapshot Ref",
+          "type": "string"
+        },
+        "corr_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "enrichment_interval_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Enrichment Interval Seconds",
+          "type": "number"
+        },
+        "enrichment_sample_age_ms": {
+          "minimum": 0,
+          "title": "Enrichment Sample Age Ms",
+          "type": "integer"
+        },
+        "entropy_sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Entropy Sources",
+          "type": "array"
+        },
+        "gpu_metrics_present": {
+          "title": "Gpu Metrics Present",
+          "type": "boolean"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "sampling_lane": {
+          "const": "enrichment_path",
+          "default": "enrichment_path",
+          "title": "Sampling Lane",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.health.enrichment_snapshot",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "const": "station_health_loop",
+          "default": "station_health_loop",
+          "title": "Service Name",
+          "type": "string"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "top_processes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Top Processes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "corr_id",
+        "timestamp_utc",
+        "authoritative_snapshot_ref",
+        "enrichment_interval_seconds",
+        "enrichment_sample_age_ms",
+        "gpu_metrics_present",
+        "notes"
+      ],
+      "title": "HealthEnrichmentSnapshot",
+      "type": "object"
+    },
+    "HealthObserverContext": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Pct"
+        },
+        "declared_interval_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Declared Interval Seconds",
+          "type": "number"
+        },
+        "enrichment_interval_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enrichment Interval Seconds"
+        },
+        "enrichment_sample_age_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enrichment Sample Age Ms"
+        },
+        "entropy_sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Entropy Sources",
+          "type": "array"
+        },
+        "expiry_sweep_invoked": {
+          "title": "Expiry Sweep Invoked",
+          "type": "boolean"
+        },
+        "freshness_state": {
+          "enum": [
+            "fresh",
+            "aging",
+            "stale",
+            "unknown"
+          ],
+          "title": "Freshness State",
+          "type": "string"
+        },
+        "gpu_metrics_present": {
+          "default": false,
+          "title": "Gpu Metrics Present",
+          "type": "boolean"
+        },
+        "health_state": {
+          "enum": [
+            "pass",
+            "warn",
+            "fail",
+            "unknown"
+          ],
+          "title": "Health State",
+          "type": "string"
+        },
+        "launch_notice_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "launch_adjacent_declared",
+                "retroactive_classification_only"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Launch Notice Status"
+        },
+        "memory_pressure_tier": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Pressure Tier"
+        },
+        "observed_loop_elapsed_ms": {
+          "minimum": 0,
+          "title": "Observed Loop Elapsed Ms",
+          "type": "integer"
+        },
+        "observed_sleep_ms": {
+          "minimum": 0,
+          "title": "Observed Sleep Ms",
+          "type": "integer"
+        },
+        "ram_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Pct"
+        },
+        "stale_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stale Reason"
+        },
+        "top_processes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Top Processes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "declared_interval_seconds",
+        "observed_loop_elapsed_ms",
+        "observed_sleep_ms",
+        "health_state",
+        "freshness_state",
+        "expiry_sweep_invoked"
+      ],
+      "title": "HealthObserverContext",
+      "type": "object"
+    },
+    "ObservedProcess": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "minLength": 3,
+          "title": "Command Line",
+          "type": "string"
+        },
+        "executable_path": {
+          "minLength": 3,
+          "title": "Executable Path",
+          "type": "string"
+        },
+        "parent_pid": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Pid"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "started_at_utc": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Utc"
+        }
+      },
+      "required": [
+        "pid",
+        "executable_path",
+        "command_line"
+      ],
+      "title": "ObservedProcess",
+      "type": "object"
+    },
+    "RuntimeCaptureAmbiguityMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguity_type": {
+          "enum": [
+            "missing_command_line",
+            "missing_executable_path",
+            "health_cadence_unresolved",
+            "health_expiry_sweep_unresolved",
+            "bridge_idle_reason_unresolved",
+            "bridge_work_state_unresolved",
+            "no_matching_service_processes"
+          ],
+          "title": "Ambiguity Type",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "runtime_capture_ambiguity_marker",
+          "default": "runtime_capture_ambiguity_marker",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "capture_id": {
+          "minLength": 3,
+          "title": "Capture Id",
+          "type": "string"
+        },
+        "corr_id": {
+          "minLength": 3,
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "marker_id": {
+          "minLength": 3,
+          "title": "Marker Id",
+          "type": "string"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.capture.ambiguity_marker",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer",
+            "capture_layer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "marker_id",
+        "corr_id",
+        "capture_id",
+        "service_name",
+        "ambiguity_type",
+        "notes"
+      ],
+      "title": "RuntimeCaptureAmbiguityMarker",
+      "type": "object"
+    },
+    "RuntimeCaptureIngestionTrace": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type": {
+          "const": "runtime_capture_ingestion_trace",
+          "default": "runtime_capture_ingestion_trace",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "capture_id": {
+          "minLength": 3,
+          "title": "Capture Id",
+          "type": "string"
+        },
+        "corr_id": {
+          "minLength": 3,
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "defaulted_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Defaulted Fields",
+          "type": "array"
+        },
+        "dropped_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dropped Fields",
+          "type": "array"
+        },
+        "mapped_process_count": {
+          "minimum": 0,
+          "title": "Mapped Process Count",
+          "type": "integer"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.capture.ingestion_trace",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_process_count": {
+          "minimum": 0,
+          "title": "Source Process Count",
+          "type": "integer"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "trace_id": {
+          "minLength": 3,
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "trace_id",
+        "corr_id",
+        "capture_id",
+        "timestamp_utc",
+        "source_process_count",
+        "mapped_process_count",
+        "notes"
+      ],
+      "title": "RuntimeCaptureIngestionTrace",
+      "type": "object"
+    },
+    "RuntimeCaptureMappingValidation": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type": {
+          "const": "runtime_capture_mapping_validation",
+          "default": "runtime_capture_mapping_validation",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "capture_id": {
+          "minLength": 3,
+          "title": "Capture Id",
+          "type": "string"
+        },
+        "corr_id": {
+          "minLength": 3,
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "no_mutation_performed": {
+          "const": true,
+          "default": true,
+          "title": "No Mutation Performed",
+          "type": "boolean"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "observer_emission_valid": {
+          "title": "Observer Emission Valid",
+          "type": "boolean"
+        },
+        "schema_name": {
+          "const": "runtime.capture.mapping_validation",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshot_schema_valid": {
+          "title": "Snapshot Schema Valid",
+          "type": "boolean"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "validation_id": {
+          "minLength": 3,
+          "title": "Validation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "validation_id",
+        "corr_id",
+        "capture_id",
+        "timestamp_utc",
+        "snapshot_schema_valid",
+        "observer_emission_valid",
+        "notes"
+      ],
+      "title": "RuntimeCaptureMappingValidation",
+      "type": "object"
+    },
+    "RuntimeCaptureNormalizationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguity_markers": {
+          "items": {
+            "$ref": "#/$defs/RuntimeCaptureAmbiguityMarker"
+          },
+          "title": "Ambiguity Markers",
+          "type": "array"
+        },
+        "artifact_type": {
+          "const": "runtime_capture_normalization_result",
+          "default": "runtime_capture_normalization_result",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "canonical_snapshot": {
+          "$ref": "#/$defs/RuntimeObserverSnapshot"
+        },
+        "capture_id": {
+          "minLength": 3,
+          "title": "Capture Id",
+          "type": "string"
+        },
+        "corr_id": {
+          "minLength": 3,
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "ingestion_trace": {
+          "$ref": "#/$defs/RuntimeCaptureIngestionTrace"
+        },
+        "normalized_at_utc": {
+          "format": "date-time",
+          "title": "Normalized At Utc",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.capture.normalization_result",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "capture_id",
+        "corr_id",
+        "normalized_at_utc",
+        "canonical_snapshot",
+        "ingestion_trace"
+      ],
+      "title": "RuntimeCaptureNormalizationResult",
+      "type": "object"
+    },
+    "RuntimeGovernanceBundle": {
+      "additionalProperties": false,
+      "properties": {
+        "bridge_pulse_classification": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BridgePulseClassification"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "health_authoritative_snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HealthAuthoritativeSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "health_enrichment_snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HealthEnrichmentSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "runtime_launch_notice": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuntimeLaunchNotice"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "runtime_multiplicity_noncompliance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuntimeMultiplicityNoncompliance"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "runtime_multiplicity_validation": {
+          "$ref": "#/$defs/RuntimeMultiplicityValidation"
+        },
+        "scenario_name": {
+          "minLength": 1,
+          "title": "Scenario Name",
+          "type": "string"
+        },
+        "service_declaration": {
+          "$ref": "#/$defs/RuntimeServiceDeclaration"
+        }
+      },
+      "required": [
+        "scenario_name",
+        "description",
+        "service_declaration",
+        "runtime_multiplicity_validation"
+      ],
+      "title": "RuntimeGovernanceBundle",
+      "type": "object"
+    },
+    "RuntimeLaunchNotice": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "runtime_launch_notice",
+          "default": "runtime_launch_notice",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "child_or_additional_process_identity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuntimeProcessIdentity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "corr_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "declared_by_surface": {
+          "minLength": 3,
+          "title": "Declared By Surface",
+          "type": "string"
+        },
+        "expected_lifecycle": {
+          "minLength": 1,
+          "title": "Expected Lifecycle",
+          "type": "string"
+        },
+        "intended_runtime_role": {
+          "enum": [
+            "authoritative_writer",
+            "health_enrichment_sampler",
+            "launcher_wrapper",
+            "effective_service_runtime",
+            "runtime_supervisor",
+            "bridge_cycle_owner",
+            "bridge_idle_monitor",
+            "duplicate_peer"
+          ],
+          "title": "Intended Runtime Role",
+          "type": "string"
+        },
+        "launch_notice_status": {
+          "enum": [
+            "prelaunch_declared",
+            "launch_adjacent_declared",
+            "retroactive_classification_only"
+          ],
+          "title": "Launch Notice Status",
+          "type": "string"
+        },
+        "launch_reason": {
+          "minLength": 1,
+          "title": "Launch Reason",
+          "type": "string"
+        },
+        "multiplicity_posture": {
+          "enum": [
+            "single_instance_only",
+            "wrapper_child_expected",
+            "bounded_multiplicity_optional",
+            "bounded_multiplicity_required"
+          ],
+          "title": "Multiplicity Posture",
+          "type": "string"
+        },
+        "parent_process_identity": {
+          "$ref": "#/$defs/RuntimeProcessIdentity"
+        },
+        "reconciliation_condition": {
+          "minLength": 1,
+          "title": "Reconciliation Condition",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.launch_notice",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "steady_state_or_temporary": {
+          "enum": [
+            "steady_state",
+            "temporary"
+          ],
+          "title": "Steady State Or Temporary",
+          "type": "string"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "topology_class": {
+          "enum": [
+            "single_process",
+            "wrapper_child_runtime_pair",
+            "bounded_multi_surface_runtime"
+          ],
+          "title": "Topology Class",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "corr_id",
+        "timestamp_utc",
+        "service_name",
+        "declared_by_surface",
+        "topology_class",
+        "multiplicity_posture",
+        "launch_reason",
+        "parent_process_identity",
+        "intended_runtime_role",
+        "steady_state_or_temporary",
+        "expected_lifecycle",
+        "reconciliation_condition",
+        "launch_notice_status"
+      ],
+      "title": "RuntimeLaunchNotice",
+      "type": "object"
+    },
+    "RuntimeMultiplicityNoncompliance": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "runtime_multiplicity_noncompliance",
+          "default": "runtime_multiplicity_noncompliance",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "corr_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "declaration_ref": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Declaration Ref",
+          "type": "string"
+        },
+        "noncompliance_type": {
+          "enum": [
+            "missing_launch_notice",
+            "duplicate_writer_attempt",
+            "duplicate_overseer_attempt",
+            "temporary_persistence_violation"
+          ],
+          "title": "Noncompliance Type",
+          "type": "string"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "required_operator_visibility": {
+          "enum": [
+            "warn",
+            "review_required"
+          ],
+          "title": "Required Operator Visibility",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.multiplicity.noncompliance",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "moderate",
+            "high"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "validation_ref": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Validation Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "corr_id",
+        "timestamp_utc",
+        "service_name",
+        "declaration_ref",
+        "validation_ref",
+        "noncompliance_type",
+        "severity",
+        "required_operator_visibility",
+        "notes"
+      ],
+      "title": "RuntimeMultiplicityNoncompliance",
+      "type": "object"
+    },
+    "RuntimeMultiplicityValidation": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "runtime_multiplicity_validation",
+          "default": "runtime_multiplicity_validation",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "classification_notes": {
+          "minLength": 1,
+          "title": "Classification Notes",
+          "type": "string"
+        },
+        "corr_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "declaration_ref": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Declaration Ref",
+          "type": "string"
+        },
+        "observed_process_identities": {
+          "items": {
+            "$ref": "#/$defs/RuntimeProcessIdentity"
+          },
+          "minItems": 1,
+          "title": "Observed Process Identities",
+          "type": "array"
+        },
+        "posture_consequence": {
+          "enum": [
+            "none",
+            "warning_posture",
+            "degraded_trust_posture",
+            "sunrise_noncompliance",
+            "operator_review_required"
+          ],
+          "title": "Posture Consequence",
+          "type": "string"
+        },
+        "required_launch_notice_refs": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 3,
+            "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+            "type": "string"
+          },
+          "title": "Required Launch Notice Refs",
+          "type": "array"
+        },
+        "schema_name": {
+          "const": "runtime.multiplicity.validation",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "timestamp_utc": {
+          "format": "date-time",
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "validation_outcome": {
+          "enum": [
+            "topology_valid",
+            "multiplicity_declared_and_compliant",
+            "multiplicity_declared_but_noncompliant",
+            "undeclared_multiplicity",
+            "duplicate_concerning"
+          ],
+          "title": "Validation Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "corr_id",
+        "timestamp_utc",
+        "service_name",
+        "declaration_ref",
+        "observed_process_identities",
+        "validation_outcome",
+        "posture_consequence",
+        "classification_notes"
+      ],
+      "title": "RuntimeMultiplicityValidation",
+      "type": "object"
+    },
+    "RuntimeObserverEmission": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type": {
+          "const": "runtime_observer_emission",
+          "default": "runtime_observer_emission",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "captured_at_utc": {
+          "format": "date-time",
+          "title": "Captured At Utc",
+          "type": "string"
+        },
+        "corr_id": {
+          "minLength": 3,
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "emitted_at_utc": {
+          "format": "date-time",
+          "title": "Emitted At Utc",
+          "type": "string"
+        },
+        "governance_bundles": {
+          "items": {
+            "$ref": "#/$defs/RuntimeGovernanceBundle"
+          },
+          "minItems": 1,
+          "title": "Governance Bundles",
+          "type": "array"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.observer.emission",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "minLength": 3,
+          "title": "Snapshot Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "snapshot_id",
+        "corr_id",
+        "captured_at_utc",
+        "emitted_at_utc",
+        "governance_bundles",
+        "notes"
+      ],
+      "title": "RuntimeObserverEmission",
+      "type": "object"
+    },
+    "RuntimeObserverSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_type": {
+          "const": "runtime_observer_process_snapshot",
+          "default": "runtime_observer_process_snapshot",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "bridge_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BridgeObserverContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "capture_notes": {
+          "minLength": 1,
+          "title": "Capture Notes",
+          "type": "string"
+        },
+        "captured_at_utc": {
+          "format": "date-time",
+          "title": "Captured At Utc",
+          "type": "string"
+        },
+        "corr_id": {
+          "minLength": 3,
+          "title": "Corr Id",
+          "type": "string"
+        },
+        "health_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HealthObserverContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "observer_mode": {
+          "const": "staging_only",
+          "default": "staging_only",
+          "title": "Observer Mode",
+          "type": "string"
+        },
+        "processes": {
+          "items": {
+            "$ref": "#/$defs/ObservedProcess"
+          },
+          "minItems": 1,
+          "title": "Processes",
+          "type": "array"
+        },
+        "schema_name": {
+          "const": "runtime.observer.process_snapshot",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "minLength": 3,
+          "title": "Snapshot Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "snapshot_id",
+        "corr_id",
+        "captured_at_utc",
+        "processes",
+        "capture_notes"
+      ],
+      "title": "RuntimeObserverSnapshot",
+      "type": "object"
+    },
+    "RuntimeProcessIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "minLength": 3,
+          "title": "Command Line",
+          "type": "string"
+        },
+        "executable_path": {
+          "minLength": 3,
+          "title": "Executable Path",
+          "type": "string"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "started_at_utc": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Utc"
+        }
+      },
+      "required": [
+        "pid",
+        "executable_path",
+        "command_line"
+      ],
+      "title": "RuntimeProcessIdentity",
+      "type": "object"
+    },
+    "RuntimeServiceDeclaration": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "const": "runtime_service_declaration",
+          "default": "runtime_service_declaration",
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "authoritative_runtime_role": {
+          "enum": [
+            "authoritative_writer",
+            "health_enrichment_sampler",
+            "launcher_wrapper",
+            "effective_service_runtime",
+            "runtime_supervisor",
+            "bridge_cycle_owner",
+            "bridge_idle_monitor",
+            "duplicate_peer"
+          ],
+          "title": "Authoritative Runtime Role",
+          "type": "string"
+        },
+        "expected_runtime_roles": {
+          "items": {
+            "enum": [
+              "authoritative_writer",
+              "health_enrichment_sampler",
+              "launcher_wrapper",
+              "effective_service_runtime",
+              "runtime_supervisor",
+              "bridge_cycle_owner",
+              "bridge_idle_monitor",
+              "duplicate_peer"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Expected Runtime Roles",
+          "type": "array"
+        },
+        "launch_notice_required": {
+          "title": "Launch Notice Required",
+          "type": "boolean"
+        },
+        "multiplicity_posture": {
+          "enum": [
+            "single_instance_only",
+            "wrapper_child_expected",
+            "bounded_multiplicity_optional",
+            "bounded_multiplicity_required"
+          ],
+          "title": "Multiplicity Posture",
+          "type": "string"
+        },
+        "schema_name": {
+          "const": "runtime.service_declaration",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "topology_class": {
+          "enum": [
+            "single_process",
+            "wrapper_child_runtime_pair",
+            "bounded_multi_surface_runtime"
+          ],
+          "title": "Topology Class",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "artifact_id",
+        "service_name",
+        "topology_class",
+        "multiplicity_posture",
+        "authoritative_runtime_role",
+        "expected_runtime_roles",
+        "launch_notice_required"
+      ],
+      "title": "RuntimeServiceDeclaration",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_capture_classification_result",
+      "default": "runtime_capture_classification_result",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "classified_at_utc": {
+      "format": "date-time",
+      "title": "Classified At Utc",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "mapping_validation": {
+      "$ref": "#/$defs/RuntimeCaptureMappingValidation"
+    },
+    "normalization": {
+      "$ref": "#/$defs/RuntimeCaptureNormalizationResult"
+    },
+    "observer_emission": {
+      "$ref": "#/$defs/RuntimeObserverEmission"
+    },
+    "schema_name": {
+      "const": "runtime.capture.classification_result",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "capture_id",
+    "corr_id",
+    "classified_at_utc",
+    "normalization",
+    "observer_emission",
+    "mapping_validation"
+  ],
+  "title": "RuntimeCaptureClassificationResult",
+  "type": "object"
+}

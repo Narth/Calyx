@@ -1,0 +1,88 @@
+{
+  "bridge_pulse_classification": null,
+  "description": "Health loop separates fast authoritative truth from slower enrichment sampling.",
+  "health_authoritative_snapshot": {
+    "artifact_id": "health.decoupled.auth",
+    "artifact_type": "health_authoritative_snapshot",
+    "cadence_compliant": true,
+    "corr_id": "health.enrichment.decoupled",
+    "cpu_pct": 35,
+    "declared_interval_seconds": 1.0,
+    "expiry_sweep_invoked": true,
+    "freshness_state": "fresh",
+    "health_state": "pass",
+    "memory_pressure_tier": 0,
+    "observed_loop_elapsed_ms": 170,
+    "observed_sleep_ms": 830,
+    "ram_pct": 43,
+    "sampling_lane": "fast_path",
+    "schema_name": "runtime.health.authoritative_snapshot",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "stale_reason": null,
+    "timestamp_utc": "2026-03-31T19:22:00Z",
+    "truth_contract_surface": "runtime/station_health.json"
+  },
+  "health_enrichment_snapshot": {
+    "artifact_id": "health.decoupled.enrich",
+    "artifact_type": "health_enrichment_snapshot",
+    "authoritative_snapshot_ref": "health.decoupled.auth",
+    "corr_id": "health.enrichment.decoupled",
+    "enrichment_interval_seconds": 15.0,
+    "enrichment_sample_age_ms": 4000,
+    "entropy_sources": [
+      "Code#27864"
+    ],
+    "gpu_metrics_present": false,
+    "notes": "Authoritative health remains fresh while enrichment runs on a slower lane.",
+    "sampling_lane": "enrichment_path",
+    "schema_name": "runtime.health.enrichment_snapshot",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "timestamp_utc": "2026-03-31T19:22:10Z",
+    "top_processes": [
+      "Code#27864",
+      "powershell#35932"
+    ]
+  },
+  "runtime_launch_notice": null,
+  "runtime_multiplicity_noncompliance": null,
+  "runtime_multiplicity_validation": {
+    "artifact_id": "health.decoupled.validation",
+    "artifact_type": "runtime_multiplicity_validation",
+    "classification_notes": "Single writer with explicit fast-path and enrichment-path separation.",
+    "corr_id": "health.enrichment.decoupled",
+    "declaration_ref": "station_health_loop.declaration",
+    "observed_process_identities": [
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 35932,
+        "started_at_utc": "2026-03-31T16:57:09Z"
+      }
+    ],
+    "posture_consequence": "none",
+    "required_launch_notice_refs": [],
+    "schema_name": "runtime.multiplicity.validation",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "timestamp_utc": "2026-03-31T19:22:00Z",
+    "validation_outcome": "topology_valid"
+  },
+  "scenario_name": "enrichment_decoupling_behavior",
+  "service_declaration": {
+    "artifact_id": "station_health_loop.declaration",
+    "artifact_type": "runtime_service_declaration",
+    "authoritative_runtime_role": "authoritative_writer",
+    "expected_runtime_roles": [
+      "authoritative_writer",
+      "health_enrichment_sampler"
+    ],
+    "launch_notice_required": true,
+    "multiplicity_posture": "single_instance_only",
+    "schema_name": "runtime.service_declaration",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "topology_class": "single_process"
+  }
+}

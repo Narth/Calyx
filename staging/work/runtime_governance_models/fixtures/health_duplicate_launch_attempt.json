@@ -1,0 +1,116 @@
+{
+  "bridge_pulse_classification": null,
+  "description": "Duplicate health-loop launch attempt is classified rather than normalized.",
+  "health_authoritative_snapshot": {
+    "artifact_id": "health.duplicate.auth",
+    "artifact_type": "health_authoritative_snapshot",
+    "cadence_compliant": true,
+    "corr_id": "health.duplicate.launch",
+    "cpu_pct": 41,
+    "declared_interval_seconds": 1.0,
+    "expiry_sweep_invoked": true,
+    "freshness_state": "fresh",
+    "health_state": "pass",
+    "memory_pressure_tier": 0,
+    "observed_loop_elapsed_ms": 260,
+    "observed_sleep_ms": 740,
+    "ram_pct": 43,
+    "sampling_lane": "fast_path",
+    "schema_name": "runtime.health.authoritative_snapshot",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "stale_reason": null,
+    "timestamp_utc": "2026-03-31T19:16:00Z",
+    "truth_contract_surface": "runtime/station_health.json"
+  },
+  "health_enrichment_snapshot": null,
+  "runtime_launch_notice": {
+    "artifact_id": "health.duplicate.notice",
+    "artifact_type": "runtime_launch_notice",
+    "child_or_additional_process_identity": {
+      "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+      "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "pid": 39776,
+      "started_at_utc": "2026-03-31T16:57:09Z"
+    },
+    "corr_id": "health.duplicate.launch",
+    "declared_by_surface": "Scripts/start_calyx_core_services.ps1",
+    "expected_lifecycle": "Secondary launch must exit without becoming authoritative.",
+    "intended_runtime_role": "duplicate_peer",
+    "launch_notice_status": "launch_adjacent_declared",
+    "launch_reason": "duplicate launch attempt detected during startup reconciliation.",
+    "multiplicity_posture": "single_instance_only",
+    "parent_process_identity": {
+      "command_line": "powershell -File C:\\Calyx_Terminal\\Scripts\\start_calyx_core_services.ps1",
+      "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "pid": 39060,
+      "started_at_utc": "2026-03-31T16:57:08Z"
+    },
+    "reconciliation_condition": "Secondary writer denied; single authoritative writer remains active.",
+    "schema_name": "runtime.launch_notice",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "steady_state_or_temporary": "temporary",
+    "timestamp_utc": "2026-03-31T19:16:00Z",
+    "topology_class": "single_process"
+  },
+  "runtime_multiplicity_noncompliance": {
+    "artifact_id": "health.duplicate.noncompliance",
+    "artifact_type": "runtime_multiplicity_noncompliance",
+    "corr_id": "health.duplicate.launch",
+    "declaration_ref": "station_health_loop.declaration",
+    "noncompliance_type": "duplicate_writer_attempt",
+    "notes": "Duplicate writer attempt must remain visible and non-authoritative.",
+    "required_operator_visibility": "review_required",
+    "schema_name": "runtime.multiplicity.noncompliance",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "severity": "high",
+    "timestamp_utc": "2026-03-31T19:16:02Z",
+    "validation_ref": "health.duplicate.validation"
+  },
+  "runtime_multiplicity_validation": {
+    "artifact_id": "health.duplicate.validation",
+    "artifact_type": "runtime_multiplicity_validation",
+    "classification_notes": "Duplicate writer attempt classified and not normalized into compliant steady state.",
+    "corr_id": "health.duplicate.launch",
+    "declaration_ref": "station_health_loop.declaration",
+    "observed_process_identities": [
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 35932,
+        "started_at_utc": "2026-03-31T16:57:09Z"
+      },
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 39776,
+        "started_at_utc": "2026-03-31T16:57:09Z"
+      }
+    ],
+    "posture_consequence": "operator_review_required",
+    "required_launch_notice_refs": [],
+    "schema_name": "runtime.multiplicity.validation",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "timestamp_utc": "2026-03-31T19:16:01Z",
+    "validation_outcome": "duplicate_concerning"
+  },
+  "scenario_name": "duplicate_launch_attempt_classified",
+  "service_declaration": {
+    "artifact_id": "station_health_loop.declaration",
+    "artifact_type": "runtime_service_declaration",
+    "authoritative_runtime_role": "authoritative_writer",
+    "expected_runtime_roles": [
+      "authoritative_writer",
+      "health_enrichment_sampler"
+    ],
+    "launch_notice_required": true,
+    "multiplicity_posture": "single_instance_only",
+    "schema_name": "runtime.service_declaration",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "topology_class": "single_process"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "bridge_pulse_classification": null,
+  "description": "Health loop preserves honest stale/unknown behavior instead of faking fresh continuity.",
+  "health_authoritative_snapshot": {
+    "artifact_id": "health.stale.auth",
+    "artifact_type": "health_authoritative_snapshot",
+    "cadence_compliant": false,
+    "corr_id": "health.stale.unknown",
+    "cpu_pct": null,
+    "declared_interval_seconds": 1.0,
+    "expiry_sweep_invoked": false,
+    "freshness_state": "stale",
+    "health_state": "unknown",
+    "memory_pressure_tier": null,
+    "observed_loop_elapsed_ms": 0,
+    "observed_sleep_ms": 0,
+    "ram_pct": null,
+    "sampling_lane": "fast_path",
+    "schema_name": "runtime.health.authoritative_snapshot",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "stale_reason": "authoritative health sample expired beyond freshness window",
+    "timestamp_utc": "2026-03-31T19:20:00Z",
+    "truth_contract_surface": "runtime/station_health.json"
+  },
+  "health_enrichment_snapshot": null,
+  "runtime_launch_notice": null,
+  "runtime_multiplicity_noncompliance": null,
+  "runtime_multiplicity_validation": {
+    "artifact_id": "health.stale.validation",
+    "artifact_type": "runtime_multiplicity_validation",
+    "classification_notes": "Single process remains declared, but health truth is stale and must surface unknown state.",
+    "corr_id": "health.stale.unknown",
+    "declaration_ref": "station_health_loop.declaration",
+    "observed_process_identities": [
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 35932,
+        "started_at_utc": "2026-03-31T16:57:09Z"
+      }
+    ],
+    "posture_consequence": "warning_posture",
+    "required_launch_notice_refs": [],
+    "schema_name": "runtime.multiplicity.validation",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "timestamp_utc": "2026-03-31T19:20:00Z",
+    "validation_outcome": "topology_valid"
+  },
+  "scenario_name": "stale_unknown_state",
+  "service_declaration": {
+    "artifact_id": "station_health_loop.declaration",
+    "artifact_type": "runtime_service_declaration",
+    "authoritative_runtime_role": "authoritative_writer",
+    "expected_runtime_roles": [
+      "authoritative_writer",
+      "health_enrichment_sampler"
+    ],
+    "launch_notice_required": true,
+    "multiplicity_posture": "single_instance_only",
+    "schema_name": "runtime.service_declaration",
+    "schema_version": "1.0.0",
+    "service_name": "station_health_loop",
+    "topology_class": "single_process"
+  }
+}

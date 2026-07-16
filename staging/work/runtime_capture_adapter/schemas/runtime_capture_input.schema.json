@@ -1,0 +1,511 @@
+{
+  "$defs": {
+    "CapturedBridgePulse": {
+      "additionalProperties": false,
+      "properties": {
+        "captured_at_utc": {
+          "format": "date-time",
+          "title": "Captured At Utc",
+          "type": "string"
+        },
+        "details": {
+          "minLength": 1,
+          "title": "Details",
+          "type": "string"
+        },
+        "idle_reason_hint": {
+          "anyOf": [
+            {
+              "enum": [
+                "no_objectives_file",
+                "empty_objectives_file",
+                "no_dispatchable_work"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idle Reason Hint"
+        },
+        "launch_notice_status_hint": {
+          "anyOf": [
+            {
+              "enum": [
+                "prelaunch_declared",
+                "launch_adjacent_declared",
+                "retroactive_classification_only"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Launch Notice Status Hint"
+        },
+        "phase": {
+          "minLength": 1,
+          "title": "Phase",
+          "type": "string"
+        },
+        "source_path": {
+          "minLength": 3,
+          "title": "Source Path",
+          "type": "string"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        },
+        "work_state_hint": {
+          "anyOf": [
+            {
+              "enum": [
+                "objectives_present",
+                "objectives_absent",
+                "objectives_empty"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Work State Hint"
+        }
+      },
+      "required": [
+        "source_path",
+        "captured_at_utc",
+        "phase",
+        "details"
+      ],
+      "title": "CapturedBridgePulse",
+      "type": "object"
+    },
+    "CapturedPort": {
+      "additionalProperties": false,
+      "properties": {
+        "local_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Local Address"
+        },
+        "local_port": {
+          "anyOf": [
+            {
+              "maximum": 65535,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Local Port"
+        },
+        "remote_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remote Address"
+        },
+        "remote_port": {
+          "anyOf": [
+            {
+              "maximum": 65535,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remote Port"
+        },
+        "state": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "State"
+        }
+      },
+      "title": "CapturedPort",
+      "type": "object"
+    },
+    "CapturedProcessRow": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command Line"
+        },
+        "executable_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Executable Path"
+        },
+        "parent_pid": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Pid"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "ports": {
+          "items": {
+            "$ref": "#/$defs/CapturedPort"
+          },
+          "title": "Ports",
+          "type": "array"
+        },
+        "process_name": {
+          "minLength": 1,
+          "title": "Process Name",
+          "type": "string"
+        },
+        "started_at_utc": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Utc"
+        }
+      },
+      "required": [
+        "pid",
+        "process_name"
+      ],
+      "title": "CapturedProcessRow",
+      "type": "object"
+    },
+    "CapturedStationHealth": {
+      "additionalProperties": false,
+      "properties": {
+        "captured_at_utc": {
+          "format": "date-time",
+          "title": "Captured At Utc",
+          "type": "string"
+        },
+        "cpu_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Pct"
+        },
+        "entropy_sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Entropy Sources",
+          "type": "array"
+        },
+        "expiry_sweep_invoked": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expiry Sweep Invoked"
+        },
+        "gpu_metrics_present": {
+          "default": false,
+          "title": "Gpu Metrics Present",
+          "type": "boolean"
+        },
+        "health": {
+          "enum": [
+            "pass",
+            "warn",
+            "fail",
+            "unknown"
+          ],
+          "title": "Health",
+          "type": "string"
+        },
+        "interval_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interval S"
+        },
+        "loop_elapsed_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Loop Elapsed Ms"
+        },
+        "loop_sleep_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Loop Sleep Ms"
+        },
+        "memory_pressure_tier": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Pressure Tier"
+        },
+        "ram_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Pct"
+        },
+        "source_path": {
+          "minLength": 3,
+          "title": "Source Path",
+          "type": "string"
+        },
+        "stale_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stale Reason"
+        },
+        "top_processes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Top Processes",
+          "type": "array"
+        },
+        "truth_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "fresh",
+                "stale",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truth State"
+        }
+      },
+      "required": [
+        "source_path",
+        "captured_at_utc",
+        "health"
+      ],
+      "title": "CapturedStationHealth",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_capture_input",
+      "default": "runtime_capture_input",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "bridge_pulse": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CapturedBridgePulse"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "capture_mode": {
+      "enum": [
+        "live_read_only",
+        "offline_replay"
+      ],
+      "title": "Capture Mode",
+      "type": "string"
+    },
+    "capture_notes": {
+      "minLength": 1,
+      "title": "Capture Notes",
+      "type": "string"
+    },
+    "captured_at_utc": {
+      "format": "date-time",
+      "title": "Captured At Utc",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "process_rows": {
+      "items": {
+        "$ref": "#/$defs/CapturedProcessRow"
+      },
+      "minItems": 1,
+      "title": "Process Rows",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "runtime.capture.input",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "station_health": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CapturedStationHealth"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "capture_id",
+    "corr_id",
+    "captured_at_utc",
+    "capture_mode",
+    "process_rows",
+    "capture_notes"
+  ],
+  "title": "RuntimeCaptureInput",
+  "type": "object"
+}

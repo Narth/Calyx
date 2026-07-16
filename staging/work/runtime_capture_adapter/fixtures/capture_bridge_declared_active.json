@@ -1,0 +1,239 @@
+{
+  "capture_input": {
+    "artifact_type": "runtime_capture_input",
+    "bridge_pulse": {
+      "captured_at_utc": "2026-04-02T19:02:00Z",
+      "details": "objectives=2 tasks=2 dispatched=1 resource_ok=1 policy_ok=1 tes_mean20=94.2",
+      "idle_reason_hint": null,
+      "launch_notice_status_hint": "prelaunch_declared",
+      "phase": "bridge_pulse",
+      "source_path": "C:\\Calyx_Terminal\\metrics\\bridge_pulse.csv",
+      "status": "steady",
+      "work_state_hint": "objectives_present"
+    },
+    "capture_id": "capture.bridge.active",
+    "capture_mode": "offline_replay",
+    "capture_notes": "Declared wrapper-child bridge topology with active work counts.",
+    "captured_at_utc": "2026-04-02T19:12:00Z",
+    "corr_id": "capture.bridge.active",
+    "process_rows": [
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "parent_pid": 31764,
+        "pid": 35056,
+        "ports": [],
+        "process_name": "python.exe",
+        "started_at_utc": "2026-04-02T11:48:46Z"
+      },
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "parent_pid": 35056,
+        "pid": 35192,
+        "ports": [],
+        "process_name": "python.exe",
+        "started_at_utc": "2026-04-02T11:48:46Z"
+      }
+    ],
+    "schema_name": "runtime.capture.input",
+    "schema_version": "1.0.0",
+    "station_health": null
+  },
+  "classified_result": {
+    "artifact_type": "runtime_capture_classification_result",
+    "capture_id": "capture.bridge.active",
+    "classified_at_utc": "2026-04-02T18:35:47.519565Z",
+    "corr_id": "capture.bridge.active",
+    "mapping_validation": {
+      "artifact_type": "runtime_capture_mapping_validation",
+      "capture_id": "capture.bridge.active",
+      "corr_id": "capture.bridge.active",
+      "no_mutation_performed": true,
+      "notes": "Capture normalized and classified without mutating live runtime state.",
+      "observer_emission_valid": true,
+      "schema_name": "runtime.capture.mapping_validation",
+      "schema_version": "1.0.0",
+      "snapshot_schema_valid": true,
+      "timestamp_utc": "2026-04-02T18:35:47.519551Z",
+      "validation_id": "capture.bridge.active.validation"
+    },
+    "normalization": {
+      "ambiguity_markers": [],
+      "artifact_type": "runtime_capture_normalization_result",
+      "canonical_snapshot": {
+        "artifact_type": "runtime_observer_process_snapshot",
+        "bridge_context": {
+          "backoff_active": false,
+          "backoff_seconds": 0,
+          "dispatched_count": 1,
+          "idle_reason": null,
+          "launch_notice_status": "prelaunch_declared",
+          "objectives_count": 2,
+          "planned_tasks_count": 2,
+          "truthful_visibility_preserved": true,
+          "work_state": "objectives_present"
+        },
+        "capture_notes": "Declared wrapper-child bridge topology with active work counts.",
+        "captured_at_utc": "2026-04-02T19:12:00Z",
+        "corr_id": "capture.bridge.active",
+        "health_context": null,
+        "observer_mode": "staging_only",
+        "processes": [
+          {
+            "command_line": "python -B -m calyx.cbo.bridge_overseer",
+            "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+            "parent_pid": 31764,
+            "pid": 35056,
+            "started_at_utc": "2026-04-02T11:48:46Z"
+          },
+          {
+            "command_line": "python -B -m calyx.cbo.bridge_overseer",
+            "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+            "parent_pid": 35056,
+            "pid": 35192,
+            "started_at_utc": "2026-04-02T11:48:46Z"
+          }
+        ],
+        "schema_name": "runtime.observer.process_snapshot",
+        "schema_version": "1.0.0",
+        "snapshot_id": "capture.bridge.active"
+      },
+      "capture_id": "capture.bridge.active",
+      "corr_id": "capture.bridge.active",
+      "ingestion_trace": {
+        "artifact_type": "runtime_capture_ingestion_trace",
+        "capture_id": "capture.bridge.active",
+        "corr_id": "capture.bridge.active",
+        "defaulted_fields": [],
+        "dropped_fields": [],
+        "mapped_process_count": 2,
+        "notes": "Deterministic raw capture to canonical observer snapshot mapping.",
+        "schema_name": "runtime.capture.ingestion_trace",
+        "schema_version": "1.0.0",
+        "source_process_count": 2,
+        "timestamp_utc": "2026-04-02T18:35:47.519301Z",
+        "trace_id": "capture.bridge.active.trace"
+      },
+      "normalized_at_utc": "2026-04-02T18:35:47.519316Z",
+      "schema_name": "runtime.capture.normalization_result",
+      "schema_version": "1.0.0"
+    },
+    "observer_emission": {
+      "artifact_type": "runtime_observer_emission",
+      "captured_at_utc": "2026-04-02T19:12:00Z",
+      "corr_id": "capture.bridge.active",
+      "emitted_at_utc": "2026-04-02T18:35:47.519535Z",
+      "governance_bundles": [
+        {
+          "bridge_pulse_classification": {
+            "artifact_id": "capture.bridge.active.bridge.pulse",
+            "artifact_type": "bridge_pulse_classification",
+            "backoff_active": false,
+            "backoff_seconds": 0,
+            "corr_id": "capture.bridge.active",
+            "dispatched_count": 1,
+            "idle_mode_active": false,
+            "idle_reason": "none",
+            "notes": "Observer classified the bridge pulse as active because work counts were non-zero.",
+            "objectives_count": 2,
+            "planned_tasks_count": 2,
+            "pulse_class": "active",
+            "schema_name": "runtime.bridge.pulse_classification",
+            "schema_version": "1.0.0",
+            "service_name": "bridge_overseer",
+            "timestamp_utc": "2026-04-02T19:12:00Z",
+            "truthful_visibility_preserved": true,
+            "work_state": "objectives_present"
+          },
+          "description": "Observer-simulated bridge overseer runtime classification.",
+          "health_authoritative_snapshot": null,
+          "health_enrichment_snapshot": null,
+          "runtime_launch_notice": {
+            "artifact_id": "capture.bridge.active.bridge.launch_notice",
+            "artifact_type": "runtime_launch_notice",
+            "child_or_additional_process_identity": {
+              "command_line": "python -B -m calyx.cbo.bridge_overseer",
+              "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+              "pid": 35192,
+              "started_at_utc": "2026-04-02T11:48:46Z"
+            },
+            "corr_id": "capture.bridge.active",
+            "declared_by_surface": "runtime_observer_simulation",
+            "expected_lifecycle": "Wrapper-child pair remains until governed shutdown.",
+            "intended_runtime_role": "bridge_cycle_owner",
+            "launch_notice_status": "prelaunch_declared",
+            "launch_reason": "Observed wrapper-child overseer topology from captured process snapshot.",
+            "multiplicity_posture": "wrapper_child_expected",
+            "parent_process_identity": {
+              "command_line": "python -B -m calyx.cbo.bridge_overseer",
+              "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+              "pid": 35056,
+              "started_at_utc": "2026-04-02T11:48:46Z"
+            },
+            "reconciliation_condition": "One authoritative cycle owner only; duplicate peer overseers remain invalid.",
+            "schema_name": "runtime.launch_notice",
+            "schema_version": "1.0.0",
+            "service_name": "bridge_overseer",
+            "steady_state_or_temporary": "steady_state",
+            "timestamp_utc": "2026-04-02T19:12:00Z",
+            "topology_class": "wrapper_child_runtime_pair"
+          },
+          "runtime_multiplicity_noncompliance": null,
+          "runtime_multiplicity_validation": {
+            "artifact_id": "capture.bridge.active.bridge.validation",
+            "artifact_type": "runtime_multiplicity_validation",
+            "classification_notes": "Observed wrapper-child overseer pair matches the declared topology and launch notice posture.",
+            "corr_id": "capture.bridge.active",
+            "declaration_ref": "bridge_overseer.declaration",
+            "observed_process_identities": [
+              {
+                "command_line": "python -B -m calyx.cbo.bridge_overseer",
+                "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+                "pid": 35056,
+                "started_at_utc": "2026-04-02T11:48:46Z"
+              },
+              {
+                "command_line": "python -B -m calyx.cbo.bridge_overseer",
+                "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+                "pid": 35192,
+                "started_at_utc": "2026-04-02T11:48:46Z"
+              }
+            ],
+            "posture_consequence": "none",
+            "required_launch_notice_refs": [
+              "capture.bridge.active.bridge.launch_notice"
+            ],
+            "schema_name": "runtime.multiplicity.validation",
+            "schema_version": "1.0.0",
+            "service_name": "bridge_overseer",
+            "timestamp_utc": "2026-04-02T19:12:00Z",
+            "validation_outcome": "multiplicity_declared_and_compliant"
+          },
+          "scenario_name": "capture.bridge.active.bridge_overseer",
+          "service_declaration": {
+            "artifact_id": "bridge_overseer.declaration",
+            "artifact_type": "runtime_service_declaration",
+            "authoritative_runtime_role": "bridge_cycle_owner",
+            "expected_runtime_roles": [
+              "launcher_wrapper",
+              "bridge_cycle_owner"
+            ],
+            "launch_notice_required": true,
+            "multiplicity_posture": "wrapper_child_expected",
+            "schema_name": "runtime.service_declaration",
+            "schema_version": "1.0.0",
+            "service_name": "bridge_overseer",
+            "topology_class": "wrapper_child_runtime_pair"
+          }
+        }
+      ],
+      "notes": "Observer simulation emitted runtime governance bundles from a staged process snapshot.",
+      "schema_name": "runtime.observer.emission",
+      "schema_version": "1.0.0",
+      "snapshot_id": "capture.bridge.active"
+    },
+    "schema_name": "runtime.capture.classification_result",
+    "schema_version": "1.0.0"
+  }
+}
