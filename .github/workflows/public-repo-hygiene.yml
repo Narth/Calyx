@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Gitleaks compares the PR head to its parent; shallow history makes
+          # that revision unavailable and turns a zero-byte scan into failure.
+          fetch-depth: 0
 
       - name: Verify no forbidden runtime artifacts are tracked
         run: bash tools/check_forbidden_tracked_paths.sh
