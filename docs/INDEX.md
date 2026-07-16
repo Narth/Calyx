@@ -57,6 +57,7 @@ One primary layer per artifact; optional secondary noted in parentheses.
 - `patches_out/`: Historical and staged patch/runbook artifacts; not an active control plane.
 - `skills/`: Capability-bearing integration wrappers. Each remains noncanonical unless separately classified and authorized.
 - `openclaw/`: Quarantined external-integration snapshot; not part of the canonical Station operator path.
+- `staging/`: Bounded pre-canonical integration sources and stable validation fixtures. Only modules explicitly imported by an authorized runtime path participate in operation; location under `staging/` confers no authority.
 - `bloomos/kernel_seed_v0.1.md`: Kernel seed spec (not wired or active).
 - `docs/architect_activation_ritual_v1.0.md`: Human-only activation ritual (spec only).
 - `outgoing/CGPT/unified_governance_framework_v1.1.md`: Governance spine for TES/CAS/AGII; advisory-only, non-gating.
