@@ -60,6 +60,16 @@ def test_runtime_status_exposes_clarity_surfaces() -> None:
         "active_objective.json",
     )
     assert isinstance(status["active_objective"]["exists"], bool)
-    assert status["source_authority_registry"]["exists"] is True
-    assert status["confusion_protocol"]["exists"] is True
-    assert status["decision_ledger"]["exists"] is True
+    canonical_surfaces = {
+        "source_authority_registry": "CALYX_SOURCE_AUTHORITY_REGISTRY.json",
+        "confusion_protocol": "CALYX_CONFUSION_ESCALATION_PROTOCOL.md",
+        "decision_ledger": "CALYX_DECISION_LEDGER.md",
+    }
+    for label, filename in canonical_surfaces.items():
+        assert Path(status[label]["path"]).parts[-3:] == (
+            "docs",
+            "canonical",
+            filename,
+        )
+        assert isinstance(status[label]["exists"], bool)
+        assert (Path("docs") / "canonical" / filename).is_file()
