@@ -8,13 +8,13 @@ from pathlib import Path
 
 import pytest
 
-# Ensure repo root on path for runtime.evidence_ledger
+# Ensure repo root is available for the canonical ledger package.
 import sys
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from runtime.evidence_ledger import append, get_ledger_path, read_ledger, verify_chain
+from calyx.evidence_ledger import append, get_ledger_path, read_ledger, verify_chain
 
 
 def test_append_and_verify_chain():

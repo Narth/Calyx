@@ -1,7 +1,4 @@
-"""
-Evidence ledger: append-only, hash-chained, schema-validated.
-Deny-by-default on malformed. Stdlib only.
-"""
+"""Evidence ledger: append-only, hash-chained, and deny-by-default."""
 from __future__ import annotations
 
 import hashlib
