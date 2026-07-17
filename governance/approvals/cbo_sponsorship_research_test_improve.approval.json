@@ -1,0 +1,17 @@
+{
+  "proposal_id": "cbo_sponsorship_research_test_improve",
+  "action": "calyx_sign_sponsor_cbo",
+  "scope": "research_test_improve_station_calyx",
+  "created_utc": "2026-02-24T00:00:00Z",
+  "proposal": {
+    "path": "governance/approvals/cbo_sponsorship_research_test_improve.policy.md",
+    "sha256": "3F22815C00E506AF4017E1792B093803D97AEE454242CBE313F0FE4555ED2806"
+  },
+  "statement": "Architect sponsors CBO via Calyx Sign to research, test, and improve Station Calyx within the scope and limits of the policy. Explanations in current chat; commands and permission authorizations outside the allowlist via Discord exec request (OpenClaw). CBO escalates when a decision requires Architect input.",
+  "signature": {
+    "required": true,
+    "namespace": "calyx",
+    "status": "unsigned",
+    "note": "Sign this file with your Architect key. Produce governance/approvals/cbo_sponsorship_research_test_improve.approval.json.sig. Absence of a valid signature is explicit denial."
+  }
+}

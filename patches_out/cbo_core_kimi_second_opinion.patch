@@ -1,0 +1,202 @@
+--- a/cbo_hub/cbo_core/app.py
++++ b/cbo_hub/cbo_core/app.py
+@@ -19,7 +19,7 @@ load_dotenv(dotenv_path=REPO_ROOT / ".env.cbo")
+ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+-KIMI_API_KEY = os.getenv("KIMI_API_KEY")
++KIMI_API_KEY = os.getenv("KIMI_API_KEY") or os.getenv("MOONSHOT_API_KEY")
+ 
+ DEV_HARNESS_BASE = "http://127.0.0.1:7777"
+ 
+@@ -148,28 +148,78 @@ async def _call_openai(prompt: str, max_output_tokens: int = 800) -> str:
+         return "".join(out).strip()
+ 
+ 
+-async def _call_kimi(prompt: str, max_output_tokens: int = 800) -> str:
+-    if not KIMI_API_KEY:
+-        return "[kimi] KIMI_API_KEY missing."
+-
+-    # Kimi provider APIs vary; we'll support a base URL override.
+-    base_url = os.getenv("KIMI_BASE_URL", "").strip()
+-    model = os.getenv("KIMI_MODEL", "kimi-k2.5")  # adjust to your provider's model id
+-
+-    if not base_url:
+-        return "[kimi] KIMI_BASE_URL not set. Set it to your Kimi provider API base (e.g., https://api.moonshot.cn)."
+-
+-    headers = {
+-        "authorization": f"Bearer {KIMI_API_KEY}",
+-        "content-type": "application/json",
+-    }
+-    payload = {
+-        "model": model,
+-        "messages": [{"role": "user", "content": prompt}],
+-        "max_tokens": max_output_tokens,
+-        "temperature": 0,
+-    }
+-
+-    async with httpx.AsyncClient(timeout=60.0) as client:
+-        r = await client.post(f"{base_url.rstrip('/')}/v1/chat/completions", headers=headers, json=payload)
+-        if r.status_code >= 400:
+-            return f"[kimi] error {r.status_code}: {r.text[:500]}"
+-        data = r.json()
+-        return (data.get("choices", [{}])[0].get("message", {}).get("content", "") or "").strip()
++def _load_state_md() -> str:
++    """Read STATE.md from repo root for context injection. Read-only."""
++    p = REPO_ROOT / "STATE.md"
++    if not p.exists() or not p.is_file():
++        return ""
++    try:
++        return p.read_text(encoding="utf-8", errors="replace").strip()
++    except Exception:
++        return ""
++
++
++async def _call_kimi(prompt: str, max_output_tokens: int = 800) -> tuple[str, dict]:
++    """Call Kimi (Moonshot) OpenAI-compatible API. Returns (response_text, receipt_info). No 500; errors as readable strings."""
++    base_url = (os.getenv("KIMI_BASE_URL") or "https://api.moonshot.ai/v1").strip().rstrip("/")
++    model_id = (os.getenv("KIMI_MODEL_ID") or "").strip()
++    api_key = KIMI_API_KEY
++    receipt_info: dict = {
++        "provider": "kimi",
++        "base_url": base_url,
++        "model_id": model_id or None,
++        "http_status": None,
++        "error_snippet": None,
++        "request_id": None,
++        "called": True,
++    }
++    if not api_key:
++        receipt_info["called"] = False
++        receipt_info["error_snippet"] = "KIMI_API_KEY or MOONSHOT_API_KEY not set."
++        return "[kimi] KIMI_API_KEY (or MOONSHOT_API_KEY) missing.", receipt_info
++    if not model_id:
++        receipt_info["called"] = False
++        receipt_info["error_snippet"] = "Set KIMI_MODEL_ID in env (e.g. moonshot-v1-8k)."
++        return "[kimi] KIMI_MODEL_ID not set. Set it in env (e.g. KIMI_MODEL_ID=moonshot-v1-8k).", receipt_info
++
++    url = f"{base_url}/chat/completions"
++    headers = {"authorization": f"Bearer {api_key}", "content-type": "application/json"}
++    payload = {"model": model_id, "messages": [{"role": "user", "content": prompt}], "max_tokens": max_output_tokens, "temperature": 0}
++    try:
++        async with httpx.AsyncClient(timeout=60.0) as client:
++            r = await client.post(url, headers=headers, json=payload)
++            receipt_info["http_status"] = r.status_code
++            if r.headers.get("x-request-id"):
++                receipt_info["request_id"] = (r.headers.get("x-request-id") or "")[:200]
++            if r.status_code >= 400:
++                err_snippet = (r.text or "")[:500]
++                receipt_info["error_snippet"] = err_snippet
++                return f"[kimi] error {r.status_code}: {err_snippet}", receipt_info
++            try:
++                data = r.json()
++            except Exception:
++                receipt_info["error_snippet"] = "Response was not valid JSON."
++                return "[kimi] Response was not valid JSON.", receipt_info
++            choices = data.get("choices") if isinstance(data, dict) else None
++            if not isinstance(choices, list) or not choices:
++                receipt_info["error_snippet"] = "Unexpected response schema (no choices)."
++                return "[kimi] Unexpected response schema (no choices).", receipt_info
++            msg = choices[0].get("message") if isinstance(choices[0], dict) else {}
++            text = (msg.get("content") or "").strip() if isinstance(msg, dict) else ""
++            if data.get("id"):
++                receipt_info["request_id"] = str(data.get("id"))[:200]
++            return text, receipt_info
++    except Exception as e:
++        receipt_info["error_snippet"] = str(e)[:500]
++        return f"[kimi] request failed: {str(e)[:500]}", receipt_info
+ 
+ 
+ # ---------- API models ----------
+@@ -182,9 +232,11 @@ class ChatReq(BaseModel):
+     allow_tools: bool = Field(default=True)
+     model_role: str = Field(default="none")  # none | architect | workhorse | second
+ 
++    allow_second_opinion: bool = Field(default=False)  # when true, second_opinion role may call Kimi (no silent spend)
++
+ 
+ class ChatResp(BaseModel):
+     session_id: str
+     reply_text: str
+     receipt_sha256: str
++    second_opinion_text: Optional[str] = None
+ 
+ 
+ @app.post("/chat", response_model=ChatResp)
+@@ -192,6 +244,9 @@ async def chat(req: ChatReq):
+     model_text = ""
+     model_role = (req.model_role or "none").strip().lower()
++    if model_role == "second":
++        model_role = "second_opinion"
++    kimi_receipt: Optional[dict] = None
++
+     if model_role and model_role != "none":
+         prompt = (
+             "You are CBO, orchestrator of Station Calyx.\n"
+@@ -199,22 +254,38 @@ async def chat(req: ChatReq):
+             f"User: {req.user_text}"
+         )
++        if model_role == "second_opinion":
++            state_md = _load_state_md()
++            if state_md:
++                prompt = f"<STATE>\n{state_md}\n</STATE>\n\n{prompt}"
++            if req.allow_tools:
++                prompt += ("\n\nIf you need repo info, you may respond with a JSON object containing key \"tool_requests\" "
++                    "(array of objects with \"tool\" and optional \"params\"). Allowed tools only: repo_list (params: path, max_entries), "
++                    "repo_search (params: query, glob, max_hits). Example: {\"tool_requests\": [{\"tool\": \"repo_search\", \"params\": {\"query\": \"Calyx\", \"max_hits\": 5}}]}.")
+         if model_role == "architect" and req.allow_tools:
+             prompt += (
+                 "\n\nIf you need repo info, you may respond with a JSON object containing key \"tool_requests\" "
+                 "(array of objects with \"tool\" and optional \"params\"). Allowed tools only: repo_list (params: path, max_entries), "
+                 "repo_search (params: query, glob, max_hits). Example: {\"tool_requests\": [{\"tool\": \"repo_search\", \"params\": {\"query\": \"Calyx\", \"max_hits\": 5}}]}."
+             )
++        if model_role == "workhorse" and req.allow_tools:
++            prompt += (
++                "\n\nIf you need repo info, you may respond with a JSON object containing key \"tool_requests\" "
++                "(array of objects with \"tool\" and optional \"params\"). Allowed tools only: repo_list (params: path, max_entries), "
++                "repo_search (params: query, glob, max_hits). Example: {\"tool_requests\": [{\"tool\": \"repo_search\", \"params\": {\"query\": \"Calyx\", \"max_hits\": 5}}]}."
++            )
+         try:
+             if model_role == "architect":
+                 model_text = await _call_anthropic(prompt, max_output_tokens=900)
+             elif model_role == "workhorse":
+                 model_text = await _call_openai(prompt, max_output_tokens=900)
+-            elif model_role == "second":
+-                model_text = await _call_kimi(prompt, max_output_tokens=900)
++            elif model_role == "second_opinion":
++                if not req.allow_second_opinion:
++                    model_text = "[second_opinion] disabled. Set allow_second_opinion=true to enable."
++                    kimi_receipt = {"provider": "kimi", "called": False, "base_url": None, "model_id": None, "http_status": None, "error_snippet": "Not called (allow_second_opinion=false).", "request_id": None}
++                else:
++                    model_text, kimi_receipt = await _call_kimi(prompt, max_output_tokens=900)
+             else:
+                 model_text = f"[cbo] Unknown model_role '{req.model_role}'"
+         except Exception as e:
+             model_text = f"[cbo] model error: {str(e)}"
++            if model_role == "second_opinion":
++                kimi_receipt = kimi_receipt or {"provider": "kimi", "called": True, "base_url": None, "model_id": None, "http_status": None, "error_snippet": str(e)[:500], "request_id": None}
+ 
+     tool_notes = ""
+     tool_receipts = []
+@@ -222,7 +293,7 @@ async def chat(req: ChatReq):
+     executed_tools: list[str] = []
+ 
+-    # Read-only tool loop: architect + allow_tools + valid tool_requests JSON → execute up to 3 allowed tools.
+-    if model_role == "architect" and req.allow_tools and model_text:
++    # Read-only tool loop: architect | workhorse | second_opinion + allow_tools + valid tool_requests JSON → execute up to 3 allowed tools.
++    if model_role in ("architect", "workhorse", "second_opinion") and req.allow_tools and model_text:
+         parsed = _parse_tool_requests(model_text)
+         for item in parsed[:3]:
+             ...
+@@ -288,6 +359,8 @@ async def chat(req: ChatReq):
+         "tool_calls": tool_receipts,
+         "executed_tools": executed_tools,
+     }
++    if kimi_receipt is not None:
++        receipt["second_opinion_receipt"] = kimi_receipt
+     receipt_sha = _sha256_bytes(json.dumps(receipt, sort_keys=True).encode("utf-8"))
+     receipt["receipt_sha256"] = receipt_sha
+     _write_receipt(receipt)
+ 
+-    return ChatResp(session_id=req.session_id, reply_text=reply, receipt_sha256=receipt_sha)
++    second_opinion_text: Optional[str] = model_text if model_role == "second_opinion" and model_text else None
++    return ChatResp(session_id=req.session_id, reply_text=reply, receipt_sha256=receipt_sha, second_opinion_text=second_opinion_text)

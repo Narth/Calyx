@@ -1,0 +1,227 @@
+# CALYX_CONTRACT.yaml
+# Policy contract for Code Factory Loop + Discord Hub + Federated Ops v0
+# Hard rule: If this file is missing or invalid, nothing executes.
+
+policy_version: "0.1.0"
+contract_sha256: "0756b02552d76356ac8010ad18658038680c8407ca266a4d72051940ab3bf5ba"  # Canonical hash (excludes this field)
+
+# Explicit enumerated list of allowed task types
+allowed_tasks:
+  - code_review
+  - lint_fix
+  - test_run
+  - doc_update
+  - refactor_scope
+  - benchmark_run
+  - schema_validation
+  - receipt_generation
+  # Spine Phase 4 initial task types
+  - repo_readonly_review
+  - test_run_safe
+  - patch_small
+
+# Risk tiers and triggers
+risk_rules:
+  low:
+    triggers:
+      - diff_paths: ["docs/**", "*.md", "*.txt"]
+      - no_dependency_changes: true
+      - no_governance_touches: true
+      - task_types: ["doc_update", "receipt_generation"]
+
+  med:
+    triggers:
+      - diff_paths: ["**/*.py", "**/*.json", "tests/**"]
+      - dependency_files_changed: true  # requirements.txt, pyproject.toml, etc.
+      - task_types: ["lint_fix", "test_run", "code_review", "schema_validation"]
+      - scope_paths: ["benchmarks/**", "tools/**"]
+
+  high:
+    triggers:
+      - diff_paths: ["governance/**", "CALYX_CONTRACT.yaml", ".github/workflows/**"]
+      - policy_files_changed: true
+      - task_types: ["refactor_scope"]
+      - requires_approval_token: true
+      - network_calls: true
+      - secrets_touched: true
+
+# Required CI checks by risk tier
+required_ci_checks:
+  low:
+    - lint
+    - unit_tests
+    - schema_validation
+
+  med:
+    - lint
+    - unit_tests
+    - schema_validation
+    - harness_lane_relevant
+    - receipt_presence_check
+
+  high:
+    - lint
+    - unit_tests
+    - schema_validation
+    - harness_lane_relevant
+    - receipt_presence_check
+    - mandatory_human_approval_marker
+    - extra_regression_suite
+
+# Required receipt artifacts by task type
+required_receipts:
+  code_review:
+    - review_summary.json
+    - blast_radius.json
+    - suspicious_tests.json
+
+  lint_fix:
+    - lint_results.json
+    - fixes_applied.jsonl
+
+  test_run:
+    - test_results.jsonl
+    - coverage_summary.json
+
+  doc_update:
+    - doc_changes.jsonl
+
+  refactor_scope:
+    - refactor_plan.json
+    - affected_files.json
+    - rollback_plan.json
+
+  benchmark_run:
+    - benchmark_results.jsonl
+    - metrics.json
+    - determinism_hash.txt
+
+  schema_validation:
+    - validation_results.json
+    - schema_errors.jsonl
+
+  receipt_generation:
+    - receipt_manifest.json
+
+# Stop conditions requiring human approval
+stop_conditions:
+  - condition: "tool_surface_expansion"
+    description: "Any attempt to expand tool surface beyond contract allowlist"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+  - condition: "policy_governance_edit"
+    description: "Any attempted policy/governance edit without explicit approval token"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+  - condition: "secrets_detected"
+    description: "Any secrets detected in repo diff"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+  - condition: "non_deterministic_results"
+    description: "Non-deterministic results for a determinism-required task"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+  - condition: "unknown_tool_invocation"
+    description: "Any unknown tool invocation attempt"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+  - condition: "unknown_envelope_source"
+    description: "Any envelope source not in allowlist"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+  - condition: "network_call_beyond_allowlist"
+    description: "Network calls beyond explicitly allowed surfaces"
+    action: "halt_and_notify"
+    channel: "#cbo-alerts"
+
+# Tool surface allowlist by lane/task
+tool_surface:
+  code_review:
+    allowed_tools:
+      - fs_read
+      - repo_grep
+      - fs_list
+
+  lint_fix:
+    allowed_tools:
+      - fs_read
+      - fs_write
+      - repo_grep
+
+  test_run:
+    allowed_tools:
+      - fs_read
+      - run_test_harness
+
+  doc_update:
+    allowed_tools:
+      - fs_read
+      - fs_write
+
+  refactor_scope:
+    allowed_tools:
+      - fs_read
+      - fs_write
+      - repo_grep
+      - fs_list
+
+  benchmark_run:
+    allowed_tools:
+      - fs_read
+      - run_benchmark_harness
+
+  schema_validation:
+    allowed_tools:
+      - fs_read
+      - validate_schema
+
+  receipt_generation:
+    allowed_tools:
+      - fs_read
+      - fs_write
+
+  repo_readonly_review:
+    allowed_tools:
+      - fs_read
+      - repo_grep
+      - fs_list
+
+  test_run_safe:
+    allowed_tools:
+      - fs_read
+      - run_test_harness
+
+  patch_small:
+    allowed_tools:
+      - fs_read
+      - fs_write
+
+# Envelope source allowlist (Phase A: Discord + CBO Core spine; Phase B: + laptop)
+allowed_sources:
+  phase_a:
+    - discord
+    - cbo_core   # Avatar Web, OpenClaw bridge execution via spine
+
+  phase_b:
+    - discord
+    - cbo_core
+    - laptop_node  # Only after Phase A validation
+
+# Determinism requirements
+determinism_requirements:
+  benchmark_run: true
+  test_run: true
+  schema_validation: true
+
+# Receipt paths
+receipt_paths:
+  runtime_receipts: "runtime/receipts"
+  benchmark_results: "runtime/benchmarks/results"
+  manifests: "runtime/manifests"
+  outbox: "telemetry/outbox/intents"

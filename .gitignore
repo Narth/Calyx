@@ -12,6 +12,7 @@ build/
 # Virtual Environments
 .venv/
 .venv311/
+.venv_cbohub311/
 venvs/
 env/
 ENV/
@@ -43,6 +44,7 @@ keys/
 # Config (use template)
 config.yaml
 openclaw.config.json
+DISCORD_IDS.md
 
 # Runtime state / generated outputs (never commit)
 state/
@@ -64,6 +66,7 @@ runtime/mailbox/
 *.jsonl
 !tests/fixtures/*.jsonl
 !docs/examples/**/*.jsonl
+!benchmarks/suites/**/cases.jsonl
 *.log
 *.csv
 *.sqlite
@@ -95,6 +98,7 @@ compiled/
 .codex_cache/
 .claude_cache/
 .firecrawl_cache/
+rust/**/target/
 
 # OS files
 .DS_Store
@@ -125,3 +129,56 @@ local_backups/
 !telemetry/**/.gitkeep
 !docs/examples/**
 !samples/**
+
+# Private operator identity and credentials (real values; never commit)
+private/
+
+# Future patch artifacts (author metadata = PII; use patches_public/ for sanitized export if needed)
+patches_out/*.patch
+
+# Local workspace (not part of Calyx repo)
+workspaces/Helping-the-Help/
+
+
+# Local temp artifacts
+temp_*.json
+temp_*.txt
+=5.9
+tools/bin/
+tools/_rg_tmp/
+
+# Station repo baseline hygiene
+STATE.md
+.openclaw/
+.worktrees/
+analysis/
+tmp_lifecycle_case*/
+cbo_hub/data/
+HEALTH.md
+MEMORY.md
+Baseline_Parity Operator Decisions.txt
+pytest_*/
+.pytest_*/
+.cbo_pytest_min_probe/
+openclaw/credentials/
+openclaw/devices/
+openclaw/identity/
+openclaw/exec-approvals.json
+openclaw/workspace-state.json
+openclaw/agents/main/sessions/
+openclaw/media/inbound/
+openclaw/agents/main/agent/models.json
+openclaw/calyx/
+openclaw/canvas/
+openclaw/completions/
+openclaw/cron/
+openclaw/gateway.cmd
+openclaw/openclaw*.json
+openclaw/openclaw*.bak*
+openclaw/subagents/
+openclaw/update-check*.json
+skills/
+!skills/calyx-cbo-bridge/
+!skills/calyx-cbo-bridge/**
+skills/user_contexts.json
+

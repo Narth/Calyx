@@ -1,0 +1,63 @@
+{
+  "name": "calyx-cbo-bridge",
+  "version": "1.1.0",
+  "description": "Bridge from OpenClaw to Station Calyx: get station STATE, send messages to CBO, check sponsorship, execute via spine.",
+  "author": "Station Calyx",
+  "main": "index.js",
+  "permissions": ["network:127.0.0.1"],
+  "config": {
+    "cboBaseUrl": {
+      "type": "string",
+      "required": false,
+      "description": "CBO Core base URL (default http://127.0.0.1:7778)"
+    }
+  },
+  "tools": [
+    {
+      "name": "get_state",
+      "description": "Fetch Station Calyx STATE (STATE.md). Use when the user asks for station status, health, services, or what the station is doing. Returns the full state document.",
+      "parameters": {}
+    },
+    {
+      "name": "send_to_cbo",
+      "description": "Send a message to CBO Core and get a reply. Use when the user wants to run a command through Station Calyx, ask CBO something, or get a response from the station. Prefer workhorse model for speed unless the user asks for architect or local.",
+      "parameters": {
+        "message": {
+          "type": "string",
+          "description": "The user message or command to send to CBO"
+        },
+        "model_role": {
+          "type": "string",
+          "description": "Optional: workhorse (default), architect, second_opinion, or local"
+        }
+      }
+    },
+    {
+      "name": "sponsorship",
+      "description": "Check if CBO sponsorship is in effect (Architect-signed Calyx Sign). Use when the user asks about sponsorship status or permission to stamp operations.",
+      "parameters": {}
+    },
+    {
+      "name": "execute",
+      "description": "Route execution through spine (Mail → Intent → Work Envelope → Contract Gate). Use for spine-routed tasks (doc_update, etc.) when the user wants a specific task type executed via governance.",
+      "parameters": {
+        "task_type": {
+          "type": "string",
+          "description": "CALYX_CONTRACT allowed_tasks (e.g. doc_update, test_run_safe)"
+        },
+        "scope": {
+          "type": "object",
+          "description": "Optional scope paths"
+        },
+        "constraints": {
+          "type": "object",
+          "description": "Optional constraints (timeout)"
+        },
+        "intent_summary": {
+          "type": "string",
+          "description": "Human-readable intent for the artifact"
+        }
+      }
+    }
+  ]
+}

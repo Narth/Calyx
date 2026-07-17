@@ -1,0 +1,102 @@
+{
+  "bridge_pulse_classification": {
+    "artifact_id": "bridge.idle.backoff.pulse",
+    "artifact_type": "bridge_pulse_classification",
+    "backoff_active": true,
+    "backoff_seconds": 480,
+    "corr_id": "bridge.idle.empty",
+    "dispatched_count": 0,
+    "idle_mode_active": true,
+    "idle_reason": "no_objectives_file",
+    "notes": "Idle pulse uses bounded, explicit backoff while preserving truthful idle visibility.",
+    "objectives_count": 0,
+    "planned_tasks_count": 0,
+    "pulse_class": "idle",
+    "schema_name": "runtime.bridge.pulse_classification",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "timestamp_utc": "2026-03-31T19:31:02Z",
+    "truthful_visibility_preserved": true,
+    "work_state": "objectives_absent"
+  },
+  "description": "Idle pulse remains visible while bounded backoff is explicit and attributable.",
+  "health_authoritative_snapshot": null,
+  "health_enrichment_snapshot": null,
+  "runtime_launch_notice": {
+    "artifact_id": "bridge.idle.notice",
+    "artifact_type": "runtime_launch_notice",
+    "child_or_additional_process_identity": {
+      "command_line": "python -B -m calyx.cbo.bridge_overseer",
+      "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "pid": 35192,
+      "started_at_utc": "2026-03-31T11:48:46Z"
+    },
+    "corr_id": "bridge.idle.empty",
+    "declared_by_surface": "Scripts/start_calyx_core_services.ps1",
+    "expected_lifecycle": "Wrapper-child pair remains until governed shutdown.",
+    "intended_runtime_role": "bridge_cycle_owner",
+    "launch_notice_status": "prelaunch_declared",
+    "launch_reason": "Declared wrapper-child overseer topology launch.",
+    "multiplicity_posture": "wrapper_child_expected",
+    "parent_process_identity": {
+      "command_line": "python -B -m calyx.cbo.bridge_overseer",
+      "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+      "pid": 35056,
+      "started_at_utc": "2026-03-31T11:48:46Z"
+    },
+    "reconciliation_condition": "Idle mode may reduce work cost but must remain visible.",
+    "schema_name": "runtime.launch_notice",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "steady_state_or_temporary": "steady_state",
+    "timestamp_utc": "2026-03-31T19:31:00Z",
+    "topology_class": "wrapper_child_runtime_pair"
+  },
+  "runtime_multiplicity_noncompliance": null,
+  "runtime_multiplicity_validation": {
+    "artifact_id": "bridge.idle.validation",
+    "artifact_type": "runtime_multiplicity_validation",
+    "classification_notes": "Declared overseer pair remains compliant while pulse enters explicit idle mode.",
+    "corr_id": "bridge.idle.empty",
+    "declaration_ref": "bridge_overseer.declaration",
+    "observed_process_identities": [
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 35056,
+        "started_at_utc": "2026-03-31T11:48:46Z"
+      },
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 35192,
+        "started_at_utc": "2026-03-31T11:48:46Z"
+      }
+    ],
+    "posture_consequence": "none",
+    "required_launch_notice_refs": [
+      "bridge.idle.notice"
+    ],
+    "schema_name": "runtime.multiplicity.validation",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "timestamp_utc": "2026-03-31T19:31:01Z",
+    "validation_outcome": "multiplicity_declared_and_compliant"
+  },
+  "scenario_name": "idle_pulse_classification_with_backoff",
+  "service_declaration": {
+    "artifact_id": "bridge_overseer.declaration",
+    "artifact_type": "runtime_service_declaration",
+    "authoritative_runtime_role": "bridge_cycle_owner",
+    "expected_runtime_roles": [
+      "launcher_wrapper",
+      "bridge_cycle_owner"
+    ],
+    "launch_notice_required": true,
+    "multiplicity_posture": "wrapper_child_expected",
+    "schema_name": "runtime.service_declaration",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "topology_class": "wrapper_child_runtime_pair"
+  }
+}

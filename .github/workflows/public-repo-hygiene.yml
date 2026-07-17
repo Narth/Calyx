@@ -11,9 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Gitleaks compares the PR head to its parent; shallow history makes
+          # that revision unavailable and turns a zero-byte scan into failure.
+          fetch-depth: 0
 
       - name: Verify no forbidden runtime artifacts are tracked
         run: bash tools/check_forbidden_tracked_paths.sh
+
+      - name: Spine invariants (forbidden imports, top-level dirs documented)
+        run: |
+          python tools/check_spine_invariants.py
 
       - name: Run gitleaks secret scan
         uses: gitleaks/gitleaks-action@v2
@@ -23,7 +31,7 @@ jobs:
 
       - name: Compile Python modules
         run: |
-          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' | tr '\n' ' ')
+          files=$(git ls-files 'calyx/**/*.py' 'tools/*.py' 'benchmarks/**/*.py' | tr '\n' ' ')
           if [ -n "$files" ]; then
             python -m py_compile $files
           else

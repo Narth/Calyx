@@ -1,0 +1,325 @@
+{
+  "capture_input": {
+    "artifact_type": "runtime_capture_input",
+    "bridge_pulse": null,
+    "capture_id": "capture.health.duplicate",
+    "capture_mode": "offline_replay",
+    "capture_notes": "Duplicate health loop with cadence unresolved from raw capture.",
+    "captured_at_utc": "2026-04-02T19:11:00Z",
+    "corr_id": "capture.health.duplicate",
+    "process_rows": [
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "parent_pid": 39060,
+        "pid": 35932,
+        "ports": [],
+        "process_name": "powershell.exe",
+        "started_at_utc": "2026-04-02T16:57:09Z"
+      },
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "parent_pid": 39060,
+        "pid": 39776,
+        "ports": [],
+        "process_name": "powershell.exe",
+        "started_at_utc": "2026-04-02T16:57:09Z"
+      }
+    ],
+    "schema_name": "runtime.capture.input",
+    "schema_version": "1.0.0",
+    "station_health": {
+      "captured_at_utc": "2026-04-02T19:00:00Z",
+      "cpu_pct": 38,
+      "entropy_sources": [
+        "Code#27864"
+      ],
+      "expiry_sweep_invoked": null,
+      "gpu_metrics_present": true,
+      "health": "pass",
+      "interval_s": 1.0,
+      "loop_elapsed_ms": null,
+      "loop_sleep_ms": null,
+      "memory_pressure_tier": 0,
+      "ram_pct": 43,
+      "source_path": "C:\\Calyx_Terminal\\runtime\\station_health.json",
+      "stale_reason": null,
+      "top_processes": [
+        "Code#27864",
+        "powershell#35932"
+      ],
+      "truth_state": "fresh"
+    }
+  },
+  "classified_result": {
+    "artifact_type": "runtime_capture_classification_result",
+    "capture_id": "capture.health.duplicate",
+    "classified_at_utc": "2026-04-02T18:35:47.517922Z",
+    "corr_id": "capture.health.duplicate",
+    "mapping_validation": {
+      "artifact_type": "runtime_capture_mapping_validation",
+      "capture_id": "capture.health.duplicate",
+      "corr_id": "capture.health.duplicate",
+      "no_mutation_performed": true,
+      "notes": "Capture normalized and classified without mutating live runtime state.",
+      "observer_emission_valid": true,
+      "schema_name": "runtime.capture.mapping_validation",
+      "schema_version": "1.0.0",
+      "snapshot_schema_valid": true,
+      "timestamp_utc": "2026-04-02T18:35:47.517910Z",
+      "validation_id": "capture.health.duplicate.validation"
+    },
+    "normalization": {
+      "ambiguity_markers": [
+        {
+          "ambiguity_type": "health_cadence_unresolved",
+          "artifact_type": "runtime_capture_ambiguity_marker",
+          "capture_id": "capture.health.duplicate",
+          "corr_id": "capture.health.duplicate",
+          "marker_id": "capture.health.duplicate.marker.health_cadence_unresolved",
+          "notes": "Live capture did not provide loop elapsed/sleep timing; cadence fields were derived from declared interval for snapshot compatibility.",
+          "schema_name": "runtime.capture.ambiguity_marker",
+          "schema_version": "1.0.0",
+          "service_name": "station_health_loop"
+        },
+        {
+          "ambiguity_type": "health_expiry_sweep_unresolved",
+          "artifact_type": "runtime_capture_ambiguity_marker",
+          "capture_id": "capture.health.duplicate",
+          "corr_id": "capture.health.duplicate",
+          "marker_id": "capture.health.duplicate.marker.health_expiry_sweep_unresolved",
+          "notes": "Live capture did not provide expiry sweep evidence; set false without claiming invocation.",
+          "schema_name": "runtime.capture.ambiguity_marker",
+          "schema_version": "1.0.0",
+          "service_name": "station_health_loop"
+        }
+      ],
+      "artifact_type": "runtime_capture_normalization_result",
+      "canonical_snapshot": {
+        "artifact_type": "runtime_observer_process_snapshot",
+        "bridge_context": null,
+        "capture_notes": "Duplicate health loop with cadence unresolved from raw capture.",
+        "captured_at_utc": "2026-04-02T19:11:00Z",
+        "corr_id": "capture.health.duplicate",
+        "health_context": {
+          "cpu_pct": 38,
+          "declared_interval_seconds": 1.0,
+          "enrichment_interval_seconds": 10.0,
+          "enrichment_sample_age_ms": 660000,
+          "entropy_sources": [
+            "Code#27864"
+          ],
+          "expiry_sweep_invoked": false,
+          "freshness_state": "fresh",
+          "gpu_metrics_present": true,
+          "health_state": "pass",
+          "launch_notice_status": "retroactive_classification_only",
+          "memory_pressure_tier": 0,
+          "observed_loop_elapsed_ms": 0,
+          "observed_sleep_ms": 1000,
+          "ram_pct": 43,
+          "stale_reason": null,
+          "top_processes": [
+            "Code#27864",
+            "powershell#35932"
+          ]
+        },
+        "observer_mode": "staging_only",
+        "processes": [
+          {
+            "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+            "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_pid": 39060,
+            "pid": 35932,
+            "started_at_utc": "2026-04-02T16:57:09Z"
+          },
+          {
+            "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+            "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "parent_pid": 39060,
+            "pid": 39776,
+            "started_at_utc": "2026-04-02T16:57:09Z"
+          }
+        ],
+        "schema_name": "runtime.observer.process_snapshot",
+        "schema_version": "1.0.0",
+        "snapshot_id": "capture.health.duplicate"
+      },
+      "capture_id": "capture.health.duplicate",
+      "corr_id": "capture.health.duplicate",
+      "ingestion_trace": {
+        "artifact_type": "runtime_capture_ingestion_trace",
+        "capture_id": "capture.health.duplicate",
+        "corr_id": "capture.health.duplicate",
+        "defaulted_fields": [
+          "station_health.loop_elapsed_ms",
+          "station_health.loop_sleep_ms",
+          "station_health.expiry_sweep_invoked"
+        ],
+        "dropped_fields": [],
+        "mapped_process_count": 2,
+        "notes": "Deterministic raw capture to canonical observer snapshot mapping.",
+        "schema_name": "runtime.capture.ingestion_trace",
+        "schema_version": "1.0.0",
+        "source_process_count": 2,
+        "timestamp_utc": "2026-04-02T18:35:47.517629Z",
+        "trace_id": "capture.health.duplicate.trace"
+      },
+      "normalized_at_utc": "2026-04-02T18:35:47.517644Z",
+      "schema_name": "runtime.capture.normalization_result",
+      "schema_version": "1.0.0"
+    },
+    "observer_emission": {
+      "artifact_type": "runtime_observer_emission",
+      "captured_at_utc": "2026-04-02T19:11:00Z",
+      "corr_id": "capture.health.duplicate",
+      "emitted_at_utc": "2026-04-02T18:35:47.517890Z",
+      "governance_bundles": [
+        {
+          "bridge_pulse_classification": null,
+          "description": "Observer-simulated station health runtime classification.",
+          "health_authoritative_snapshot": {
+            "artifact_id": "capture.health.duplicate.station_health.auth",
+            "artifact_type": "health_authoritative_snapshot",
+            "cadence_compliant": true,
+            "corr_id": "capture.health.duplicate",
+            "cpu_pct": 38,
+            "declared_interval_seconds": 1.0,
+            "expiry_sweep_invoked": false,
+            "freshness_state": "fresh",
+            "health_state": "pass",
+            "memory_pressure_tier": 0,
+            "observed_loop_elapsed_ms": 0,
+            "observed_sleep_ms": 1000,
+            "ram_pct": 43,
+            "sampling_lane": "fast_path",
+            "schema_name": "runtime.health.authoritative_snapshot",
+            "schema_version": "1.0.0",
+            "service_name": "station_health_loop",
+            "stale_reason": null,
+            "timestamp_utc": "2026-04-02T19:11:00Z",
+            "truth_contract_surface": "runtime/station_health.json"
+          },
+          "health_enrichment_snapshot": {
+            "artifact_id": "capture.health.duplicate.station_health.enrichment",
+            "artifact_type": "health_enrichment_snapshot",
+            "authoritative_snapshot_ref": "capture.health.duplicate.station_health.auth",
+            "corr_id": "capture.health.duplicate",
+            "enrichment_interval_seconds": 10.0,
+            "enrichment_sample_age_ms": 660000,
+            "entropy_sources": [
+              "Code#27864"
+            ],
+            "gpu_metrics_present": true,
+            "notes": "Observer simulation preserved fast-path vs enrichment-path distinction.",
+            "sampling_lane": "enrichment_path",
+            "schema_name": "runtime.health.enrichment_snapshot",
+            "schema_version": "1.0.0",
+            "service_name": "station_health_loop",
+            "timestamp_utc": "2026-04-02T19:11:00Z",
+            "top_processes": [
+              "Code#27864",
+              "powershell#35932"
+            ]
+          },
+          "runtime_launch_notice": {
+            "artifact_id": "capture.health.duplicate.station_health.launch_notice",
+            "artifact_type": "runtime_launch_notice",
+            "child_or_additional_process_identity": {
+              "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+              "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+              "pid": 39776,
+              "started_at_utc": "2026-04-02T16:57:09Z"
+            },
+            "corr_id": "capture.health.duplicate",
+            "declared_by_surface": "runtime_observer_simulation",
+            "expected_lifecycle": "Secondary writer must remain non-authoritative.",
+            "intended_runtime_role": "duplicate_peer",
+            "launch_notice_status": "retroactive_classification_only",
+            "launch_reason": "Observed duplicate health-loop launch attempt from captured process snapshot.",
+            "multiplicity_posture": "single_instance_only",
+            "parent_process_identity": {
+              "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+              "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+              "pid": 35932,
+              "started_at_utc": "2026-04-02T16:57:09Z"
+            },
+            "reconciliation_condition": "Duplicate writer classified; single authoritative writer semantics preserved.",
+            "schema_name": "runtime.launch_notice",
+            "schema_version": "1.0.0",
+            "service_name": "station_health_loop",
+            "steady_state_or_temporary": "temporary",
+            "timestamp_utc": "2026-04-02T19:11:00Z",
+            "topology_class": "single_process"
+          },
+          "runtime_multiplicity_noncompliance": {
+            "artifact_id": "capture.health.duplicate.station_health.noncompliance",
+            "artifact_type": "runtime_multiplicity_noncompliance",
+            "corr_id": "capture.health.duplicate",
+            "declaration_ref": "station_health_loop.declaration",
+            "noncompliance_type": "duplicate_writer_attempt",
+            "notes": "Health-loop duplicate writer attempt is classified and not normalized.",
+            "required_operator_visibility": "review_required",
+            "schema_name": "runtime.multiplicity.noncompliance",
+            "schema_version": "1.0.0",
+            "service_name": "station_health_loop",
+            "severity": "high",
+            "timestamp_utc": "2026-04-02T19:11:00Z",
+            "validation_ref": "capture.health.duplicate.station_health.validation"
+          },
+          "runtime_multiplicity_validation": {
+            "artifact_id": "capture.health.duplicate.station_health.validation",
+            "artifact_type": "runtime_multiplicity_validation",
+            "classification_notes": "Observed duplicate health-loop writer shape conflicts with single_instance_only posture.",
+            "corr_id": "capture.health.duplicate",
+            "declaration_ref": "station_health_loop.declaration",
+            "observed_process_identities": [
+              {
+                "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+                "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "pid": 35932,
+                "started_at_utc": "2026-04-02T16:57:09Z"
+              },
+              {
+                "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+                "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "pid": 39776,
+                "started_at_utc": "2026-04-02T16:57:09Z"
+              }
+            ],
+            "posture_consequence": "operator_review_required",
+            "required_launch_notice_refs": [],
+            "schema_name": "runtime.multiplicity.validation",
+            "schema_version": "1.0.0",
+            "service_name": "station_health_loop",
+            "timestamp_utc": "2026-04-02T19:11:00Z",
+            "validation_outcome": "duplicate_concerning"
+          },
+          "scenario_name": "capture.health.duplicate.station_health",
+          "service_declaration": {
+            "artifact_id": "station_health_loop.declaration",
+            "artifact_type": "runtime_service_declaration",
+            "authoritative_runtime_role": "authoritative_writer",
+            "expected_runtime_roles": [
+              "authoritative_writer",
+              "health_enrichment_sampler"
+            ],
+            "launch_notice_required": true,
+            "multiplicity_posture": "single_instance_only",
+            "schema_name": "runtime.service_declaration",
+            "schema_version": "1.0.0",
+            "service_name": "station_health_loop",
+            "topology_class": "single_process"
+          }
+        }
+      ],
+      "notes": "Observer simulation emitted runtime governance bundles from a staged process snapshot.",
+      "schema_name": "runtime.observer.emission",
+      "schema_version": "1.0.0",
+      "snapshot_id": "capture.health.duplicate"
+    },
+    "schema_name": "runtime.capture.classification_result",
+    "schema_version": "1.0.0"
+  }
+}

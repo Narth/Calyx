@@ -1,0 +1,43 @@
+﻿=== ARCHITECT (Claude) ===
+[CBO online] session=home mode=dev allow_tools=False
+You said: Review STATE.md (you have it in context where applicable). What pertinent information should be added to STATE.md before we automate its heartbeat status? Be concise: list 5-7 concrete items (e.g. fields, checks, or sections to add).
+Dev harness: http://127.0.0.1:7777
+
+Based on the current STATE.md, here are the critical items to add before automating heartbeat status:
+
+â¢ **System Health Metrics** - CPU, memory, disk usage thresholds and current values
+â¢ **Service Dependencies** - External APIs, databases, and critical integrations with their status
+â¢ **Error Rate Tracking** - Recent error counts, failure rates, and alert thresholds
+â¢ **Performance Benchmarks** - Response times, throughput metrics, and SLA compliance
+â¢ **Resource Availability** - Available capacity, queue depths, connection pools
+â¢ **Last Successful Operations** - Timestamps for key system functions and data flows
+â¢ **Automated Check Results** - Self-diagnostic test outcomes and validation statuses
+
+These additions will provide the foundation for meaningful automated health assessment rather than just basic uptime reporting.
+Tools used: none
+
+=== WORKHORSE (OpenAI) ===
+[CBO online] session=home mode=dev allow_tools=False
+You said: Review STATE.md (you have it in context where applicable). What pertinent information should be added to STATE.md before we automate its heartbeat status? Be concise: list 5-7 concrete items (e.g. fields, checks, or sections to add).
+Dev harness: http://127.0.0.1:7777
+
+Proposed additions to STATE.md before automating heartbeat:
+
+- **Explicit Status Field**: A single canonical line like `Status: healthy | degraded | failing | maintenance` with a date/time and who set it.  
+- **Last Heartbeat Metadata**: `Last heartbeat time`, `Source of heartbeat` (which script/tool), and `Last successful check ID/version`.  
+- **Checks Summary Section**: List each automated check (name, description, cadence, owning component) with a simple pass/fail/unknown indicator.  
+- **Error/Degradation Log Stub**: A short rolling list of recent issues (timestamp, component, symptom, link to detailed logs or issues).  
+- **Dependencies & Contracts**: Enumerate critical upstream/downstream dependencies and what âup/OKâ means for each (to interpret heartbeat correctness).  
+- **Manual Override Mechanism**: A field like `Automation override: on/off` with rationale, so humans can temporarily supersede automated status.  
+- **Update Protocol**: Brief instructions on who/what is allowed to edit STATE.md, and the expected format for automated vs manual updates.
+Tools used: none
+
+=== SECOND OPINION (Kimi) ===
+[kimi] KIMI_MODEL_ID not set. Set it in env (e.g. KIMI_MODEL_ID=moonshot-v1-8k).
+[CBO online] session=home mode=dev allow_tools=False
+You said: Review STATE.md (you have it in context where applicable). What pertinent information should be added to STATE.md before we automate its heartbeat status? Be concise: list 5-7 concrete items (e.g. fields, checks, or sections to add).
+Dev harness: http://127.0.0.1:7777
+
+[kimi] KIMI_MODEL_ID not set. Set it in env (e.g. KIMI_MODEL_ID=moonshot-v1-8k).
+Tools used: none
+Context: STATE.md injected.

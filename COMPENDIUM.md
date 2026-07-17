@@ -2,6 +2,8 @@
 
 This living compendium lists the named agents, copilots, and overseers active in the Calyx Terminal ecosystem, their roles, tone, artifacts, and control surfaces.
 
+**Station Calyx** is home. **CBO** is steward. **BloomOS** agents consume STATE.md (Status, heartbeat_ts, checks, health); Calyx produces, BloomOS consumes. **Calyx Agents** operate within the spine.
+
 **New to Station Calyx?** See `docs/AGENT_ONBOARDING.md` for comprehensive onboarding guidance.
 
 ## Station Motto
@@ -88,6 +90,36 @@ All agents—especially lore and historical roles (CP6 Sociologist, CP7 Chronicl
   - Entrypoints: Manual (admin-driven); see `Codex/Governance/CP13_CHARTER.md`.
   - Tone: Encouraging, diplomatic, supportive.
 
+- CP14 â€” The Cartographer
+  - Role: Maps hardware-aware capability envelopes and determines feasible execution placement across VRAM, RAM, and Disk tiers.
+  - Boundaries: Advisory only; does not authorize execution, routing, or escalation.
+  - Interaction Notes: Supplies capability envelope assessments to CP15, CP17, CP8, and CP9 under CBO direction.
+  - Tone: Topological, resource-aware, declarative.
+
+- CP15 â€” The Arbiter
+  - Role: Governs capability routing decisions and determines whether escalation, downgrade, or refusal is justified for a task.
+  - Boundaries: Enforces intent-bound execution posture; may recommend or refuse routing, but may not execute independently.
+  - Interaction Notes: Consumes CP14 envelope maps and mediates routing posture before any future implementation path under CBO authority.
+  - Tone: Strict, scope-bound, adjudicative.
+
+- CP16 â€” The Ferryman
+  - Role: Treats memory-tier transitions as explicit governed operations and requires observability for movement across VRAM, RAM, and Disk tiers.
+  - Boundaries: No silent swapping, no implicit migration, no authority to initiate transitions without CBO-approved pathing.
+  - Interaction Notes: Emits conceptual movement receipts for future implementation work; does not activate transport or runtime changes in this phase.
+  - Tone: Procedural, explicit, movement-focused.
+
+- CP17 â€” The Auditor of Load
+  - Role: Compares expected versus actual execution behavior and classifies latency, degradation, and routing variance.
+  - Boundaries: Observes and classifies only; does not tune, execute, or promote authority.
+  - Interaction Notes: Works alongside CP7 and provides resource-behavior evidence to CP8 and CP9.
+  - Tone: Measured, variance-aware, evidence-led.
+
+- CP18 â€” The Custodian of Provenance
+  - Role: Validates integrity and lineage of model artifacts, including quantized, distilled, or otherwise modified forms.
+  - Boundaries: Prevents unauthorized mutation and lineage ambiguity; may validate provenance but not authorize deployment by itself.
+  - Interaction Notes: Supports CBO and future governance review by ensuring artifact traceability remains explicit.
+  - Tone: Integrity-first, lineage-focused, conservative.
+
 - Scheduler
   - Role: Light task loop driving periodic agent goals; drift is measured vs Agent1 in `outgoing/telemetry/state.json`.
   - Heartbeat: `outgoing/scheduler.lock`.
@@ -168,5 +200,10 @@ All agents—especially lore and historical roles (CP6 Sociologist, CP7 Chronicl
 
 ## Appendices
 
-- Tasks (VS Code): see `.vscode/tasks.json` for quick-run entries (Watcher, CP6 Sociologist, Probes, Scheduler, etc.).
+- **CP-MOE Appendix:** Capability Orchestration Layer (CP-MOE) is the governed documentation layer for hardware-aware intelligence deployment under Station constraints. It translates memory-tiered execution concepts into identity-bound Station roles without activating distributed execution, federation, or autonomy expansion. CP14 maps capability envelopes, CP15 governs routing posture, CP16 treats memory movement as explicit operation, CP17 audits realized load against expectation, and CP18 preserves artifact lineage. CP-MOE remains subordinate to CBO, existing governance doctrine, and current local-first authority.
+- **CP-MOE Interaction Map:** CBO remains top-level orchestrator and gatekeeper. CP17 supplies trace and variance evidence to CP7, CP8, and CP9. CP8 consumes CP17 output for upgrade recommendations. CP9 uses CP17 and CP14 observations for tuning proposals only. Systems Integrator validates dependencies before CP-MOE engagement. Navigator may influence cadence and contention handling, but no CP-MOE role may bypass CBO authority or initiate execution independently.
+- **Required Receipt Specifications (Conceptual Only):** `capability_envelope.json`, `expert_routing_decision.json`, `memory_transition_receipt.json`, `execution_trace.json`, and `post_execution_validation.json` are defined as future receipt families only. Any future implementation must include timestamp, originating agent, decision context, and bounded scope. No runtime implementation is authorized by this compendium update alone.
+- **AGENTS Alignment Verification:** PASS. `AGENTS.md` session initialization now explicitly directs readers to `COMPENDIUM.md` after onboarding so governance awareness extends into identity awareness. Placement is within the session initialization protocol and is therefore aligned with this compendium expansion.
+- **IDE Toolbox:** See `ide_toolbox/` for merged Cursor + VS Code config. Run `ide_toolbox/install.ps1` to install tasks, launch configs, settings. Tasks: Sunrise, Sunset, Navigator, Triage, health checks, smoke test.
+- **Agent Repository:** See `docs/AGENT_REPOSITORY.md` for canonical index and BloomOS onboarding priority.
 - Logs & Artifacts: `outgoing/*` holds live heartbeats and run artifacts; `logs/*` holds evaluations and metrics.

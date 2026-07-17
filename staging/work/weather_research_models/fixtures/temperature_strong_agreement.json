@@ -1,0 +1,242 @@
+{
+  "source_snapshots": [
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.temp.agree.nws",
+      "market_id": "KX-TEMP-PHX-95-2026-04-02",
+      "weather_market_type": "daily_high_temperature",
+      "source_name": "NWS Phoenix",
+      "captured_at_utc": "2026-03-30T12:00:00Z",
+      "location_basis": "Phoenix Sky Harbor official station",
+      "forecast_target_window": "2026-04-02 local day",
+      "forecast_value_summary": "Forecast high 98F, clearly above the 95F threshold.",
+      "raw_reference": "manual://weather/nws/phoenix/2026-03-30T12:00:00Z",
+      "raw_payload": {
+        "headline": "Sunny and hot"
+      },
+      "values": [
+        {
+          "metric": "temperature_high_f",
+          "value": 98.0,
+          "unit": "F",
+          "threshold_relation": "above_threshold",
+          "forecast_probability": 0.78,
+          "qualitative_note": "Clustered warm solution."
+        }
+      ]
+    },
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.temp.agree.accu",
+      "market_id": "KX-TEMP-PHX-95-2026-04-02",
+      "weather_market_type": "daily_high_temperature",
+      "source_name": "AccuWeather Phoenix",
+      "captured_at_utc": "2026-03-30T12:03:00Z",
+      "location_basis": "Phoenix Sky Harbor official station",
+      "forecast_target_window": "2026-04-02 local day",
+      "forecast_value_summary": "Forecast high 97F, still above threshold.",
+      "raw_reference": "manual://weather/accuweather/phoenix/2026-03-30T12:03:00Z",
+      "values": [
+        {
+          "metric": "temperature_high_f",
+          "value": 97.0,
+          "unit": "F",
+          "threshold_relation": "above_threshold",
+          "forecast_probability": 0.74
+        }
+      ]
+    }
+  ],
+  "forecast_bundle": {
+    "schema_name": "weather.weather_forecast_bundle",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_forecast_bundle",
+    "bundle_id": "wx.bundle.temp.agree",
+    "market_id": "KX-TEMP-PHX-95-2026-04-02",
+    "weather_market_type": "daily_high_temperature",
+    "target_location": "Phoenix Sky Harbor official station",
+    "target_resolution_window": "2026-04-02 local day",
+    "relevant_weather_metric": "temperature_high_f",
+    "source_values": [
+      {
+        "source_snapshot_ref": "wx.temp.agree.nws",
+        "source_name": "NWS Phoenix",
+        "captured_at_utc": "2026-03-30T12:00:00Z",
+        "value_summary": "98F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 98.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.78
+      },
+      {
+        "source_snapshot_ref": "wx.temp.agree.accu",
+        "source_name": "AccuWeather Phoenix",
+        "captured_at_utc": "2026-03-30T12:03:00Z",
+        "value_summary": "97F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 97.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.74
+      }
+    ],
+    "forecast_spread_value": 1.0,
+    "forecast_spread_summary": "Tight 1F spread across current sources.",
+    "latest_observation_summary": "Current morning warming pace is on track.",
+    "freshness_state": "current",
+    "freshness_window_hours": 6.0,
+    "resolution_fit_assessment": "aligned",
+    "uncertainty_note": "Agreement is strong but threshold markets still carry weather noise.",
+    "raw_snapshot_refs": [
+      "wx.temp.agree.nws",
+      "wx.temp.agree.accu"
+    ]
+  },
+  "weather_divergence_assessment": {
+    "schema_name": "weather.weather_divergence_assessment",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_divergence_assessment",
+    "assessment_id": "wx.div.temp.agree",
+    "market_id": "KX-TEMP-PHX-95-2026-04-02",
+    "bundle_ref": "wx.bundle.temp.agree",
+    "market_implied_probability": 0.57,
+    "forecast_implied_probability": 0.76,
+    "divergence_magnitude": 0.19,
+    "divergence_note": "Forecast cluster is warmer than the market implies, but the edge is modest rather than dramatic.",
+    "source_value_trace": [
+      {
+        "source_snapshot_ref": "wx.temp.agree.nws",
+        "source_name": "NWS Phoenix",
+        "captured_at_utc": "2026-03-30T12:00:00Z",
+        "value_summary": "98F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 98.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.78
+      },
+      {
+        "source_snapshot_ref": "wx.temp.agree.accu",
+        "source_name": "AccuWeather Phoenix",
+        "captured_at_utc": "2026-03-30T12:03:00Z",
+        "value_summary": "97F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 97.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.74
+      }
+    ],
+    "tradability_note": "Quotes are present and bounded, though not especially deep.",
+    "preliminary_suitability_outcome": "weather_research.supportive",
+    "uncertainty_note": "Small source spread limits narrative overreach."
+  },
+  "weather_research_summary": {
+    "schema_name": "weather.weather_research_summary",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_research_summary",
+    "summary_id": "wx.summary.temp.agree",
+    "market_id": "KX-TEMP-PHX-95-2026-04-02",
+    "weather_market_type": "daily_high_temperature",
+    "research_timestamp_utc": "2026-03-30T12:05:00Z",
+    "forecast_bundle_ref": "wx.bundle.temp.agree",
+    "divergence_assessment_ref": "wx.div.temp.agree",
+    "source_summary_table": [
+      {
+        "source_snapshot_ref": "wx.temp.agree.nws",
+        "source_name": "NWS Phoenix",
+        "captured_at_utc": "2026-03-30T12:00:00Z",
+        "value_summary": "98F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 98.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.78
+      },
+      {
+        "source_snapshot_ref": "wx.temp.agree.accu",
+        "source_name": "AccuWeather Phoenix",
+        "captured_at_utc": "2026-03-30T12:03:00Z",
+        "value_summary": "97F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 97.0,
+        "primary_unit": "F",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.74
+      }
+    ],
+    "divergence_note": "Both sources lean above the strike and moderately above the market's current pricing.",
+    "freshness_note": "Bundle is current inside the declared freshness window.",
+    "uncertainty_note": "A small late-day cooling surprise would weaken the edge quickly.",
+    "preliminary_suitability_note": "Supportive weather evidence with bounded uncertainty and legible station alignment.",
+    "preliminary_suitability_outcome": "weather_research.supportive",
+    "evidence_summary": "Two attributable current sources cluster above the threshold at the official station basis.",
+    "invalidation_cues": [
+      "A refreshed official forecast drops to 95F or lower",
+      "Observed cloud cover meaningfully slows warming"
+    ],
+    "expected_edge_source": "weather_forecast_divergence",
+    "review_reference_snapshot_ids": [
+      "wx.temp.agree.nws",
+      "wx.temp.agree.accu"
+    ]
+  },
+  "kalshi_input": {
+    "case_id": "weather_temp_strong_agreement",
+    "scenario_name": "weather_temp_strong_agreement",
+    "description": "Weather-supported temperature case with tight source clustering and a moderate divergence.",
+    "corr_id": "weather-sim-temp-agree",
+    "market_id": "KX-TEMP-PHX-95-2026-04-02",
+    "market_title": "Will Phoenix hit 95F or higher on April 2, 2026?",
+    "resolution_rule_summary": "Resolves YES if the official Phoenix Sky Harbor daily high is 95F or higher.",
+    "initial_timestamp_utc": "2026-03-30T12:06:00Z",
+    "score_timestamp_utc": "2026-03-30T12:07:00Z",
+    "gate_timestamp_utc": "2026-03-30T12:08:00Z",
+    "resolution_timestamp_utc": "2026-04-02T23:59:00Z",
+    "proposed_side": "yes",
+    "operator_engagement_state": "operator_reviewing",
+    "market_observation": {
+      "observed_price": 0.57,
+      "best_bid": 0.56,
+      "best_ask": 0.58,
+      "market_note": "Tradable spread with bounded quote depth."
+    },
+    "entry_rationale": "Current weather cluster is warmer than the market implies at the official resolution station.",
+    "decision_horizon": {
+      "horizon_hours": 10.0,
+      "thesis_valid_until_utc": "2026-03-30T22:00:00Z",
+      "rationale": "Forecast usefulness remains bounded to the next major update cycle."
+    },
+    "confidence_signal": 0.19,
+    "gate_outcome": "recommend.research_only",
+    "gate_reasons": [
+      "Weather evidence is supportive but only moderately divergent from price.",
+      "Further forecast refresh can improve or reduce the case before operator intent."
+    ],
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "resolved_outcome": "yes",
+    "trade_executed": false,
+    "position_taken": "none",
+    "review_plan": {
+      "thesis_quality_assessment": "The thesis stayed legible and bounded.",
+      "score_quality_assessment": "The score treated a moderate weather divergence conservatively.",
+      "timing_quality_assessment": "The forecast was current and aligned with the decision horizon.",
+      "governance_quality_assessment": "Research remained separate from execution authority.",
+      "decision_quality_classification": "decision_quality.acceptable",
+      "outcome_interpretation_classification": "outcome.partial_validation",
+      "policy_alignment_classification": "policy.aligned",
+      "profit_loss_amount": 0.0,
+      "profit_loss_note": "No trade was taken in staging.",
+      "attention_cost_estimate": "Low operator attention.",
+      "abstention_counterfactual": "Waiting for a later update remained a valid governed alternative.",
+      "review_notes": "Useful supportive weather example without overclaiming execution readiness.",
+      "recommended_followup": "watch_for_pattern"
+    }
+  }
+}

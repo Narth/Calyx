@@ -1,0 +1,157 @@
+{
+  "$defs": {
+    "RuntimeProcessIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "minLength": 3,
+          "title": "Command Line",
+          "type": "string"
+        },
+        "executable_path": {
+          "minLength": 3,
+          "title": "Executable Path",
+          "type": "string"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "started_at_utc": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Utc"
+        }
+      },
+      "required": [
+        "pid",
+        "executable_path",
+        "command_line"
+      ],
+      "title": "RuntimeProcessIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "runtime_multiplicity_validation",
+      "default": "runtime_multiplicity_validation",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "classification_notes": {
+      "minLength": 1,
+      "title": "Classification Notes",
+      "type": "string"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "declaration_ref": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Declaration Ref",
+      "type": "string"
+    },
+    "observed_process_identities": {
+      "items": {
+        "$ref": "#/$defs/RuntimeProcessIdentity"
+      },
+      "minItems": 1,
+      "title": "Observed Process Identities",
+      "type": "array"
+    },
+    "posture_consequence": {
+      "enum": [
+        "none",
+        "warning_posture",
+        "degraded_trust_posture",
+        "sunrise_noncompliance",
+        "operator_review_required"
+      ],
+      "title": "Posture Consequence",
+      "type": "string"
+    },
+    "required_launch_notice_refs": {
+      "items": {
+        "maxLength": 128,
+        "minLength": 3,
+        "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+        "type": "string"
+      },
+      "title": "Required Launch Notice Refs",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "runtime.multiplicity.validation",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "validation_outcome": {
+      "enum": [
+        "topology_valid",
+        "multiplicity_declared_and_compliant",
+        "multiplicity_declared_but_noncompliant",
+        "undeclared_multiplicity",
+        "duplicate_concerning"
+      ],
+      "title": "Validation Outcome",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "service_name",
+    "declaration_ref",
+    "observed_process_identities",
+    "validation_outcome",
+    "posture_consequence",
+    "classification_notes"
+  ],
+  "title": "RuntimeMultiplicityValidation",
+  "type": "object"
+}

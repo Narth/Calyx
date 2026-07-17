@@ -1,0 +1,194 @@
+{
+  "$defs": {
+    "RuntimeProcessIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "minLength": 3,
+          "title": "Command Line",
+          "type": "string"
+        },
+        "executable_path": {
+          "minLength": 3,
+          "title": "Executable Path",
+          "type": "string"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "started_at_utc": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Utc"
+        }
+      },
+      "required": [
+        "pid",
+        "executable_path",
+        "command_line"
+      ],
+      "title": "RuntimeProcessIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "runtime_launch_notice",
+      "default": "runtime_launch_notice",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "child_or_additional_process_identity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RuntimeProcessIdentity"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "declared_by_surface": {
+      "minLength": 3,
+      "title": "Declared By Surface",
+      "type": "string"
+    },
+    "expected_lifecycle": {
+      "minLength": 1,
+      "title": "Expected Lifecycle",
+      "type": "string"
+    },
+    "intended_runtime_role": {
+      "enum": [
+        "authoritative_writer",
+        "health_enrichment_sampler",
+        "launcher_wrapper",
+        "effective_service_runtime",
+        "runtime_supervisor",
+        "bridge_cycle_owner",
+        "bridge_idle_monitor",
+        "duplicate_peer"
+      ],
+      "title": "Intended Runtime Role",
+      "type": "string"
+    },
+    "launch_notice_status": {
+      "enum": [
+        "prelaunch_declared",
+        "launch_adjacent_declared",
+        "retroactive_classification_only"
+      ],
+      "title": "Launch Notice Status",
+      "type": "string"
+    },
+    "launch_reason": {
+      "minLength": 1,
+      "title": "Launch Reason",
+      "type": "string"
+    },
+    "multiplicity_posture": {
+      "enum": [
+        "single_instance_only",
+        "wrapper_child_expected",
+        "bounded_multiplicity_optional",
+        "bounded_multiplicity_required"
+      ],
+      "title": "Multiplicity Posture",
+      "type": "string"
+    },
+    "parent_process_identity": {
+      "$ref": "#/$defs/RuntimeProcessIdentity"
+    },
+    "reconciliation_condition": {
+      "minLength": 1,
+      "title": "Reconciliation Condition",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.launch_notice",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    },
+    "steady_state_or_temporary": {
+      "enum": [
+        "steady_state",
+        "temporary"
+      ],
+      "title": "Steady State Or Temporary",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "topology_class": {
+      "enum": [
+        "single_process",
+        "wrapper_child_runtime_pair",
+        "bounded_multi_surface_runtime"
+      ],
+      "title": "Topology Class",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "service_name",
+    "declared_by_surface",
+    "topology_class",
+    "multiplicity_posture",
+    "launch_reason",
+    "parent_process_identity",
+    "intended_runtime_role",
+    "steady_state_or_temporary",
+    "expected_lifecycle",
+    "reconciliation_condition",
+    "launch_notice_status"
+  ],
+  "title": "RuntimeLaunchNotice",
+  "type": "object"
+}

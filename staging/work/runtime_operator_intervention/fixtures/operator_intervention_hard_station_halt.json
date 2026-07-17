@@ -1,0 +1,96 @@
+{
+  "schema_name": "runtime.operator.intervention",
+  "schema_version": "1.0.0",
+  "artifact_type": "runtime_operator_intervention",
+  "intervention_id": "runtime.intervention.hard.station_halt",
+  "corr_id": "runtime_capture.live.operator_smoke.20260402t193500z",
+  "capture_id": "runtime_capture.live.operator_smoke.20260402t193500z",
+  "summary_id": "runtime_capture.live.operator_smoke.20260402t193500z.operator_summary",
+  "timestamp_utc": "2026-04-04T19:04:57.786343Z",
+  "initiated_by": "operator",
+  "automated": false,
+  "intervention_tier": "tier_2_hard_intervention",
+  "triggering_conditions": {
+    "system_load_condition": "normal",
+    "governance_compliance_condition": "noncompliant",
+    "operator_signal": "UNEXPECTED",
+    "load_attributable_to_station": "yes",
+    "behavior_expected": "no"
+  },
+  "decision_framework": {
+    "load_elevated": "no",
+    "station_attribution_clear": "no",
+    "governance_compliant": "no",
+    "behavior_expected": "no",
+    "action_threshold_met": true,
+    "notes": "Derived from runtime.operator.summary without introducing new authority."
+  },
+  "observed_evidence": [
+    {
+      "artifact_type": "runtime.operator.summary",
+      "artifact_ref": "runtime_capture.live.operator_smoke.20260402t193500z.operator_summary",
+      "notes": "Operator summary reviewed before intervention."
+    },
+    {
+      "artifact_type": "runtime.capture.classification_result",
+      "artifact_ref": "runtime_capture.live.operator_smoke.20260402t193500z",
+      "notes": "Classification result reviewed before intervention."
+    },
+    {
+      "artifact_type": "runtime.capture.input",
+      "artifact_ref": "runtime_capture.live.operator_smoke.20260402t193500z",
+      "notes": "Raw capture associated with the reviewed summary."
+    }
+  ],
+  "observed_processes": [
+    {
+      "pid": 14152,
+      "process_name": "powershell.exe",
+      "command_line": "powershell -File Scripts\\station_health_loop.ps1",
+      "service_name": "station_health_loop",
+      "governance_role": "authoritative_writer",
+      "notes": "Representative Station process contributing to intervention context."
+    },
+    {
+      "pid": 21520,
+      "process_name": "python.exe",
+      "command_line": "python -B -m calyx.cbo.bridge_overseer",
+      "service_name": "bridge_overseer",
+      "governance_role": "bridge_cycle_owner",
+      "notes": "Representative bridge overseer process for fixture purposes."
+    }
+  ],
+  "action_taken": {
+    "action_type": "halt_station_activity",
+    "relevant_process_ids": [
+      14152,
+      21520
+    ],
+    "relevant_process_names": [
+      "powershell.exe",
+      "python.exe"
+    ],
+    "commands_executed": [
+      {
+        "command": "Scripts\\sunset_calyx.ps1",
+        "notes": null
+      }
+    ],
+    "command_execution_performed": true,
+    "notes": "Hard intervention fixture."
+  },
+  "operator_reasoning": "Governance noncompliance plus unresolved topology warranted a manual halt of Station activity pending review.",
+  "safety_constraints": {
+    "protected_process_targets_present": false,
+    "protected_process_names": [],
+    "protected_process_override_acknowledged": false,
+    "protected_process_override_reason": null,
+    "broad_kill_pattern_detected": false,
+    "broad_kill_pattern_blocked": false,
+    "safety_notes": [
+      "Manual-only protocol. No runtime action is initiated by the system.",
+      "Blind kill patterns are blocked at schema-validation time."
+    ]
+  },
+  "notes": "Hard intervention fixture."
+}

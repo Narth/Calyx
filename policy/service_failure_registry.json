@@ -1,0 +1,131 @@
+{
+  "schema": "station.service_failure_registry.v1",
+  "updated_utc": "2026-04-25T05:05:00Z",
+  "services": [
+    {
+      "service": "dev_harness",
+      "tier": "main",
+      "severity_class": "CLASS_3_FULL_SUNRISE_CANDIDATE",
+      "truth_exposure": true,
+      "detection": {
+        "kind": "port",
+        "port": 7777,
+        "host": "127.0.0.1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "cbo_core",
+      "tier": "main",
+      "severity_class": "CLASS_3_FULL_SUNRISE_CANDIDATE",
+      "truth_exposure": true,
+      "detection": {
+        "kind": "port",
+        "port": 7778,
+        "host": "127.0.0.1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "avatar_web",
+      "tier": "main",
+      "severity_class": "CLASS_3_FULL_SUNRISE_CANDIDATE",
+      "truth_exposure": false,
+      "detection": {
+        "kind": "port",
+        "port": 7780,
+        "host": "127.0.0.1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "telemetry_gateway",
+      "tier": "main",
+      "severity_class": "CLASS_3_FULL_SUNRISE_CANDIDATE",
+      "truth_exposure": true,
+      "detection": {
+        "kind": "port",
+        "port": 7781,
+        "host": "127.0.0.1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "station_health_loop",
+      "tier": "secondary",
+      "severity_class": "CLASS_2_SCOPED_RECOVERY_CANDIDATE",
+      "truth_exposure": true,
+      "detection": {
+        "kind": "process_pattern",
+        "pattern": "station_health_loop\\.ps1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "navigator_triage_loop",
+      "tier": "secondary",
+      "severity_class": "CLASS_2_SCOPED_RECOVERY_CANDIDATE",
+      "truth_exposure": false,
+      "detection": {
+        "kind": "process_pattern",
+        "pattern": "navigator_triage_loop\\.ps1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "energy_churn_cp9_loop",
+      "tier": "secondary",
+      "severity_class": "CLASS_1_OBSERVE",
+      "truth_exposure": false,
+      "detection": {
+        "kind": "process_pattern",
+        "pattern": "energy_churn_cp9_loop\\.ps1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "cp6_cp7_loop",
+      "tier": "secondary",
+      "severity_class": "CLASS_1_OBSERVE",
+      "truth_exposure": false,
+      "detection": {
+        "kind": "process_pattern",
+        "pattern": "cp6_cp7_loop\\.ps1",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "bridge_overseer",
+      "enabled": false,
+      "tier": "secondary",
+      "severity_class": "CLASS_1_OBSERVE",
+      "truth_exposure": false,
+      "detection": {
+        "kind": "process_pattern",
+        "pattern": "calyx\\.cbo\\.bridge_overseer",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    },
+    {
+      "service": "discord_gateway",
+      "tier": "secondary",
+      "severity_class": "CLASS_2_SCOPED_RECOVERY_CANDIDATE",
+      "truth_exposure": false,
+      "detection": {
+        "kind": "process_pattern",
+        "pattern": "calyx\\.cbo\\.discord_gateway",
+        "fail_threshold": 2,
+        "clear_threshold": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Competitor clause. Validator rejects missing expiry or max_relaxation_cap (deny-by-default).
+# Any relaxation requires relaxation_applied=true in receipt.
+
+competitor_clause:
+  expiry: "2026-05-25"
+  max_relaxation_cap: 30
+  relaxation_applied: false

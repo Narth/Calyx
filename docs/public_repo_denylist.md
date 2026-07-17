@@ -54,8 +54,17 @@
 |------|---------|
 | `config.yaml` | .gitignore (use config.template.yaml) |
 | `.env`, `.env.*` | .gitignore |
+| `DISCORD_IDS.md` | .gitignore |
 | `sitecustomize.py`, `test_secret.py` | .gitignore |
 | `Codex/Archives/*.zip`, `Codex/CGPT History/*.zip` | .gitignore |
+| `HEALTH.md`, `MEMORY.md` | Repo baseline classification 2026-04-21 |
+| `.openclaw/`, `.worktrees/` | Repo baseline classification 2026-04-21 |
+| `cbo_hub/data/` | Repo baseline classification 2026-04-21 |
+| `tmp_lifecycle_case*/` | Repo baseline classification 2026-04-21 |
+| `analysis/` | Repo baseline classification 2026-04-21 |
+| `openclaw/credentials/`, `openclaw/devices/`, `openclaw/identity/` | Repo baseline classification 2026-04-21 |
+| `openclaw/exec-approvals.json`, `openclaw/workspace-state.json` | Repo baseline classification 2026-04-21 |
+| `openclaw/agents/main/sessions/`, `openclaw/media/inbound/` | Repo baseline classification 2026-04-21 |
 
 ---
 
@@ -69,7 +78,20 @@ Single regex for matching paths (PowerShell `-match`):
 
 ---
 
-## 5. Source documents
+## 5. Intentional exceptions (reconciled 2026-02-22)
+
+After Codex public-facing audit, the following are **documented exceptions** so denylist policy matches repo state.
+
+| Area | Current repo state | Policy |
+|------|--------------------|--------|
+| **reports/** | `reports/security/*.md` are **tracked** (audit/runbook trail) | All other `reports/` content remains forbidden/ignored. No new non-security reports without explicit decision. |
+| **\*.jsonl** | **Tracked:** `benchmarks/suites/**/cases.jsonl` (allowed in .gitignore); `calyx/core/registry.jsonl`, `docs/ADVISORY_PROVENANCE_LOG.jsonl`, `docs/HASH_CHAIN_LEDGER.jsonl`, `docs/TEMPLATE_ARCHIVE_LEDGER_ENTRY.jsonl` (legacy) | .gitignore allowlist: `!tests/fixtures/*.jsonl`, `!docs/examples/**/*.jsonl`, `!benchmarks/suites/**/cases.jsonl`. Legacy tracked jsonl in `calyx/core/` and `docs/` to be reviewed before public push (migrate or add explicit allowlist). |
+
+See `docs/CODEX_AUDIT_RESPONSE_2026-02-22.md` for full audit and optional remediations.
+
+---
+
+## 6. Source documents
 
 - **.gitignore** — Runtime state, secrets, logs, IDE, caches, models
 - **GITHUB_PREP_CHECKLIST.md** — Runtime dirs, keys, config
@@ -78,4 +100,4 @@ Single regex for matching paths (PowerShell `-match`):
 
 ---
 
-*Consolidated 2026-02-11. No code changes.*
+*Consolidated 2026-02-11. Exceptions reconciled 2026-02-22 (Codex audit).*

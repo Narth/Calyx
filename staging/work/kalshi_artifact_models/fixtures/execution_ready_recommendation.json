@@ -1,0 +1,113 @@
+{
+  "scenario_name": "execution_ready_recommendation",
+  "description": "High-quality candidate ready for operator review under the governed harness.",
+  "trade_thesis_artifact": {
+    "schema_name": "kalshi.trade_thesis_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "trade_thesis_artifact",
+    "artifact_id": "thesis.exec_ready",
+    "corr_id": "kalshi-corr-exec-ready",
+    "timestamp_utc": "2026-03-28T21:00:00Z",
+    "market_id": "KXEVENT-JOBS-STRONG-2026-04",
+    "market_title": "Will the April 2026 jobs report beat consensus by 100k or more?",
+    "resolution_rule_summary": "Resolves YES if the reported payroll number beats consensus by the stated amount.",
+    "proposed_side": "yes",
+    "price_context": {
+      "observed_price": 0.47,
+      "price_unit": "probability",
+      "best_bid": 0.46,
+      "best_ask": 0.48,
+      "market_note": "Price appears slow relative to a cluster of public indicators."
+    },
+    "entry_rationale": "Public labor indicators and revisions imply the market is still underpricing a strong print.",
+    "expected_edge_source": "event_probability_mismatch",
+    "decision_horizon": {
+      "horizon_hours": 18.0,
+      "thesis_valid_until_utc": "2026-03-29T15:00:00Z",
+      "rationale": "The pre-release window is still open and the edge should persist into tomorrow morning."
+    },
+    "invalidation_condition": "Stand down if a major conflicting macro release narrows the mismatch.",
+    "abstention_alternative": "If the market reprices sharply before operator review, skip entry.",
+    "evidence_summary": "Multiple current public signals align against a still-cheap market price.",
+    "confidence_signal": 0.85,
+    "evidence_signal": 0.9,
+    "operator_engagement_state": "operator_reviewing"
+  },
+  "signal_score_record": {
+    "schema_name": "kalshi.signal_score_record",
+    "schema_version": "1.0.0",
+    "artifact_type": "signal_score_record",
+    "artifact_id": "score.exec_ready",
+    "corr_id": "kalshi-corr-exec-ready",
+    "timestamp_utc": "2026-03-28T21:02:00Z",
+    "market_id": "KXEVENT-JOBS-STRONG-2026-04",
+    "score_dimensions": {
+      "evidence_strength": 1.0,
+      "mispricing_potential": 1.0,
+      "timing_quality": 0.5,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 1.0,
+      "decision_horizon_fit": 1.0,
+      "risk_clarity": 1.0
+    },
+    "composite_score": 0.9285714285714286,
+    "classification_band": "recommend.execution_ready",
+    "confidence_signal": 0.85,
+    "downgrade_flags": [],
+    "decay_state": "fresh",
+    "evidence_summary": "This is one of the cleaner v1 setups: strong evidence, clear resolution, and bounded downside.",
+    "scoring_notes": "No downgrade flags were necessary."
+  },
+  "strategy_gate_result": {
+    "schema_name": "kalshi.strategy_gate_result",
+    "schema_version": "1.0.0",
+    "artifact_type": "strategy_gate_result",
+    "artifact_id": "gate.exec_ready",
+    "corr_id": "kalshi-corr-exec-ready",
+    "timestamp_utc": "2026-03-28T21:03:00Z",
+    "market_id": "KXEVENT-JOBS-STRONG-2026-04",
+    "gate_outcome": "recommend.execution_ready",
+    "gate_reasons": [
+      "Thesis is coherent, legible, and evidence-backed.",
+      "Candidate fits v1 market selection and wallet posture."
+    ],
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.exec_ready"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.exec_ready"
+    },
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "presence_requirement": "required_for_execution",
+    "next_allowed_action": "operator_intent_required"
+  },
+  "execution_readiness_receipt": {
+    "schema_name": "kalshi.execution_readiness_receipt",
+    "schema_version": "1.0.0",
+    "artifact_type": "execution_readiness_receipt",
+    "artifact_id": "ready.exec_ready",
+    "corr_id": "kalshi-corr-exec-ready",
+    "timestamp_utc": "2026-03-28T21:04:00Z",
+    "market_id": "KXEVENT-JOBS-STRONG-2026-04",
+    "execution_readiness_class": "recommend.execution_ready",
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.exec_ready"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.exec_ready"
+    },
+    "gate_result_ref": {
+      "artifact_type": "strategy_gate_result",
+      "artifact_id": "gate.exec_ready"
+    },
+    "presence_gate_required": true,
+    "wallet_policy_required": true,
+    "execution_authorized": false,
+    "operator_action_required": true
+  }
+}

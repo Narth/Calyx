@@ -35,7 +35,7 @@ See `outgoing/field_notes/calyx_social_protocol_v0.1.md`.
   - `outgoing/field_notes/cp6_field_log.md` (notes + tags)
   - Watcher shows a 💞 Harmony badge when `cp6.lock` is present.
 - Navigator control status appears as a 🎛️ Control badge in the Watcher.
-- Compendium of agents/copilots/overseers: `docs/COMPENDIUM.md`.
+- Compendium of agents/copilots/overseers: `COMPENDIUM.md`.
 
 ## domains and how to succeed
 

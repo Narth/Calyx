@@ -1,0 +1,76 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_runtime_identity_marker",
+      "default": "runtime_runtime_identity_marker",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "marker_id": {
+      "minLength": 3,
+      "title": "Marker Id",
+      "type": "string"
+    },
+    "marker_kind": {
+      "enum": [
+        "powershell_script_path",
+        "python_module",
+        "command_token"
+      ],
+      "title": "Marker Kind",
+      "type": "string"
+    },
+    "marker_value": {
+      "minLength": 1,
+      "title": "Marker Value",
+      "type": "string"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    },
+    "schema_name": {
+      "const": "runtime.runtime_identity_marker",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer",
+        "navigator_triage_loop",
+        "cp6_cp7_loop",
+        "energy_churn_cp9_loop",
+        "service_failure_watch",
+        "cli_avatar",
+        "test_bounded_worker"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "marker_id",
+    "service_name",
+    "marker_kind",
+    "marker_value"
+  ],
+  "title": "RuntimeIdentityMarker",
+  "type": "object"
+}

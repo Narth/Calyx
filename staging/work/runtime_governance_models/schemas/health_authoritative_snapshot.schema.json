@@ -1,0 +1,171 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "health_authoritative_snapshot",
+      "default": "health_authoritative_snapshot",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "cadence_compliant": {
+      "title": "Cadence Compliant",
+      "type": "boolean"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "cpu_pct": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cpu Pct"
+    },
+    "declared_interval_seconds": {
+      "exclusiveMinimum": 0,
+      "title": "Declared Interval Seconds",
+      "type": "number"
+    },
+    "expiry_sweep_invoked": {
+      "title": "Expiry Sweep Invoked",
+      "type": "boolean"
+    },
+    "freshness_state": {
+      "enum": [
+        "fresh",
+        "aging",
+        "stale",
+        "unknown"
+      ],
+      "title": "Freshness State",
+      "type": "string"
+    },
+    "health_state": {
+      "enum": [
+        "pass",
+        "warn",
+        "fail",
+        "unknown"
+      ],
+      "title": "Health State",
+      "type": "string"
+    },
+    "memory_pressure_tier": {
+      "anyOf": [
+        {
+          "maximum": 4,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Memory Pressure Tier"
+    },
+    "observed_loop_elapsed_ms": {
+      "minimum": 0,
+      "title": "Observed Loop Elapsed Ms",
+      "type": "integer"
+    },
+    "observed_sleep_ms": {
+      "minimum": 0,
+      "title": "Observed Sleep Ms",
+      "type": "integer"
+    },
+    "ram_pct": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ram Pct"
+    },
+    "sampling_lane": {
+      "const": "fast_path",
+      "default": "fast_path",
+      "title": "Sampling Lane",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.health.authoritative_snapshot",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "const": "station_health_loop",
+      "default": "station_health_loop",
+      "title": "Service Name",
+      "type": "string"
+    },
+    "stale_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Stale Reason"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "truth_contract_surface": {
+      "const": "runtime/station_health.json",
+      "default": "runtime/station_health.json",
+      "title": "Truth Contract Surface",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "declared_interval_seconds",
+    "observed_loop_elapsed_ms",
+    "observed_sleep_ms",
+    "cadence_compliant",
+    "health_state",
+    "freshness_state",
+    "expiry_sweep_invoked"
+  ],
+  "title": "HealthAuthoritativeSnapshot",
+  "type": "object"
+}

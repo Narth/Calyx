@@ -1,0 +1,130 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "bridge_pulse_classification",
+      "default": "bridge_pulse_classification",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "backoff_active": {
+      "title": "Backoff Active",
+      "type": "boolean"
+    },
+    "backoff_seconds": {
+      "minimum": 0,
+      "title": "Backoff Seconds",
+      "type": "integer"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "dispatched_count": {
+      "minimum": 0,
+      "title": "Dispatched Count",
+      "type": "integer"
+    },
+    "idle_mode_active": {
+      "title": "Idle Mode Active",
+      "type": "boolean"
+    },
+    "idle_reason": {
+      "enum": [
+        "none",
+        "no_objectives_file",
+        "empty_objectives_file",
+        "no_dispatchable_work"
+      ],
+      "title": "Idle Reason",
+      "type": "string"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "objectives_count": {
+      "minimum": 0,
+      "title": "Objectives Count",
+      "type": "integer"
+    },
+    "planned_tasks_count": {
+      "minimum": 0,
+      "title": "Planned Tasks Count",
+      "type": "integer"
+    },
+    "pulse_class": {
+      "enum": [
+        "active",
+        "idle"
+      ],
+      "title": "Pulse Class",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.bridge.pulse_classification",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "const": "bridge_overseer",
+      "default": "bridge_overseer",
+      "title": "Service Name",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "truthful_visibility_preserved": {
+      "title": "Truthful Visibility Preserved",
+      "type": "boolean"
+    },
+    "work_state": {
+      "enum": [
+        "objectives_present",
+        "objectives_absent",
+        "objectives_empty"
+      ],
+      "title": "Work State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "pulse_class",
+    "work_state",
+    "idle_reason",
+    "idle_mode_active",
+    "backoff_active",
+    "backoff_seconds",
+    "objectives_count",
+    "planned_tasks_count",
+    "dispatched_count",
+    "truthful_visibility_preserved",
+    "notes"
+  ],
+  "title": "BridgePulseClassification",
+  "type": "object"
+}

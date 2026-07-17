@@ -1,0 +1,849 @@
+{
+  "$defs": {
+    "OperatorAmbiguityRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguity_type": {
+          "enum": [
+            "missing_command_line",
+            "missing_executable_path",
+            "health_cadence_unresolved",
+            "health_expiry_sweep_unresolved",
+            "bridge_idle_reason_unresolved",
+            "bridge_work_state_unresolved",
+            "no_matching_service_processes"
+          ],
+          "title": "Ambiguity Type",
+          "type": "string"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer",
+            "capture_layer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service_name",
+        "ambiguity_type",
+        "notes"
+      ],
+      "title": "OperatorAmbiguityRecord",
+      "type": "object"
+    },
+    "OperatorAttributionGap": {
+      "additionalProperties": false,
+      "properties": {
+        "affected_process_ids": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Affected Process Ids",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "gap_type": {
+          "enum": [
+            "missing_launch_notice",
+            "undeclared_runtime_process",
+            "topology_mismatch",
+            "missing_command_line_data",
+            "missing_executable_path_data",
+            "unresolved_parent_child_relationship",
+            "health_cadence_unresolved",
+            "health_expiry_sweep_unresolved",
+            "bridge_idle_reason_unresolved",
+            "bridge_work_state_unresolved"
+          ],
+          "title": "Gap Type",
+          "type": "string"
+        },
+        "reasoning": {
+          "minLength": 1,
+          "title": "Reasoning",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer",
+            "capture_layer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "warn",
+            "risk",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "gap_type",
+        "service_name",
+        "severity",
+        "reasoning"
+      ],
+      "title": "OperatorAttributionGap",
+      "type": "object"
+    },
+    "OperatorExpectationSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "reasoning": {
+          "minLength": 1,
+          "title": "Reasoning",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer",
+            "capture_layer",
+            "system"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "warn",
+            "risk",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "signal_type": {
+          "enum": [
+            "multiplicity_noncompliance",
+            "duplicate_concerning",
+            "health_stale",
+            "health_unknown",
+            "health_fail",
+            "cadence_noncompliant",
+            "idle_bridge_visible",
+            "governed_ambiguity_present",
+            "load_elevated"
+          ],
+          "title": "Signal Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "signal_type",
+        "service_name",
+        "severity",
+        "reasoning"
+      ],
+      "title": "OperatorExpectationSignal",
+      "type": "object"
+    },
+    "OperatorGovernancePosture": {
+      "additionalProperties": false,
+      "properties": {
+        "authoritative_runtime_role": {
+          "minLength": 1,
+          "title": "Authoritative Runtime Role",
+          "type": "string"
+        },
+        "freshness_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "fresh",
+                "aging",
+                "stale",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Freshness State"
+        },
+        "health_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "pass",
+                "warn",
+                "fail",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Health State"
+        },
+        "idle_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "no_objectives_file",
+                "empty_objectives_file",
+                "no_dispatchable_work"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idle Reason"
+        },
+        "multiplicity_posture": {
+          "enum": [
+            "single_instance_only",
+            "wrapper_child_expected",
+            "bounded_multiplicity_optional",
+            "bounded_multiplicity_required"
+          ],
+          "title": "Multiplicity Posture",
+          "type": "string"
+        },
+        "noncompliance_severity": {
+          "anyOf": [
+            {
+              "enum": [
+                "moderate",
+                "high"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Noncompliance Severity"
+        },
+        "noncompliance_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "missing_launch_notice",
+                "duplicate_writer_attempt",
+                "duplicate_overseer_attempt",
+                "temporary_persistence_violation"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Noncompliance Type"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "observed_process_count": {
+          "minimum": 1,
+          "title": "Observed Process Count",
+          "type": "integer"
+        },
+        "posture_consequence": {
+          "enum": [
+            "none",
+            "warning_posture",
+            "degraded_trust_posture",
+            "sunrise_noncompliance",
+            "operator_review_required"
+          ],
+          "title": "Posture Consequence",
+          "type": "string"
+        },
+        "pulse_class": {
+          "anyOf": [
+            {
+              "enum": [
+                "active",
+                "idle"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pulse Class"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "topology_class": {
+          "enum": [
+            "single_process",
+            "wrapper_child_runtime_pair",
+            "bounded_multi_surface_runtime"
+          ],
+          "title": "Topology Class",
+          "type": "string"
+        },
+        "validation_outcome": {
+          "enum": [
+            "topology_valid",
+            "multiplicity_declared_and_compliant",
+            "multiplicity_declared_but_noncompliant",
+            "undeclared_multiplicity",
+            "duplicate_concerning"
+          ],
+          "title": "Validation Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service_name",
+        "topology_class",
+        "multiplicity_posture",
+        "authoritative_runtime_role",
+        "observed_process_count",
+        "validation_outcome",
+        "posture_consequence"
+      ],
+      "title": "OperatorGovernancePosture",
+      "type": "object"
+    },
+    "OperatorStationRuntimeProcess": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command Line"
+        },
+        "evidence_notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Notes",
+          "type": "array"
+        },
+        "executable_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Executable Path"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "service_name": {
+          "anyOf": [
+            {
+              "enum": [
+                "station_health_loop",
+                "bridge_overseer"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Name"
+        },
+        "station_membership": {
+          "enum": [
+            "known_governed_service",
+            "candidate_unattributed",
+            "ambiguous_station_membership"
+          ],
+          "title": "Station Membership",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pid",
+        "station_membership"
+      ],
+      "title": "OperatorStationRuntimeProcess",
+      "type": "object"
+    },
+    "OperatorStationRuntimeView": {
+      "additionalProperties": false,
+      "properties": {
+        "governance_posture": {
+          "items": {
+            "$ref": "#/$defs/OperatorGovernancePosture"
+          },
+          "minItems": 1,
+          "title": "Governance Posture",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "processes": {
+          "items": {
+            "$ref": "#/$defs/OperatorStationRuntimeProcess"
+          },
+          "title": "Processes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "governance_posture"
+      ],
+      "title": "OperatorStationRuntimeView",
+      "type": "object"
+    },
+    "OperatorSystemLoadSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Pct"
+        },
+        "freshness_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "fresh",
+                "aging",
+                "stale",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Freshness State"
+        },
+        "gpu_metrics_present": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gpu Metrics Present"
+        },
+        "health_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "pass",
+                "warn",
+                "fail",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Health State"
+        },
+        "memory_pressure_tier": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Pressure Tier"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "ram_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Pct"
+        },
+        "source_surface": {
+          "minLength": 1,
+          "title": "Source Surface",
+          "type": "string"
+        },
+        "vram_metrics_available": {
+          "default": false,
+          "title": "Vram Metrics Available",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "source_surface",
+        "notes"
+      ],
+      "title": "OperatorSystemLoadSnapshot",
+      "type": "object"
+    },
+    "OperatorTopProcess": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command Line"
+        },
+        "executable_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Executable Path"
+        },
+        "governed_surface": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Governed Surface"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "pid": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pid"
+        },
+        "process_label": {
+          "minLength": 1,
+          "title": "Process Label",
+          "type": "string"
+        },
+        "rank": {
+          "minimum": 1,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "source": {
+          "enum": [
+            "health_enrichment_snapshot",
+            "station_health_capture"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rank",
+        "source",
+        "process_label"
+      ],
+      "title": "OperatorTopProcess",
+      "type": "object"
+    },
+    "OperatorWorkstationLoadView": {
+      "additionalProperties": false,
+      "properties": {
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "observed_process_count": {
+          "minimum": 0,
+          "title": "Observed Process Count",
+          "type": "integer"
+        },
+        "system_load_snapshot": {
+          "$ref": "#/$defs/OperatorSystemLoadSnapshot"
+        },
+        "top_processes": {
+          "items": {
+            "$ref": "#/$defs/OperatorTopProcess"
+          },
+          "title": "Top Processes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "system_load_snapshot",
+        "observed_process_count"
+      ],
+      "title": "OperatorWorkstationLoadView",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguities": {
+      "items": {
+        "$ref": "#/$defs/OperatorAmbiguityRecord"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "artifact_type": {
+      "const": "runtime_operator_summary",
+      "default": "runtime_operator_summary",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "attribution_gaps": {
+      "items": {
+        "$ref": "#/$defs/OperatorAttributionGap"
+      },
+      "title": "Attribution Gaps",
+      "type": "array"
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "expectation_signals": {
+      "items": {
+        "$ref": "#/$defs/OperatorExpectationSignal"
+      },
+      "title": "Expectation Signals",
+      "type": "array"
+    },
+    "generated_at_utc": {
+      "format": "date-time",
+      "title": "Generated At Utc",
+      "type": "string"
+    },
+    "governance_compliance_condition": {
+      "enum": [
+        "compliant",
+        "ambiguous",
+        "noncompliant",
+        "critical"
+      ],
+      "title": "Governance Compliance Condition",
+      "type": "string"
+    },
+    "governance_posture": {
+      "items": {
+        "$ref": "#/$defs/OperatorGovernancePosture"
+      },
+      "minItems": 1,
+      "title": "Governance Posture",
+      "type": "array"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "operator_risk_reasoning": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Operator Risk Reasoning",
+      "type": "array"
+    },
+    "operator_risk_signal": {
+      "enum": [
+        "NORMAL",
+        "ELEVATED",
+        "UNEXPECTED",
+        "RISK",
+        "CRITICAL"
+      ],
+      "title": "Operator Risk Signal",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.operator.summary",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_capture_mode": {
+      "enum": [
+        "live_read_only",
+        "offline_replay"
+      ],
+      "title": "Source Capture Mode",
+      "type": "string"
+    },
+    "station_runtime_view": {
+      "$ref": "#/$defs/OperatorStationRuntimeView"
+    },
+    "summary_id": {
+      "minLength": 3,
+      "title": "Summary Id",
+      "type": "string"
+    },
+    "system_load_condition": {
+      "enum": [
+        "normal",
+        "elevated",
+        "high",
+        "unknown"
+      ],
+      "title": "System Load Condition",
+      "type": "string"
+    },
+    "system_load_snapshot": {
+      "$ref": "#/$defs/OperatorSystemLoadSnapshot"
+    },
+    "top_processes": {
+      "items": {
+        "$ref": "#/$defs/OperatorTopProcess"
+      },
+      "title": "Top Processes",
+      "type": "array"
+    },
+    "workstation_load_view": {
+      "$ref": "#/$defs/OperatorWorkstationLoadView"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "summary_id",
+    "capture_id",
+    "corr_id",
+    "generated_at_utc",
+    "source_capture_mode",
+    "workstation_load_view",
+    "station_runtime_view",
+    "system_load_snapshot",
+    "governance_posture",
+    "system_load_condition",
+    "governance_compliance_condition",
+    "operator_risk_signal",
+    "operator_risk_reasoning",
+    "notes"
+  ],
+  "title": "RuntimeOperatorSummary",
+  "type": "object"
+}

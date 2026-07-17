@@ -1,0 +1,83 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_capture_ingestion_trace",
+      "default": "runtime_capture_ingestion_trace",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "defaulted_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Defaulted Fields",
+      "type": "array"
+    },
+    "dropped_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dropped Fields",
+      "type": "array"
+    },
+    "mapped_process_count": {
+      "minimum": 0,
+      "title": "Mapped Process Count",
+      "type": "integer"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.capture.ingestion_trace",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_process_count": {
+      "minimum": 0,
+      "title": "Source Process Count",
+      "type": "integer"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "trace_id": {
+      "minLength": 3,
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "trace_id",
+    "corr_id",
+    "capture_id",
+    "timestamp_utc",
+    "source_process_count",
+    "mapped_process_count",
+    "notes"
+  ],
+  "title": "RuntimeCaptureIngestionTrace",
+  "type": "object"
+}

@@ -1,0 +1,72 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "base_url": {
+      "minLength": 1,
+      "title": "Base Url",
+      "type": "string"
+    },
+    "captured_at_utc": {
+      "format": "date-time",
+      "title": "Captured At Utc",
+      "type": "string"
+    },
+    "include_orderbook": {
+      "default": true,
+      "title": "Include Orderbook",
+      "type": "boolean"
+    },
+    "raw_market_payload": {
+      "additionalProperties": true,
+      "title": "Raw Market Payload",
+      "type": "object"
+    },
+    "raw_orderbook_payload": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Orderbook Payload"
+    },
+    "requested_ticker": {
+      "minLength": 1,
+      "title": "Requested Ticker",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.raw_market_snapshot",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_type": {
+      "enum": [
+        "live_public_api",
+        "manual_capture"
+      ],
+      "title": "Source Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "source_type",
+    "captured_at_utc",
+    "requested_ticker",
+    "base_url",
+    "raw_market_payload"
+  ],
+  "title": "KalshiRawMarketSnapshot",
+  "type": "object"
+}

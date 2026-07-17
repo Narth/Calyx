@@ -1,0 +1,128 @@
+{
+  "capture_input": {
+    "artifact_type": "runtime_capture_input",
+    "bridge_pulse": null,
+    "capture_id": "capture.partial.ambiguous",
+    "capture_mode": "offline_replay",
+    "capture_notes": "Partial capture with missing executable and command line.",
+    "captured_at_utc": "2026-04-02T19:15:00Z",
+    "corr_id": "capture.partial.ambiguous",
+    "process_rows": [
+      {
+        "command_line": null,
+        "executable_path": null,
+        "parent_pid": 39060,
+        "pid": 35932,
+        "ports": [],
+        "process_name": "powershell.exe",
+        "started_at_utc": "2026-04-02T16:57:09Z"
+      }
+    ],
+    "schema_name": "runtime.capture.input",
+    "schema_version": "1.0.0",
+    "station_health": {
+      "captured_at_utc": "2026-04-02T19:00:00Z",
+      "cpu_pct": 38,
+      "entropy_sources": [
+        "Code#27864"
+      ],
+      "expiry_sweep_invoked": null,
+      "gpu_metrics_present": true,
+      "health": "unknown",
+      "interval_s": 1.0,
+      "loop_elapsed_ms": null,
+      "loop_sleep_ms": null,
+      "memory_pressure_tier": 0,
+      "ram_pct": 43,
+      "source_path": "C:\\Calyx_Terminal\\runtime\\station_health.json",
+      "stale_reason": "authoritative sample stale",
+      "top_processes": [
+        "Code#27864",
+        "powershell#35932"
+      ],
+      "truth_state": "stale"
+    }
+  },
+  "normalization_result": {
+    "ambiguity_markers": [
+      {
+        "ambiguity_type": "missing_command_line",
+        "artifact_type": "runtime_capture_ambiguity_marker",
+        "capture_id": "capture.partial.ambiguous",
+        "corr_id": "capture.partial.ambiguous",
+        "marker_id": "capture.partial.ambiguous.marker.missing_command_line.35932",
+        "notes": "Process PID 35932 missing command line; service matching may be incomplete.",
+        "schema_name": "runtime.capture.ambiguity_marker",
+        "schema_version": "1.0.0",
+        "service_name": "capture_layer"
+      },
+      {
+        "ambiguity_type": "missing_executable_path",
+        "artifact_type": "runtime_capture_ambiguity_marker",
+        "capture_id": "capture.partial.ambiguous",
+        "corr_id": "capture.partial.ambiguous",
+        "marker_id": "capture.partial.ambiguous.marker.missing_executable_path.35932",
+        "notes": "Process PID 35932 missing executable path; path fidelity is incomplete.",
+        "schema_name": "runtime.capture.ambiguity_marker",
+        "schema_version": "1.0.0",
+        "service_name": "capture_layer"
+      },
+      {
+        "ambiguity_type": "no_matching_service_processes",
+        "artifact_type": "runtime_capture_ambiguity_marker",
+        "capture_id": "capture.partial.ambiguous",
+        "corr_id": "capture.partial.ambiguous",
+        "marker_id": "capture.partial.ambiguous.marker.no_matching_service_processes",
+        "notes": "Station health artifact was captured but no matching station_health_loop process row was present.",
+        "schema_name": "runtime.capture.ambiguity_marker",
+        "schema_version": "1.0.0",
+        "service_name": "station_health_loop"
+      }
+    ],
+    "artifact_type": "runtime_capture_normalization_result",
+    "canonical_snapshot": {
+      "artifact_type": "runtime_observer_process_snapshot",
+      "bridge_context": null,
+      "capture_notes": "Partial capture with missing executable and command line.",
+      "captured_at_utc": "2026-04-02T19:15:00Z",
+      "corr_id": "capture.partial.ambiguous",
+      "health_context": null,
+      "observer_mode": "staging_only",
+      "processes": [
+        {
+          "command_line": "unknown-command://pid/35932",
+          "executable_path": "unknown://pid/35932",
+          "parent_pid": 39060,
+          "pid": 35932,
+          "started_at_utc": "2026-04-02T16:57:09Z"
+        }
+      ],
+      "schema_name": "runtime.observer.process_snapshot",
+      "schema_version": "1.0.0",
+      "snapshot_id": "capture.partial.ambiguous"
+    },
+    "capture_id": "capture.partial.ambiguous",
+    "corr_id": "capture.partial.ambiguous",
+    "ingestion_trace": {
+      "artifact_type": "runtime_capture_ingestion_trace",
+      "capture_id": "capture.partial.ambiguous",
+      "corr_id": "capture.partial.ambiguous",
+      "defaulted_fields": [
+        "process_rows[35932].executable_path"
+      ],
+      "dropped_fields": [
+        "process_rows[35932].command_line"
+      ],
+      "mapped_process_count": 1,
+      "notes": "Deterministic raw capture to canonical observer snapshot mapping.",
+      "schema_name": "runtime.capture.ingestion_trace",
+      "schema_version": "1.0.0",
+      "source_process_count": 1,
+      "timestamp_utc": "2026-04-02T18:35:47.523335Z",
+      "trace_id": "capture.partial.ambiguous.trace"
+    },
+    "normalized_at_utc": "2026-04-02T18:35:47.523345Z",
+    "schema_name": "runtime.capture.normalization_result",
+    "schema_version": "1.0.0"
+  }
+}

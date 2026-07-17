@@ -1,0 +1,313 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "trade_thesis_artifact",
+            "signal_score_record",
+            "strategy_gate_result",
+            "execution_readiness_receipt",
+            "execution_support_receipt",
+            "post_resolution_review_artifact"
+          ],
+          "title": "Artifact Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_type",
+        "artifact_id"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "ProfitLossResult": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "title": "Amount",
+          "type": "number"
+        },
+        "currency": {
+          "const": "USD",
+          "title": "Currency",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "title": "ProfitLossResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "abstention_counterfactual": {
+      "minLength": 1,
+      "title": "Abstention Counterfactual",
+      "type": "string"
+    },
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "post_resolution_review_artifact",
+      "default": "post_resolution_review_artifact",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "attention_cost_estimate": {
+      "minLength": 1,
+      "title": "Attention Cost Estimate",
+      "type": "string"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "decision_quality_classification": {
+      "enum": [
+        "decision_quality.strong",
+        "decision_quality.acceptable",
+        "decision_quality.weak",
+        "decision_quality.unsound"
+      ],
+      "title": "Decision Quality Classification",
+      "type": "string"
+    },
+    "execution_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "gate_result_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "governance_quality_assessment": {
+      "minLength": 1,
+      "title": "Governance Quality Assessment",
+      "type": "string"
+    },
+    "market_id": {
+      "maxLength": 128,
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "market_title": {
+      "minLength": 1,
+      "title": "Market Title",
+      "type": "string"
+    },
+    "original_composite_score": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Original Composite Score",
+      "type": "number"
+    },
+    "original_gate_outcome": {
+      "enum": [
+        "abstain.insufficient_evidence",
+        "abstain.low_confidence",
+        "abstain.poor_timing",
+        "abstain.market_not_suitable",
+        "recommend.research_only",
+        "recommend.execution_ready_low_confidence",
+        "recommend.execution_ready"
+      ],
+      "title": "Original Gate Outcome",
+      "type": "string"
+    },
+    "outcome_interpretation_classification": {
+      "enum": [
+        "outcome.validated_edge",
+        "outcome.partial_validation",
+        "outcome.variance_assist",
+        "outcome.variance_penalty",
+        "outcome.false_positive_signal",
+        "outcome.correct_abstention",
+        "outcome.missed_opportunity_but_valid_abstention"
+      ],
+      "title": "Outcome Interpretation Classification",
+      "type": "string"
+    },
+    "policy_alignment_classification": {
+      "enum": [
+        "policy.aligned",
+        "policy.minor_drift_observed",
+        "policy.review_gap_observed",
+        "policy.misaligned"
+      ],
+      "title": "Policy Alignment Classification",
+      "type": "string"
+    },
+    "position_taken": {
+      "enum": [
+        "yes",
+        "no",
+        "none"
+      ],
+      "title": "Position Taken",
+      "type": "string"
+    },
+    "profit_loss_result": {
+      "$ref": "#/$defs/ProfitLossResult"
+    },
+    "recommended_followup": {
+      "enum": [
+        "none",
+        "watch_for_pattern",
+        "review_signal_thresholds",
+        "review_market_selection",
+        "review_timing_logic",
+        "review_confidence_calibration",
+        "review_artifact_completeness"
+      ],
+      "title": "Recommended Followup",
+      "type": "string"
+    },
+    "resolved_outcome": {
+      "enum": [
+        "yes",
+        "no",
+        "void",
+        "unresolved"
+      ],
+      "title": "Resolved Outcome",
+      "type": "string"
+    },
+    "review_notes": {
+      "minLength": 1,
+      "title": "Review Notes",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "kalshi.post_resolution_review_artifact",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_quality_assessment": {
+      "minLength": 1,
+      "title": "Score Quality Assessment",
+      "type": "string"
+    },
+    "score_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "thesis_quality_assessment": {
+      "minLength": 1,
+      "title": "Thesis Quality Assessment",
+      "type": "string"
+    },
+    "thesis_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "timing_quality_assessment": {
+      "minLength": 1,
+      "title": "Timing Quality Assessment",
+      "type": "string"
+    },
+    "trade_executed": {
+      "title": "Trade Executed",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "market_id",
+    "market_title",
+    "resolved_outcome",
+    "position_taken",
+    "trade_executed",
+    "original_composite_score",
+    "original_gate_outcome",
+    "thesis_quality_assessment",
+    "score_quality_assessment",
+    "timing_quality_assessment",
+    "governance_quality_assessment",
+    "decision_quality_classification",
+    "outcome_interpretation_classification",
+    "policy_alignment_classification",
+    "profit_loss_result",
+    "attention_cost_estimate",
+    "abstention_counterfactual",
+    "review_notes",
+    "recommended_followup"
+  ],
+  "title": "PostResolutionReviewArtifact",
+  "type": "object"
+}

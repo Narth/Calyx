@@ -1,0 +1,113 @@
+{
+  "schema": "station.source_authority_registry.v1",
+  "updated_utc": "2026-04-25T22:45:00Z",
+  "status": "canonical support",
+  "purpose": "Machine-readable registry of approved Station Calyx local source roots and their authority boundaries.",
+  "governing_decisions": [
+    "docs/canonical/CALYX_DECISION_LEDGER.md#dec-20260425-001---approved-roots-are-calyx-source-authority"
+  ],
+  "global_boundaries": {
+    "local_scope_only": true,
+    "source_material_authorized": true,
+    "canonical_runtime_truth_by_presence_alone": false,
+    "automatic_retroactive_ingestion_authorized": false,
+    "overrides_existing_quarantine_or_classification": false,
+    "external_communication_authorized_by_registry": false
+  },
+  "roots": [
+    {
+      "id": "calyx_terminal",
+      "path": "C:\\Calyx_Terminal",
+      "exists_required": true,
+      "authority_class": "source_material",
+      "operational_role": "main Station Calyx repository, runtime, docs, scripts, tests, receipts, and canonical control plane",
+      "allowed_uses": [
+        "station_analysis",
+        "code_review",
+        "runtime_truth_review",
+        "documentation_update",
+        "governance_receipts",
+        "explicitly_scoped_implementation"
+      ],
+      "restricted_uses": [
+        "silent_external_export",
+        "unstated_runtime_authority_elevation",
+        "mass_deletion_without_explicit_override"
+      ],
+      "truth_boundary": "Contains canonical docs and runtime truth surfaces, but each artifact keeps its own authority classification."
+    },
+    {
+      "id": "calyx_test_temp",
+      "path": "C:\\Calyx_Test_Temp",
+      "exists_required": true,
+      "authority_class": "scratch_support",
+      "operational_role": "test scratch, pytest probes, temporary validation material",
+      "allowed_uses": [
+        "test_artifact_review",
+        "temporary_validation",
+        "cleanup_candidate_identification"
+      ],
+      "restricted_uses": [
+        "canonical_memory_source_without_review",
+        "runtime_truth_authority"
+      ],
+      "truth_boundary": "Evidence may be useful for validation history; not canonical runtime truth."
+    },
+    {
+      "id": "calyx_parking",
+      "path": "C:\\Calyx_Parking",
+      "exists_required": true,
+      "authority_class": "parked_source_material",
+      "operational_role": "parked adjacent projects and historical workspaces including BitNet, clawdbot_workspace, and moltbot",
+      "allowed_uses": [
+        "historical_review",
+        "dependency_context",
+        "future_rehabilitation_assessment"
+      ],
+      "restricted_uses": [
+        "implicit_station_runtime_integration",
+        "external_process_launch_without_work_order",
+        "authority_import_without_classification"
+      ],
+      "truth_boundary": "Source material for history and possible future work; not active Station authority unless separately classified."
+    },
+    {
+      "id": "calyx_federation_inbox",
+      "path": "C:\\Calyx_Federation_Inbox",
+      "exists_required": true,
+      "authority_class": "federation_evidence_archive",
+      "operational_role": "historical ladder, determinism, patch, federation, and transfer evidence",
+      "allowed_uses": [
+        "evidence_review",
+        "historical_traceability",
+        "patch_provenance_analysis"
+      ],
+      "restricted_uses": [
+        "silent_federation",
+        "implicit_external_authority",
+        "automatic_patch_application"
+      ],
+      "truth_boundary": "Evidence archive only; does not authorize federation or patch application by presence."
+    },
+    {
+      "id": "calyx_data",
+      "path": "D:\\Calyx_Data",
+      "exists_required": true,
+      "authority_class": "data_archive_source_material",
+      "operational_role": "Calyx archive, evidence, logs, memory, projects, voice notes, and retroactive context source material",
+      "allowed_uses": [
+        "source_discovery",
+        "continuity_review",
+        "explicitly_scoped_retroactive_context_pass",
+        "privacy_bounded_summarization_after_authorization"
+      ],
+      "restricted_uses": [
+        "automatic_ingestion",
+        "silent_memory_elevation",
+        "runtime_truth_authority_by_presence",
+        "external_export_without_explicit_authorization"
+      ],
+      "truth_boundary": "Authorized source corpus for Station work; each ingestion or elevation into memory/doctrine/runtime truth requires explicit receipt-backed scope."
+    }
+  ]
+}

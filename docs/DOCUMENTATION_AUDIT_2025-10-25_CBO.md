@@ -1,8 +1,8 @@
 # CBO Documentation Audit Report — Station Calyx
 
-**Date:** 2025-10-25  
-**Auditor:** CBO (Command Bridge Overseer)  
-**Scope:** Complete codebase documentation review and data retention assessment  
+**Date:** 2025-10-25
+**Auditor:** CBO (Command Bridge Overseer)
+**Scope:** Complete codebase documentation review and data retention assessment
 **Status:** ⚠️ Requires Immediate Attention
 
 ---
@@ -37,7 +37,7 @@ Station Calyx has comprehensive and well-organized documentation in the `docs/` 
 - ✅ `ARCHITECTURE.md` - Accurate system design documentation
 - ✅ `OPERATIONS.md` - Detailed operational procedures
 - ✅ `MILESTONES.md` - Historical achievement tracking
-- ✅ `docs/COMPENDIUM.md` - Complete agent roster
+- ✅ `COMPENDIUM.md` - Complete agent roster
 - ✅ `docs/AGENT_ONBOARDING.md` - Comprehensive onboarding guide
 - ✅ `docs/CBO.md` - Up-to-date CBO documentation
 - ✅ `docs/TRIAGE.md` - Change workflow documented
@@ -70,7 +70,7 @@ Station Calyx has comprehensive and well-organized documentation in the `docs/` 
 **Status:** Complete coverage of all agents, copilots, and overseers.
 
 **Files Reviewed:**
-- ✅ `docs/COMPENDIUM.md` - Complete agent roster with roles and tone
+- ✅ `COMPENDIUM.md` - Complete agent roster with roles and tone
 - ✅ `docs/AGENT_ONBOARDING.md` - Comprehensive onboarding workflow
 - ✅ `docs/COPILOTS.md` - Copilot-specific guidance
 - ✅ `docs/prompts/` - Successful deployment prompts documented
@@ -188,10 +188,10 @@ logging_optimization:
    ```powershell
    # Archive agent_run directories older than 7 days
    python -u tools/archive_agent_runs.py --days 7
-   
+
    # Archive chronicles older than 7 days
    python -u tools/archive_chronicles.py --days 7
-   
+
    # Run log housekeeping
    python -m tools.log_housekeeper run --keep-days 14
    ```
@@ -399,8 +399,8 @@ Station Calyx has **excellent core documentation** that is comprehensive, accura
 
 ---
 
-**Audit Complete:** 2025-10-25  
-**Next Review:** After retention policy implementation  
+**Audit Complete:** 2025-10-25
+**Next Review:** After retention policy implementation
 **Consumer Readiness:** Not ready - remediation required
 
 ---

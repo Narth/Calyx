@@ -1,0 +1,514 @@
+{
+  "$defs": {
+    "InterventionActionTaken": {
+      "additionalProperties": false,
+      "properties": {
+        "action_type": {
+          "enum": [
+            "observe_only",
+            "inspect_process",
+            "terminate_process",
+            "terminate_multiple_processes",
+            "stop_station_services",
+            "halt_station_activity",
+            "restart_machine"
+          ],
+          "title": "Action Type",
+          "type": "string"
+        },
+        "command_execution_performed": {
+          "title": "Command Execution Performed",
+          "type": "boolean"
+        },
+        "commands_executed": {
+          "items": {
+            "$ref": "#/$defs/InterventionCommandRecord"
+          },
+          "title": "Commands Executed",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "relevant_process_ids": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Relevant Process Ids",
+          "type": "array"
+        },
+        "relevant_process_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Relevant Process Names",
+          "type": "array"
+        }
+      },
+      "required": [
+        "action_type",
+        "command_execution_performed"
+      ],
+      "title": "InterventionActionTaken",
+      "type": "object"
+    },
+    "InterventionCommandRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "minLength": 1,
+          "title": "Command",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "title": "InterventionCommandRecord",
+      "type": "object"
+    },
+    "InterventionDecisionFramework": {
+      "additionalProperties": false,
+      "properties": {
+        "action_threshold_met": {
+          "title": "Action Threshold Met",
+          "type": "boolean"
+        },
+        "behavior_expected": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "title": "Behavior Expected",
+          "type": "string"
+        },
+        "governance_compliant": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "title": "Governance Compliant",
+          "type": "string"
+        },
+        "load_elevated": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "title": "Load Elevated",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "station_attribution_clear": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "title": "Station Attribution Clear",
+          "type": "string"
+        }
+      },
+      "required": [
+        "load_elevated",
+        "station_attribution_clear",
+        "governance_compliant",
+        "behavior_expected",
+        "action_threshold_met"
+      ],
+      "title": "InterventionDecisionFramework",
+      "type": "object"
+    },
+    "InterventionEvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_ref": {
+          "minLength": 3,
+          "title": "Artifact Ref",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "runtime.operator.summary",
+            "runtime.capture.input",
+            "runtime.capture.classification_result",
+            "runtime_governance_bundle"
+          ],
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "artifact_type",
+        "artifact_ref"
+      ],
+      "title": "InterventionEvidenceRef",
+      "type": "object"
+    },
+    "InterventionObservedProcess": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command Line"
+        },
+        "governance_role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Governance Role"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "process_name": {
+          "minLength": 1,
+          "title": "Process Name",
+          "type": "string"
+        },
+        "service_name": {
+          "anyOf": [
+            {
+              "enum": [
+                "station_health_loop",
+                "bridge_overseer"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Name"
+        }
+      },
+      "required": [
+        "pid",
+        "process_name"
+      ],
+      "title": "InterventionObservedProcess",
+      "type": "object"
+    },
+    "InterventionSafetyConstraints": {
+      "additionalProperties": false,
+      "properties": {
+        "broad_kill_pattern_blocked": {
+          "default": false,
+          "title": "Broad Kill Pattern Blocked",
+          "type": "boolean"
+        },
+        "broad_kill_pattern_detected": {
+          "default": false,
+          "title": "Broad Kill Pattern Detected",
+          "type": "boolean"
+        },
+        "protected_process_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Protected Process Names",
+          "type": "array"
+        },
+        "protected_process_override_acknowledged": {
+          "default": false,
+          "title": "Protected Process Override Acknowledged",
+          "type": "boolean"
+        },
+        "protected_process_override_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Protected Process Override Reason"
+        },
+        "protected_process_targets_present": {
+          "title": "Protected Process Targets Present",
+          "type": "boolean"
+        },
+        "safety_notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Safety Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "protected_process_targets_present"
+      ],
+      "title": "InterventionSafetyConstraints",
+      "type": "object"
+    },
+    "InterventionTriggeringConditions": {
+      "additionalProperties": false,
+      "properties": {
+        "behavior_expected": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "title": "Behavior Expected",
+          "type": "string"
+        },
+        "governance_compliance_condition": {
+          "enum": [
+            "compliant",
+            "ambiguous",
+            "noncompliant",
+            "critical"
+          ],
+          "title": "Governance Compliance Condition",
+          "type": "string"
+        },
+        "load_attributable_to_station": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ],
+          "title": "Load Attributable To Station",
+          "type": "string"
+        },
+        "operator_signal": {
+          "enum": [
+            "NORMAL",
+            "ELEVATED",
+            "UNEXPECTED",
+            "RISK",
+            "CRITICAL"
+          ],
+          "title": "Operator Signal",
+          "type": "string"
+        },
+        "system_load_condition": {
+          "enum": [
+            "normal",
+            "elevated",
+            "high",
+            "unknown"
+          ],
+          "title": "System Load Condition",
+          "type": "string"
+        }
+      },
+      "required": [
+        "system_load_condition",
+        "governance_compliance_condition",
+        "operator_signal",
+        "load_attributable_to_station",
+        "behavior_expected"
+      ],
+      "title": "InterventionTriggeringConditions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_taken": {
+      "$ref": "#/$defs/InterventionActionTaken"
+    },
+    "artifact_type": {
+      "const": "runtime_operator_intervention",
+      "default": "runtime_operator_intervention",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "automated": {
+      "const": false,
+      "default": false,
+      "title": "Automated",
+      "type": "boolean"
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "decision_framework": {
+      "$ref": "#/$defs/InterventionDecisionFramework"
+    },
+    "initiated_by": {
+      "const": "operator",
+      "default": "operator",
+      "title": "Initiated By",
+      "type": "string"
+    },
+    "intervention_id": {
+      "minLength": 3,
+      "title": "Intervention Id",
+      "type": "string"
+    },
+    "intervention_tier": {
+      "enum": [
+        "tier_0_observe",
+        "tier_1_soft_intervention",
+        "tier_2_hard_intervention"
+      ],
+      "title": "Intervention Tier",
+      "type": "string"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    },
+    "observed_evidence": {
+      "items": {
+        "$ref": "#/$defs/InterventionEvidenceRef"
+      },
+      "minItems": 1,
+      "title": "Observed Evidence",
+      "type": "array"
+    },
+    "observed_processes": {
+      "items": {
+        "$ref": "#/$defs/InterventionObservedProcess"
+      },
+      "title": "Observed Processes",
+      "type": "array"
+    },
+    "operator_reasoning": {
+      "minLength": 1,
+      "title": "Operator Reasoning",
+      "type": "string"
+    },
+    "safety_constraints": {
+      "$ref": "#/$defs/InterventionSafetyConstraints"
+    },
+    "schema_name": {
+      "const": "runtime.operator.intervention",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "summary_id": {
+      "minLength": 3,
+      "title": "Summary Id",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "triggering_conditions": {
+      "$ref": "#/$defs/InterventionTriggeringConditions"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "intervention_id",
+    "corr_id",
+    "capture_id",
+    "summary_id",
+    "timestamp_utc",
+    "intervention_tier",
+    "triggering_conditions",
+    "decision_framework",
+    "observed_evidence",
+    "action_taken",
+    "operator_reasoning",
+    "safety_constraints"
+  ],
+  "title": "RuntimeOperatorIntervention",
+  "type": "object"
+}

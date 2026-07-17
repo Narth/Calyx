@@ -1,0 +1,133 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 128,
+          "minLength": 3,
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_type": {
+          "enum": [
+            "trade_thesis_artifact",
+            "signal_score_record",
+            "strategy_gate_result",
+            "execution_readiness_receipt",
+            "execution_support_receipt",
+            "post_resolution_review_artifact"
+          ],
+          "title": "Artifact Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_type",
+        "artifact_id"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "execution_readiness_receipt",
+      "default": "execution_readiness_receipt",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "execution_authorized": {
+      "const": false,
+      "default": false,
+      "title": "Execution Authorized",
+      "type": "boolean"
+    },
+    "execution_readiness_class": {
+      "enum": [
+        "recommend.execution_ready_low_confidence",
+        "recommend.execution_ready"
+      ],
+      "title": "Execution Readiness Class",
+      "type": "string"
+    },
+    "gate_result_ref": {
+      "$ref": "#/$defs/ArtifactRef"
+    },
+    "market_id": {
+      "maxLength": 128,
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "operator_action_required": {
+      "const": true,
+      "default": true,
+      "title": "Operator Action Required",
+      "type": "boolean"
+    },
+    "presence_gate_required": {
+      "const": true,
+      "default": true,
+      "title": "Presence Gate Required",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "kalshi.execution_readiness_receipt",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "score_ref": {
+      "$ref": "#/$defs/ArtifactRef"
+    },
+    "thesis_ref": {
+      "$ref": "#/$defs/ArtifactRef"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "wallet_policy_required": {
+      "const": true,
+      "default": true,
+      "title": "Wallet Policy Required",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "market_id",
+    "execution_readiness_class",
+    "thesis_ref",
+    "score_ref",
+    "gate_result_ref"
+  ],
+  "title": "ExecutionReadinessReceipt",
+  "type": "object"
+}

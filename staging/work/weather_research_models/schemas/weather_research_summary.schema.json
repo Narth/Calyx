@@ -1,0 +1,224 @@
+{
+  "$defs": {
+    "ForecastSourceValue": {
+      "additionalProperties": false,
+      "properties": {
+        "captured_at_utc": {
+          "format": "date-time",
+          "title": "Captured At Utc",
+          "type": "string"
+        },
+        "forecast_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast Probability"
+        },
+        "primary_metric": {
+          "enum": [
+            "temperature_high_f",
+            "temperature_low_f",
+            "precip_probability",
+            "precip_accumulation_in",
+            "snow_accumulation_in",
+            "threshold_event_probability"
+          ],
+          "title": "Primary Metric",
+          "type": "string"
+        },
+        "primary_unit": {
+          "minLength": 1,
+          "title": "Primary Unit",
+          "type": "string"
+        },
+        "primary_value": {
+          "title": "Primary Value",
+          "type": "number"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "source_snapshot_ref": {
+          "minLength": 3,
+          "title": "Source Snapshot Ref",
+          "type": "string"
+        },
+        "threshold_relation": {
+          "minLength": 1,
+          "title": "Threshold Relation",
+          "type": "string"
+        },
+        "value_summary": {
+          "minLength": 1,
+          "title": "Value Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_snapshot_ref",
+        "source_name",
+        "captured_at_utc",
+        "value_summary",
+        "primary_metric",
+        "primary_value",
+        "primary_unit",
+        "threshold_relation"
+      ],
+      "title": "ForecastSourceValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "weather_research_summary",
+      "default": "weather_research_summary",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "divergence_assessment_ref": {
+      "minLength": 3,
+      "title": "Divergence Assessment Ref",
+      "type": "string"
+    },
+    "divergence_note": {
+      "minLength": 1,
+      "title": "Divergence Note",
+      "type": "string"
+    },
+    "evidence_summary": {
+      "minLength": 1,
+      "title": "Evidence Summary",
+      "type": "string"
+    },
+    "expected_edge_source": {
+      "const": "weather_forecast_divergence",
+      "default": "weather_forecast_divergence",
+      "title": "Expected Edge Source",
+      "type": "string"
+    },
+    "forecast_bundle_ref": {
+      "minLength": 3,
+      "title": "Forecast Bundle Ref",
+      "type": "string"
+    },
+    "freshness_note": {
+      "minLength": 1,
+      "title": "Freshness Note",
+      "type": "string"
+    },
+    "invalidation_cues": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Invalidation Cues",
+      "type": "array"
+    },
+    "market_id": {
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "preliminary_suitability_note": {
+      "minLength": 1,
+      "title": "Preliminary Suitability Note",
+      "type": "string"
+    },
+    "preliminary_suitability_outcome": {
+      "enum": [
+        "weather_research.unsuitable",
+        "weather_research.inconclusive",
+        "weather_research.possible_divergence",
+        "weather_research.supportive_but_uncertain",
+        "weather_research.supportive"
+      ],
+      "title": "Preliminary Suitability Outcome",
+      "type": "string"
+    },
+    "research_timestamp_utc": {
+      "format": "date-time",
+      "title": "Research Timestamp Utc",
+      "type": "string"
+    },
+    "review_reference_snapshot_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Review Reference Snapshot Ids",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "weather.weather_research_summary",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_summary_table": {
+      "items": {
+        "$ref": "#/$defs/ForecastSourceValue"
+      },
+      "minItems": 1,
+      "title": "Source Summary Table",
+      "type": "array"
+    },
+    "summary_id": {
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Summary Id",
+      "type": "string"
+    },
+    "uncertainty_note": {
+      "minLength": 1,
+      "title": "Uncertainty Note",
+      "type": "string"
+    },
+    "weather_market_type": {
+      "enum": [
+        "daily_high_temperature",
+        "daily_low_temperature",
+        "measurable_precipitation",
+        "measurable_snowfall",
+        "weather_threshold_event"
+      ],
+      "title": "Weather Market Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "summary_id",
+    "market_id",
+    "weather_market_type",
+    "research_timestamp_utc",
+    "forecast_bundle_ref",
+    "divergence_assessment_ref",
+    "source_summary_table",
+    "divergence_note",
+    "freshness_note",
+    "uncertainty_note",
+    "preliminary_suitability_note",
+    "preliminary_suitability_outcome",
+    "evidence_summary",
+    "invalidation_cues",
+    "review_reference_snapshot_ids"
+  ],
+  "title": "WeatherResearchSummary",
+  "type": "object"
+}

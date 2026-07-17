@@ -1,0 +1,177 @@
+{
+  "$defs": {
+    "WeatherValue": {
+      "additionalProperties": false,
+      "properties": {
+        "forecast_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast Probability"
+        },
+        "metric": {
+          "enum": [
+            "temperature_high_f",
+            "temperature_low_f",
+            "precip_probability",
+            "precip_accumulation_in",
+            "snow_accumulation_in",
+            "threshold_event_probability"
+          ],
+          "title": "Metric",
+          "type": "string"
+        },
+        "qualitative_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Qualitative Note"
+        },
+        "threshold_relation": {
+          "minLength": 1,
+          "title": "Threshold Relation",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "metric",
+        "value",
+        "unit",
+        "threshold_relation"
+      ],
+      "title": "WeatherValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "weather_source_snapshot",
+      "default": "weather_source_snapshot",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "captured_at_utc": {
+      "format": "date-time",
+      "title": "Captured At Utc",
+      "type": "string"
+    },
+    "forecast_target_window": {
+      "minLength": 1,
+      "title": "Forecast Target Window",
+      "type": "string"
+    },
+    "forecast_value_summary": {
+      "minLength": 1,
+      "title": "Forecast Value Summary",
+      "type": "string"
+    },
+    "location_basis": {
+      "minLength": 1,
+      "title": "Location Basis",
+      "type": "string"
+    },
+    "market_id": {
+      "minLength": 2,
+      "title": "Market Id",
+      "type": "string"
+    },
+    "raw_payload": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Payload"
+    },
+    "raw_reference": {
+      "minLength": 1,
+      "title": "Raw Reference",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "weather.weather_source_snapshot",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "source_name": {
+      "minLength": 1,
+      "title": "Source Name",
+      "type": "string"
+    },
+    "values": {
+      "items": {
+        "$ref": "#/$defs/WeatherValue"
+      },
+      "minItems": 1,
+      "title": "Values",
+      "type": "array"
+    },
+    "weather_market_type": {
+      "enum": [
+        "daily_high_temperature",
+        "daily_low_temperature",
+        "measurable_precipitation",
+        "measurable_snowfall",
+        "weather_threshold_event"
+      ],
+      "title": "Weather Market Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "snapshot_id",
+    "market_id",
+    "weather_market_type",
+    "source_name",
+    "captured_at_utc",
+    "location_basis",
+    "forecast_target_window",
+    "forecast_value_summary",
+    "raw_reference",
+    "values"
+  ],
+  "title": "WeatherSourceSnapshot",
+  "type": "object"
+}

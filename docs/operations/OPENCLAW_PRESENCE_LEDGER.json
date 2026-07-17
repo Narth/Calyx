@@ -1,0 +1,27 @@
+{
+  "version": "1",
+  "schema": "openclaw_presence_ledger_v1",
+  "wo": "WO_OPENCLAW_DECOMMISSION_GATING_V2",
+  "emitter": "openclaw",
+  "status": "deprecated_forbidden",
+  "entries": [
+    {"path": "openclaw/", "type": "repo_folder", "suspected_owner": "OpenClaw", "evidence": "OpenClaw extensions/config"},
+    {"path": ".openclaw/", "type": "repo_folder", "suspected_owner": "OpenClaw", "evidence": "calyx-governance plugin"},
+    {"path": "openclaw.json", "type": "config", "suspected_owner": "OpenClaw", "evidence": "root config"},
+    {"path": "Scripts/setup_openclaw_calyx.ps1", "type": "script", "suspected_owner": "Calyx", "evidence": "setup script"},
+    {"path": "Scripts/openclaw_preflight.ps1", "type": "script", "suspected_owner": "Calyx", "evidence": "preflight script"},
+    {"path": "docs/OPENCLAW_CALYX_INTEGRATION.md", "type": "doc", "suspected_owner": "Calyx", "evidence": "integration doc"},
+    {"path": "docs/planning/WO_OPENCLAW_UNIFIED_EXECUTOR_IMPLEMENTATION.md", "type": "doc", "suspected_owner": "Calyx", "evidence": "planning doc"},
+    {"path": ".openclaw/extensions/calyx-governance/openclaw.plugin.json", "type": "config", "suspected_owner": "OpenClaw", "evidence": "plugin"}
+  ],
+  "os_activators": {
+    "services": "Get-Service | Where-Object { $_.Name -like '*openclaw*' }",
+    "tasks": "Get-ScheduledTask | Where-Object { $_.TaskName -like '*openclaw*' }",
+    "processes": "Get-Process | Where-Object { $_.Path -like '*openclaw*' -or $_.ProcessName -like '*openclaw*' }",
+    "port": "18789"
+  },
+  "attribution_rules": [
+    "Process path or task/service name contains openclaw -> external.emitter.openclaw",
+    "File write in Calyx workspace with parent PID OpenClaw -> external.write.openclaw"
+  ]
+}

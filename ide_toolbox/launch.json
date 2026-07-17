@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CBO Core",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["cbo_hub.cbo_core.app:app", "--host", "127.0.0.1", "--port", "7778"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "Dev Harness",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["cbo_hub.dev_harness.app:app", "--host", "127.0.0.1", "--port", "7777"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "Discord Gateway",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "calyx.cbo.discord_gateway",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "Telemetry Gateway",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["cbo_hub.telemetry_gateway.app:app", "--host", "0.0.0.0", "--port", "7781"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "Avatar Web",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["cbo_hub.avatar_web.app:app", "--host", "127.0.0.1", "--port", "7780"],
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ]
+}

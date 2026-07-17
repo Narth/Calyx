@@ -1,0 +1,41 @@
+{
+  "schema_name": "kalshi.raw_market_snapshot",
+  "schema_version": "1.0.0",
+  "source_type": "manual_capture",
+  "captured_at_utc": "2026-03-28T17:00:00Z",
+  "requested_ticker": "KXJOBS-APR-2026",
+  "base_url": "manual://capture",
+  "include_orderbook": true,
+  "raw_market_payload": {
+    "ticker": "KXJOBS-APR-2026",
+    "title": "Will the April 2026 jobs report beat consensus by 100k or more?",
+    "subtitle": "Public labor indicators remain stronger than current pricing implies.",
+    "rules_primary": "Resolves YES if the published payroll print beats consensus by at least 100k.",
+    "rules_secondary": "Otherwise resolves NO.",
+    "status": "open",
+    "yes_bid_dollars": "0.46",
+    "yes_ask_dollars": "0.48",
+    "last_price_dollars": "0.47",
+    "close_time": "2026-04-03T12:30:00Z"
+  },
+  "raw_orderbook_payload": {
+    "orderbook": {
+      "yes": [
+        [
+          46,
+          120
+        ],
+        [
+          45,
+          80
+        ]
+      ],
+      "no": [
+        [
+          52,
+          110
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calyx Workspace v0</title>
+  <style>
+    :root {
+      --bg:#ece5d6; --bg-top:#f5efe2; --bg-bottom:#e6decd; --ink:#19212a; --muted:#5f6b76; --line:#d7c7af;
+      --card:rgba(255,250,241,.82); --card-strong:rgba(255,255,255,.72); --input:rgba(255,255,255,.9); --input-border:rgba(25,33,42,.12);
+      --accent:#0b7a75; --accent-soft:rgba(11,122,117,.12); --amber:#c27618; --danger:#b64133; --shadow:0 18px 42px rgba(25,33,42,.14);
+      --board-grid:rgba(215,199,175,.22); --board-panel-top:rgba(255,252,245,.92); --board-panel-bottom:rgba(239,232,220,.94); --toast-bg:rgba(25,33,42,.92);
+    }
+    body[data-theme="dark"] {
+      --bg:#11161c; --bg-top:#192028; --bg-bottom:#0d1319; --ink:#edf2f6; --muted:#9aa7b4; --line:#2b3642;
+      --card:rgba(25,31,40,.86); --card-strong:rgba(19,24,32,.8); --input:rgba(15,20,28,.92); --input-border:rgba(237,242,246,.12);
+      --accent:#58c4be; --accent-soft:rgba(88,196,190,.14); --amber:#f2b560; --danger:#dd7c72; --shadow:0 18px 42px rgba(0,0,0,.34);
+      --board-grid:rgba(71,84,98,.26); --board-panel-top:rgba(23,29,37,.96); --board-panel-bottom:rgba(17,23,30,.96); --toast-bg:rgba(237,242,246,.14);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:"Segoe UI",Aptos,sans-serif; color:var(--ink); background:radial-gradient(circle at top left, rgba(11,122,117,.14), transparent 34%), radial-gradient(circle at bottom right, rgba(194,118,24,.14), transparent 30%), linear-gradient(160deg,var(--bg-top),var(--bg-bottom)); }
+    header { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; padding:18px 22px; border-bottom:1px solid color-mix(in srgb, var(--line) 52%, transparent); background:color-mix(in srgb, var(--card) 84%, transparent); backdrop-filter:blur(18px); position:sticky; top:0; z-index:5; }
+    header h1 { margin:0; font-size:1.08rem; letter-spacing:.05em; text-transform:uppercase; }
+    header p { margin:4px 0 0; color:var(--muted); max-width:760px; }
+    .pills { display:flex; flex-wrap:wrap; gap:8px; }
+    .pill { padding:7px 10px; border-radius:999px; border:1px solid color-mix(in srgb, var(--line) 58%, transparent); background:var(--card-strong); font-size:.82rem; color:var(--muted); }
+    .authority-banner { margin:12px 18px 0; padding:12px 14px; border-radius:16px; border:1px solid color-mix(in srgb, var(--danger) 48%, transparent); background:color-mix(in srgb, rgba(182,65,51,.14) 70%, var(--card-strong)); color:var(--ink); }
+    .authority-banner strong { text-transform:uppercase; letter-spacing:.06em; }
+    main { display:grid; grid-template-columns:minmax(320px,420px) minmax(0,1fr); gap:18px; padding:18px; }
+    @media (max-width:1080px) { main { grid-template-columns:1fr; } }
+    .stack { display:grid; gap:18px; min-height:0; }
+    .panel { background:var(--card); border:1px solid color-mix(in srgb, var(--line) 52%, transparent); border-radius:20px; overflow:hidden; box-shadow:var(--shadow); min-height:0; }
+    .panel > .hd { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:14px 16px; border-bottom:1px solid color-mix(in srgb, var(--line) 48%, transparent); background:color-mix(in srgb, var(--card-strong) 80%, transparent); }
+    .panel > .hd h2 { margin:0; font-size:.9rem; letter-spacing:.08em; text-transform:uppercase; }
+    .panel > .hd span { color:var(--muted); font-size:.82rem; }
+    .body { padding:14px 16px 16px; }
+    .thread { height:44vh; min-height:320px; overflow:auto; padding:14px 16px; display:grid; gap:10px; align-content:start; }
+    .msg { padding:11px 13px; border-radius:16px; border:1px solid color-mix(in srgb, var(--line) 48%, transparent); white-space:pre-wrap; word-break:break-word; background:var(--card-strong); }
+    .msg.user { background:var(--accent-soft); border-color:rgba(11,122,117,.18); }
+    .msg.submission, .msg.decision { background:color-mix(in srgb, var(--card-strong) 90%, transparent); border-style:dashed; }
+    .msg.proposal { border-color:color-mix(in srgb, var(--amber) 46%, transparent); background:color-mix(in srgb, var(--accent-soft) 28%, var(--card-strong)); }
+    .msg.assessment, .msg.assessment_request { border-color:color-mix(in srgb, var(--accent) 42%, transparent); }
+    .msg.failure { border-color:color-mix(in srgb, var(--danger) 55%, transparent); background:color-mix(in srgb, rgba(182,65,51,.12) 72%, var(--card-strong)); }
+    .meta { color:var(--muted); font-size:.77rem; margin-bottom:6px; text-transform:uppercase; letter-spacing:.05em; }
+    textarea, select, button { font:inherit; }
+    textarea, select { width:100%; padding:11px 12px; border-radius:14px; border:1px solid var(--input-border); background:var(--input); color:var(--ink); }
+    textarea { min-height:92px; resize:vertical; }
+    button { border:0; border-radius:14px; padding:10px 14px; cursor:pointer; }
+    button:disabled { opacity:.58; cursor:not-allowed; }
+    .primary { background:var(--accent); color:#fffaf1; }
+    .secondary { background:color-mix(in srgb, var(--card-strong) 84%, transparent); color:var(--ink); }
+    .danger { background:var(--danger); color:#fffaf1; }
+    .row { display:flex; flex-wrap:wrap; gap:10px; }
+    .row > * { flex:1 1 160px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:8px; padding:14px 16px 0; }
+    .tool { background:color-mix(in srgb, var(--card-strong) 84%, transparent); border:1px solid transparent; border-radius:999px; padding:8px 12px; color:var(--ink); }
+    .tool.active { color:var(--accent); background:var(--accent-soft); border-color:rgba(11,122,117,.22); }
+    .board-shell { padding:0 16px; }
+    .board { position:relative; width:100%; aspect-ratio:16/9; min-height:420px; border-radius:24px; overflow:hidden; border:1px solid color-mix(in srgb, var(--line) 46%, transparent); background:linear-gradient(var(--board-grid) 1px, transparent 1px), linear-gradient(90deg, var(--board-grid) 1px, transparent 1px), linear-gradient(180deg, var(--board-panel-top), var(--board-panel-bottom)); background-size:32px 32px,32px 32px,cover; }
+    #boardSvg { width:100%; height:100%; display:block; touch-action:none; }
+    .foot { padding:0 16px 16px; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; color:var(--muted); font-size:.84rem; }
+    .ops { display:grid; gap:10px; max-height:280px; overflow:auto; margin-top:12px; }
+    .op { padding:10px 12px; border-radius:16px; border:1px solid color-mix(in srgb, var(--line) 46%, transparent); background:var(--card-strong); }
+    .op.add { border-left:4px solid var(--accent); } .op.update, .op.relabel, .op.group { border-left:4px solid var(--amber); } .op.delete { border-left:4px solid var(--danger); }
+    .history { display:grid; gap:10px; color:var(--muted); font-size:.88rem; }
+    .history-item { padding:10px 12px; border-radius:14px; border:1px solid color-mix(in srgb, var(--line) 44%, transparent); background:var(--card-strong); }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; }
+    .legend span { padding:6px 10px; border-radius:999px; border:1px solid color-mix(in srgb, var(--line) 44%, transparent); background:var(--card-strong); font-size:.8rem; }
+    .station-window { display:grid; gap:10px; }
+    .station-avatar { display:flex; gap:12px; align-items:center; padding:12px 14px; border-radius:16px; background:var(--card-strong); border:1px solid color-mix(in srgb, var(--line) 44%, transparent); }
+    .station-emoji { font-size:1.8rem; line-height:1; }
+    .station-meta { color:var(--muted); font-size:.84rem; }
+    .station-active, .station-events { display:grid; gap:8px; max-height:180px; overflow:auto; }
+    .station-item { padding:10px 12px; border-radius:14px; background:var(--card-strong); border:1px solid color-mix(in srgb, var(--line) 40%, transparent); }
+    .toast { position:fixed; right:18px; bottom:18px; max-width:340px; background:var(--toast-bg); color:#fffaf1; padding:12px 14px; border-radius:14px; opacity:0; transform:translateY(8px); transition:opacity .18s ease, transform .18s ease; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .theme-select { min-width:110px; width:auto; }
+  </style>
+</head>
+<body data-theme="light">
+  <header>
+    <div>
+      <h1>Calyx Workspace v0</h1>
+      <p>Discussion negotiates interpretation. Planning stays spatial. Model edits remain proposals until you approve them.</p>
+    </div>
+    <div class="pills">
+      <label class="pill" for="themeSelect">Theme
+        <select id="themeSelect" class="theme-select">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
+      <div class="pill"><strong id="liveCount">0</strong> live</div>
+      <div class="pill"><strong id="proposalCount">0</strong> proposed</div>
+      <div class="pill"><strong id="undoState">No</strong> undo</div>
+    </div>
+  </header>
+  <div class="authority-banner">
+    <strong>Quarantined noncanonical.</strong>
+    Workspace v0 is retained as a historical/dormant planning surface only. It is not the canonical operator path, not runtime authority, and not a control plane.
+  </div>
+  <main>
+    <div class="stack">
+      <section class="panel">
+        <div class="hd"><h2>Discussion Surface</h2><span>Advisory text exchange</span></div>
+        <div class="thread" id="thread"></div>
+        <div class="body">
+          <div class="row"><div><label for="discussionModel">Model route</label><select id="discussionModel"><option value="local">local</option><option value="workhorse">workhorse</option><option value="architect">architect</option><option value="second_opinion">second opinion</option></select></div></div>
+          <div class="row" style="margin-top:10px;"><textarea id="discussionInput" placeholder="Ask the model to interpret the board or challenge the plan."></textarea></div>
+          <div class="row" style="margin-top:10px;"><button class="primary" id="sendDiscussionBtn">Send Discussion</button></div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="hd"><h2>Station Window</h2><span>Live recent history across Station Calyx</span></div>
+        <div class="body station-window">
+          <div class="station-avatar">
+            <div class="station-emoji" id="stationAvatar">👁️</div>
+            <div>
+              <div><strong id="stationLabel">Idle Watch</strong></div>
+              <div class="station-meta" id="stationSummary">Awaiting recent station activity.</div>
+            </div>
+          </div>
+          <div>
+            <div class="meta">Active Tasks</div>
+            <div class="station-active" id="stationTasks"><div class="station-item">No active Station tasks.</div></div>
+          </div>
+          <div>
+            <div class="meta">Recent Events</div>
+            <div class="station-events" id="stationEvents"><div class="station-item">Recent station history will appear here.</div></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="hd"><h2>Receipts & Outcomes</h2><span>Live, proposed, approved, rejected</span></div>
+        <div class="body">
+          <div class="legend"><span>Live board</span><span>Proposal overlay</span><span>Rejected or failed</span></div>
+          <div class="history" id="history" style="margin-top:12px;"></div>
+        </div>
+      </section>
+    </div>
+    <div class="stack">
+      <section class="panel">
+        <div class="hd"><h2>Planning Surface</h2><span>Text, free draw, shapes, selection</span></div>
+        <div class="toolbar">
+          <button class="tool active" data-tool="select">Select</button>
+          <button class="tool" data-tool="pen">Pen</button>
+          <button class="tool" data-tool="text">Text</button>
+          <button class="tool" data-tool="rect">Rect</button>
+          <button class="tool" data-tool="ellipse">Ellipse</button>
+          <button class="secondary" id="clearBoardBtn">Clear board</button>
+        </div>
+        <div class="board-shell"><div class="board" id="boardStage"><svg id="boardSvg" viewBox="0 0 1600 900" preserveAspectRatio="none"></svg></div></div>
+        <div class="foot"><div id="selectionStatus">No live element selected.</div><div id="boardHash">Board hash pending.</div></div>
+      </section>
+      <section class="panel">
+        <div class="hd"><h2>Hybrid Submission</h2><span>Board state + snapshot + discussion</span></div>
+        <div class="body">
+          <div class="row"><div><label for="submitModel">Proposal model route</label><select id="submitModel"><option value="local">local</option><option value="workhorse">workhorse</option><option value="architect">architect</option><option value="second_opinion">second opinion</option></select></div></div>
+          <div class="row" style="margin-top:10px;"><textarea id="operatorNote" placeholder="Optional note: what should the model refine, relabel, group, or challenge?"></textarea></div>
+          <div class="row" style="margin-top:10px;"><button class="primary" id="submitBoardBtn">Submit Board</button><button class="secondary" id="assessBoardBtn">Assess Planning Surface</button><button class="secondary" id="undoBtn">Undo Last Apply</button></div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="hd"><h2>Proposal Review</h2><span>Candidate markup stays separate</span></div>
+        <div class="body">
+          <div id="proposalSummary">No active proposal.</div>
+          <div class="ops" id="proposalOps"></div>
+          <div class="row" style="margin-top:12px;"><button class="primary" id="approveAllBtn">Approve All</button><button class="secondary" id="approveSelectedBtn">Approve Selected</button><button class="danger" id="rejectAllBtn">Reject All</button></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast"></div>
+  <script>
+    const BOARD_W = 1600, BOARD_H = 900;
+    const THEME_KEY = "calyx.workspace.theme";
+    const state = { board:{elements:[]}, proposal:null, discussion:{messages:[]}, meta:{}, undo:null, station:{}, stationEvents:[], stationTasks:[], stationProcesses:[], tool:"select", selectedId:null, pointer:null, pendingShape:null, proposalDisplayed:null, proposalSelections:new Set(), saveTimer:null, stationPollTimer:null };
+    const el = (id) => document.getElementById(id);
+    const thread = el("thread"), boardSvg = el("boardSvg"), boardStage = el("boardStage"), toast = el("toast");
+    const ui = { discussionInput:el("discussionInput"), discussionModel:el("discussionModel"), submitModel:el("submitModel"), operatorNote:el("operatorNote"), proposalOps:el("proposalOps"), proposalSummary:el("proposalSummary"), history:el("history"), selectionStatus:el("selectionStatus"), boardHash:el("boardHash"), liveCount:el("liveCount"), proposalCount:el("proposalCount"), undoState:el("undoState"), themeSelect:el("themeSelect"), stationAvatar:el("stationAvatar"), stationLabel:el("stationLabel"), stationSummary:el("stationSummary"), stationTasks:el("stationTasks"), stationEvents:el("stationEvents") };
+    const q = (s) => Array.from(document.querySelectorAll(s));
+    function clone(v){ return JSON.parse(JSON.stringify(v)); }
+    function esc(v){ const d=document.createElement("div"); d.textContent=v==null?"":String(v); return d.innerHTML; }
+    function ts(v){ try { return v ? new Date(v).toLocaleString() : "n/a"; } catch { return v || "n/a"; } }
+    function num(v){ return Number.isFinite(Number(v)) ? Number(v).toLocaleString() : "n/a"; }
+    function usd(v){ return Number.isFinite(Number(v)) ? ("$" + Number(v).toFixed(4)) : "n/a"; }
+    function note(msg){ toast.textContent = msg; toast.classList.add("show"); clearTimeout(note.t); note.t = setTimeout(()=>toast.classList.remove("show"), 2600); }
+    function cssVar(name){ return getComputedStyle(document.body).getPropertyValue(name).trim(); }
+    function applyTheme(theme){ const next = theme === "dark" ? "dark" : "light"; document.body.setAttribute("data-theme", next); if(ui.themeSelect) ui.themeSelect.value = next; if(boardSvg) renderBoard(); }
+    function loadTheme(){ let stored = "light"; try { stored = localStorage.getItem(THEME_KEY) || "light"; } catch(_) {} applyTheme(stored); }
+    function persistTheme(theme){ try { localStorage.setItem(THEME_KEY, theme); } catch(_) {} applyTheme(theme); }
+    function routeLabel(route){ const map={ local:"local", workhorse:"workhorse", architect:"architect", second_opinion:"second opinion", second:"second opinion" }; return map[String(route||"").trim().toLowerCase()] || String(route||"unknown"); }
+    function humanLabel(value){ return String(value||"").replaceAll("_"," "); }
+    function usageHtml(usage){ if(!usage || typeof usage !== "object") return ""; const parts=[]; if(usage.provider) parts.push("Provider " + routeLabel(usage.provider)); if(usage.model_id) parts.push("Model " + usage.model_id); if(usage.total_tokens != null) parts.push(num(usage.total_tokens) + " tok"); if(usage.cost_estimate_usd != null) parts.push(usd(usage.cost_estimate_usd)); if(usage.request_latency_ms != null || usage.latency_ms != null) parts.push(num(usage.request_latency_ms ?? usage.latency_ms) + " ms"); if(!parts.length) return ""; return '<div style="margin-top:8px;color:var(--muted);">Route usage: ' + esc(parts.join(" · ")) + '</div>'; }
+    function geometryHtml(proposal){ const status = humanLabel(proposal?.geometry_status || "n/a"); const strategy = humanLabel(proposal?.solver_strategy_used || "direct"); const summary = humanLabel(proposal?.constraint_summary || "n/a"); const validation = proposal?.validation_result?.geometry || proposal?.validation_result || {}; const counts = validation?.summary || {}; const parts = ["Geometry " + status, "Constraints " + summary, "Strategy " + strategy]; if(counts.violation_count != null) parts.push(num(counts.violation_count) + " violations"); return '<div style="margin-top:8px;color:var(--muted);">Geometry: ' + esc(parts.join(" · ")) + '</div>'; }
+    function stationEventLine(item){ return '<div class="station-item"><div class="meta">'+esc(item.component || "station")+' · '+esc(ts(item.ts_utc))+'</div><div><strong>'+esc(humanLabel(item.event || ""))+'</strong></div><div>'+esc(item.excerpt || "")+'</div></div>'; }
+    function renderStation(){ const station = state.station || {}; ui.stationAvatar.textContent = station.avatar_emoji || "👁️"; ui.stationLabel.textContent = station.avatar_label || "Idle Watch"; ui.stationSummary.textContent = [station.health ? ("health " + station.health) : "", station.navigator_interval ? ("navigator " + station.navigator_interval) : "", station.triage_status ? ("triage " + station.triage_status) : "", station.active_task_count != null ? (String(station.active_task_count) + " task") : "", station.active_process_count != null ? (String(station.active_process_count) + " proc") : ""].filter(Boolean).join(" · ") || "Awaiting recent station activity."; const activeRows = [...(state.stationTasks || []), ...(state.stationProcesses || [])].sort((a,b)=>String(b.started_at||"").localeCompare(String(a.started_at||""))); ui.stationTasks.innerHTML = activeRows.length ? activeRows.map((task)=>'<div class="station-item"><div class="meta">'+esc(task.component || "station")+' · '+esc(ts(task.started_at))+'</div><div><strong>'+esc(task.task_name || "task")+'</strong></div><div>'+esc(task.excerpt || "")+'</div></div>').join("") : '<div class="station-item">No active Station tasks or background processes.</div>'; ui.stationEvents.innerHTML = (state.stationEvents || []).length ? state.stationEvents.map(stationEventLine).join("") : '<div class="station-item">Recent station history will appear here.</div>'; }
+    function pointFrom(ev){ const r=boardStage.getBoundingClientRect(); return { x:Math.max(0, Math.min(BOARD_W, ((ev.clientX-r.left)/r.width)*BOARD_W)), y:Math.max(0, Math.min(BOARD_H, ((ev.clientY-r.top)/r.height)*BOARD_H)) }; }
+    function makeId(p){ return p + "_" + Math.random().toString(36).slice(2,10); }
+    function wrapText(text,width){ const max=Math.max(10, Math.floor(width/9)), words=String(text||"").split(/\s+/), lines=[]; let cur=""; words.forEach((w)=>{ const next=cur?cur+" "+w:w; if(next.length>max&&cur){ lines.push(cur); cur=w; } else cur=next; }); if(cur) lines.push(cur); return lines.slice(0,6); }
+    function normalizeOrder(){ state.board.elements = (state.board.elements || []).map((item, index) => ({ ...item, order:index })); }
+    function renderDiscussion(){ const msgs = state.discussion?.messages || []; thread.innerHTML = msgs.length ? msgs.map((m)=>{ const role = m.role==="user" ? "Operator" : "Model"; const type = m.message_type && m.message_type !== "discussion" ? " · " + humanLabel(m.message_type) : ""; const classes = ["msg", m.role==="user"?"user":"assistant"]; if(m.message_type) classes.push(m.message_type); return '<div class="'+classes.join(" ")+'"><div class="meta">'+esc(role)+' · '+esc(ts(m.timestamp_utc))+type+'</div><div>'+esc(m.text||"")+'</div></div>'; }).join("") : '<div class="msg"><div class="meta">Workspace</div><div>Discussion history will appear here.</div></div>'; thread.scrollTop = thread.scrollHeight; }
+    function wrapSvgText(element){ return wrapText(element.text || "", element.width || 220).map((line, i) => '<tspan x="'+(element.x+14)+'" y="'+(element.y+24+(i*18))+'">'+esc(line)+'</tspan>').join(""); }
+    function renderElement(element, mode, selected){ if(!element) return ""; const proposal = mode && mode.startsWith("proposal"); const del = mode === "proposal-delete"; const stroke = del ? "#b64133" : proposal ? "#c27618" : (element.stroke || "#0b7a75"); const dash = proposal ? ' stroke-dasharray="14 10"' : ""; const op = proposal ? ' opacity=".82"' : ""; const fill = del ? "rgba(182,65,51,.08)" : (element.fill || "transparent"); const ink = cssVar("--ink") || "#19212a"; if(element.type==="stroke"){ const pts=(element.points||[]).map((p)=>p.x+","+p.y).join(" "); return '<polyline points="'+pts+'" fill="none" stroke="'+stroke+'" stroke-width="'+(element.stroke_width||3)+'" stroke-linecap="round" stroke-linejoin="round"'+dash+op+'></polyline>'; } if(element.type==="text"){ return '<rect x="'+element.x+'" y="'+element.y+'" width="'+element.width+'" height="'+element.height+'" rx="16" ry="16" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(element.stroke_width||1.5)+'"'+dash+op+'></rect><text font-size="14" fill="'+ink+'" font-family="Segoe UI, Aptos, sans-serif">'+wrapSvgText(element)+'</text>'; } const shape = element.shape_kind==="ellipse" ? '<ellipse cx="'+(element.x+(element.width/2))+'" cy="'+(element.y+(element.height/2))+'" rx="'+(element.width/2)+'" ry="'+(element.height/2)+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(element.stroke_width||2)+'"'+dash+op+'></ellipse>' : '<rect x="'+element.x+'" y="'+element.y+'" width="'+element.width+'" height="'+element.height+'" rx="24" ry="24" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(element.stroke_width||2)+'"'+dash+op+'></rect>'; const label = element.text ? '<text x="'+(element.x+16)+'" y="'+(element.y+28)+'" font-size="15" fill="'+ink+'" font-family="Segoe UI, Aptos, sans-serif">'+esc(element.text)+'</text>' : ""; const outline = selected ? '<rect x="'+(element.x-6)+'" y="'+(element.y-6)+'" width="'+(element.width+12)+'" height="'+(element.height+12)+'" rx="26" ry="26" fill="none" stroke="#0b7a75" stroke-width="2" stroke-dasharray="8 7"></rect>' : ""; return outline + shape + label; }
+    function previewForOp(op){ if(!op) return null; if(op.type==="add") return op.element; if(op.type==="delete") return (state.board.elements||[]).find((e)=>e.id===op.element_id)||null; if(op.type==="group"){ const members=(state.board.elements||[]).filter((e)=>(op.member_ids||[]).includes(e.id)); if(!members.length) return null; const xs=members.map((m)=>m.x), ys=members.map((m)=>m.y), maxX=members.map((m)=>m.x+m.width), maxY=members.map((m)=>m.y+m.height); return { id:op.group_id, type:"shape", shape_kind:"rect", x:Math.min(...xs)-20, y:Math.min(...ys)-20, width:Math.max(...maxX)-Math.min(...xs)+40, height:Math.max(...maxY)-Math.min(...ys)+40, text:op.label||"Group", fill:"rgba(194,118,24,.06)", stroke:"#c27618", stroke_width:2 }; } const base=(state.board.elements||[]).find((e)=>e.id===op.element_id); if(!base) return null; if(op.type==="relabel") return { ...base, text:op.text }; if(op.type==="update") return { ...base, ...(op.patch||{}) }; return null; }
+    function renderBoard(){ const live = clone(state.board?.elements || []).sort((a,b)=>(a.order||0)-(b.order||0)); const liveMarkup = live.map((e)=>renderElement(e, "live", state.selectedId===e.id)).join(""); const proposalMarkup = (state.proposal?.operations || []).filter((op)=>state.proposalSelections.has(op.operation_id)).map((op)=>renderElement(previewForOp(op), op.type==="delete"?"proposal-delete":"proposal")).join(""); boardSvg.innerHTML = liveMarkup + proposalMarkup; ui.liveCount.textContent = String(live.length); ui.proposalCount.textContent = String((state.proposal?.operations || []).length); ui.undoState.textContent = state.undo ? "Yes" : "No"; const selected = live.find((item)=>item.id===state.selectedId); ui.selectionStatus.textContent = selected ? ("Selected " + selected.type + " · " + selected.id) : "No live element selected."; }
+    function renderHistory(){ const items=[]; const s=state.meta?.last_submission, p=state.meta?.last_proposal, d=state.meta?.last_decision, f=state.meta?.last_failure; if(s) items.push('<div class="history-item"><strong>Last submission</strong><br>'+esc(s.submission_id)+' · '+esc(routeLabel(s.selected_route||""))+'<br>'+esc(s.board_state_hash||"")+'<br>'+esc(s.artifact_path||"")+'</div>'); if(p) items.push('<div class="history-item"><strong>Last proposal</strong><br>'+esc(p.proposal_id||"")+' · Tier '+esc(p.proposal_tier||"")+' '+esc(p.tier_label||"")+'<br>'+esc(routeLabel(p.actual_route||p.selected_route||""))+' · '+esc(humanLabel(p.proposal_kind||""))+usageHtml(p.usage_telemetry)+geometryHtml(p)+'<br>'+esc(p.artifact_path||"")+'</div>'); if(d) items.push('<div class="history-item"><strong>Last decision</strong><br>'+esc(d.approval_action||"")+' · approved '+esc((d.approved_operations||[]).length)+' · rejected '+esc((d.rejected_operations||[]).length)+'<br>'+esc(d.artifact_path||"")+'</div>'); if(f) items.push('<div class="history-item" style="border-color:rgba(182,65,51,.18);background:rgba(182,65,51,.08);"><strong>Last failure</strong><br>'+esc(f.failure_type||"")+' · '+esc(f.reason||"")+'<br>'+esc(f.artifact_path||"")+'</div>'); ui.history.innerHTML = items.length ? items.join("") : '<div class="history-item">No submission or approval artifacts yet.</div>'; }
+    function renderProposal(){ const p=state.proposal; ui.proposalOps.innerHTML=""; if(!p){ ui.proposalSummary.textContent="No active proposal."; el("approveAllBtn").disabled=true; el("approveSelectedBtn").disabled=true; el("rejectAllBtn").disabled=true; renderBoard(); return; } ui.proposalSummary.innerHTML='<strong>'+esc(p.proposal_id)+'</strong> · Tier '+esc(p.proposal_tier)+' '+esc(p.tier_label||"")+'<br><span style="color:var(--muted);">Route '+esc(routeLabel(p.actual_route||p.selected_route||""))+' (selected '+esc(routeLabel(p.selected_route||""))+') · '+esc(humanLabel(p.proposal_kind||""))+' · '+esc(humanLabel(p.quality_signal||""))+'</span><br><span style="color:var(--muted);">Created '+esc(ts(p.created_at))+' · '+esc((p.operations||[]).length)+' candidate ops</span>'+usageHtml(p.usage_telemetry)+geometryHtml(p)+'<br><div style="margin-top:8px;">'+esc(p.discussion_response||"")+'</div><div style="margin-top:8px;color:var(--muted);">'+esc(p.tier_rationale||"")+' '+esc(p.confidence_summary||"")+'</div>'; state.proposalSelections = new Set((p.operations||[]).map((op)=>op.operation_id)); (p.operations||[]).forEach((op)=>{ const row=document.createElement("label"); row.className="op "+op.type; row.innerHTML='<div class="meta">'+esc(op.type)+' · '+esc(op.operation_id)+'</div><div><input type="checkbox" checked data-op="'+esc(op.operation_id)+'" style="width:auto;margin-right:8px;">'+esc(op.summary||"Candidate change")+'</div>'; ui.proposalOps.appendChild(row); }); ui.proposalOps.querySelectorAll("input[type=checkbox]").forEach((box)=>box.addEventListener("change",()=>{ const id=box.getAttribute("data-op"); if(box.checked) state.proposalSelections.add(id); else state.proposalSelections.delete(id); renderBoard(); })); const proposalBlocked = p.geometry_status === "invalid"; el("approveAllBtn").disabled=proposalBlocked; el("approveSelectedBtn").disabled=proposalBlocked; el("rejectAllBtn").disabled=false; renderBoard(); if(p.proposal_id!==state.proposalDisplayed){ state.proposalDisplayed=p.proposal_id; fetch("/api/workspace/proposal/displayed",{ method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ proposal_id:p.proposal_id }) }).catch(()=>{}); } }
+    function hitElement(point){ const items=clone(state.board?.elements || []).sort((a,b)=>(b.order||0)-(a.order||0)); return items.find((e)=>e.type==="stroke" ? point.x>=e.x-10&&point.x<=e.x+e.width+10&&point.y>=e.y-10&&point.y<=e.y+e.height+10 : point.x>=e.x&&point.x<=e.x+e.width&&point.y>=e.y&&point.y<=e.y+e.height) || null; }
+    function scheduleSave(){ clearTimeout(state.saveTimer); state.saveTimer = setTimeout(async()=>{ try { normalizeOrder(); const res=await fetch("/api/workspace/board",{ method:"PUT", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ board_state:state.board }) }); const data=await res.json(); if(!res.ok) throw new Error(data.detail?.reason || data.detail || "Board save failed"); state.board=data.board_state; ui.boardHash.textContent="Board hash "+data.board_state_hash.slice(0,12)+"..."; renderBoard(); renderHistory(); } catch(err){ note(err.message || String(err)); } }, 220); }
+    function shiftSelected(dx,dy){ const item=(state.board.elements||[]).find((e)=>e.id===state.selectedId); if(!item) return; if(item.type==="stroke"){ item.points=(item.points||[]).map((p)=>({ x:p.x+dx, y:p.y+dy })); item.x+=dx; item.y+=dy; return; } item.x+=dx; item.y+=dy; }
+    function addText(point){ const text=window.prompt("Text for the board"); if(!text) return; state.board.elements.push({ id:makeId("text"), type:"text", x:point.x, y:point.y, width:250, height:84, text, fill:"#fff8e8", stroke:"#f6b73c", stroke_width:1.4, order:(state.board.elements||[]).length, connection_refs:[] }); scheduleSave(); renderBoard(); }
+    function activateTool(tool){ state.tool=tool; q(".tool[data-tool]").forEach((btn)=>btn.classList.toggle("active", btn.getAttribute("data-tool")===tool)); }
+    function makeSnapshot(){ const c=document.createElement("canvas"); c.width=BOARD_W; c.height=BOARD_H; const ctx=c.getContext("2d"); ctx.fillStyle=cssVar("--board-panel-bottom") || "#f6f1e6"; ctx.fillRect(0,0,BOARD_W,BOARD_H); ctx.strokeStyle=cssVar("--board-grid") || "rgba(215,199,175,.28)"; for(let x=0;x<=BOARD_W;x+=32){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,BOARD_H); ctx.stroke(); } for(let y=0;y<=BOARD_H;y+=32){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(BOARD_W,y); ctx.stroke(); } const ink = cssVar("--ink") || "#19212a"; (state.board?.elements || []).forEach((e)=>{ ctx.save(); ctx.strokeStyle=e.stroke||"#0b7a75"; ctx.fillStyle=e.fill||"transparent"; ctx.lineWidth=e.stroke_width||2; if(e.type==="stroke"){ const pts=e.points||[]; if(pts.length>1){ ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y); pts.slice(1).forEach((p)=>ctx.lineTo(p.x,p.y)); ctx.lineCap="round"; ctx.lineJoin="round"; ctx.stroke(); } } else if(e.type==="text"){ ctx.beginPath(); ctx.roundRect(e.x,e.y,e.width,e.height,16); ctx.fill(); ctx.stroke(); ctx.fillStyle=ink; ctx.font="20px 'Segoe UI'"; wrapText(e.text||"", e.width).forEach((line, i)=>ctx.fillText(line, e.x+14, e.y+26+(i*22))); } else { if(e.shape_kind==="ellipse"){ ctx.beginPath(); ctx.ellipse(e.x+(e.width/2), e.y+(e.height/2), e.width/2, e.height/2, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke(); } else { ctx.beginPath(); ctx.roundRect(e.x,e.y,e.width,e.height,24); ctx.fill(); ctx.stroke(); } if(e.text){ ctx.fillStyle=ink; ctx.font="22px 'Segoe UI'"; ctx.fillText(e.text, e.x+16, e.y+32); } } ctx.restore(); }); return c.toDataURL("image/png"); }
+    async function loadWorkspace(){ const res=await fetch("/api/workspace/state"); const data=await res.json(); state.board=data.board_state||{elements:[]}; state.proposal=data.proposal_state||null; state.discussion=data.discussion_state||{messages:[]}; state.meta=data.meta||{}; state.undo=data.undo_state||null; ui.boardHash.textContent="Board hash pending."; renderDiscussion(); renderProposal(); renderHistory(); renderBoard(); }
+    async function loadStationActivity(){ try { const res=await fetch("/api/station/activity?limit=24"); const data=await res.json(); if(!res.ok) throw new Error(data.detail || "Station activity failed"); state.station=data.station||{}; state.stationTasks=data.active_tasks||[]; state.stationProcesses=data.active_processes||[]; state.stationEvents=data.recent_events||[]; renderStation(); } catch(err){ ui.stationSummary.textContent = err.message || String(err); } }
+    function startStationPolling(){ if(state.stationPollTimer) clearInterval(state.stationPollTimer); loadStationActivity().catch(()=>{}); state.stationPollTimer = setInterval(()=>loadStationActivity().catch(()=>{}), 5000); }
+    async function sendDiscussion(){ const text=ui.discussionInput.value.trim(); if(!text) return; el("sendDiscussionBtn").disabled=true; try { const res=await fetch("/api/workspace/discussion",{ method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ user_text:text, model_role:ui.discussionModel.value, allow_tools:false }) }); const data=await res.json(); if(!res.ok) throw new Error(data.detail?.reason || data.detail || "Discussion failed"); state.discussion=data.discussion_state; ui.discussionInput.value=""; renderDiscussion(); } catch(err){ note(err.message || String(err)); } finally { el("sendDiscussionBtn").disabled=false; } }
+    async function submitBoard(){ el("submitBoardBtn").disabled=true; try { const res=await fetch("/api/workspace/submit",{ method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ board_state:state.board, board_snapshot_data_url:makeSnapshot(), operator_note:ui.operatorNote.value.trim(), model_role:ui.submitModel.value }) }); const data=await res.json(); if(!res.ok) throw new Error(data.detail?.reason || data.detail || "Submit failed"); state.proposal=data.proposal_state; state.discussion=data.discussion_state; state.meta=data.meta; ui.operatorNote.value=""; renderDiscussion(); renderProposal(); renderHistory(); note("Proposal ready for review."); } catch(err){ note(err.message || String(err)); await loadWorkspace(); } finally { el("submitBoardBtn").disabled=false; } }
+    async function assessBoard(){ el("assessBoardBtn").disabled=true; try { const res=await fetch("/api/workspace/assess",{ method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ operator_note:ui.operatorNote.value.trim(), model_role:ui.submitModel.value }) }); const data=await res.json(); if(!res.ok) throw new Error(data.detail?.reason || data.detail || "Assessment failed"); state.discussion=data.discussion_state||state.discussion; state.meta=data.meta||state.meta; renderDiscussion(); renderHistory(); note("Planning Surface assessment added to discussion."); } catch(err){ note(err.message || String(err)); await loadWorkspace(); } finally { el("assessBoardBtn").disabled=false; } }
+    async function decide(action){ if(!state.proposal) return; const res=await fetch("/api/workspace/proposal/decision",{ method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ proposal_id:state.proposal.proposal_id, action, selected_operation_ids:Array.from(state.proposalSelections), reason: action==="reject_all" ? "operator_rejected" : undefined }) }); const data=await res.json(); if(!res.ok){ note(data.detail?.reason || data.detail || "Decision failed"); await loadWorkspace(); return; } state.proposal=data.proposal_state||null; state.board=data.board_state||state.board; state.meta=data.meta||state.meta; state.undo=data.undo_state||null; state.discussion=data.discussion_state||state.discussion; state.proposalDisplayed=null; renderDiscussion(); renderProposal(); renderHistory(); renderBoard(); }
+    async function undoLast(){ const res=await fetch("/api/workspace/undo",{ method:"POST" }); const data=await res.json(); if(!res.ok){ note(data.detail || "Undo failed"); return; } state.board=data.board_state; state.undo=null; state.meta=data.meta||state.meta; state.discussion=data.discussion_state||state.discussion; renderDiscussion(); renderBoard(); renderHistory(); note("Board restored."); }
+    function clearBoard(){ if(!window.confirm("Clear the live board?")) return; state.board.elements=[]; state.selectedId=null; scheduleSave(); renderBoard(); }
+    boardSvg.addEventListener("pointerdown",(ev)=>{ const p=pointFrom(ev); if(state.tool==="text"){ addText(p); return; } if(state.tool==="pen"){ state.pointer={ start:p, last:p, mode:"pen", stroke:{ id:makeId("stroke"), type:"stroke", points:[p], stroke:"#0b7a75", stroke_width:3, order:(state.board.elements||[]).length, connection_refs:[] } }; return; } if(state.tool==="rect"||state.tool==="ellipse"){ state.pointer={ start:p, last:p, mode:"shape" }; state.pendingShape={ id:makeId("shape"), type:"shape", shape_kind:state.tool==="rect"?"rect":"ellipse", x:p.x, y:p.y, width:1, height:1, fill:"rgba(11,122,117,.12)", stroke:"#0b7a75", stroke_width:2, text:"", order:(state.board.elements||[]).length, connection_refs:[] }; renderBoard(); return; } const hit=hitElement(p); state.selectedId=hit?hit.id:null; state.pointer=hit?{ start:p, last:p, mode:"move", targetId:hit.id }:null; renderBoard(); });
+    boardSvg.addEventListener("pointermove",(ev)=>{ const p=pointFrom(ev); if(!state.pointer) return; if(state.pointer.mode==="pen"){ state.pointer.stroke.points.push(p); state.pointer.last=p; const live=clone(state.board.elements||[]).sort((a,b)=>(a.order||0)-(b.order||0)).map((item)=>renderElement(item,"live",state.selectedId===item.id)).join(""); const proposal=(state.proposal?.operations||[]).map((op)=>renderElement(previewForOp(op), op.type==="delete"?"proposal-delete":"proposal")).join(""); boardSvg.innerHTML=live+proposal+renderElement(state.pointer.stroke,"proposal"); return; } if(state.pointer.mode==="shape"&&state.pendingShape){ state.pendingShape.x=Math.min(state.pointer.start.x,p.x); state.pendingShape.y=Math.min(state.pointer.start.y,p.y); state.pendingShape.width=Math.max(1, Math.abs(p.x-state.pointer.start.x)); state.pendingShape.height=Math.max(1, Math.abs(p.y-state.pointer.start.y)); const live=clone(state.board.elements||[]).sort((a,b)=>(a.order||0)-(b.order||0)).map((item)=>renderElement(item,"live",state.selectedId===item.id)).join(""); boardSvg.innerHTML=live+renderElement(state.pendingShape,"proposal"); return; } if(state.pointer.mode==="move"&&state.selectedId){ const dx=p.x-state.pointer.last.x, dy=p.y-state.pointer.last.y; shiftSelected(dx,dy); state.pointer.last=p; renderBoard(); } });
+    boardSvg.addEventListener("pointerup",()=>{ if(!state.pointer) return; if(state.pointer.mode==="pen"){ state.board.elements.push(state.pointer.stroke); scheduleSave(); } else if(state.pointer.mode==="shape"&&state.pendingShape){ state.board.elements.push({ ...state.pendingShape }); scheduleSave(); } else if(state.pointer.mode==="move"){ scheduleSave(); } state.pointer=null; state.pendingShape=null; renderBoard(); });
+    boardSvg.addEventListener("pointerleave",()=>{ if(state.pointer&&state.pointer.mode!=="move"){ state.pointer=null; state.pendingShape=null; renderBoard(); } });
+    q(".tool[data-tool]").forEach((btn)=>btn.addEventListener("click",()=>activateTool(btn.getAttribute("data-tool"))));
+    ui.themeSelect.addEventListener("change",(ev)=>persistTheme(ev.target.value));
+    el("sendDiscussionBtn").addEventListener("click",sendDiscussion);
+    ui.discussionInput.addEventListener("keydown",(ev)=>{ if(ev.key==="Enter"&&!ev.shiftKey){ ev.preventDefault(); sendDiscussion(); } });
+    el("submitBoardBtn").addEventListener("click",submitBoard);
+    el("assessBoardBtn").addEventListener("click",assessBoard);
+    el("approveAllBtn").addEventListener("click",()=>decide("approve_all"));
+    el("approveSelectedBtn").addEventListener("click",()=>decide("approve_selected"));
+    el("rejectAllBtn").addEventListener("click",()=>decide("reject_all"));
+    el("undoBtn").addEventListener("click",undoLast);
+    el("clearBoardBtn").addEventListener("click",clearBoard);
+    loadTheme();
+    loadWorkspace().catch((err)=>note(err.message || String(err)));
+    startStationPolling();
+  </script>
+</body>
+</html>

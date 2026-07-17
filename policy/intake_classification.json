@@ -1,0 +1,17 @@
+{
+  "schema": "policy.intake_classification.v1",
+  "transports": [
+    {
+      "transport": "discord_gateway",
+      "canonical_transport": true,
+      "canonical_execution": false,
+      "dry_run_only": true,
+      "lane_A_enabled": true,
+      "lane_B_enabled": true,
+      "lane_C_enabled": false,
+      "lane_D_enabled": false,
+      "promotion_authority": false,
+      "notes": "Transport-only intake; execution governed by lane gates and dry_run_only."
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_reconciliation_request",
+      "default": "runtime_reconciliation_request",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "capture_context": {
+      "minLength": 1,
+      "title": "Capture Context",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "declared_service_target": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer",
+        "navigator_triage_loop",
+        "cp6_cp7_loop",
+        "energy_churn_cp9_loop",
+        "service_failure_watch",
+        "cli_avatar",
+        "test_bounded_worker"
+      ],
+      "title": "Declared Service Target",
+      "type": "string"
+    },
+    "initiating_surface": {
+      "minLength": 1,
+      "title": "Initiating Surface",
+      "type": "string"
+    },
+    "launch_origin": {
+      "enum": [
+        "operator",
+        "scheduler",
+        "launcher",
+        "wrapper",
+        "unknown"
+      ],
+      "title": "Launch Origin",
+      "type": "string"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    },
+    "request_id": {
+      "minLength": 3,
+      "title": "Request Id",
+      "type": "string"
+    },
+    "requested_at_utc": {
+      "format": "date-time",
+      "title": "Requested At Utc",
+      "type": "string"
+    },
+    "requested_command_line": {
+      "minLength": 1,
+      "title": "Requested Command Line",
+      "type": "string"
+    },
+    "requested_executable_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Requested Executable Path"
+    },
+    "schema_name": {
+      "const": "runtime.reconciliation.request",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_ref": {
+      "minLength": 3,
+      "title": "Snapshot Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "request_id",
+    "corr_id",
+    "requested_at_utc",
+    "declared_service_target",
+    "launch_origin",
+    "initiating_surface",
+    "requested_command_line",
+    "snapshot_ref",
+    "capture_context"
+  ],
+  "title": "RuntimeReconciliationRequest",
+  "type": "object"
+}

@@ -1,0 +1,109 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "runtime_multiplicity_noncompliance",
+      "default": "runtime_multiplicity_noncompliance",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "declaration_ref": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Declaration Ref",
+      "type": "string"
+    },
+    "noncompliance_type": {
+      "enum": [
+        "missing_launch_notice",
+        "duplicate_writer_attempt",
+        "duplicate_overseer_attempt",
+        "temporary_persistence_violation"
+      ],
+      "title": "Noncompliance Type",
+      "type": "string"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "required_operator_visibility": {
+      "enum": [
+        "warn",
+        "review_required"
+      ],
+      "title": "Required Operator Visibility",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.multiplicity.noncompliance",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "moderate",
+        "high"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "validation_ref": {
+      "maxLength": 128,
+      "minLength": 3,
+      "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+      "title": "Validation Ref",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "timestamp_utc",
+    "service_name",
+    "declaration_ref",
+    "validation_ref",
+    "noncompliance_type",
+    "severity",
+    "required_operator_visibility",
+    "notes"
+  ],
+  "title": "RuntimeMultiplicityNoncompliance",
+  "type": "object"
+}

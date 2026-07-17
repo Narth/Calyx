@@ -1,0 +1,371 @@
+{
+  "source_snapshots": [
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.rain.support.nws",
+      "market_id": "KX-RAIN-SEA-025-2026-04-05",
+      "weather_market_type": "measurable_precipitation",
+      "source_name": "NWS Seattle",
+      "captured_at_utc": "2026-03-30T15:00:00Z",
+      "location_basis": "Seattle-Tacoma official station",
+      "forecast_target_window": "2026-04-05 local day",
+      "forecast_value_summary": "0.31 inches expected with widespread precipitation.",
+      "raw_reference": "manual://weather/nws/seattle/2026-03-30T15:00:00Z",
+      "raw_payload": null,
+      "values": [
+        {
+          "metric": "precip_accumulation_in",
+          "value": 0.31,
+          "unit": "in",
+          "threshold_relation": "above_threshold",
+          "forecast_probability": 0.76,
+          "qualitative_note": null
+        }
+      ]
+    },
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.rain.support.wu",
+      "market_id": "KX-RAIN-SEA-025-2026-04-05",
+      "weather_market_type": "measurable_precipitation",
+      "source_name": "Weather Underground Seattle",
+      "captured_at_utc": "2026-03-30T15:02:00Z",
+      "location_basis": "Seattle-Tacoma official station",
+      "forecast_target_window": "2026-04-05 local day",
+      "forecast_value_summary": "0.28 inches expected with a wet frontal passage.",
+      "raw_reference": "manual://weather/wu/seattle/2026-03-30T15:02:00Z",
+      "raw_payload": null,
+      "values": [
+        {
+          "metric": "precip_accumulation_in",
+          "value": 0.28,
+          "unit": "in",
+          "threshold_relation": "above_threshold",
+          "forecast_probability": 0.72,
+          "qualitative_note": null
+        }
+      ]
+    }
+  ],
+  "forecast_bundle": {
+    "schema_name": "weather.weather_forecast_bundle",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_forecast_bundle",
+    "bundle_id": "wx.bundle.rain.support",
+    "market_id": "KX-RAIN-SEA-025-2026-04-05",
+    "weather_market_type": "measurable_precipitation",
+    "target_location": "Seattle-Tacoma official station",
+    "target_resolution_window": "2026-04-05 local day",
+    "relevant_weather_metric": "precip_accumulation_in",
+    "source_values": [
+      {
+        "source_snapshot_ref": "wx.rain.support.nws",
+        "source_name": "NWS Seattle",
+        "captured_at_utc": "2026-03-30T15:00:00Z",
+        "value_summary": "0.31 inches expected",
+        "primary_metric": "precip_accumulation_in",
+        "primary_value": 0.31,
+        "primary_unit": "in",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.76
+      },
+      {
+        "source_snapshot_ref": "wx.rain.support.wu",
+        "source_name": "Weather Underground Seattle",
+        "captured_at_utc": "2026-03-30T15:02:00Z",
+        "value_summary": "0.28 inches expected",
+        "primary_metric": "precip_accumulation_in",
+        "primary_value": 0.28,
+        "primary_unit": "in",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.72
+      }
+    ],
+    "forecast_spread_value": 0.03,
+    "forecast_spread_summary": "Tight precipitation accumulation cluster above the strike.",
+    "latest_observation_summary": "Incoming frontal band remains on track offshore.",
+    "freshness_state": "current",
+    "freshness_window_hours": 4.0,
+    "resolution_fit_assessment": "aligned",
+    "uncertainty_note": "Rain timing can still shift, but the current cluster is supportive.",
+    "raw_snapshot_refs": [
+      "wx.rain.support.nws",
+      "wx.rain.support.wu"
+    ]
+  },
+  "weather_divergence_assessment": {
+    "schema_name": "weather.weather_divergence_assessment",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_divergence_assessment",
+    "assessment_id": "wx.div.rain.support",
+    "market_id": "KX-RAIN-SEA-025-2026-04-05",
+    "bundle_ref": "wx.bundle.rain.support",
+    "market_implied_probability": 0.44,
+    "forecast_implied_probability": 0.74,
+    "divergence_magnitude": 0.3,
+    "divergence_note": "Forecast-informed expectation is materially wetter than the market's current pricing.",
+    "source_value_trace": [
+      {
+        "source_snapshot_ref": "wx.rain.support.nws",
+        "source_name": "NWS Seattle",
+        "captured_at_utc": "2026-03-30T15:00:00Z",
+        "value_summary": "0.31 inches expected",
+        "primary_metric": "precip_accumulation_in",
+        "primary_value": 0.31,
+        "primary_unit": "in",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.76
+      },
+      {
+        "source_snapshot_ref": "wx.rain.support.wu",
+        "source_name": "Weather Underground Seattle",
+        "captured_at_utc": "2026-03-30T15:02:00Z",
+        "value_summary": "0.28 inches expected",
+        "primary_metric": "precip_accumulation_in",
+        "primary_value": 0.28,
+        "primary_unit": "in",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.72
+      }
+    ],
+    "tradability_note": "Quotes are available with bounded spread.",
+    "preliminary_suitability_outcome": "weather_research.supportive",
+    "uncertainty_note": "Precipitation still needs a fresh check closer to resolution."
+  },
+  "weather_research_summary": {
+    "schema_name": "weather.weather_research_summary",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_research_summary",
+    "summary_id": "wx.summary.rain.support",
+    "market_id": "KX-RAIN-SEA-025-2026-04-05",
+    "weather_market_type": "measurable_precipitation",
+    "research_timestamp_utc": "2026-03-30T15:05:00Z",
+    "forecast_bundle_ref": "wx.bundle.rain.support",
+    "divergence_assessment_ref": "wx.div.rain.support",
+    "source_summary_table": [
+      {
+        "source_snapshot_ref": "wx.rain.support.nws",
+        "source_name": "NWS Seattle",
+        "captured_at_utc": "2026-03-30T15:00:00Z",
+        "value_summary": "0.31 inches expected",
+        "primary_metric": "precip_accumulation_in",
+        "primary_value": 0.31,
+        "primary_unit": "in",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.76
+      },
+      {
+        "source_snapshot_ref": "wx.rain.support.wu",
+        "source_name": "Weather Underground Seattle",
+        "captured_at_utc": "2026-03-30T15:02:00Z",
+        "value_summary": "0.28 inches expected",
+        "primary_metric": "precip_accumulation_in",
+        "primary_value": 0.28,
+        "primary_unit": "in",
+        "threshold_relation": "above_threshold",
+        "forecast_probability": 0.72
+      }
+    ],
+    "divergence_note": "Current forecast bundle supports a wetter-than-priced market view.",
+    "freshness_note": "Bundle is current and suitable for strategy scoring.",
+    "uncertainty_note": "Frontal timing still matters and should be refreshed before any higher-confidence call.",
+    "preliminary_suitability_note": "Supportive divergence exists, but precipitation timing risk remains visible.",
+    "preliminary_suitability_outcome": "weather_research.supportive",
+    "evidence_summary": "Two attributable forecast sources place expected rainfall above the market threshold and above current market pricing.",
+    "invalidation_cues": [
+      "A later forecast reduces expected rainfall below 0.25 inches",
+      "Storm track shifts materially south"
+    ],
+    "expected_edge_source": "weather_forecast_divergence",
+    "review_reference_snapshot_ids": [
+      "wx.rain.support.nws",
+      "wx.rain.support.wu"
+    ]
+  },
+  "interpretation_context": {
+    "corr_id": "wx-int-rain-support",
+    "interpretation_timestamp_utc": "2026-03-30T15:05:30Z",
+    "settlement_threshold": 0.25,
+    "threshold_unit": "in",
+    "occurrence_market": false,
+    "forecast_window_aligned": true,
+    "force_research_only_ceiling": false,
+    "force_abstention_review": false
+  },
+  "weather_signal_interpretation": {
+    "schema_name": "weather.weather_signal_interpretation",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_signal_interpretation",
+    "corr_id": "wx-int-rain-support",
+    "timestamp_utc": "2026-03-30T15:05:30Z",
+    "market_id": "KX-RAIN-SEA-025-2026-04-05",
+    "weather_market_type": "measurable_precipitation",
+    "source_bundle_ref": "wx.bundle.rain.support",
+    "weather_support_band": "moderate",
+    "threshold_proximity_assessment": "near_threshold",
+    "source_agreement_assessment": "high_agreement",
+    "freshness_assessment": "fresh",
+    "weather_downgrade_flags": [
+      "precipitation.accumulation_uncertain"
+    ],
+    "downstream_signal_effects": [
+      "reduce_mispricing_potential",
+      "force_research_only_ceiling"
+    ],
+    "interpretation_notes": "Weather interpretation derived from bundle wx.bundle.rain.support. Threshold proximity=near_threshold; source agreement=high_agreement; freshness=fresh."
+  },
+  "kalshi_input": {
+    "case_id": "weather_precip_supportive_divergence",
+    "scenario_name": "weather_precip_supportive_divergence",
+    "description": "Weather-supported precipitation case with supportive divergence but bounded uncertainty.",
+    "corr_id": "wx-int-rain-support",
+    "market_id": "KX-RAIN-SEA-025-2026-04-05",
+    "market_title": "Will Seattle record at least 0.25 inches of rain on April 5, 2026?",
+    "resolution_rule_summary": "Resolves YES if the official Seattle-Tacoma station records at least 0.25 inches of precipitation.",
+    "initial_timestamp_utc": "2026-03-30T15:06:00Z",
+    "score_timestamp_utc": "2026-03-30T15:07:00Z",
+    "gate_timestamp_utc": "2026-03-30T15:08:00Z",
+    "readiness_timestamp_utc": "2026-03-30T15:09:00Z",
+    "execution_timestamp_utc": "2026-03-30T15:10:00Z",
+    "resolution_timestamp_utc": "2026-04-05T23:59:00Z",
+    "proposed_side": "yes",
+    "operator_engagement_state": "operator_directing",
+    "market_observation": {
+      "observed_price": 0.44,
+      "best_bid": 0.43,
+      "best_ask": 0.45,
+      "market_note": "Tradable quote with a visible weather divergence."
+    },
+    "entry_rationale": "Current precipitation forecasts are wetter than the market price implies.",
+    "decision_horizon": {
+      "horizon_hours": 6.0,
+      "thesis_valid_until_utc": "2026-03-30T21:00:00Z",
+      "rationale": "Another short-range forecast cycle should confirm or weaken the edge."
+    },
+    "confidence_signal": 0.3,
+    "gate_outcome": "recommend.execution_ready_low_confidence",
+    "gate_reasons": [
+      "Forecast divergence is supportive and traceable to current source values.",
+      "Precipitation timing risk keeps the setup in low-confidence posture."
+    ],
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "resolved_outcome": "no",
+    "trade_executed": true,
+    "execution_status": "success",
+    "position_taken": "yes",
+    "review_plan": {
+      "thesis_quality_assessment": "The thesis was legible and evidence-backed at decision time.",
+      "score_quality_assessment": "The score captured a real divergence but left room for precipitation variance.",
+      "timing_quality_assessment": "Timing was acceptable, though late storm-track shifts mattered.",
+      "governance_quality_assessment": "Execution remained staging-only and subordinate to the governed chain.",
+      "decision_quality_classification": "decision_quality.acceptable",
+      "outcome_interpretation_classification": "outcome.variance_penalty",
+      "policy_alignment_classification": "policy.aligned",
+      "profit_loss_amount": -1.0,
+      "profit_loss_note": "Disciplined bounded loss in staging review.",
+      "attention_cost_estimate": "Moderate operator attention.",
+      "abstention_counterfactual": "Abstention would have avoided loss but would not have been strictly required by the evidence.",
+      "review_notes": "Useful disciplined weather loss example.",
+      "recommended_followup": "review_timing_logic"
+    },
+    "score_dimensions_override": {
+      "evidence_strength": 0.5,
+      "mispricing_potential": 0.75,
+      "timing_quality": 0.5,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 0.5,
+      "decision_horizon_fit": 0.75,
+      "risk_clarity": 0.5
+    },
+    "classification_band_override": "recommend.execution_ready_low_confidence",
+    "scoring_notes_override": "Supportive precipitation divergence with bounded low-confidence posture."
+  },
+  "kalshi_case": {
+    "schema_name": "kalshi.mock_candidate_market_case",
+    "schema_version": "1.0.0",
+    "artifact_schema_version": "1.0.0",
+    "case_id": "weather_precip_supportive_divergence",
+    "scenario_name": "weather_precip_supportive_divergence",
+    "description": "Weather-supported precipitation case with supportive divergence but bounded uncertainty.",
+    "corr_id": "wx-int-rain-support",
+    "market_id": "KX-RAIN-SEA-025-2026-04-05",
+    "market_title": "Will Seattle record at least 0.25 inches of rain on April 5, 2026?",
+    "resolution_rule_summary": "Resolves YES if the official Seattle-Tacoma station records at least 0.25 inches of precipitation.",
+    "initial_timestamp_utc": "2026-03-30T15:06:00Z",
+    "score_timestamp_utc": "2026-03-30T15:07:00Z",
+    "gate_timestamp_utc": "2026-03-30T15:08:00Z",
+    "readiness_timestamp_utc": "2026-03-30T15:09:00Z",
+    "execution_timestamp_utc": "2026-03-30T15:10:00Z",
+    "resolution_timestamp_utc": "2026-04-05T23:59:00Z",
+    "proposed_side": "yes",
+    "expected_edge_source": "weather_forecast_divergence",
+    "operator_engagement_state": "operator_directing",
+    "market_observation": {
+      "observed_price": 0.44,
+      "best_bid": 0.43,
+      "best_ask": 0.45,
+      "market_note": "Tradable quote with a visible weather divergence.",
+      "price_unit": "probability"
+    },
+    "entry_rationale": "Current precipitation forecasts are wetter than the market price implies.",
+    "decision_horizon": {
+      "horizon_hours": 6.0,
+      "thesis_valid_until_utc": "2026-03-30T21:00:00Z",
+      "rationale": "Another short-range forecast cycle should confirm or weaken the edge."
+    },
+    "invalidation_condition": "A later forecast reduces expected rainfall below 0.25 inches; Storm track shifts materially south Forecast bundle ref=wx.bundle.rain.support; divergence ref=wx.div.rain.support.",
+    "abstention_alternative": "Supportive divergence exists, but precipitation timing risk remains visible.",
+    "evidence_summary": "Two attributable forecast sources place expected rainfall above the market threshold and above current market pricing. Freshness: current. Spread: Tight precipitation accumulation cluster above the strike.. Sources: NWS Seattle, Weather Underground Seattle.",
+    "evidence_signal": 0.74,
+    "confidence_signal": 0.3,
+    "score_dimensions": {
+      "evidence_strength": 0.5,
+      "mispricing_potential": 0.25,
+      "timing_quality": 0.75,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 0.5,
+      "decision_horizon_fit": 0.75,
+      "risk_clarity": 0.5
+    },
+    "downgrade_flags": [
+      "precipitation.accumulation_uncertain"
+    ],
+    "decay_state": "fresh",
+    "scoring_notes": "Weather-supported scoring derived from bundle wx.bundle.rain.support, interpretation support=moderate, weather downgrade flags=precipitation.accumulation_uncertain. Interpretation ref=wx.bundle.rain.support; support_band=moderate; effects=reduce_mispricing_potential, force_research_only_ceiling.",
+    "classification_band": "recommend.research_only",
+    "gate_outcome": "recommend.execution_ready_low_confidence",
+    "gate_reasons": [
+      "Forecast divergence is supportive and traceable to current source values.",
+      "Precipitation timing risk keeps the setup in low-confidence posture.",
+      "weather_bundle_ref=wx.bundle.rain.support",
+      "weather_summary_ref=wx.summary.rain.support",
+      "weather_interpretation_support_band=moderate"
+    ],
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "resolved_outcome": "no",
+    "trade_executed": true,
+    "execution_status": "success",
+    "position_taken": "yes",
+    "review_plan": {
+      "thesis_quality_assessment": "The thesis was legible and evidence-backed at decision time.",
+      "score_quality_assessment": "The score captured a real divergence but left room for precipitation variance.",
+      "timing_quality_assessment": "Timing was acceptable, though late storm-track shifts mattered.",
+      "governance_quality_assessment": "Execution remained staging-only and subordinate to the governed chain.",
+      "decision_quality_classification": "decision_quality.acceptable",
+      "outcome_interpretation_classification": "outcome.variance_penalty",
+      "policy_alignment_classification": "policy.aligned",
+      "profit_loss_amount": -1.0,
+      "profit_loss_note": "Disciplined bounded loss in staging review.",
+      "attention_cost_estimate": "Moderate operator attention.",
+      "abstention_counterfactual": "Abstention would have avoided loss but would not have been strictly required by the evidence.",
+      "review_notes": "Useful disciplined weather loss example.",
+      "recommended_followup": "review_timing_logic"
+    }
+  }
+}

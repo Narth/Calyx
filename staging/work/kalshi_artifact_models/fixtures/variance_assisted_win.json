@@ -1,0 +1,176 @@
+{
+  "scenario_name": "variance_assisted_win",
+  "description": "Executed trade won, but the review classifies it as a variance-assisted result rather than strong process.",
+  "trade_thesis_artifact": {
+    "schema_name": "kalshi.trade_thesis_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "trade_thesis_artifact",
+    "artifact_id": "thesis.variance_win",
+    "corr_id": "kalshi-corr-variance-win",
+    "timestamp_utc": "2026-03-28T22:00:00Z",
+    "market_id": "KXEVENT-COURT-RULING-2026-04",
+    "market_title": "Will a major court ruling be issued by April 10, 2026?",
+    "resolution_rule_summary": "Resolves YES if the named ruling is issued by the deadline.",
+    "proposed_side": "yes",
+    "price_context": {
+      "observed_price": 0.73,
+      "price_unit": "probability",
+      "best_bid": 0.72,
+      "best_ask": 0.74,
+      "market_note": "The thesis leaned too heavily on timing optimism."
+    },
+    "entry_rationale": "There may be a mild edge if the ruling lands earlier than consensus expects.",
+    "expected_edge_source": "lagging_reaction_to_public_information",
+    "decision_horizon": {
+      "horizon_hours": 6.0,
+      "thesis_valid_until_utc": "2026-03-29T04:00:00Z",
+      "rationale": "This was a narrow timing view, not a durable edge."
+    },
+    "invalidation_condition": "Stand down if expected timing slips even modestly.",
+    "abstention_alternative": "Skip the trade because timing confidence is weaker than the market price suggests.",
+    "evidence_summary": "Evidence existed, but it was thinner than the market confidence implied.",
+    "confidence_signal": 0.5,
+    "evidence_signal": 0.5,
+    "operator_engagement_state": "operator_directing"
+  },
+  "signal_score_record": {
+    "schema_name": "kalshi.signal_score_record",
+    "schema_version": "1.0.0",
+    "artifact_type": "signal_score_record",
+    "artifact_id": "score.variance_win",
+    "corr_id": "kalshi-corr-variance-win",
+    "timestamp_utc": "2026-03-28T22:02:00Z",
+    "market_id": "KXEVENT-COURT-RULING-2026-04",
+    "score_dimensions": {
+      "evidence_strength": 0.5,
+      "mispricing_potential": 0.5,
+      "timing_quality": 0.5,
+      "resolution_clarity": 1.0,
+      "liquidity_tradability": 1.0,
+      "decision_horizon_fit": 0.5,
+      "risk_clarity": 0.5
+    },
+    "composite_score": 0.6428571428571429,
+    "classification_band": "recommend.research_only",
+    "confidence_signal": 0.5,
+    "downgrade_flags": [
+      "poor_timing_stability"
+    ],
+    "decay_state": "fresh",
+    "evidence_summary": "Market was tradeable, but the edge was not especially durable.",
+    "scoring_notes": "This should have remained a cautious candidate."
+  },
+  "strategy_gate_result": {
+    "schema_name": "kalshi.strategy_gate_result",
+    "schema_version": "1.0.0",
+    "artifact_type": "strategy_gate_result",
+    "artifact_id": "gate.variance_win",
+    "corr_id": "kalshi-corr-variance-win",
+    "timestamp_utc": "2026-03-28T22:03:00Z",
+    "market_id": "KXEVENT-COURT-RULING-2026-04",
+    "gate_outcome": "recommend.execution_ready_low_confidence",
+    "gate_reasons": [
+      "The thesis was legible enough for review, but timing remained fragile.",
+      "Operator review should have treated this as a small, cautious experiment."
+    ],
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.variance_win"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.variance_win"
+    },
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "presence_requirement": "required_for_execution",
+    "next_allowed_action": "operator_intent_required"
+  },
+  "execution_readiness_receipt": {
+    "schema_name": "kalshi.execution_readiness_receipt",
+    "schema_version": "1.0.0",
+    "artifact_type": "execution_readiness_receipt",
+    "artifact_id": "ready.variance_win",
+    "corr_id": "kalshi-corr-variance-win",
+    "timestamp_utc": "2026-03-28T22:04:00Z",
+    "market_id": "KXEVENT-COURT-RULING-2026-04",
+    "execution_readiness_class": "recommend.execution_ready_low_confidence",
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.variance_win"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.variance_win"
+    },
+    "gate_result_ref": {
+      "artifact_type": "strategy_gate_result",
+      "artifact_id": "gate.variance_win"
+    },
+    "presence_gate_required": true,
+    "wallet_policy_required": true,
+    "execution_authorized": false,
+    "operator_action_required": true
+  },
+  "execution_support_receipt": {
+    "schema_name": "kalshi.execution_support_receipt",
+    "schema_version": "1.0.0",
+    "artifact_type": "execution_support_receipt",
+    "artifact_id": "exec.variance_win",
+    "corr_id": "kalshi-corr-variance-win",
+    "timestamp_utc": "2026-03-28T22:05:00Z",
+    "market_id": "KXEVENT-COURT-RULING-2026-04",
+    "execution_status": "success",
+    "execution_mode": "staging_only",
+    "requested_side": "yes",
+    "operator_action_recorded": true,
+    "note": "Staging-only placeholder for a governed execution receipt."
+  },
+  "post_resolution_review_artifact": {
+    "schema_name": "kalshi.post_resolution_review_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "post_resolution_review_artifact",
+    "artifact_id": "review.variance_win",
+    "corr_id": "kalshi-corr-variance-win",
+    "timestamp_utc": "2026-04-10T18:00:00Z",
+    "market_id": "KXEVENT-COURT-RULING-2026-04",
+    "market_title": "Will a major court ruling be issued by April 10, 2026?",
+    "resolved_outcome": "yes",
+    "position_taken": "yes",
+    "trade_executed": true,
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.variance_win"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.variance_win"
+    },
+    "gate_result_ref": {
+      "artifact_type": "strategy_gate_result",
+      "artifact_id": "gate.variance_win"
+    },
+    "execution_ref": {
+      "artifact_type": "execution_support_receipt",
+      "artifact_id": "exec.variance_win"
+    },
+    "original_composite_score": 0.6428571428571429,
+    "original_gate_outcome": "recommend.execution_ready_low_confidence",
+    "thesis_quality_assessment": "The thesis was understandable but leaned too hard on uncertain timing.",
+    "score_quality_assessment": "The score correctly showed moderate quality and should not be read as a strong edge.",
+    "timing_quality_assessment": "Entry timing was fragile and success depended on fortunate timing.",
+    "governance_quality_assessment": "Governance boundaries were preserved, but this should still be treated cautiously.",
+    "decision_quality_classification": "decision_quality.weak",
+    "outcome_interpretation_classification": "outcome.variance_assist",
+    "policy_alignment_classification": "policy.aligned",
+    "profit_loss_result": {
+      "currency": "USD",
+      "amount": 0.84,
+      "note": "Win came from favorable timing rather than robust edge."
+    },
+    "attention_cost_estimate": "Low operator attention cost, but the lesson is caution rather than confidence.",
+    "abstention_counterfactual": "Abstention would have remained a defendable choice despite the profitable outcome.",
+    "review_notes": "Do not let this win inflate future timing confidence on similar markets.",
+    "recommended_followup": "review_confidence_calibration"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "ambiguities": [],
+  "artifact_type": "runtime_operator_summary",
+  "attribution_gaps": [],
+  "capture_id": "capture.health.fail_stale",
+  "corr_id": "capture.health.fail_stale",
+  "expectation_signals": [
+    {
+      "reasoning": "Authoritative station health reported fail.",
+      "service_name": "station_health_loop",
+      "severity": "critical",
+      "signal_type": "health_fail"
+    },
+    {
+      "reasoning": "Station health truth is stale, reducing confidence in current status.",
+      "service_name": "station_health_loop",
+      "severity": "risk",
+      "signal_type": "health_stale"
+    }
+  ],
+  "generated_at_utc": "2026-04-04T01:58:16.167450Z",
+  "governance_compliance_condition": "compliant",
+  "governance_posture": [
+    {
+      "authoritative_runtime_role": "authoritative_writer",
+      "freshness_state": "stale",
+      "health_state": "fail",
+      "idle_reason": null,
+      "multiplicity_posture": "single_instance_only",
+      "noncompliance_severity": null,
+      "noncompliance_type": null,
+      "notes": [
+        "Single authoritative writer observed.",
+        "Health is fail with stale freshness."
+      ],
+      "observed_process_count": 1,
+      "posture_consequence": "warning_posture",
+      "pulse_class": null,
+      "service_name": "station_health_loop",
+      "topology_class": "single_process",
+      "validation_outcome": "topology_valid"
+    }
+  ],
+  "notes": "Operator summary is a staging-only visibility surface derived from capture and governance artifacts without runtime mutation.",
+  "operator_risk_reasoning": [
+    "System load condition: NORMAL (CPU 38% / RAM 43%).",
+    "Primary sampled load is mixed between governed Station processes and non-governed processes.",
+    "Governance compliance condition: COMPLIANT.",
+    "Authoritative station health reported fail."
+  ],
+  "operator_risk_signal": "CRITICAL",
+  "schema_name": "runtime.operator.summary",
+  "schema_version": "1.1.0",
+  "source_capture_mode": "offline_replay",
+  "station_runtime_view": {
+    "governance_posture": [
+      {
+        "authoritative_runtime_role": "authoritative_writer",
+        "freshness_state": "stale",
+        "health_state": "fail",
+        "idle_reason": null,
+        "multiplicity_posture": "single_instance_only",
+        "noncompliance_severity": null,
+        "noncompliance_type": null,
+        "notes": [
+          "Single authoritative writer observed.",
+          "Health is fail with stale freshness."
+        ],
+        "observed_process_count": 1,
+        "posture_consequence": "warning_posture",
+        "pulse_class": null,
+        "service_name": "station_health_loop",
+        "topology_class": "single_process",
+        "validation_outcome": "topology_valid"
+      }
+    ],
+    "notes": [
+      "Station runtime view is a strict evidence-backed subset of the workstation process capture.",
+      "Known governed processes come from runtime multiplicity validation artifacts.",
+      "Candidate or ambiguous Station membership is shown only when command-line or executable-path evidence points at Calyx surfaces."
+    ],
+    "processes": [
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "evidence_notes": [
+          "Observed in governance validation artifact capture.health.fail_stale.station_health.validation."
+        ],
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "pid": 35932,
+        "service_name": "station_health_loop",
+        "station_membership": "known_governed_service"
+      }
+    ]
+  },
+  "summary_id": "capture.health.fail_stale.operator_summary",
+  "system_load_condition": "normal",
+  "system_load_snapshot": {
+    "cpu_pct": 38,
+    "freshness_state": "stale",
+    "gpu_metrics_present": true,
+    "health_state": "fail",
+    "memory_pressure_tier": 0,
+    "notes": "System load derived from the authoritative health snapshot; GPU presence reflects enrichment or captured station health when available.",
+    "ram_pct": 43,
+    "source_surface": "runtime/station_health.json",
+    "vram_metrics_available": false
+  },
+  "top_processes": [
+    {
+      "command_line": null,
+      "executable_path": null,
+      "governed_surface": null,
+      "notes": "No captured process row resolved for Code.",
+      "pid": 27864,
+      "process_label": "Code#27864",
+      "rank": 1,
+      "source": "health_enrichment_snapshot"
+    },
+    {
+      "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+      "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "governed_surface": "station_health_loop",
+      "notes": null,
+      "pid": 35932,
+      "process_label": "powershell#35932",
+      "rank": 2,
+      "source": "health_enrichment_snapshot"
+    }
+  ],
+  "workstation_load_view": {
+    "notes": [
+      "Whole-workstation view is unfiltered and reflects captured machine state, not just Station-governed runtime.",
+      "Top processes are sourced from health enrichment or captured station health when available."
+    ],
+    "observed_process_count": 1,
+    "system_load_snapshot": {
+      "cpu_pct": 38,
+      "freshness_state": "stale",
+      "gpu_metrics_present": true,
+      "health_state": "fail",
+      "memory_pressure_tier": 0,
+      "notes": "System load derived from the authoritative health snapshot; GPU presence reflects enrichment or captured station health when available.",
+      "ram_pct": 43,
+      "source_surface": "runtime/station_health.json",
+      "vram_metrics_available": false
+    },
+    "top_processes": [
+      {
+        "command_line": null,
+        "executable_path": null,
+        "governed_surface": null,
+        "notes": "No captured process row resolved for Code.",
+        "pid": 27864,
+        "process_label": "Code#27864",
+        "rank": 1,
+        "source": "health_enrichment_snapshot"
+      },
+      {
+        "command_line": "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Calyx_Terminal\\Scripts\\station_health_loop.ps1",
+        "executable_path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "governed_surface": "station_health_loop",
+        "notes": null,
+        "pid": 35932,
+        "process_label": "powershell#35932",
+        "rank": 2,
+        "source": "health_enrichment_snapshot"
+      }
+    ]
+  }
+}

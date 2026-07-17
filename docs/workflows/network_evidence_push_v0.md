@@ -1,7 +1,7 @@
 # Network Evidence Push v0 Workflow
 
-**Version:** v0 (LAN-Only)  
-**Status:** Token-Gated, Append-Only  
+**Version:** v0 (LAN-Only)
+**Status:** Token-Gated, Append-Only
 **Date:** 2026-01-10
 
 ---
@@ -42,18 +42,19 @@ This workflow enables evidence push from remote Station Calyx nodes over a priva
 
 ### Generate a Token
 
+Generate a secure token once, then set it only via environment variable (never paste into docs or scripts):
+
 ```powershell
-# Generate a secure random token
+# Generate a secure random token (run once; store in env or secret manager)
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-Example output: `EXAMPLE_TOKEN_REDACTED_DO_NOT_USE_IN_PRODUCTION`
+Set the result in your environment (e.g. system or user env, or shell profile). Do not commit the value.
 
 ### Start Server on LAN IP
 
 ```powershell
-# Set environment variables
-$env:CALYX_INGEST_TOKEN = "your-secure-token-here"
+# Token must already be set in environment (e.g. CALYX_INGEST_TOKEN)
 $env:CALYX_INGEST_ENABLED = "true"
 
 # Optional: Restrict to specific nodes
@@ -63,7 +64,7 @@ $env:CALYX_ALLOWED_NODE_IDS = "laptop-001,laptop-002"
 python -B -m station_calyx.api.server --host 192.168.1.100 --port 8420
 ```
 
-**Important:** Replace `192.168.1.100` with your workstation's actual LAN IP.
+**Important:** Replace `192.168.1.100` with your workstation's actual LAN IP. Never paste the token into this file or any committed file.
 
 ### Find Your LAN IP
 
@@ -123,7 +124,7 @@ curl -X POST "http://192.168.1.100:8420/v1/ingest/evidence" \
 ```http
 POST /v1/ingest/evidence HTTP/1.1
 Host: 192.168.1.100:8420
-Authorization: Bearer <token>
+Authorization: Bearer <value from CALYX_INGEST_TOKEN env>
 Content-Type: application/json
 
 {
@@ -246,10 +247,12 @@ Expected: `401 Unauthorized`
 
 ### Test 2: Wrong Token (Should Reject)
 
+Use a non-matching value (e.g. set `$env:CALYX_INGEST_TOKEN = "wrong"` in a separate test shell, or pass a literal that does not match the server's env):
+
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:8420/v1/ingest/evidence" `
     -Method POST `
-    -Headers @{ Authorization = "Bearer <INVALID_TOKEN_EXAMPLE>" } `
+    -Headers @{ Authorization = "Bearer wrong" } `
     -ContentType "application/json" `
     -Body '{"envelopes": []}'
 ```
@@ -275,7 +278,7 @@ Expected: `{"success": false, "message": "No envelopes to ingest", ...}`
 
 | Action | Command/Location |
 |--------|------------------|
-| Set token | `$env:CALYX_INGEST_TOKEN = "..."` |
+| Set token | Set `CALYX_INGEST_TOKEN` in environment only (never paste into docs/scripts) |
 | Enable ingest | `$env:CALYX_INGEST_ENABLED = "true"` |
 | Set allowlist | `$env:CALYX_ALLOWED_NODE_IDS = "node1,node2"` |
 | View audit log | `logs/ingest/audit.jsonl` |
@@ -286,7 +289,7 @@ Expected: `{"success": false, "message": "No envelopes to ingest", ...}`
 ## Troubleshooting
 
 ### "Authorization required"
-Token not provided. Add `Authorization: Bearer <token>` header.
+Token not provided. Set `CALYX_INGEST_TOKEN` in environment and send `Authorization: Bearer $env:CALYX_INGEST_TOKEN` (PowerShell) or `Authorization: Bearer $CALYX_INGEST_TOKEN` (bash).
 
 ### "Invalid token"
 Token doesn't match `CALYX_INGEST_TOKEN`. Check spelling.

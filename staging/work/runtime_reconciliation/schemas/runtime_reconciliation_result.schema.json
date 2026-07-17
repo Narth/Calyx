@@ -1,0 +1,222 @@
+{
+  "$defs": {
+    "EquivalentResident": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_fields": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Fields",
+          "type": "array"
+        },
+        "matched_tokens": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Matched Tokens",
+          "type": "array"
+        },
+        "member_process_ids": {
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1,
+          "title": "Member Process Ids",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "resident_id": {
+          "minLength": 3,
+          "title": "Resident Id",
+          "type": "string"
+        },
+        "service_name": {
+          "enum": [
+            "station_health_loop",
+            "bridge_overseer",
+            "navigator_triage_loop",
+            "cp6_cp7_loop",
+            "energy_churn_cp9_loop",
+            "service_failure_watch",
+            "cli_avatar",
+            "test_bounded_worker"
+          ],
+          "title": "Service Name",
+          "type": "string"
+        },
+        "topology_class": {
+          "enum": [
+            "single_process",
+            "wrapper_child_runtime_pair",
+            "bounded_multi_surface_runtime"
+          ],
+          "title": "Topology Class",
+          "type": "string"
+        }
+      },
+      "required": [
+        "resident_id",
+        "service_name",
+        "member_process_ids",
+        "topology_class",
+        "evidence_fields",
+        "matched_tokens"
+      ],
+      "title": "EquivalentResident",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguity_conditions": {
+      "items": {
+        "enum": [
+          "missing_command_line",
+          "missing_executable_path",
+          "host_process_ambiguous",
+          "insufficient_identity_evidence",
+          "topology_ambiguous",
+          "unclassified_service_target"
+        ],
+        "type": "string"
+      },
+      "title": "Ambiguity Conditions",
+      "type": "array"
+    },
+    "artifact_type": {
+      "const": "runtime_reconciliation_result",
+      "default": "runtime_reconciliation_result",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "declaration_ref": {
+      "minLength": 3,
+      "title": "Declaration Ref",
+      "type": "string"
+    },
+    "disposition": {
+      "enum": [
+        "permit_new_launch",
+        "refuse_duplicate_launch",
+        "attach_to_existing_runtime",
+        "permit_declared_multiplicity",
+        "ambiguous_runtime_blocked"
+      ],
+      "title": "Disposition",
+      "type": "string"
+    },
+    "equivalent_residents": {
+      "items": {
+        "$ref": "#/$defs/EquivalentResident"
+      },
+      "title": "Equivalent Residents",
+      "type": "array"
+    },
+    "evaluated_at_utc": {
+      "format": "date-time",
+      "title": "Evaluated At Utc",
+      "type": "string"
+    },
+    "matching_posture_used": {
+      "enum": [
+        "single_instance_only",
+        "single_wrapper_child_pair_only",
+        "bounded_multi_instance",
+        "bounded_multi_pair",
+        "unclassified_no_launch_without_review"
+      ],
+      "title": "Matching Posture Used",
+      "type": "string"
+    },
+    "permitted_multiplicity_count": {
+      "minimum": 0,
+      "title": "Permitted Multiplicity Count",
+      "type": "integer"
+    },
+    "request_ref": {
+      "minLength": 3,
+      "title": "Request Ref",
+      "type": "string"
+    },
+    "resident_count": {
+      "minimum": 0,
+      "title": "Resident Count",
+      "type": "integer"
+    },
+    "result_id": {
+      "minLength": 3,
+      "title": "Result Id",
+      "type": "string"
+    },
+    "resulting_reasoning": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Resulting Reasoning",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "runtime.reconciliation.result",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_ref": {
+      "minLength": 3,
+      "title": "Snapshot Ref",
+      "type": "string"
+    },
+    "topology_match_state": {
+      "enum": [
+        "matches_expected",
+        "duplicate_peer_detected",
+        "ambiguous_host",
+        "topology_mismatch"
+      ],
+      "title": "Topology Match State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "result_id",
+    "corr_id",
+    "request_ref",
+    "declaration_ref",
+    "snapshot_ref",
+    "evaluated_at_utc",
+    "matching_posture_used",
+    "permitted_multiplicity_count",
+    "resident_count",
+    "topology_match_state",
+    "disposition",
+    "resulting_reasoning"
+  ],
+  "title": "RuntimeReconciliationResult",
+  "type": "object"
+}

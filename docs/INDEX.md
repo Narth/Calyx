@@ -1,8 +1,10 @@
-# Station Calyx Index (L1/L2/L3)  
+# Station Calyx Index (L1/L2/L3)
 Version: 0.1 (Architect retains version authority; CBO may append rows without changing version)
 
 ## Purpose
 Compact map of live runtime (L1), design specs (L2), and lore (L3) to reduce ambiguity and surface conflicts quickly.
+
+**Station Calyx** is home. **CBO** is steward. **BloomOS** consumes STATE; **Calyx Agents** operate within the spine. See `HISTORY.md` for chronology and key actors.
 
 ## Layer Legend
 - L1 — CODE (live): implemented, executable, or operational configs/logs.
@@ -11,9 +13,22 @@ Compact map of live runtime (L1), design specs (L2), and lore (L3) to reduce amb
 One primary layer per artifact; optional secondary noted in parentheses.
 
 ## L1 — Runtime (implemented)
+- `ide_toolbox/`: Canonical IDE config (Cursor + VS Code). Tasks, launch, settings. Run `ide_toolbox/install.ps1` to copy to `.vscode/`.
+- `calyx/`: Calyx package (cbo, core, mail, kernel, execution).
+- `runtime/`: Runtime state (cbo, receipts, manifests, mailbox, metrics, correlation_activity.jsonl); git-ignored where appropriate.
+- `docs/CORRELATION_LOGGING.md`: Correlation activity log spec — overlay events with CPU/utilization (correlation ≠ causation).
+- `telemetry/`: Telemetry and envelope schemas (outbox, envelopes).
+- `benchmarks/`: Benchmark harness and datasets.
+- `governance/`: Governance documents (HVD-1, PBS-1, DRP-1, DP-1, EG-1).
+- `policy/`: Active Station policy definitions; policy text does not imply execution without an authorized runtime path.
+- `spec/`: Machine-readable protocol schemas and compatibility specifications.
+- `tests/`: Validation suite for code, governance models, and staged surfaces; tests are evidence, not runtime authority.
+- `rust/`: Local-only advisory observers. They report bounded Station facts and hold no control or network authority.
+- `station_calyx/`: Deprecated; not in current tree. Legacy Station API data was gitignored; use `runtime/`, `cbo_hub/` for active paths.
+- `archive/`: Archived/non-operational modules (do not import from active code).
 - `calyx/cbo/bridge_overseer.py`: CBO heartbeat (manual-run).
 - `calyx/cbo/api.py`: FastAPI bridge (manual-run).
-- `calyx/cbo/coordinator/`: Coordinator pulse + guarded domains.
+- `calyx/cbo/coordinator/`: Deprecated stub; legacy code in archive/legacy_cbo_coordinator. Use calyx/cbo/intent_pipeline for spine.
 - `calyx_core/intercept.py`: Interceptor (record-only by default; AGII advisory).
 - `calyx/core/policy.yaml`: Canonical policy.
 - `calyx/core/registry.jsonl`: Canonical registry.
@@ -32,11 +47,17 @@ One primary layer per artifact; optional secondary noted in parentheses.
 - `bloomos/kernel_runtime_sandbox.py`: Experimental Safe Mode sandbox (manual-run if promoted; latest runs ingest gate; append-only observations).
 
 ## L2 — Specs (design intent)
+- `docs/AGENT_REPOSITORY.md`: Canonical agent index; BloomOS onboarding priority.
 - `docs/`, `engineering/`, `compiled/`: Governance, safety, kernel, blueprint docs.
 - `core_bloom/` (opt L3): Bloom scaffolds, safety orders, reflection grammars.
-- `bloomos/`: Conceptual BloomOS specs; runtime files are Safe Mode placeholders.
+- `bloomos/`: Conceptual BloomOS specs; runtime files are Safe Mode placeholders. Spec-only materials in bloomos/specs/.
 - `data_contract/`: Advisory/telemetry schemas.
 - `plans/`, `PHASE2_UNIFIED_BLUEPRINT.md`: Integration and phase plans.
+- `proposals/`: Draft proposals awaiting separate review or authorization; presence is not approval.
+- `patches_out/`: Historical and staged patch/runbook artifacts; not an active control plane.
+- `skills/`: Capability-bearing integration wrappers. Each remains noncanonical unless separately classified and authorized.
+- `openclaw/`: Quarantined external-integration snapshot; not part of the canonical Station operator path.
+- `staging/`: Bounded pre-canonical integration sources and stable validation fixtures. Only modules explicitly imported by an authorized runtime path participate in operation; location under `staging/` confers no authority.
 - `bloomos/kernel_seed_v0.1.md`: Kernel seed spec (not wired or active).
 - `docs/architect_activation_ritual_v1.0.md`: Human-only activation ritual (spec only).
 - `outgoing/CGPT/unified_governance_framework_v1.1.md`: Governance spine for TES/CAS/AGII; advisory-only, non-gating.

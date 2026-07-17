@@ -1,0 +1,75 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ambiguity_type": {
+      "enum": [
+        "missing_command_line",
+        "missing_executable_path",
+        "health_cadence_unresolved",
+        "health_expiry_sweep_unresolved",
+        "bridge_idle_reason_unresolved",
+        "bridge_work_state_unresolved",
+        "no_matching_service_processes"
+      ],
+      "title": "Ambiguity Type",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "runtime_capture_ambiguity_marker",
+      "default": "runtime_capture_ambiguity_marker",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "marker_id": {
+      "minLength": 3,
+      "title": "Marker Id",
+      "type": "string"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.capture.ambiguity_marker",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer",
+        "capture_layer"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "marker_id",
+    "corr_id",
+    "capture_id",
+    "service_name",
+    "ambiguity_type",
+    "notes"
+  ],
+  "title": "RuntimeCaptureAmbiguityMarker",
+  "type": "object"
+}

@@ -1,0 +1,134 @@
+{
+  "scenario_name": "correct_abstention_after_resolution",
+  "description": "Abstained candidate is later reviewed and confirmed as the correct governed outcome.",
+  "trade_thesis_artifact": {
+    "schema_name": "kalshi.trade_thesis_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "trade_thesis_artifact",
+    "artifact_id": "thesis.correct_abstention_review",
+    "corr_id": "kalshi-corr-correct-abstention-review",
+    "timestamp_utc": "2026-03-28T17:00:00Z",
+    "market_id": "KXEVENT-CELEB-ANNOUNCE-2026-04",
+    "market_title": "Will a celebrity announce a campaign by April 15, 2026?",
+    "resolution_rule_summary": "Resolves YES if the named public announcement happens by the deadline.",
+    "proposed_side": "none",
+    "price_context": {
+      "observed_price": 0.58,
+      "price_unit": "probability",
+      "best_bid": 0.56,
+      "best_ask": 0.6,
+      "market_note": "Interesting topic, weak evidence."
+    },
+    "entry_rationale": "No entry was justified because reporting quality was poor and mostly rumor-driven.",
+    "expected_edge_source": "none",
+    "decision_horizon": {
+      "horizon_hours": 8.0,
+      "thesis_valid_until_utc": "2026-03-29T01:00:00Z",
+      "rationale": "Absent credible sourcing, the market should not be promoted."
+    },
+    "invalidation_condition": "Only reconsider if credible public confirmation appears.",
+    "abstention_alternative": "Stay flat and treat rumor-driven noise as non-actionable.",
+    "evidence_summary": "The market was mostly driven by low-quality rumor rather than verifiable signals.",
+    "confidence_signal": 0.1,
+    "evidence_signal": 0.15,
+    "operator_engagement_state": "operator_reviewing"
+  },
+  "signal_score_record": {
+    "schema_name": "kalshi.signal_score_record",
+    "schema_version": "1.0.0",
+    "artifact_type": "signal_score_record",
+    "artifact_id": "score.correct_abstention_review",
+    "corr_id": "kalshi-corr-correct-abstention-review",
+    "timestamp_utc": "2026-03-28T17:02:00Z",
+    "market_id": "KXEVENT-CELEB-ANNOUNCE-2026-04",
+    "score_dimensions": {
+      "evidence_strength": 0.0,
+      "mispricing_potential": 0.5,
+      "timing_quality": 0.5,
+      "resolution_clarity": 0.5,
+      "liquidity_tradability": 0.5,
+      "decision_horizon_fit": 0.5,
+      "risk_clarity": 0.0
+    },
+    "composite_score": 0.35714285714285715,
+    "classification_band": "abstain.insufficient_edge",
+    "confidence_signal": 0.0,
+    "downgrade_flags": [
+      "weak_evidence_relative_to_confidence",
+      "unclear_risk"
+    ],
+    "decay_state": "fresh",
+    "evidence_summary": "Rumor-driven market lacked both reliable evidence and clear risk framing.",
+    "scoring_notes": "Hard abstention was the correct posture."
+  },
+  "strategy_gate_result": {
+    "schema_name": "kalshi.strategy_gate_result",
+    "schema_version": "1.0.0",
+    "artifact_type": "strategy_gate_result",
+    "artifact_id": "gate.correct_abstention_review",
+    "corr_id": "kalshi-corr-correct-abstention-review",
+    "timestamp_utc": "2026-03-28T17:03:00Z",
+    "market_id": "KXEVENT-CELEB-ANNOUNCE-2026-04",
+    "gate_outcome": "abstain.market_not_suitable",
+    "gate_reasons": [
+      "Evidence quality was too weak for a governed trade thesis.",
+      "Market fit was poor for a v1 thesis-driven posture."
+    ],
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.correct_abstention_review"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.correct_abstention_review"
+    },
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "presence_requirement": "not_required",
+    "next_allowed_action": "abstain"
+  },
+  "post_resolution_review_artifact": {
+    "schema_name": "kalshi.post_resolution_review_artifact",
+    "schema_version": "1.0.0",
+    "artifact_type": "post_resolution_review_artifact",
+    "artifact_id": "review.correct_abstention_review",
+    "corr_id": "kalshi-corr-correct-abstention-review",
+    "timestamp_utc": "2026-04-15T18:00:00Z",
+    "market_id": "KXEVENT-CELEB-ANNOUNCE-2026-04",
+    "market_title": "Will a celebrity announce a campaign by April 15, 2026?",
+    "resolved_outcome": "no",
+    "position_taken": "none",
+    "trade_executed": false,
+    "thesis_ref": {
+      "artifact_type": "trade_thesis_artifact",
+      "artifact_id": "thesis.correct_abstention_review"
+    },
+    "score_ref": {
+      "artifact_type": "signal_score_record",
+      "artifact_id": "score.correct_abstention_review"
+    },
+    "gate_result_ref": {
+      "artifact_type": "strategy_gate_result",
+      "artifact_id": "gate.correct_abstention_review"
+    },
+    "execution_ref": null,
+    "original_composite_score": 0.35714285714285715,
+    "original_gate_outcome": "abstain.market_not_suitable",
+    "thesis_quality_assessment": "The abstention thesis was clear about why rumor was not enough.",
+    "score_quality_assessment": "The score correctly penalized weak evidence and unclear risk.",
+    "timing_quality_assessment": "No timing edge existed that would have justified entry.",
+    "governance_quality_assessment": "The system preserved a healthy abstention-positive posture.",
+    "decision_quality_classification": "decision_quality.strong",
+    "outcome_interpretation_classification": "outcome.correct_abstention",
+    "policy_alignment_classification": "policy.aligned",
+    "profit_loss_result": {
+      "currency": "USD",
+      "amount": 0.0,
+      "note": "No trade was taken."
+    },
+    "attention_cost_estimate": "Low attention cost and strong capital preservation.",
+    "abstention_counterfactual": "Taking the trade would have converted rumor into unnecessary risk.",
+    "review_notes": "This is a positive abstention example worth preserving for calibration.",
+    "recommended_followup": "watch_for_pattern"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_capture_mapping_validation",
+      "default": "runtime_capture_mapping_validation",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "capture_id": {
+      "minLength": 3,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "no_mutation_performed": {
+      "const": true,
+      "default": true,
+      "title": "No Mutation Performed",
+      "type": "boolean"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "observer_emission_valid": {
+      "title": "Observer Emission Valid",
+      "type": "boolean"
+    },
+    "schema_name": {
+      "const": "runtime.capture.mapping_validation",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_schema_valid": {
+      "title": "Snapshot Schema Valid",
+      "type": "boolean"
+    },
+    "timestamp_utc": {
+      "format": "date-time",
+      "title": "Timestamp Utc",
+      "type": "string"
+    },
+    "validation_id": {
+      "minLength": 3,
+      "title": "Validation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "validation_id",
+    "corr_id",
+    "capture_id",
+    "timestamp_utc",
+    "snapshot_schema_valid",
+    "observer_emission_valid",
+    "notes"
+  ],
+  "title": "RuntimeCaptureMappingValidation",
+  "type": "object"
+}

@@ -1,36 +1,32 @@
-# TOOLS.md - Local Notes
+### Discord Bot Configuration
 
-Skills define *how* tools work. This file is for *your* specifics — the stuff that's unique to your setup.
+- **Bot Token**: `YOUR_DISCORD_BOT_TOKEN` (store securely, never share)
+- **Command Prefix**: `!` (customizable)
+- **Intents**:
+  - `GUILD_MESSAGES`
+  - `DIRECT_MESSAGES`
+  - `MESSAGE_CONTENT` (for command parsing)
+- **Log File**: `C:\Calyx_Terminal\logs\discord-bot.log`
+- **Status Message**: "AI Workstation - Ready to assist!"
 
-## What Goes Here
+## Message Routing
 
-Things like:
-- Camera names and locations
-- SSH hosts and aliases  
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
+```javascript
+// Basic message handler for Discord bot
+const handleDiscordMessage = async (message) => {
+  // Log all messages to telemetry
+  await write({
+    file_path: 'C:\Calyx_Terminal\logs\discord-bot.log',
+    content: `\n[Discord] ${message.author.username}: ${message.content}\n`
+  });
 
-## Examples
+  // Route messages to main session for processing
+  await sessions_send({
+    sessionKey: 'main',
+    message: `Discord message from ${message.author.username}: ${message.content}`
+  });
+};
 
-```markdown
-### Cameras
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
+// Register message handler with Discord API
+message.on('message', handleDiscordMessage);
 ```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.

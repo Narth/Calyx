@@ -1,6 +1,10 @@
 # Station Calyx Bridge Overseer
 
-This package contains the Central Bridge Overseer (CBO) runtime responsible for orchestrating Station Calyx operations in 4-minute pulses.
+Status: quarantined noncanonical, 2026-04-23.
+
+This package contains the historical Central Bridge Overseer runtime. It must not be treated as the canonical Station Calyx control plane, canonical orchestrator, or current operator authority. Authority resolution classified Bridge Overseer as `quarantined noncanonical`; preserve it only as historical/quarantined infrastructure until a later approved implementation pass demotes, archives, removes, or rehabilitates it.
+
+Historical description: the package was built to orchestrate Station Calyx operations in 4-minute pulses.
 
 ## Quick Start
 - Review the mission charter in `calyx/cbo/CBO_CHARTER.md` for scope, constraints, and roadmap. The overseer refuses to run without it being deployed.

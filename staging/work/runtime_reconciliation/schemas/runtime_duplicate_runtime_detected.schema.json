@@ -1,0 +1,88 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "minLength": 3,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_type": {
+      "const": "runtime_duplicate_runtime_detected",
+      "default": "runtime_duplicate_runtime_detected",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "equivalent_resident_count": {
+      "minimum": 1,
+      "title": "Equivalent Resident Count",
+      "type": "integer"
+    },
+    "failure_class": {
+      "enum": [
+        "singleton_violation",
+        "undeclared_multiplicity",
+        "duplicate_wrapper_child_pair"
+      ],
+      "title": "Failure Class",
+      "type": "string"
+    },
+    "notes": {
+      "minLength": 1,
+      "title": "Notes",
+      "type": "string"
+    },
+    "request_ref": {
+      "minLength": 3,
+      "title": "Request Ref",
+      "type": "string"
+    },
+    "result_ref": {
+      "minLength": 3,
+      "title": "Result Ref",
+      "type": "string"
+    },
+    "schema_name": {
+      "const": "runtime.duplicate.runtime_detected",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_name": {
+      "enum": [
+        "station_health_loop",
+        "bridge_overseer",
+        "navigator_triage_loop",
+        "cp6_cp7_loop",
+        "energy_churn_cp9_loop",
+        "service_failure_watch",
+        "cli_avatar",
+        "test_bounded_worker"
+      ],
+      "title": "Service Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "artifact_id",
+    "corr_id",
+    "request_ref",
+    "result_ref",
+    "service_name",
+    "failure_class",
+    "equivalent_resident_count",
+    "notes"
+  ],
+  "title": "RuntimeDuplicateDetected",
+  "type": "object"
+}

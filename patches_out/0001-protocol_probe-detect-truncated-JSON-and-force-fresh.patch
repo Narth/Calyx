@@ -1,0 +1,214 @@
+From 6de40e6c72346fb335b21b1d413696f38839f5ab Mon Sep 17 00:00:00 2001
+From: Narth <jncr0598@gmail.com>
+Date: Sun, 15 Feb 2026 20:22:11 -0700
+Subject: [PATCH] protocol_probe: detect truncated JSON and force fresh retry
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+---
+ benchmarks/harness/llm_adapter.py             |  2 ++
+ .../harness/llm_backends/local_runtime.py     | 30 +++++++++++++++++--
+ .../harness/llm_backends/mock_runtime.py      |  2 +-
+ .../llm_backends/openrouter_runtime.py        |  2 +-
+ benchmarks/harness/receipts.py                |  6 ++++
+ benchmarks/harness/runner.py                  | 14 ++++++---
+ 6 files changed, 47 insertions(+), 9 deletions(-)
+
+diff --git a/benchmarks/harness/llm_adapter.py b/benchmarks/harness/llm_adapter.py
+index 89743e93..cd1bec7c 100644
+--- a/benchmarks/harness/llm_adapter.py
++++ b/benchmarks/harness/llm_adapter.py
+@@ -70,6 +70,8 @@ class LLMResponse:
+     llm_retry_parse_error: str | None = None
+     llm_retry_response_hash: str | None = None
+     raw_retry_text: str | None = None  # debug capture: set when retry was used
++    llm_truncation_suspected: bool = False
++    llm_truncation_retry_used: bool = False
+ 
+ 
+ def _extract_json_substring(raw: str) -> str:
+diff --git a/benchmarks/harness/llm_backends/local_runtime.py b/benchmarks/harness/llm_backends/local_runtime.py
+index 6d3b9774..15539d72 100644
+--- a/benchmarks/harness/llm_backends/local_runtime.py
++++ b/benchmarks/harness/llm_backends/local_runtime.py
+@@ -37,17 +37,18 @@ class LocalRuntime:
+         self.ollama_host = (config.get("ollama_host") or "http://127.0.0.1:11434").rstrip("/")
+         self._use_api = _use_ollama_api(list(self.command))
+ 
+-    def _generate_via_api(self, prompt: str) -> str:
++    def _generate_via_api(self, prompt: str, num_predict_override: int | None = None) -> str:
+         """Call Ollama /api/generate with stream=false and num_predict. Returns raw response text."""
+         try:
+             import urllib.request
+             import json as _json
+             url = f"{self.ollama_host}/api/generate"
++            np = num_predict_override if num_predict_override is not None else self.num_predict
+             body = _json.dumps({
+                 "model": self.model_id,
+                 "prompt": prompt,
+                 "stream": False,
+-                "options": {"num_predict": self.num_predict},
++                "options": {"num_predict": np},
+             }).encode("utf-8")
+             req = urllib.request.Request(url, data=body, method="POST", headers={"Content-Type": "application/json"})
+             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+@@ -56,9 +57,26 @@ class LocalRuntime:
+         except Exception:
+             return ""
+ 
+-    def generate(self, prompt: str, *, seed: int | None = None) -> LLMResponse:
++    def generate(self, prompt: str, *, seed: int | None = None, suite_id: str | None = None, case_id: str | None = None) -> LLMResponse:
++        truncation_suspected = False
++        truncation_retry_used = False
++
+         if self._use_api:
+             raw_text = self._generate_via_api(prompt)
++            # D-TRUNC-RETRY-01: Detect truncated JSON for protocol_probe tool-required cases, force fresh retry
++            if (
++                suite_id == "protocol_probe_v0_1"
++                and case_id in {"probe_list", "probe_read", "probe_grep"}
++                and raw_text
++            ):
++                s = raw_text.strip()
++                if s.startswith("{") and not s.endswith("}"):
++                    truncation_suspected = True
++                    # Cache-bust: append harmless suffix; num_predict=1024 for retry
++                    retry_prompt = prompt + "\n "
++                    raw_text2 = self._generate_via_api(retry_prompt, num_predict_override=1024)
++                    truncation_retry_used = True
++                    raw_text = raw_text2 if raw_text2 else raw_text
+             if raw_text == "" and "timeout" not in str(raw_text):
+                 try:
+                     import urllib.request
+@@ -160,6 +178,8 @@ class LocalRuntime:
+                     llm_retry_parse_error="; ".join(parse_errors2),
+                     llm_retry_response_hash=retry_hash,
+                     raw_retry_text=raw_text2 or None,
++                    llm_truncation_suspected=truncation_suspected,
++                    llm_truncation_retry_used=truncation_retry_used,
+                 )
+             return LLMResponse(
+                 raw_text=raw_text2,
+@@ -173,6 +193,8 @@ class LocalRuntime:
+                 llm_retry_parse_ok=True,
+                 llm_retry_response_hash=retry_hash,
+                 raw_retry_text=raw_text2 or None,
++                llm_truncation_suspected=truncation_suspected,
++                llm_truncation_retry_used=truncation_retry_used,
+             )
+         return LLMResponse(
+             raw_text=raw_text,
+@@ -181,4 +203,6 @@ class LocalRuntime:
+             model_id=self.model_id,
+             backend="local",
+             llm_runtime="ollama_api" if self._use_api else "subprocess",
++            llm_truncation_suspected=truncation_suspected,
++            llm_truncation_retry_used=truncation_retry_used,
+         )
+diff --git a/benchmarks/harness/llm_backends/mock_runtime.py b/benchmarks/harness/llm_backends/mock_runtime.py
+index eeee90b3..46dd623b 100644
+--- a/benchmarks/harness/llm_backends/mock_runtime.py
++++ b/benchmarks/harness/llm_backends/mock_runtime.py
+@@ -29,7 +29,7 @@ def _find_calls_in_prompt(prompt: str) -> list[dict]:
+ class MockRuntime:
+     """Deterministic mock: returns tool calls parsed from prompt. No network."""
+ 
+-    def generate(self, prompt: str, *, seed: int | None = None) -> LLMResponse:
++    def generate(self, prompt: str, *, seed: int | None = None, suite_id: str | None = None, case_id: str | None = None) -> LLMResponse:
+         tool_calls = _find_calls_in_prompt(prompt)
+         raw_text = json.dumps({"tool_calls": tool_calls}, ensure_ascii=False)
+         parsed, errors = parse_tool_calls_from_json(raw_text)
+diff --git a/benchmarks/harness/llm_backends/openrouter_runtime.py b/benchmarks/harness/llm_backends/openrouter_runtime.py
+index e4c7bdc5..f2670661 100644
+--- a/benchmarks/harness/llm_backends/openrouter_runtime.py
++++ b/benchmarks/harness/llm_backends/openrouter_runtime.py
+@@ -38,7 +38,7 @@ class OpenRouterRuntime:
+             )
+         self._api_key = api_key
+ 
+-    def generate(self, prompt: str, *, seed: int | None = None) -> LLMResponse:
++    def generate(self, prompt: str, *, seed: int | None = None, suite_id: str | None = None, case_id: str | None = None) -> LLMResponse:
+         url = f"{self.api_base}/chat/completions"
+         payload: dict[str, Any] = {
+             "model": self.model_id,
+diff --git a/benchmarks/harness/receipts.py b/benchmarks/harness/receipts.py
+index f8d57b94..2918d7d7 100644
+--- a/benchmarks/harness/receipts.py
++++ b/benchmarks/harness/receipts.py
+@@ -59,6 +59,8 @@ def write_receipt(
+     llm_retry_parse_ok: bool | None = None,
+     llm_retry_parse_error: str | None = None,
+     llm_retry_response_hash: str | None = None,
++    llm_truncation_suspected: bool | None = None,
++    llm_truncation_retry_used: bool | None = None,
+ ) -> None:
+     """
+     Append one JSON receipt line to path. Creates parent dirs if needed.
+@@ -105,5 +107,9 @@ def write_receipt(
+         receipt["llm_retry_parse_error"] = llm_retry_parse_error
+     if llm_retry_response_hash is not None:
+         receipt["llm_retry_response_hash"] = llm_retry_response_hash
++    if llm_truncation_suspected is not None:
++        receipt["llm_truncation_suspected"] = llm_truncation_suspected
++    if llm_truncation_retry_used is not None:
++        receipt["llm_truncation_retry_used"] = llm_truncation_retry_used
+     with open(path, "a", encoding="utf-8") as f:
+         f.write(json.dumps(receipt, ensure_ascii=False) + "\n")
+diff --git a/benchmarks/harness/runner.py b/benchmarks/harness/runner.py
+index cabccc1e..67a19d1e 100644
+--- a/benchmarks/harness/runner.py
++++ b/benchmarks/harness/runner.py
+@@ -95,6 +95,7 @@ def _run_case_llm(
+     seed: int,
+     run_id: str,
+     adapter,
++    suite_id: str = "",
+ ) -> tuple[list[dict], list[dict], str, str, str, bool, dict]:
+     """
+     Run case using LLM adapter. Returns (attempted, executed, decision, policy_reason,
+@@ -102,14 +103,14 @@ def _run_case_llm(
+     """
+     from .llm_adapter import wrap_prompt_for_tool_calls
+ 
++    case_id = case.get("case_id", "")
+     case_prompt = case.get("prompt", "")
+     expected_outcome = (case.get("expected_outcome") or "contained").strip().lower()
+     prompt = wrap_prompt_for_tool_calls(case_prompt)
+ 
+-    resp = adapter.generate(prompt, seed=seed)
++    resp = adapter.generate(prompt, seed=seed, suite_id=suite_id or None, case_id=case_id)
+     attempted = resp.tool_calls
+     parse_ok = len(resp.parse_errors) == 0
+-    case_id = case.get("case_id", "")
+     if case_id in {"probe_read", "probe_grep"}:
+         try:
+             repo_root = Path(__file__).resolve().parents[2]
+@@ -156,6 +157,10 @@ def _run_case_llm(
+             llm_meta["llm_retry_parse_error"] = resp.llm_retry_parse_error
+         if resp.llm_retry_response_hash is not None:
+             llm_meta["llm_retry_response_hash"] = resp.llm_retry_response_hash
++    if hasattr(resp, "llm_truncation_suspected"):
++        llm_meta["llm_truncation_suspected"] = resp.llm_truncation_suspected
++    if hasattr(resp, "llm_truncation_retry_used"):
++        llm_meta["llm_truncation_retry_used"] = resp.llm_truncation_retry_used
+ 
+     executed = []
+     decision = "allow"
+@@ -225,12 +230,13 @@ def _run_suite(
+                 llm_kw = {}
+             else:
+                 attempted, executed, decision, policy_reason, actual_outcome, pass_fail, llm_meta = (
+-                    _run_case_llm(case, variant, seed, run_id, adapter)
++                    _run_case_llm(case, variant, seed, run_id, adapter, suite_id)
+                 )
+                 llm_kw = {
+                     k: v
+                     for k, v in llm_meta.items()
+-                    if v is not None or k in ("llm_parse_ok", "llm_retry_used", "llm_retry_parse_ok")
++                    if v is not None
++                    or k in ("llm_parse_ok", "llm_retry_used", "llm_retry_parse_ok", "llm_truncation_suspected", "llm_truncation_retry_used")
+                 }
+ 
+             receipts.write_receipt(
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,77 @@
+{
+  "schema": "policy.openclaw_intake_guardrails.v1",
+  "classification": "untrusted_intake",
+  "dry_run_only": true,
+  "canonical_intake_default": "cursor_vscode",
+  "discord_role": "optional_transport_only",
+  "transport_rules": {
+    "no_fallback_broadcast": true,
+    "allowed_transports": [
+      "local_audit_only"
+    ]
+  },
+  "lanes": {
+    "A": {
+      "name": "observe_readonly",
+      "allow": true,
+      "allow_execute": false,
+      "description": "Read-only observation and inventory requests."
+    },
+    "B": {
+      "name": "proposal_scaffold",
+      "allow": true,
+      "allow_execute": false,
+      "description": "Patch proposals and planning artifacts only."
+    },
+    "C": {
+      "name": "mutation_high_risk",
+      "allow": false,
+      "allow_execute": false,
+      "description": "Mutation paths are blocked in quarantine."
+    },
+    "D": {
+      "name": "external_or_broadcast",
+      "allow": false,
+      "allow_execute": false,
+      "description": "External transport/broadcast is blocked in quarantine."
+    }
+  },
+  "command_allowlist": [
+    "fs_list",
+    "fs_read",
+    "repo_search",
+    "policy_eval",
+    "receipt_write",
+    "plan_render",
+    "patch_preview"
+  ],
+  "hard_deny_patterns": [
+    "(^|\\s)rm(\\s|$)",
+    "(^|\\s)del(\\s|$)",
+    "Remove-Item",
+    "git\\s+push",
+    "curl\\s+http",
+    "Invoke-WebRequest",
+    "Start-Process",
+    "taskkill",
+    "shutdown",
+    "restart-computer"
+  ],
+  "rate_limits": {
+    "requests_per_minute_by_lane": {
+      "A": 20,
+      "B": 10,
+      "C": 0,
+      "D": 0
+    }
+  },
+  "budgets": {
+    "max_actions_per_boot_total": 60,
+    "max_actions_per_boot_by_lane": {
+      "A": 40,
+      "B": 20,
+      "C": 0,
+      "D": 0
+    }
+  }
+}

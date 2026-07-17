@@ -1,0 +1,97 @@
+{
+  "bridge_pulse_classification": {
+    "artifact_id": "bridge.duplicate.pulse",
+    "artifact_type": "bridge_pulse_classification",
+    "backoff_active": false,
+    "backoff_seconds": 0,
+    "corr_id": "bridge.duplicate.overseer",
+    "dispatched_count": 0,
+    "idle_mode_active": true,
+    "idle_reason": "no_objectives_file",
+    "notes": "Idle pulse remains visible while multiplicity violation is classified separately.",
+    "objectives_count": 0,
+    "planned_tasks_count": 0,
+    "pulse_class": "idle",
+    "schema_name": "runtime.bridge.pulse_classification",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "timestamp_utc": "2026-03-31T19:32:02Z",
+    "truthful_visibility_preserved": true,
+    "work_state": "objectives_absent"
+  },
+  "description": "Duplicate overseer residency is classified as concerning instead of normalized.",
+  "health_authoritative_snapshot": null,
+  "health_enrichment_snapshot": null,
+  "runtime_launch_notice": null,
+  "runtime_multiplicity_noncompliance": {
+    "artifact_id": "bridge.duplicate.noncompliance",
+    "artifact_type": "runtime_multiplicity_noncompliance",
+    "corr_id": "bridge.duplicate.overseer",
+    "declaration_ref": "bridge_overseer.declaration",
+    "noncompliance_type": "duplicate_overseer_attempt",
+    "notes": "Duplicate overseer pair must remain visible and noncompliant.",
+    "required_operator_visibility": "review_required",
+    "schema_name": "runtime.multiplicity.noncompliance",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "severity": "high",
+    "timestamp_utc": "2026-03-31T19:32:01Z",
+    "validation_ref": "bridge.duplicate.validation"
+  },
+  "runtime_multiplicity_validation": {
+    "artifact_id": "bridge.duplicate.validation",
+    "artifact_type": "runtime_multiplicity_validation",
+    "classification_notes": "Second overseer pair is not silently normalized into declared wrapper-child topology.",
+    "corr_id": "bridge.duplicate.overseer",
+    "declaration_ref": "bridge_overseer.declaration",
+    "observed_process_identities": [
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 35056,
+        "started_at_utc": "2026-03-31T11:48:46Z"
+      },
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 35192,
+        "started_at_utc": "2026-03-31T11:48:46Z"
+      },
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Calyx_Terminal\\.venv_cbohub311\\Scripts\\python.exe",
+        "pid": 39368,
+        "started_at_utc": "2026-03-31T16:57:13Z"
+      },
+      {
+        "command_line": "python -B -m calyx.cbo.bridge_overseer",
+        "executable_path": "C:\\Users\\jncr0\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "pid": 37728,
+        "started_at_utc": "2026-03-31T16:57:13Z"
+      }
+    ],
+    "posture_consequence": "operator_review_required",
+    "required_launch_notice_refs": [],
+    "schema_name": "runtime.multiplicity.validation",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "timestamp_utc": "2026-03-31T19:32:00Z",
+    "validation_outcome": "duplicate_concerning"
+  },
+  "scenario_name": "duplicate_overseer_launch",
+  "service_declaration": {
+    "artifact_id": "bridge_overseer.declaration",
+    "artifact_type": "runtime_service_declaration",
+    "authoritative_runtime_role": "bridge_cycle_owner",
+    "expected_runtime_roles": [
+      "launcher_wrapper",
+      "bridge_cycle_owner"
+    ],
+    "launch_notice_required": true,
+    "multiplicity_posture": "wrapper_child_expected",
+    "schema_name": "runtime.service_declaration",
+    "schema_version": "1.0.0",
+    "service_name": "bridge_overseer",
+    "topology_class": "wrapper_child_runtime_pair"
+  }
+}

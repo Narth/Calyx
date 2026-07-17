@@ -1,0 +1,236 @@
+{
+  "source_snapshots": [
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.temp.ambig.nws",
+      "market_id": "KX-TEMP-DEN-69-2026-04-04",
+      "weather_market_type": "daily_high_temperature",
+      "source_name": "NWS Denver",
+      "captured_at_utc": "2026-03-30T14:00:00Z",
+      "location_basis": "Denver International official station",
+      "forecast_target_window": "2026-04-04 local day",
+      "forecast_value_summary": "Forecast high 69F, exactly at the threshold.",
+      "raw_reference": "manual://weather/nws/denver/2026-03-30T14:00:00Z",
+      "values": [
+        {
+          "metric": "temperature_high_f",
+          "value": 69.0,
+          "unit": "F",
+          "threshold_relation": "at_threshold",
+          "forecast_probability": 0.51
+        }
+      ]
+    },
+    {
+      "schema_name": "weather.weather_source_snapshot",
+      "schema_version": "1.0.0",
+      "artifact_type": "weather_source_snapshot",
+      "snapshot_id": "wx.temp.ambig.weather",
+      "market_id": "KX-TEMP-DEN-69-2026-04-04",
+      "weather_market_type": "daily_high_temperature",
+      "source_name": "Weather.com Denver",
+      "captured_at_utc": "2026-03-30T14:04:00Z",
+      "location_basis": "Denver International official station",
+      "forecast_target_window": "2026-04-04 local day",
+      "forecast_value_summary": "Forecast high 68F, slightly below the threshold.",
+      "raw_reference": "manual://weather/weatherdotcom/denver/2026-03-30T14:04:00Z",
+      "values": [
+        {
+          "metric": "temperature_high_f",
+          "value": 68.0,
+          "unit": "F",
+          "threshold_relation": "below_threshold",
+          "forecast_probability": 0.46
+        }
+      ]
+    }
+  ],
+  "forecast_bundle": {
+    "schema_name": "weather.weather_forecast_bundle",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_forecast_bundle",
+    "bundle_id": "wx.bundle.temp.ambig",
+    "market_id": "KX-TEMP-DEN-69-2026-04-04",
+    "weather_market_type": "daily_high_temperature",
+    "target_location": "Denver International official station",
+    "target_resolution_window": "2026-04-04 local day",
+    "relevant_weather_metric": "temperature_high_f",
+    "source_values": [
+      {
+        "source_snapshot_ref": "wx.temp.ambig.nws",
+        "source_name": "NWS Denver",
+        "captured_at_utc": "2026-03-30T14:00:00Z",
+        "value_summary": "69F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 69.0,
+        "primary_unit": "F",
+        "threshold_relation": "at_threshold",
+        "forecast_probability": 0.51
+      },
+      {
+        "source_snapshot_ref": "wx.temp.ambig.weather",
+        "source_name": "Weather.com Denver",
+        "captured_at_utc": "2026-03-30T14:04:00Z",
+        "value_summary": "68F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 68.0,
+        "primary_unit": "F",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.46
+      }
+    ],
+    "forecast_spread_value": 1.0,
+    "forecast_spread_summary": "One source sits at the strike and one sits just below it.",
+    "freshness_state": "current",
+    "freshness_window_hours": 6.0,
+    "resolution_fit_assessment": "aligned",
+    "uncertainty_note": "Threshold ambiguity dominates because the cluster is sitting on the strike.",
+    "raw_snapshot_refs": [
+      "wx.temp.ambig.nws",
+      "wx.temp.ambig.weather"
+    ]
+  },
+  "weather_divergence_assessment": {
+    "schema_name": "weather.weather_divergence_assessment",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_divergence_assessment",
+    "assessment_id": "wx.div.temp.ambig",
+    "market_id": "KX-TEMP-DEN-69-2026-04-04",
+    "bundle_ref": "wx.bundle.temp.ambig",
+    "market_implied_probability": 0.49,
+    "forecast_implied_probability": 0.49,
+    "divergence_magnitude": 0.0,
+    "divergence_note": "Forecasts do not show a meaningful edge because the threshold sits inside the source spread.",
+    "source_value_trace": [
+      {
+        "source_snapshot_ref": "wx.temp.ambig.nws",
+        "source_name": "NWS Denver",
+        "captured_at_utc": "2026-03-30T14:00:00Z",
+        "value_summary": "69F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 69.0,
+        "primary_unit": "F",
+        "threshold_relation": "at_threshold",
+        "forecast_probability": 0.51
+      },
+      {
+        "source_snapshot_ref": "wx.temp.ambig.weather",
+        "source_name": "Weather.com Denver",
+        "captured_at_utc": "2026-03-30T14:04:00Z",
+        "value_summary": "68F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 68.0,
+        "primary_unit": "F",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.46
+      }
+    ],
+    "tradability_note": "Quotes exist, but apparent edge is absent.",
+    "preliminary_suitability_outcome": "weather_research.inconclusive",
+    "uncertainty_note": "Threshold-level ambiguity should suppress confidence."
+  },
+  "weather_research_summary": {
+    "schema_name": "weather.weather_research_summary",
+    "schema_version": "1.0.0",
+    "artifact_type": "weather_research_summary",
+    "summary_id": "wx.summary.temp.ambig",
+    "market_id": "KX-TEMP-DEN-69-2026-04-04",
+    "weather_market_type": "daily_high_temperature",
+    "research_timestamp_utc": "2026-03-30T14:06:00Z",
+    "forecast_bundle_ref": "wx.bundle.temp.ambig",
+    "divergence_assessment_ref": "wx.div.temp.ambig",
+    "source_summary_table": [
+      {
+        "source_snapshot_ref": "wx.temp.ambig.nws",
+        "source_name": "NWS Denver",
+        "captured_at_utc": "2026-03-30T14:00:00Z",
+        "value_summary": "69F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 69.0,
+        "primary_unit": "F",
+        "threshold_relation": "at_threshold",
+        "forecast_probability": 0.51
+      },
+      {
+        "source_snapshot_ref": "wx.temp.ambig.weather",
+        "source_name": "Weather.com Denver",
+        "captured_at_utc": "2026-03-30T14:04:00Z",
+        "value_summary": "68F forecast high",
+        "primary_metric": "temperature_high_f",
+        "primary_value": 68.0,
+        "primary_unit": "F",
+        "threshold_relation": "below_threshold",
+        "forecast_probability": 0.46
+      }
+    ],
+    "divergence_note": "Weather evidence does not materially diverge from the market once threshold ambiguity is respected.",
+    "freshness_note": "Bundle is current but not decisive.",
+    "uncertainty_note": "A 1F error is enough to flip the market outcome here.",
+    "preliminary_suitability_note": "Threshold ambiguity makes this unsuitable for escalation beyond research.",
+    "preliminary_suitability_outcome": "weather_research.inconclusive",
+    "evidence_summary": "Attributable forecasts cluster around the strike rather than cleanly on one side of it.",
+    "invalidation_cues": [
+      "A later forecast pushes both sources clearly above or below the strike"
+    ],
+    "expected_edge_source": "weather_forecast_divergence",
+    "review_reference_snapshot_ids": [
+      "wx.temp.ambig.nws",
+      "wx.temp.ambig.weather"
+    ]
+  },
+  "kalshi_input": {
+    "case_id": "weather_temp_threshold_ambiguity",
+    "scenario_name": "weather_temp_threshold_ambiguity",
+    "description": "Temperature threshold case where the official strike sits inside the source spread.",
+    "corr_id": "weather-sim-temp-ambig",
+    "market_id": "KX-TEMP-DEN-69-2026-04-04",
+    "market_title": "Will Denver hit 69F or higher on April 4, 2026?",
+    "resolution_rule_summary": "Resolves YES if the official Denver International daily high is 69F or higher.",
+    "initial_timestamp_utc": "2026-03-30T14:07:00Z",
+    "score_timestamp_utc": "2026-03-30T14:08:00Z",
+    "gate_timestamp_utc": "2026-03-30T14:09:00Z",
+    "resolution_timestamp_utc": "2026-04-04T23:59:00Z",
+    "proposed_side": "none",
+    "operator_engagement_state": "operator_reviewing",
+    "market_observation": {
+      "observed_price": 0.49,
+      "best_bid": 0.48,
+      "best_ask": 0.50,
+      "market_note": "Tradable, but the forecast edge is absent."
+    },
+    "entry_rationale": "No clean entry is justified while the weather evidence sits on the strike.",
+    "decision_horizon": {
+      "horizon_hours": 8.0,
+      "thesis_valid_until_utc": "2026-03-30T22:00:00Z",
+      "rationale": "Another update cycle is needed before any directional call is justified."
+    },
+    "confidence_signal": 0.0,
+    "gate_outcome": "abstain.low_confidence",
+    "gate_reasons": [
+      "Threshold ambiguity prevents a legible weather edge.",
+      "Current source spread does not justify a directional thesis."
+    ],
+    "operator_legibility_status": "legible",
+    "wallet_policy_fit": "fit",
+    "resolved_outcome": "no",
+    "trade_executed": false,
+    "position_taken": "none",
+    "review_plan": {
+      "thesis_quality_assessment": "The no-trade thesis remained explicit rather than vague.",
+      "score_quality_assessment": "The score properly collapsed once divergence vanished.",
+      "timing_quality_assessment": "Waiting was appropriate because the weather setup lacked decision-time clarity.",
+      "governance_quality_assessment": "Abstention stayed first-class and bounded.",
+      "decision_quality_classification": "decision_quality.strong",
+      "outcome_interpretation_classification": "outcome.correct_abstention",
+      "policy_alignment_classification": "policy.aligned",
+      "profit_loss_amount": 0.0,
+      "profit_loss_note": "Capital was preserved by abstaining.",
+      "attention_cost_estimate": "Low operator attention.",
+      "abstention_counterfactual": "Forcing a side here would have been noise-driven.",
+      "review_notes": "Useful threshold ambiguity abstention example.",
+      "recommended_followup": "none"
+    }
+  }
+}

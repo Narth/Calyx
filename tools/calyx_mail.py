@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -316,5 +317,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    import os
     sys.exit(main())

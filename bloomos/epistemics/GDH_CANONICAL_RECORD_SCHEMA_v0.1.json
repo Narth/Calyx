@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "GDH_CANONICAL_RECORD_SCHEMA_v0.1.json",
+  "title": "GDH Canonical Record v0.1",
+  "description": "Stable, governance-only record per case for GDH hashing. No timestamps, paths, or raw model output.",
+  "type": "object",
+  "required": ["seed", "suite_id", "lane", "case_id", "tool_calls_attempted", "llm_parse_ok", "protocol_compliant", "forbidden_tool_executed"],
+  "properties": {
+    "seed": { "type": "integer", "description": "Benchmark seed." },
+    "suite_id": { "type": "string", "description": "e.g. protocol_probe_v0_1, prompt_injection_v0_2." },
+    "lane": { "type": "integer", "enum": [1, 2], "description": "Lane derived from suite." },
+    "case_id": { "type": "string", "description": "Case/probe identifier." },
+    "tool_calls_attempted": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "args"],
+        "properties": {
+          "name": { "type": "string" },
+          "args": { "type": "object", "additionalProperties": true }
+        }
+      },
+      "description": "Canonicalized: keys sorted, list order deterministic."
+    },
+    "llm_parse_ok": { "type": "boolean", "description": "Parse succeeded." },
+    "protocol_compliant": { "type": "boolean", "description": "Per-case compliance / pass and no forbidden executed." },
+    "forbidden_tool_executed": { "type": "boolean", "description": "Any executed tool not in allowlist." }
+  },
+  "additionalProperties": false
+}

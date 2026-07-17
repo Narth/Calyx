@@ -1,0 +1,400 @@
+{
+  "$defs": {
+    "BridgeObserverContext": {
+      "additionalProperties": false,
+      "properties": {
+        "backoff_active": {
+          "default": false,
+          "title": "Backoff Active",
+          "type": "boolean"
+        },
+        "backoff_seconds": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Backoff Seconds",
+          "type": "integer"
+        },
+        "dispatched_count": {
+          "minimum": 0,
+          "title": "Dispatched Count",
+          "type": "integer"
+        },
+        "idle_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "no_objectives_file",
+                "empty_objectives_file",
+                "no_dispatchable_work"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idle Reason"
+        },
+        "launch_notice_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "prelaunch_declared",
+                "launch_adjacent_declared",
+                "retroactive_classification_only"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Launch Notice Status"
+        },
+        "objectives_count": {
+          "minimum": 0,
+          "title": "Objectives Count",
+          "type": "integer"
+        },
+        "planned_tasks_count": {
+          "minimum": 0,
+          "title": "Planned Tasks Count",
+          "type": "integer"
+        },
+        "truthful_visibility_preserved": {
+          "default": true,
+          "title": "Truthful Visibility Preserved",
+          "type": "boolean"
+        },
+        "work_state": {
+          "enum": [
+            "objectives_present",
+            "objectives_absent",
+            "objectives_empty"
+          ],
+          "title": "Work State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "objectives_count",
+        "planned_tasks_count",
+        "dispatched_count",
+        "work_state"
+      ],
+      "title": "BridgeObserverContext",
+      "type": "object"
+    },
+    "HealthObserverContext": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Pct"
+        },
+        "declared_interval_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Declared Interval Seconds",
+          "type": "number"
+        },
+        "enrichment_interval_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enrichment Interval Seconds"
+        },
+        "enrichment_sample_age_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Enrichment Sample Age Ms"
+        },
+        "entropy_sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Entropy Sources",
+          "type": "array"
+        },
+        "expiry_sweep_invoked": {
+          "title": "Expiry Sweep Invoked",
+          "type": "boolean"
+        },
+        "freshness_state": {
+          "enum": [
+            "fresh",
+            "aging",
+            "stale",
+            "unknown"
+          ],
+          "title": "Freshness State",
+          "type": "string"
+        },
+        "gpu_metrics_present": {
+          "default": false,
+          "title": "Gpu Metrics Present",
+          "type": "boolean"
+        },
+        "health_state": {
+          "enum": [
+            "pass",
+            "warn",
+            "fail",
+            "unknown"
+          ],
+          "title": "Health State",
+          "type": "string"
+        },
+        "launch_notice_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "launch_adjacent_declared",
+                "retroactive_classification_only"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Launch Notice Status"
+        },
+        "memory_pressure_tier": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Pressure Tier"
+        },
+        "observed_loop_elapsed_ms": {
+          "minimum": 0,
+          "title": "Observed Loop Elapsed Ms",
+          "type": "integer"
+        },
+        "observed_sleep_ms": {
+          "minimum": 0,
+          "title": "Observed Sleep Ms",
+          "type": "integer"
+        },
+        "ram_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Pct"
+        },
+        "stale_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stale Reason"
+        },
+        "top_processes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Top Processes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "declared_interval_seconds",
+        "observed_loop_elapsed_ms",
+        "observed_sleep_ms",
+        "health_state",
+        "freshness_state",
+        "expiry_sweep_invoked"
+      ],
+      "title": "HealthObserverContext",
+      "type": "object"
+    },
+    "ObservedProcess": {
+      "additionalProperties": false,
+      "properties": {
+        "command_line": {
+          "minLength": 3,
+          "title": "Command Line",
+          "type": "string"
+        },
+        "executable_path": {
+          "minLength": 3,
+          "title": "Executable Path",
+          "type": "string"
+        },
+        "parent_pid": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Pid"
+        },
+        "pid": {
+          "minimum": 1,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "started_at_utc": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Utc"
+        }
+      },
+      "required": [
+        "pid",
+        "executable_path",
+        "command_line"
+      ],
+      "title": "ObservedProcess",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "const": "runtime_observer_process_snapshot",
+      "default": "runtime_observer_process_snapshot",
+      "title": "Artifact Type",
+      "type": "string"
+    },
+    "bridge_context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BridgeObserverContext"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "capture_notes": {
+      "minLength": 1,
+      "title": "Capture Notes",
+      "type": "string"
+    },
+    "captured_at_utc": {
+      "format": "date-time",
+      "title": "Captured At Utc",
+      "type": "string"
+    },
+    "corr_id": {
+      "minLength": 3,
+      "title": "Corr Id",
+      "type": "string"
+    },
+    "health_context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HealthObserverContext"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "observer_mode": {
+      "const": "staging_only",
+      "default": "staging_only",
+      "title": "Observer Mode",
+      "type": "string"
+    },
+    "processes": {
+      "items": {
+        "$ref": "#/$defs/ObservedProcess"
+      },
+      "minItems": 1,
+      "title": "Processes",
+      "type": "array"
+    },
+    "schema_name": {
+      "const": "runtime.observer.process_snapshot",
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "minLength": 3,
+      "title": "Snapshot Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "snapshot_id",
+    "corr_id",
+    "captured_at_utc",
+    "processes",
+    "capture_notes"
+  ],
+  "title": "RuntimeObserverSnapshot",
+  "type": "object"
+}

@@ -205,7 +205,7 @@ python -u .\tools\svf_probe.py --interval 5
 
 ### Key Documents
 - `docs/AGENT_ONBOARDING.md` — Comprehensive onboarding guide ⭐
-- `docs/COMPENDIUM.md` — Agent roster and roles
+- `COMPENDIUM.md` — Agent roster and roles
 - `docs/CBO.md` — Overseer system
 - `docs/TRIAGE.md` — Change workflow
 - `OPERATIONS.md` — Commands and operations
@@ -218,7 +218,7 @@ python -u .\tools\svf_probe.py --interval 5
 python -u .\Scripts\agent_console.py --goal "Add section X to OPERATIONS.md"
 
 # Update Compendium for new agent
-python -u .\Scripts\agent_console.py --goal "Add cpX to docs/COMPENDIUM.md"
+python -u .\Scripts\agent_console.py --goal "Add cpX to COMPENDIUM.md"
 ```
 
 ## 💬 SVF Communication
@@ -344,4 +344,3 @@ Look for:
 - [ ] Pick a domain
 - [ ] Make your first change
 - [ ] Monitor TES and harmony
-
