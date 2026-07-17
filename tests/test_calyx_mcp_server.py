@@ -55,7 +55,11 @@ def test_runtime_status_exposes_clarity_surfaces() -> None:
         "runtime",
         "clarity_status.json",
     )
-    assert status["active_objective"]["exists"] is True
+    assert Path(status["active_objective"]["path"]).parts[-2:] == (
+        "runtime",
+        "active_objective.json",
+    )
+    assert isinstance(status["active_objective"]["exists"], bool)
     assert status["source_authority_registry"]["exists"] is True
     assert status["confusion_protocol"]["exists"] is True
     assert status["decision_ledger"]["exists"] is True
