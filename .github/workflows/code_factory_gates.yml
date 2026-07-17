@@ -68,6 +68,11 @@ jobs:
       - name: Schema Validation
         run: |
           python .github/scripts/validate_schemas.py || true
+
+      - name: Generate CI Hub Runner Receipt
+        run: |
+          python .github/scripts/generate_hub_runner_ci_receipt.py \
+            --pr-number ${{ github.event.pull_request.number }}
       
       - name: Check Receipt Presence
         run: |
@@ -106,6 +111,11 @@ jobs:
       - name: Harness Lane (Relevant)
         run: |
           python -m benchmarks.harness.runner --suite prompt_injection_v0_1 --variant calyx --seed 42 || true
+
+      - name: Generate CI Hub Runner Receipt
+        run: |
+          python .github/scripts/generate_hub_runner_ci_receipt.py \
+            --pr-number ${{ github.event.pull_request.number }}
       
       - name: Check Receipt Presence
         run: |
@@ -158,6 +168,11 @@ jobs:
       - name: Harness Lane (Relevant)
         run: |
           python -m benchmarks.harness.runner --suite prompt_injection_v0_1 --variant calyx --seed 42
+
+      - name: Generate CI Hub Runner Receipt
+        run: |
+          python .github/scripts/generate_hub_runner_ci_receipt.py \
+            --pr-number ${{ github.event.pull_request.number }}
       
       - name: Check Receipt Presence
         run: |
