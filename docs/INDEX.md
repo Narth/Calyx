@@ -1,83 +1,85 @@
-# Station Calyx Index (L1/L2/L3)
-Version: 0.1 (Architect retains version authority; CBO may append rows without changing version)
+# Station Calyx Documentation
 
-## Purpose
-Compact map of live runtime (L1), design specs (L2), and lore (L3) to reduce ambiguity and surface conflicts quickly.
+This index favors current human orientation over historical completeness. A document's presence does not grant runtime authority; status and classification remain explicit.
 
-**Station Calyx** is home. **CBO** is steward. **BloomOS** consumes STATE; **Calyx Agents** operate within the spine. See `HISTORY.md` for chronology and key actors.
+## Start here
 
-## Layer Legend
-- L1 — CODE (live): implemented, executable, or operational configs/logs.
-- L2 — SPEC (design): architectural/governance/intended behavior.
-- L3 — LORE (mythos): narrative, ceremony, cultural context.
-One primary layer per artifact; optional secondary noted in parentheses.
+1. [Project README](../README.md) — purpose, current status, safe first run, and repository map.
+2. [AI-For-All Project](AI_FOR_ALL.md) — the human problem and public project orientation.
+3. [Getting started](GETTING_STARTED.md) — validate a checkout and operate an intentionally configured Windows Station.
+4. [Architecture](ARCHITECTURE.md) — current components, data flow, service topology, and limitations.
+5. [Governance](../GOVERNANCE.md) — authority, decisions, and evidence language.
+6. [Security policy](../SECURITY.md) — reporting, deployment boundary, and current limitations.
 
-## L1 — Runtime (implemented)
-- `ide_toolbox/`: Canonical IDE config (Cursor + VS Code). Tasks, launch, settings. Run `ide_toolbox/install.ps1` to copy to `.vscode/`.
-- `calyx/`: Calyx package (cbo, core, mail, kernel, execution).
-- `runtime/`: Runtime state (cbo, receipts, manifests, mailbox, metrics, correlation_activity.jsonl); git-ignored where appropriate.
-- `docs/CORRELATION_LOGGING.md`: Correlation activity log spec — overlay events with CPU/utilization (correlation ≠ causation).
-- `telemetry/`: Telemetry and envelope schemas (outbox, envelopes).
-- `benchmarks/`: Benchmark harness and datasets.
-- `governance/`: Governance documents (HVD-1, PBS-1, DRP-1, DP-1, EG-1).
-- `policy/`: Active Station policy definitions; policy text does not imply execution without an authorized runtime path.
-- `spec/`: Machine-readable protocol schemas and compatibility specifications.
-- `tests/`: Validation suite for code, governance models, and staged surfaces; tests are evidence, not runtime authority.
-- `rust/`: Local-only advisory observers. They report bounded Station facts and hold no control or network authority.
-- `station_calyx/`: Deprecated; not in current tree. Legacy Station API data was gitignored; use `runtime/`, `cbo_hub/` for active paths.
-- `archive/`: Archived/non-operational modules (do not import from active code).
-- `calyx/cbo/bridge_overseer.py`: CBO heartbeat (manual-run).
-- `calyx/cbo/api.py`: FastAPI bridge (manual-run).
-- `calyx/cbo/coordinator/`: Deprecated stub; legacy code in archive/legacy_cbo_coordinator. Use calyx/cbo/intent_pipeline for spine.
-- `calyx_core/intercept.py`: Interceptor (record-only by default; AGII advisory).
-- `calyx/core/policy.yaml`: Canonical policy.
-- `calyx/core/registry.jsonl`: Canonical registry.
-- `config.yaml`: Station configuration (paths, scheduler/autonomy settings, gates).
-- `crb_runtime_bridge.py`: File-based Architect↔CBO chat bridge (manual-run).
-- `calyx_comm_cli.py`: Architect chat CLI.
-- `tools/agent_scheduler.py`: Light scheduler; promotions/backoff.
-- `tools/agent_runner.py`: Task runner.
-- `tools/observability_phase1.py`: AGII/reliability reports (advisory).
-- `Scripts/agent_watcher.py`: GUI watcher.
-- `Scripts/listener_plus.py`, `asr/`: Speech pipeline listeners (manual-run).
-- `metrics/bridge_pulse.csv`: CBO pulse metrics (append-only).
-- `logs/agent_metrics.csv`: TES telemetry (append-only).
-- `sitecustomize.py`: Network gate (blocks unless explicitly opened).
-- `bloomos/bloom_gate_v0.1.json`: Architect-only gate config (present; `activation_allowed=false`; `bloom_status` set manually, e.g., “I have a question.”).
-- `bloomos/kernel_runtime_sandbox.py`: Experimental Safe Mode sandbox (manual-run if promoted; latest runs ingest gate; append-only observations).
+## Operate and inspect
 
-## L2 — Specs (design intent)
-- `docs/AGENT_REPOSITORY.md`: Canonical agent index; BloomOS onboarding priority.
-- `docs/`, `engineering/`, `compiled/`: Governance, safety, kernel, blueprint docs.
-- `core_bloom/` (opt L3): Bloom scaffolds, safety orders, reflection grammars.
-- `bloomos/`: Conceptual BloomOS specs; runtime files are Safe Mode placeholders. Spec-only materials in bloomos/specs/.
-- `data_contract/`: Advisory/telemetry schemas.
-- `plans/`, `PHASE2_UNIFIED_BLUEPRINT.md`: Integration and phase plans.
-- `proposals/`: Draft proposals awaiting separate review or authorization; presence is not approval.
-- `patches_out/`: Historical and staged patch/runbook artifacts; not an active control plane.
-- `skills/`: Capability-bearing integration wrappers. Each remains noncanonical unless separately classified and authorized.
-- `openclaw/`: Quarantined external-integration snapshot; not part of the canonical Station operator path.
-- `staging/`: Bounded pre-canonical integration sources and stable validation fixtures. Only modules explicitly imported by an authorized runtime path participate in operation; location under `staging/` confers no authority.
-- `bloomos/kernel_seed_v0.1.md`: Kernel seed spec (not wired or active).
-- `docs/architect_activation_ritual_v1.0.md`: Human-only activation ritual (spec only).
-- `outgoing/CGPT/unified_governance_framework_v1.1.md`: Governance spine for TES/CAS/AGII; advisory-only, non-gating.
-- `bloomos/bloomos_kernel_arc_master_v1.0.md`: Conceptual BloomOS kernel structure; no implementation implied; Architect-owned.
-- `outgoing/bloomos_kernel_test_plan_v1.0.md`: Authoritative kernel seed test lens (T1–T7); observation-only, Safe Mode, no autonomy/gating.
+- [Canonical operations index](operations/CANONICAL_OPS_INDEX.md)
+- [Station operational doctrine](operations/STATION_CALYX_OPERATIONAL_DOCTRINE.md)
+- [Station stack policy](STATION_STACK_POLICY.md)
+- [Governed network gateway](gateway.md)
+- [Local MCP server](canonical/CALYX_LOCAL_MCP_SERVER.md)
+- [Interruption and recovery model](operations/STATION_INTERRUPTION_AND_RECOVERY_MODEL.md)
 
-## L3 — Lore (narrative)
-- `identity/lineage/`: Lineage, orientation, naming rites.
-- `CONSTELLATION_STORY_SEED_LIBRARY/`: Story seeds, narrative frames.
-- `logs/bloomos/validation/`: Ceremonial BloomOS/lineage texts (non-operational).
+Runtime state and receipts are generated locally under `runtime/` and are not public documentation.
 
-## BloomOS Status
-- BloomOS remains conceptual; no kernel is running.
-- `bloomos/runtime` modules are Safe Mode placeholders (read/append only).
+## Current authority and classification
 
-## Metrics Status (AGII/CAS/TES)
-- TES: Implemented as telemetry (`logs/agent_metrics.csv`), used in governance checks/reports.
-- AGII/CAS: Advisory-only; surfaced in reports/specs, not gating runtime actions.
-- Any enforcement or autonomy gating requires explicit Architect wiring and promotion.
+- [Canonical System Map](canonical/CALYX_CANONICAL_SYSTEM_MAP.md)
+- [Core Classification Registry](canonical/CALYX_CORE_CLASSIFICATION_REGISTRY.md)
+- [Authority Resolution Registry](canonical/CALYX_AUTHORITY_RESOLUTION_REGISTRY.md)
+- [Canonical Continuity Model](canonical/CALYX_CANONICAL_CONTINUITY_MODEL.md)
+- [Source Authority Registry](canonical/CALYX_SOURCE_AUTHORITY_REGISTRY.json)
+- [Decision Ledger](canonical/CALYX_DECISION_LEDGER.md)
+- [Noncanonical Enforcement Registry](canonical/CALYX_NONCANONICAL_ENFORCEMENT_REGISTRY.md)
 
-## Update Rules
-- Version authority: Architect-only. Filename/version changes only by Architect decree.
-- CBO may append or adjust rows for accuracy (when directed) without altering the version string.
+## Security and public-repository hygiene
+
+- [Security policy](../SECURITY.md)
+- [Security engineering notes](security.md)
+- [Public repository denylist](public_repo_denylist.md)
+- [Gateway boundary](gateway.md)
+- [Disclosure Protocol](../governance/DP-1.md)
+- [Privacy Boundary Schema](../governance/PBS-1.md)
+
+## Development and contribution
+
+- [Contributing](../CONTRIBUTING.md)
+- [Support](../SUPPORT.md)
+- [Code Factory deliverables](CODE_FACTORY_LOOP_DELIVERABLES.md)
+- [Benchmark run operations](benchmarks/RUNOPS.md)
+- [Project provenance](../PROVENANCE.md)
+
+## Tracked source roots
+
+These top-level directories remain part of the public source tree even when they are not part of the normal runtime path:
+
+- `Scripts/` — Windows lifecycle, readiness, maintenance, and operator entry points.
+- `cbo_hub/` — the current local HTTP service family.
+- `calyx/` — governance-aware Python packages, service logic, contracts, and bounded tools.
+- `tests/` and `tools/` — executable validation and repository utilities.
+- `policy/` and `spec/` — active policy inputs and machine-readable protocol specifications.
+- `rust/` — local-only advisory observers with no control or network authority.
+- `ide_toolbox/` — developer editor configuration and installation helpers.
+- `skills/` — integration wrappers whose presence does not make them canonical or authorized.
+- `reports/` — dated findings and validation artifacts; consult each report's scope and date.
+- `patches_out/` — historical or staged patch and runbook artifacts.
+- `openclaw/` — quarantined external-integration material.
+- `archive/` — non-operational historical code; active code must not import it.
+
+## Design and research
+
+The `docs/planning/`, `docs/governance/`, `proposals/`, `staging/`, and `bloomos/specs/` trees contain useful design and research material. Unless a current canonical document says otherwise:
+
+- plans and proposals are not approvals;
+- tests and fixtures are not running services;
+- staged sources are not canonical components;
+- BloomOS is specification-only;
+- dated validation reports describe their own time and scope.
+
+## Historical onboarding and narratives
+
+Older onboarding guides, prompts, chronicles, and the compendium preserve project history and language. Many reference retired paths or conceptual roles. Begin with this index and the canonical maps before using an older command or capability claim.
+
+## Foundational human declarations
+
+The human-authored governance set is indexed at [governance/INDEX.md](../governance/INDEX.md). Those declarations retain their own wording, authority, and interpretation rules; this documentation index does not replace them.

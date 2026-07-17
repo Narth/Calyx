@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a reproducible problem that contains no secrets or personal data.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Station Calyx. For a sensitive security issue, stop and use [private vulnerability reporting](https://github.com/Narth/Calyx/security/advisories/new).
+  - type: checkboxes
+    id: public_safe
+    attributes:
+      label: Public-safety check
+      options:
+        - label: I removed credentials, identifiers, personal context, and raw runtime evidence.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest commands or steps needed to reproduce the problem.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Python version, and relevant Station mode.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Paste only the minimal redacted output needed to understand the issue.
+      render: text
+  - type: textarea
+    id: scope
+    attributes:
+      label: Additional context and boundaries
+      description: Note what you did not test or what must remain unchanged.
