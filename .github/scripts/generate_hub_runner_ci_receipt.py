@@ -6,6 +6,12 @@ import argparse
 import json
 import os
 from pathlib import Path
+import sys
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from calyx.execution.hub_runner import run_work_envelope
 from calyx.kernel.envelope import WorkEnvelope
@@ -120,7 +126,7 @@ def generate_probe_receipt(pr_number: int, *, repo_root: Path, runtime_dir: Path
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pr-number", type=int, required=True)
-    parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[2])
+    parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--runtime-dir", type=Path)
     args = parser.parse_args()
 

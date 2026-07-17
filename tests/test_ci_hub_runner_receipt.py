@@ -3,6 +3,8 @@ from __future__ import annotations
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,3 +55,26 @@ def test_generator_emits_receipt_accepted_by_checker(tmp_path: Path) -> None:
 
     assert receipt_path.parent == runtime_dir / "receipts"
     assert checker.check_receipts(7, receipt_path.parent) is True
+
+
+def test_generator_cli_imports_repository_from_any_working_directory(tmp_path: Path) -> None:
+    runtime_dir = tmp_path / "runtime"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(GENERATOR_PATH),
+            "--pr-number",
+            "7",
+            "--repo-root",
+            str(ROOT),
+            "--runtime-dir",
+            str(runtime_dir),
+        ],
+        cwd=tmp_path,
+        capture_output=True,
+        check=False,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr or result.stdout
+    assert "Hub Runner CI validation receipt:" in result.stdout
