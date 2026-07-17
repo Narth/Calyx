@@ -1,0 +1,29 @@
+name: Documentation correction
+description: Report unclear, stale, missing, or contradictory public documentation.
+title: "[Docs]: "
+labels:
+  - documentation
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Document or URL
+      description: Which file, heading, or page needs attention?
+    validations:
+      required: true
+  - type: textarea
+    id: confusion
+    attributes:
+      label: What is unclear or inaccurate?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Current evidence
+      description: Link the current code, test, canonical map, or source that supports the correction.
+  - type: textarea
+    id: audience
+    attributes:
+      label: Who is affected?
+      description: New visitors, operators, contributors, security reviewers, or another audience.

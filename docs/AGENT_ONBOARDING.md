@@ -1,5 +1,8 @@
 # Agent Onboarding Guide — Station Calyx
 
+> [!CAUTION]
+> **Historical guide:** much of the command and agent inventory below refers to retired or noncanonical paths. Do not use it as current setup guidance. Begin with [Getting started](GETTING_STARTED.md), [Architecture](ARCHITECTURE.md), and the [Canonical System Map](canonical/CALYX_CANONICAL_SYSTEM_MAP.md). This file remains for historical context until a dedicated agent-onboarding redesign is approved.
+
 Welcome to Station Calyx. This guide provides everything you need to understand the project, integrate smoothly, and contribute effectively as an AI agent.
 
 > Station Motto: Station Calyx is the flag we fly; autonomy is the dream we share.

@@ -1,37 +1,50 @@
-## Intent Envelope
-- **Envelope ID:** <!-- envelope_id from telemetry/outbox/intents/ -->
-- **Envelope Path:** <!-- path to envelope JSON file -->
+## Summary
 
-## Contract Risk Tier
-- **Risk Tier:** <!-- low | med | high -->
-- **Rationale:** <!-- why this risk tier was assigned -->
+<!-- What changed, and why is this the smallest useful scope? -->
 
-## Required Checks
-<!-- Check boxes based on risk tier from CALYX_CONTRACT.yaml -->
-- [ ] Lint
-- [ ] Unit tests
-- [ ] Schema validation
-- [ ] Harness lane(s) relevant <!-- med+ -->
-- [ ] Receipt presence check <!-- med+ -->
-- [ ] Mandatory human approval marker <!-- high -->
-- [ ] Extra regression suite <!-- high -->
+## Change category
 
-## Receipts/Manifests
-- **Contract SHA256:** <!-- SHA256 of CALYX_CONTRACT.yaml -->
-- **Run Manifest:** <!-- path to manifest in runtime/manifests/ -->
-- **Result JSONL:** <!-- path to results in runtime/benchmarks/results/ -->
-- **Hub Runner Receipt:** <!-- path to receipt in runtime/receipts/ -->
+- [ ] Documentation or public orientation
+- [ ] Bug fix
+- [ ] Test or validation improvement
+- [ ] Internal refactor
+- [ ] Runtime or lifecycle change
+- [ ] Network, provider, identity, or authority change
+- [ ] Proposal/specification only
 
-## Rollback Plan
-<!-- Required for high risk or refactor_scope tasks -->
-<!-- Steps to revert changes if needed -->
-<!-- List of affected files -->
+## Evidence and status language
 
-## Changes Summary
-<!-- Brief description of what changed and why -->
+<!-- Distinguish what was observed, inferred, proposed, approved, tested, and executed. -->
 
-## Testing
-<!-- How this was tested, test results -->
+- **Implemented:**
+- **Validated:**
+- **Not changed / not claimed:**
 
-## Related
-<!-- Links to related issues, envelopes, or discussions -->
+## Authority, privacy, and network impact
+
+- Human approval required: <!-- no | yes, describe -->
+- New or changed external communication: <!-- none | describe data and destination -->
+- New listener or wider bind address: <!-- none | describe -->
+- Credentials, identifiers, personal context, or retained data affected: <!-- none | describe -->
+
+## Validation
+
+- [ ] Relevant tests passed
+- [ ] Links and referenced paths exist
+- [ ] Staged diff was reviewed for secrets and semantic privacy
+- [ ] Schema/receipt/harness checks were run when relevant
+- [ ] System services were restarted when live code or configuration changed
+
+Commands and results:
+
+```text
+
+```
+
+## Rollback
+
+<!-- How can this change be reverted or disabled? -->
+
+## Follow-up work
+
+<!-- Name important work deliberately left out of scope. -->

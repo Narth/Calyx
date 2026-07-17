@@ -1,54 +1,95 @@
-# Security Scanning
+# Security Engineering Notes
 
-This repository runs `gitleaks` in CI via `.github/workflows/public-repo-hygiene.yml` on:
+The repository-wide reporting policy is [SECURITY.md](../SECURITY.md). This document explains the public-repository checks and their limitations.
 
-- Pushes to `main`
-- Pull requests targeting `main`
+## CI controls
 
-The workflow is configured to fail if any secret findings are detected.
+### Public Repo Hygiene
 
-## History Rewrite Notice (2026-02-12)
+`.github/workflows/public-repo-hygiene.yml` runs on pull requests to `main` and pushes to `main`.
 
-**⚠️ IMPORTANT:** This repository underwent a Git history rewrite on 2026-02-12 to remove exposed secrets (`openclaw.config.json` containing Discord bot token and OpenAI API key). All commit SHAs have changed.
+It currently:
 
-**If you cloned before 2026-02-12, update your local repository:**
+- checks out full Git history;
+- runs `tools/check_forbidden_tracked_paths.sh`;
+- checks canonical spine invariants;
+- runs gitleaks with repository configuration;
+- compiles selected Python modules.
+
+### Code Factory Gates
+
+`.github/workflows/code_factory_gates.yml` classifies pull-request risk and selects a validation lane. Depending on the lane, checks include:
+
+- Flake8 and Pylint;
+- Python tests;
+- schema validation;
+- benchmark harness variants;
+- PR-specific Hub Runner receipt generation and presence checks;
+- CI receipt generation and validation.
+
+The workflow is evidence for the named checks. It is not evidence that every tracked document is current, every privacy-sensitive value was recognized, or every runtime configuration is safe.
+
+## Secret scanning is not privacy review
+
+Gitleaks is designed to recognize secret patterns. It may not recognize:
+
+- stable account or channel identifiers;
+- names and biographical details;
+- local usernames and filesystem paths;
+- sensitive screenshots or logs;
+- operational details embedded in prose;
+- synthetic-looking values that are actually live.
+
+Before publishing, review both the staged diff and the full set of newly tracked files for semantic sensitivity.
+
+## Local pre-publish checks
+
+Useful checks include:
 
 ```powershell
-# Option 1: Re-clone (recommended)
-cd ..
-mv Calyx Calyx_backup_$(Get-Date -Format 'yyyyMMdd')
-git clone https://github.com/Narth/Calyx.git
+# Review exactly what will be committed.
+git diff --cached --stat
+git diff --cached
 
-# Option 2: Reset local branches
-git fetch origin --prune
-git checkout main
-git reset --hard origin/main
+# List files that ignore policy considers unusual.
+git status --short --ignored
+
+# Run the public path gate in Git Bash or CI-compatible shell.
+bash tools/check_forbidden_tracked_paths.sh
+
+# Run the test suite.
+python -m pytest -q
 ```
 
-**Affected branches:** `main`, `public-safety-clean`, `copilot/upload-governance-framework`, `codex/perform-public-readiness-audit-on-github-repo`
+Also search staged material for project-specific identifiers and local path fragments. Do not print live secrets merely to prove they exist.
 
-See `reports/security/secret_history_purge_force_push_completion_2026-02-12.md` for details.
+## Runtime artifacts
 
-## Codex public-facing audit (2026-02-22)
+Generated state belongs under ignored local runtime paths. Source code for receipt, evidence, or validation systems belongs in normal source directories such as `calyx/evidence_ledger/`; generated ledgers and receipts remain under `runtime/`.
 
-A two-pass Codex audit for secrecy and privacy found no direct secret-value exposure; it reported PII in patch metadata and identity docs, Discord IDs in setup docs, and denylist/repo mismatches. Consolidated response, reconciled denylist exceptions, and optional remediations: **`docs/CODEX_AUDIT_RESPONSE_2026-02-22.md`**. Denylist policy updated in `docs/public_repo_denylist.md` (intentional exceptions for `reports/security/*.md` and `*.jsonl`).
+Stable synthetic fixtures may be tracked when they are necessary for deterministic tests and are explicitly reviewed. A fixture must not be copied from a live machine without redaction and provenance review.
 
-## Local usage
+## Network review
 
-### Option 1: Docker
+Any change that adds an outbound provider, inbound listener, wider bind address, or new forwarding route should document:
 
-```bash
-docker run --rm -v "$(pwd):/repo" zricethezav/gitleaks:latest \
-  detect --source /repo --config /repo/.gitleaks.toml --redact --verbose
-```
+- the data sent or accepted;
+- authentication and authorization behavior;
+- default-deny behavior;
+- audit and failure behavior;
+- configuration required for strict operation;
+- how the operator disables or revokes the path.
 
-### Option 2: Local binary
+See [Gateway Contract](gateway.md) for the current remote-support boundary.
 
-```bash
-gitleaks detect --source . --config .gitleaks.toml --redact --verbose
-```
+## February 2026 history rewrite
 
-Exit codes:
+On February 12, 2026, repository history was rewritten after credentials were found in a tracked configuration file. Commit identifiers changed. Anyone holding a pre-rewrite clone should re-clone or explicitly reset to the current remote history.
 
-- `0`: no leaks found
-- non-zero: leak(s) detected or scan error
+Credential rotation was and remains more important than history removal. Git history rewriting reduces ordinary discovery but cannot recall prior clones, forks, caches, or copies.
+
+## Ongoing public-hygiene work
+
+The project has a long experimental history. Dated operations documents, archived code, staged fixtures, and identity-oriented files require continuing classification and semantic privacy review. This documentation refresh does not claim a complete history purge.
+
+Use private vulnerability reporting for a specific sensitive finding rather than opening a public issue.

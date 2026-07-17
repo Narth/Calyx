@@ -1,81 +1,119 @@
-# Security Model
+# Security Policy
 
-**Station Calyx** is a local-first governance and coordination stack for AI agents.
+Station Calyx is an active research prototype. Security reports are welcome, but the project is not a production-certified security appliance and does not currently publish supported release branches.
 
----
+## Supported versions
 
-## Governance Invariants
+| Version | Security updates |
+| --- | --- |
+| Current `main` | Best-effort |
+| Historical branches, tags, patches, and archived modules | Not supported |
 
-This repository maintains strict governance invariants (verified for Calyx Mail v0.1):
+No stable production release is currently offered.
 
-### No Network Imports
+## Report a vulnerability privately
 
-- âœ… No `socket`, `requests`, `urllib`, `http`, `asyncio`, `aiohttp`, `websocket` imports
-- âœ… All operations are local filesystem-based
-- âœ… Benchmark harness operates offline (no network dependencies)
+Use [GitHub Private Vulnerability Reporting](https://github.com/Narth/Calyx/security/advisories/new).
 
-### No Dynamic Execution
+Please include:
 
-- âœ… No `eval()`, `exec()`, `subprocess`, `__import__()`, `compile()` for untrusted content
-- âœ… SQLite `execute()` only for database queries (trusted)
-- âœ… Regex `re.match()` only for validation (trusted patterns)
+- the affected path, component, or commit;
+- the impact you believe is possible;
+- the smallest safe reproduction;
+- whether credentials, personal data, or live infrastructure may be involved;
+- any mitigation you have already applied.
 
-### No Secrets in Tracked Files
+Do not place secrets, live identifiers, exploit details, personal operator context, or raw runtime evidence in a public issue.
 
-- âœ… No API keys, tokens, or passwords in tracked files
-- âœ… All secrets stored under `runtime/keys/` (git-ignored)
-- âœ… Template files use placeholders (`__SET_ME__`)
+If a credential may have been exposed, revoke or rotate it immediately. Do not wait for repository cleanup or maintainer confirmation.
 
-### No Runtime Artifacts Tracked
+## Deployment boundary
 
-- âœ… Runtime state (telemetry, exports, logs) git-ignored
-- âœ… CI enforces: `tools/check_forbidden_tracked_paths.sh`
-- âœ… Architecture-only repository
+The canonical local service topology is:
 
-### Mail Content Non-Executable
+| Service | Default bind | Public exposure |
+| --- | --- | --- |
+| Dev Harness | `127.0.0.1:7777` | Never expose directly. |
+| CBO Core | `127.0.0.1:7778` | Never expose directly. |
+| Avatar Web | `127.0.0.1:7780` | Never expose directly. |
+| Telemetry Gateway | `0.0.0.0:7781` | Remote-support boundary only; secure configuration and an outer trusted network boundary are required. |
 
-- âœ… Calyx Mail content remains read-only
-- âœ… No execution pathways from mail content
-- âœ… No command/action payload types
+Before allowing remote Telemetry Gateway access:
 
-### No Control-Plane Semantics
+1. Set a non-empty `TELEMETRY_SECRET`.
+2. Require a stable `X-Telemetry-Client-ID` for every client.
+3. Use a trusted tunnel, VPN, host firewall, or equivalent network boundary.
+4. Account for the current source-attestation gap: `CALYX_GOVERNANCE_REQUIRED=true` rejects Telemetry Gateway, Avatar Web, and CLI Avatar chat requests because those clients do not yet send the trusted-source headers CBO Core requires.
+5. Do not use the compatibility-mode gateway path for consequential remote operations as if it were strict governance.
+6. Confirm `CBO_CHAT_URL` points only to the intended trusted CBO Core; the default is loopback.
+7. Confirm the local audit path is writable and the gateway reports a trusted audit state.
+8. Account for the unauthenticated `/health` route and FastAPI's default `/docs`, `/redoc`, and `/openapi.json` routes at the outer boundary.
+9. Understand which local or cloud model route receives the request.
 
-- âœ… No command/action payload types in v0.1
-- âœ… No agent execution from mail content
-- âœ… Deny-by-default governance
+Telemetry Gateway does not provide a built-in TLS-termination guarantee. Binding a port, adding a tunnel, or receiving a model response does not make the deployment secure.
 
----
+The gateway audit log can contain a claimed client label, source/forwarding metadata, session labels or hashes, request hashes, status, and error details. Treat it as sensitive operational metadata. No automatic rotation for that JSONL file is currently claimed; apply an operator-controlled retention process or keep remote ingress disabled.
 
-## Repo Hygiene
+## Provider disclosure
 
-**CI Enforcement:**
-- `.github/workflows/public-repo-hygiene.yml` runs on every push
-- Checks for forbidden paths (telemetry/, exports/, runtime/, etc.)
-- Checks for forbidden file types (evidence.jsonl, .wav, .mp3, .png, etc.)
-- Runs `py_compile` sanity checks
+CBO Core can be configured to call local Ollama or external model providers. When an external provider is selected, relevant request content and selected context may leave the workstation under that provider's terms and controls.
 
-**Manual Verification:**
-```powershell
-# Check for forbidden paths
-git ls-files | grep -E "(telemetry/|exports/|runtime/)"
+Never assume “local-first” means “offline-only” for every configuration. Review environment variables and routes before using sensitive data.
 
-# Check for network imports
-grep -r "import (socket|requests|urllib)" calyx/
+## Repository and privacy boundary
 
-# Check for dynamic execution
-grep -r "(eval|exec|subprocess)" calyx/
-```
+This repository is public. Treat every tracked file, branch, pull request, issue, artifact, and commit as publicly readable.
 
----
+Do not commit:
 
-## Security Reports
+- API keys, bot tokens, passwords, private keys, or `.env` files;
+- live Discord, telemetry, account, or device identifiers;
+- personal operator profiles or private continuity files;
+- raw `runtime/`, logs, receipts, telemetry, or evidence exports;
+- unredacted local paths, command lines, screenshots, or machine inventories;
+- real vulnerability payloads.
 
-Public-ready verification receipts:
-- `reports/security/public_release_readiness_verification_2026-02-11.md`
-- `reports/security/calyx_mail_v0_1_final_release_summary_2026-02-12.md`
+Automated secret scanning detects patterns, not meaning. A personal name, stable identifier, local path, or sensitive narrative can pass a secret scan and still be inappropriate to publish.
 
----
+The repository contains historical and experimental material from earlier project phases. This policy does not claim that all history has been semantically scrubbed. Report inappropriate public data privately.
 
-## Reporting Security Issues
+## Current security controls
 
-See `README.md` for security contact information.
+Current repository and runtime controls include:
+
+- gitleaks checks in pull-request and `main` hygiene workflows, with non-shallow checkout history available to the scanner;
+- forbidden tracked-path checks;
+- lint, unit, schema, harness, and receipt validation in Code Factory CI;
+- loopback defaults for core HTTP services;
+- an external-emitter preflight gate in the governed sunrise path;
+- client-ID-based session namespacing and pre-forward audit confirmation in Telemetry Gateway;
+- Discord caller/channel allowlists;
+- proposal, approval, execution, and receipt models for governed operations.
+
+These controls are scoped mechanisms, not a blanket security guarantee. Some settings preserve backward compatibility and require deliberate strict configuration.
+
+## Explicit limitations
+
+- No independent third-party security audit is claimed.
+- No production hardening or availability guarantee is claimed.
+- Full Station operation is Windows-first and workstation-specific.
+- Historical, staged, archived, or specification-only modules may not follow the current normal path.
+- Telemetry Gateway currently has no gateway-level rate limit, request-body size limit, or explicit field allowlist beyond requiring a JSON object.
+- On Windows, every successful gateway forward launches `Scripts/update_state_checks.ps1`, which can update `STATE.md` and runtime evidence even when the chat body requests observe mode and disables tools.
+- A passing test proves the tested condition, not the absence of every vulnerability.
+- A receipt proves that a defined record was emitted; it does not make arbitrary claims inside a record true.
+- Cloud-provider, Discord, tunnel, operating-system, and dependency security remain shared external dependencies when used.
+
+## History rewrite notice
+
+Repository history was rewritten on February 12, 2026 after exposed credentials were found in an earlier configuration file. If you cloned before that rewrite, re-clone rather than merging unrelated pre-rewrite history.
+
+That incident is documented in [security engineering notes](docs/security.md). History rewriting cannot recall existing clones, forks, caches, or copied credentials; rotation remains mandatory after exposure.
+
+## Security design documents
+
+- [Security engineering notes](docs/security.md)
+- [Gateway boundary](docs/gateway.md)
+- [Station stack policy](docs/STATION_STACK_POLICY.md)
+- [Public repository denylist](docs/public_repo_denylist.md)
+- [Governance index](governance/INDEX.md)

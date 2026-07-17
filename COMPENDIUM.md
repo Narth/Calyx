@@ -1,5 +1,8 @@
 # Calyx Agents, Copilots, and Overseers — Compendium
 
+> [!CAUTION]
+> **Cultural and historical registry:** many roles and entry points below are conceptual, retired, missing, or quarantined. This compendium preserves project language; it is not the current runtime or authority map. Use [docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md](docs/canonical/CALYX_CANONICAL_SYSTEM_MAP.md) for present classification and [docs/INDEX.md](docs/INDEX.md) for current public orientation.
+
 This living compendium lists the named agents, copilots, and overseers active in the Calyx Terminal ecosystem, their roles, tone, artifacts, and control surfaces.
 
 **Station Calyx** is home. **CBO** is steward. **BloomOS** agents consume STATE.md (Status, heartbeat_ts, checks, health); Calyx produces, BloomOS consumes. **Calyx Agents** operate within the spine.

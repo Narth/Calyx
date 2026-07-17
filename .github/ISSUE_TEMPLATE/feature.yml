@@ -1,0 +1,58 @@
+name: Bounded feature proposal
+description: Propose a capability or improvement with explicit authority and safety boundaries.
+title: "[Proposal]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A proposal is not approval or activation. Changes to autonomy, networking, identity, retention, or authority require maintainer discussion before implementation.
+  - type: textarea
+    id: need
+    attributes:
+      label: Human need
+      description: What problem would this solve, and for whom?
+    validations:
+      required: true
+  - type: textarea
+    id: smallest
+    attributes:
+      label: Smallest useful version
+      description: Describe a bounded, reversible first step.
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Expected status
+      options:
+        - Documentation or onboarding
+        - Read-only observation
+        - Advisory support
+        - Local execution with approval
+        - Network or provider integration
+        - Specification or research only
+    validations:
+      required: true
+  - type: textarea
+    id: authority
+    attributes:
+      label: Authority, privacy, and network effects
+      description: What new access, retained data, external communication, or human approval would be involved?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Success evidence
+      description: What tests, observations, receipts, or user outcomes would establish that the first step worked?
+    validations:
+      required: true
+  - type: textarea
+    id: stop
+    attributes:
+      label: Stop and rollback path
+      description: How would the operator disable or reverse it?
+    validations:
+      required: true
