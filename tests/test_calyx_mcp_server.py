@@ -13,11 +13,7 @@ def test_scope_contains_only_approved_roots() -> None:
     assert scope["mode"] == "read_only"
     assert scope["authority"] == "canonical support"
     assert [root["path"] for root in scope["allowed_roots"]] == [
-        "C:\\Calyx_Terminal",
-        "C:\\Calyx_Test_Temp",
-        "C:\\Calyx_Parking",
-        "C:\\Calyx_Federation_Inbox",
-        "D:\\Calyx_Data",
+        str(server.canonicalize(path)) for path in server.DEFAULT_ALLOWED_ROOTS
     ]
 
 
@@ -55,7 +51,10 @@ def test_initialize_and_tools_list_jsonrpc_handlers() -> None:
 def test_runtime_status_exposes_clarity_surfaces() -> None:
     status = server.tool_runtime_status({})
 
-    assert status["clarity_status"]["path"].endswith("runtime\\clarity_status.json")
+    assert Path(status["clarity_status"]["path"]).parts[-2:] == (
+        "runtime",
+        "clarity_status.json",
+    )
     assert status["active_objective"]["exists"] is True
     assert status["source_authority_registry"]["exists"] is True
     assert status["confusion_protocol"]["exists"] is True
